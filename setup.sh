@@ -7,21 +7,38 @@ set -e
 # ================================================================
 
 yum-config-manager --setopt=tsflags= --save
-until yum update -y --skip-broken; do echo 'Retrying'; done
-yum update -y || true
-until yum install -y curl; do echo 'Retrying'; done
-rpm -i "http://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/`curl -s http://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/ | sed -n 's/.*\(cuda-repo-rhel7-.*\.x86_64\.rpm\).*/\1/p' | sort | tail -n 1`"
-curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-ci-multi-runner/script.rpm.sh | bash
+
+echo yum-config-manager%--{disable%,enable%cache-}{{base,updates,extras,centosplus}{,-source},base-debuginfo}\; | sed 's/%/ /g' | bash
+
+until yum install -y yum-plugin-{priorities,fastestmirror}; do echo 'Retrying'; done
+
 until yum install -y epel-release; do echo 'Retrying'; done
+echo yum-config-manager%--{disable%,enable%cache-}epel{,-source,-debuginfo}\; | sed 's/%/ /g' | bash
+
+until yum install -y yum-axelget; do echo 'Retrying'; done
+until yum install -y curl; do echo 'Retrying'; done
+
 # until yum install -y centos-release-scl{,-rh}; do echo 'Retrying'; done
-until yum update -y --skip-broken; do echo 'Retrying'; done
-yum update -y || true
-yum-config-manager --enable extras centosplus {base,epel}-debuginfo
 # yum-config-manager --enable centos-sclo-{sclo,rh}-debuginfo
+
 until yum update -y --skip-broken; do echo 'Retrying'; done
 yum update -y || true
 
-until yum install -y yum-{axelget,plugin-priorities}; do echo 'Retrying'; done
+rpm -i "http://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/`curl -s http://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/ | sed -n 's/.*\(cuda-repo-rhel7-.*\.x86_64\.rpm\).*/\1/p' | sort | tail -n 1`"
+echo yum-config-manager%--{disable%,enable%cache-}cuda\; | sed 's/%/ /g' | bash
+
+curl -sSL https://packages.gitlab.com/install/repositories/runner/gitlab-ci-multi-runner/script.rpm.sh | bash
+echo yum-config-manager%--{disable%,enable%cache-}runner_gitlab-ci-multi-runner{,-source}\; | sed 's/%/ /g' | bash
+
+curl -sSL https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh | bash
+echo yum-config-manager%--{disable%,enable%cache-}gitlab_gitlab-ce{,-source}\; | sed 's/%/ /g' | bash
+
+until yum update -y --skip-broken; do echo 'Retrying'; done
+yum update -y || true
+
+# ----------------------------------------------------------------
+
+# echo yum-config-manager%--{disable%,enable%cache-}{{base,updates,extras,centosplus,epel,gitlab_gitlab-ce,runner_gitlab-ci-multi-runner}{,-source},{base,epel}-debuginfo,cuda}\; | sed 's/%/ /g' | bash
 
 # ================================================================
 # Install Packages
@@ -51,14 +68,15 @@ vim{,-*}                                                \
 dos2unix{,-*}                                           \
                                                         \
 {bash,fish,zsh,mosh,tmux}{,-*}                          \
+jq{,-*}                                                 \
 {telnet,tftp,rsh}{,-debuginfo}                          \
 {htop,glances}{,-*}                                     \
 {wget,axel,curl,net-tools}{,-*}                         \
 man{,-*}                                                \
 {f,tc,dhc,libo,io}ping{,-*}                             \
 hping3{,-*}                                             \
-{traceroute,rsync,tcpdump}{,-*}                         \
-{more,elf,ib}utils{,-*}                                 \
+{traceroute,mtr,rsync,tcpdump,whois}{,-*}               \
+{more,elf,bridge,ib}utils{,-*}                          \
 cyrus-imapd{,-*}                                        \
 net-snmp{,-*}                                           \
 GeoIP{,-*}                                              \
@@ -99,7 +117,7 @@ do echo 'Retrying'; done
 until yum install -y --skip-broken                      \
                                                         \
 perl{,-*}                                               \
-{python{,34},anaconda}{,-*}                             \
+{python{,2,34},anaconda}{,-*}                           \
 ruby{,-*}                                               \
 qt5{,-*}                                                \
 
@@ -144,10 +162,11 @@ cd
 authconfig --enablesssd --enablesssdauth --enablecachecreds --enableldap --enableldapauth --enablemkhomedir --ldapserver=ldap://ldap.codingcafe.org --ldapbasedn=dc=codingcafe,dc=org --enablelocauthorize --enableldaptls --update
 
 # ================================================================
-# Enable Services
+# Enable/Start Services
 # ================================================================
 
-systemctl enable sssd
+# systemctl enable sssd
+# systemctl start sssd
 
 # ================================================================
 # Personalize
@@ -163,18 +182,18 @@ git config --global core.editor 'vim'
 # ================================================================
 
 cd /tmp
-git clone https://github.com/llvm-mirror/llvm.git LLVM
+until git clone https://github.com/llvm-mirror/llvm.git LLVM; do echo 'Retrying'; done
 cd LLVM
 git checkout release_40
 cd tools
-git clone https://github.com/llvm-mirror/polly.git &
-git clone https://github.com/llvm-mirror/lldb.git &
-git clone https://github.com/llvm-mirror/lld.git &
-git clone https://github.com/llvm-mirror/clang.git
+until git clone https://github.com/llvm-mirror/polly.git; do echo 'Retrying'; done &
+until git clone https://github.com/llvm-mirror/lldb.git; do echo 'Retrying'; done &
+until git clone https://github.com/llvm-mirror/lld.git; do echo 'Retrying'; done &
+until git clone https://github.com/llvm-mirror/clang.git; do echo 'Retrying'; done
 cd clang
 git checkout release_40
 cd tools
-git clone https://github.com/llvm-mirror/clang-tools-extra.git extra
+until git clone https://github.com/llvm-mirror/clang-tools-extra.git extra; do echo 'Retrying'; done
 cd extra
 git checkout release_40 &
 wait
@@ -185,11 +204,11 @@ git checkout release_40 &
 cd ../lld
 git checkout release_40 &
 cd ../../projects
-git clone https://github.com/llvm-mirror/compiler-rt.git &
-git clone https://github.com/llvm-mirror/libunwind.git &
-git clone https://github.com/llvm-mirror/libcxx.git &
-git clone https://github.com/llvm-mirror/libcxxabi.git &
-git clone https://github.com/llvm-mirror/openmp.git &
+until git clone https://github.com/llvm-mirror/compiler-rt.git; do echo 'Retrying'; done &
+until git clone https://github.com/llvm-mirror/libunwind.git; do echo 'Retrying'; done &
+until git clone https://github.com/llvm-mirror/libcxx.git; do echo 'Retrying'; done &
+until git clone https://github.com/llvm-mirror/libcxxabi.git; do echo 'Retrying'; done &
+until git clone https://github.com/llvm-mirror/openmp.git; do echo 'Retrying'; done &
 wait
 cd compiler-rt
 git checkout release_40 &

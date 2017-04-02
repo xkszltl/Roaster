@@ -1,0 +1,140 @@
+[cache-base]
+name=[Cache] CentOS-$releasever - Base
+baseurl=https://repo.codingcafe.org/centos/$releasever/base/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+priority = 1
+enabled=0
+
+[cache-updates]
+name=[Cache] CentOS-$releasever - Updates
+baseurl=https://repo.codingcafe.org/centos/$releasever/updates/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+priority = 1
+enabled=0
+
+[cache-extras]
+name=[Cache ]CentOS-$releasever - Extras
+baseurl=https://repo.codingcafe.org/centos/$releasever/extras/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+priority = 1
+enabled=0
+
+[cache-centosplus]
+name=[Cache] CentOS-$releasever - Plus
+baseurl=https://repo.codingcafe.org/centos/$releasever/centosplus/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+priority = 1
+enabled=0
+
+[cache-base-debuginfo]
+name=[Cache] CentOS-7 - Debuginfo
+baseurl=https://repo.codingcafe.org/centos/$releasever/base/$basearch/debug
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-Debug-7
+priority = 1
+enabled=0
+
+[cache-base-source]
+name=[Cache] CentOS-$releasever - Base Sources
+baseurl=https://repo.codingcafe.org/centos/$releasever/base/Source
+gpgcheck=1
+enabled=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+priority = 1
+enabled=0
+
+[cache-updates-source]
+name=[Cache] CentOS-$releasever - Updates Sources
+baseurl=https://repo.codingcafe.org/centos/$releasever/updates/Source
+gpgcheck=1
+enabled=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+priority = 1
+enabled=0
+
+[cache-extras-source]
+name=[Cache] CentOS-$releasever - Extras Sources
+baseurl=https://repo.codingcafe.org/centos/$releasever/extras/Source
+gpgcheck=1
+enabled=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+priority = 1
+enabled=0
+
+[cache-centosplus-source]
+name=[Cache] CentOS-$releasever - Plus Sources
+baseurl=https://repo.codingcafe.org/centos/$releasever/centosplus/Source
+gpgcheck=1
+enabled=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+priority = 1
+enabled=0
+
+[cache-epel]
+name=[Cache] Extra Packages for Enterprise Linux $releasever - $basearch
+baseurl=https://repo.codingcafe.org/epel/$releasever/$basearch
+failovermethod=priority
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+priority=1
+enabled=0
+
+[cache-epel-debuginfo]
+name=[Cache] Extra Packages for Enterprise Linux $releasever - $basearch - Debug
+baseurl=https://repo.codingcafe.org/epel/$releasever/$basearch/debug
+failovermethod=priority
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+gpgcheck=1
+priority=1
+enabled=0
+
+[cache-epel-source]
+name=[Cache] Extra Packages for Enterprise Linux $releasever - $basearch - Source
+baseurl=https://repo.codingcafe.org/epel/$releasever/SRPMS
+failovermethod=priority
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+gpgcheck=1
+priority=1
+enabled=0
+
+[cache-cuda]
+name=[Cache] cuda
+baseurl=https://repo.codingcafe.org/cuda/rhel$releasever/$basearch
+gpgcheck=1
+gpgkey=https://repo.codingcafe.org/cuda/rhel$releasever/$basearch/7fa2af80.pub
+enabled=0
+
+[cache-runner_gitlab-ci-multi-runner]
+name=[Cache] runner_gitlab-ci-multi-runner
+baseurl=https://repo.codingcafe.org/gitlab/gitlab-ci-multi-runner/el/$releasever/$basearch
+gpgcheck=0
+gpgkey=https://packages.gitlab.com/runner/gitlab-ci-multi-runner/gpgkey
+metadata_expire=300
+enabled=0
+
+[cache-runner_gitlab-ci-multi-runner-source]
+name=[Cache] runner_gitlab-ci-multi-runner-source
+baseurl=https://repo.codingcafe.org/gitlab/gitlab-ci-multi-runner/el/$releasever/SRPMS
+gpgcheck=0
+gpgkey=https://packages.gitlab.com/runner/gitlab-ci-multi-runner/gpgkey
+metadata_expire=300
+enabled=0
+
+[cache-gitlab_gitlab-ce]
+name=[Cache] gitlab_gitlab-ce
+baseurl=https://repo.codingcafe.org/gitlab/gitlab-ce/el/$releasever/$basearch
+baseurl=https://packages.gitlab.com/gitlab/gitlab-ce/el/7/$basearch
+gpgcheck=0
+gpgkey=https://packages.gitlab.com/gpg.key
+enabled=0
+
+[cache-gitlab_gitlab-ce-source]
+name=[Cache] gitlab_gitlab-ce-source
+baseurl=https://repo.codingcafe.org/gitlab/gitlab-ce/el/$releasever/SRPMS
+gpgcheck=0
+gpgkey=https://packages.gitlab.com/gpg.key
+enabled=0
