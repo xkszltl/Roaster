@@ -31,8 +31,8 @@ priority = 1
 enabled=0
 
 [cache-base-debuginfo]
-name=[Cache] CentOS-7 - Debuginfo
-baseurl=https://repo.codingcafe.org/centos/$releasever/base/$basearch/debug
+name=[Cache] CentOS-$releasever - Debuginfo
+baseurl=https://repo.codingcafe.org/centos/$releasever/base/debug/$basearch
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-Debug-7
 priority = 1
@@ -85,7 +85,7 @@ enabled=0
 
 [cache-epel-debuginfo]
 name=[Cache] Extra Packages for Enterprise Linux $releasever - $basearch - Debug
-baseurl=https://repo.codingcafe.org/epel/$releasever/$basearch/debug
+baseurl=https://repo.codingcafe.org/epel/$releasever/debug/$basearch
 failovermethod=priority
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
 gpgcheck=1
@@ -127,7 +127,6 @@ enabled=0
 [cache-gitlab_gitlab-ce]
 name=[Cache] gitlab_gitlab-ce
 baseurl=https://repo.codingcafe.org/gitlab/gitlab-ce/el/$releasever/$basearch
-baseurl=https://packages.gitlab.com/gitlab/gitlab-ce/el/7/$basearch
 gpgcheck=0
 gpgkey=https://packages.gitlab.com/gpg.key
 enabled=0

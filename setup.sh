@@ -10,13 +10,12 @@ yum-config-manager --setopt=tsflags= --save
 
 echo yum-config-manager%--{disable%,enable%cache-}{{base,updates,extras,centosplus}{,-source},base-debuginfo}\; | sed 's/%/ /g' | bash
 
-until yum install -y yum-plugin-{priorities,fastestmirror}; do echo 'Retrying'; done
+until yum install -y yum-plugin-{priorities,fastestmirror} curl kernel-headers; do echo 'Retrying'; done
 
 until yum install -y epel-release; do echo 'Retrying'; done
 echo yum-config-manager%--{disable%,enable%cache-}epel{,-source,-debuginfo}\; | sed 's/%/ /g' | bash
 
 until yum install -y yum-axelget; do echo 'Retrying'; done
-until yum install -y curl; do echo 'Retrying'; done
 
 # until yum install -y centos-release-scl{,-rh}; do echo 'Retrying'; done
 # yum-config-manager --enable centos-sclo-{sclo,rh}-debuginfo
@@ -58,6 +57,7 @@ qpid-cpp-client{,-*}                                        \
 {gcc,distcc,ccache}{,-*}                                    \
 java-1.8.0-openjdk{,-*}                                     \
 texlive{,-*}                                                \
+octave{,-*}                                                 \
 {gdb,valgrind,perf,{l,s}trace}{,-*}                         \
 {make,cmake{,3},autoconf,libtool,ant,maven}{,-*}            \
 {git,subversion,mercurial}{,-*}                             \
@@ -68,19 +68,20 @@ vim{,-*}                                                    \
 dos2unix{,-*}                                               \
                                                             \
 {bash,fish,zsh,mosh,tmux}{,-*}                              \
-jq{,-*}                                                     \
+{parallel,jq}{,-*}                                          \
+{tree,lsof}{,-*}                                            \
 {telnet,tftp,rsh}{,-debuginfo}                              \
 {htop,glances}{,-*}                                         \
 {wget,axel,curl,net-tools}{,-*}                             \
 man{,-*}                                                    \
 {f,tc,dhc,libo,io}ping{,-*}                                 \
 hping3{,-*}                                                 \
-{traceroute,mtr,rsync,tcpdump,whois}{,-*}                   \
-{more,elf,bridge,ib}utils{,-*}                              \
+{traceroute,mtr,rsync,tcpdump,whois,net-snmp}{,-*}          \
+{elf,bridge-,ib}utils{,-*}                                  \
+moreutils{,-debuginfo}                                      \
 cyrus-imapd{,-*}                                            \
-net-snmp{,-*}                                               \
 GeoIP{,-*}                                                  \
-dstat{,-*}                                                  \
+{d,sys}stat{,-*}                                            \
 lm_sensors{,-*}                                             \
 {{e2fs,btrfs-,xfs,ntfs}progs,xfsdump,nfs-utils}{,-*}        \
 dd{,_}rescue{,-*}                                           \
@@ -100,7 +101,7 @@ open{blas,cv,ssl,ssh,ldap}{,-*}                             \
 ImageMagick{,-*}                                            \
 cuda                                                        \
                                                             \
-{hdf5}{,-*}                                                 \
+hdf5{,-*}                                                   \
 {leveldb,lmdb}{,-*}                                         \
 {mariadb,postgresql}{,-*}                                   \
                                                             \
@@ -111,6 +112,8 @@ cuda                                                        \
 gitlab-ci-multi-runner                                      \
 
 do echo 'Retrying'; done
+
+parallel --will-cite < /dev/null
 
 # ----------------------------------------------------------------
 
@@ -182,18 +185,18 @@ git config --global core.editor 'vim'
 # ================================================================
 
 cd /tmp
-until git clone https://github.com/llvm-mirror/llvm.git LLVM; do echo 'Retrying'; done
-cd LLVM
+until git clone https://git.codingcafe.org/Mirrors/llvm-mirror/llvm.git; do echo 'Retrying'; done
+cd llvm
 git checkout release_40
 cd tools
-until git clone https://github.com/llvm-mirror/polly.git; do echo 'Retrying'; done &
-until git clone https://github.com/llvm-mirror/lldb.git; do echo 'Retrying'; done &
-until git clone https://github.com/llvm-mirror/lld.git; do echo 'Retrying'; done &
-until git clone https://github.com/llvm-mirror/clang.git; do echo 'Retrying'; done
+until git clone https://git.codingcafe.org/Mirrors/llvm-mirror/polly.git; do echo 'Retrying'; done &
+until git clone https://git.codingcafe.org/Mirrors/llvm-mirror/lldb.git; do echo 'Retrying'; done &
+until git clone https://git.codingcafe.org/Mirrors/llvm-mirror/lld.git; do echo 'Retrying'; done &
+until git clone https://git.codingcafe.org/Mirrors/llvm-mirror/clang.git; do echo 'Retrying'; done
 cd clang
 git checkout release_40
 cd tools
-until git clone https://github.com/llvm-mirror/clang-tools-extra.git extra; do echo 'Retrying'; done
+until git clone https://git.codingcafe.org/Mirrors/llvm-mirror/clang-tools-extra.git extra; do echo 'Retrying'; done
 cd extra
 git checkout release_40 &
 wait
@@ -204,11 +207,11 @@ git checkout release_40 &
 cd ../lld
 git checkout release_40 &
 cd ../../projects
-until git clone https://github.com/llvm-mirror/compiler-rt.git; do echo 'Retrying'; done &
-until git clone https://github.com/llvm-mirror/libunwind.git; do echo 'Retrying'; done &
-until git clone https://github.com/llvm-mirror/libcxx.git; do echo 'Retrying'; done &
-until git clone https://github.com/llvm-mirror/libcxxabi.git; do echo 'Retrying'; done &
-until git clone https://github.com/llvm-mirror/openmp.git; do echo 'Retrying'; done &
+until git clone https://git.codingcafe.org/Mirrors/llvm-mirror/compiler-rt.git; do echo 'Retrying'; done &
+until git clone https://git.codingcafe.org/Mirrors/llvm-mirror/libunwind.git; do echo 'Retrying'; done &
+until git clone https://git.codingcafe.org/Mirrors/llvm-mirror/libcxx.git; do echo 'Retrying'; done &
+until git clone https://git.codingcafe.org/Mirrors/llvm-mirror/libcxxabi.git; do echo 'Retrying'; done &
+until git clone https://git.codingcafe.org/Mirrors/llvm-mirror/openmp.git; do echo 'Retrying'; done &
 wait
 cd compiler-rt
 git checkout release_40 &
@@ -228,7 +231,7 @@ cd build/Release
 # ----------------------------------------------------------------
 
 cmake3 -DCMAKE_BUILD_TYPE=Release -DCLANG_DEFAULT_CXX_STDLIB=libc++ -DLLVM_CCACHE_BUILD=ON -DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=ON -DLLVM_ENABLE_LIBCXX=ON -DLIBCLANG_BUILD_STATIC=ON -DLIBCXX_CONFIGURE_IDE=ON -DLIBOMP_OMPT_SUPPORT=ON -DLIBOMP_STATS=OFF -DLIBOMP_TSAN_SUPPORT=ON -DLIBOMP_USE_HWLOC=ON -DLIBOMP_USE_STDCPPLIB=ON -DLIBUNWIND_ENABLE_CROSS_UNWINDING=ON -DLLDB_DISABLE_PYTHON=ON -DLLVM_BUILD_LLVM_DYLIB=ON -DLLVM_ENABLE_CXX1Y=ON -DLLVM_ENABLE_EH=ON -DLLVM_ENABLE_FFI=ON -DLLVM_ENABLE_RTTI=ON -DLLVM_INSTALL_UTILS=ON -DLLVM_LINK_LLVM_DYLIB=OFF -DLLVM_OPTIMIZED_TABLEGEN=ON -DPOLLY_ENABLE_GPGPU_CODEGEN=ON ../..
-time VERBOSE=1 make -j`nproc --all` install
+time VERBOSE=1 make -j`nproc` install
 rm -rf *
 
 # ----------------------------------------------------------------
@@ -239,13 +242,13 @@ ldconfig
 # ----------------------------------------------------------------
 
 CC='clang -fPIC -fuse-ld=lld' CXX='clang++ -stdlib=libc++ -lc++abi -fPIC -fuse-ld=lld' LD='lld' cmake3 -DCMAKE_BUILD_TYPE=Release -DCLANG_DEFAULT_CXX_STDLIB=libc++ -DENABLE_X86_RELAX_RELOCATIONS=ON -DLLVM_CCACHE_BUILD=ON -DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=ON -DLLVM_ENABLE_LIBCXX=ON -DLIBCLANG_BUILD_STATIC=ON -DLIBCXX_CONFIGURE_IDE=ON -DLIBOMP_OMPT_SUPPORT=ON -DLIBOMP_STATS=OFF -DLIBOMP_TSAN_SUPPORT=ON -DLIBOMP_USE_HWLOC=ON -DLIBOMP_USE_STDCPPLIB=ON -DLIBUNWIND_ENABLE_CROSS_UNWINDING=ON -DLLDB_DISABLE_PYTHON=ON -DLLVM_BUILD_LLVM_DYLIB=ON -DLLVM_ENABLE_CXX1Y=ON -DLLVM_ENABLE_EH=ON -DLLVM_ENABLE_FFI=ON -DLLVM_ENABLE_RTTI=ON -DLLVM_INSTALL_UTILS=ON -DLLVM_LINK_LLVM_DYLIB=OFF -DLLVM_OPTIMIZED_TABLEGEN=ON -DPOLLY_ENABLE_GPGPU_CODEGEN=ON ../..
-time VERBOSE=1 make -j`nproc --all` install
+time VERBOSE=1 make -j`nproc` install
 
 # ----------------------------------------------------------------
 
 ldconfig
 cd /tmp
-rm -rf LLVM
+rm -rf llvm
 
 # ================================================================
 # Compile Boost
@@ -258,7 +261,7 @@ cd boost*/
 # ./bootstrap.sh --with-icu --with-toolset=clang
 ./bootstrap.sh --with-icu
 # LD=lld ./b2 cxxflags="-std=c++1z -stdlib=libc++ -fuse-ld=lld" linkflags="-stdlib=libc++" -aj`nproc --all` install
-./b2 -aj`nproc --all` install
+./b2 -aj`nproc` install
 
 # ----------------------------------------------------------------
 
