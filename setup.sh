@@ -44,82 +44,82 @@ yum update -y || true
 # Install Packages
 # ================================================================
 
-until yum remove -y                                     \
-                                                        \
-compat-qpid-cpp-client{,-*}                             \
+until yum remove -y             \
+                                \
+compat-qpid-cpp-client{,-*}     \
 
 do echo 'Retrying'; done
 
 # ----------------------------------------------------------------
 
-until yum install -y                                    \
-                                                        \
-qpid-cpp-client{,-*}                                    \
-{gcc,distcc,ccache}{,-*}                                \
-java-1.8.0-openjdk{,-*}                                 \
-texlive{,-*}                                            \
-{gdb,valgrind,perf,{l,s}trace}{,-*}                     \
-{make,cmake{,3},autoconf,libtool,ant,maven}{,-*}        \
-{git,subversion,mercurial}{,-*}                         \
-doxygen{,-*}                                            \
-swig{,-*}                                               \
-                                                        \
-vim{,-*}                                                \
-dos2unix{,-*}                                           \
-                                                        \
-{bash,fish,zsh,mosh,tmux}{,-*}                          \
-jq{,-*}                                                 \
-{telnet,tftp,rsh}{,-debuginfo}                          \
-{htop,glances}{,-*}                                     \
-{wget,axel,curl,net-tools}{,-*}                         \
-man{,-*}                                                \
-{f,tc,dhc,libo,io}ping{,-*}                             \
-hping3{,-*}                                             \
-{traceroute,mtr,rsync,tcpdump,whois}{,-*}               \
-{more,elf,bridge,ib}utils{,-*}                          \
-cyrus-imapd{,-*}                                        \
-net-snmp{,-*}                                           \
-GeoIP{,-*}                                              \
-dstat{,-*}                                              \
-lm_sensors{,-*}                                         \
-{{e2fs,btrfs-,xfs,ntfs}progs,xfsdump,nfs-utils}{,-*}    \
-dd{,_}rescue{,-*}                                       \
-docker{,-*}                                             \
-                                                        \
-ncurses{,-*}                                            \
-hwloc{,-*}                                              \
-icu{,-*}                                                \
-{gmp,mpfr,libmpc}{,-*}                                  \
-lib{jpeg-turbo,tiff,png}{,-*}                           \
-{zlib,libzip,{,p}xz,snappy}{,-*}                        \
-lib{telnet,ssh{,2},curl,aio,ffi,edit,icu}{,-*}          \
-boost{,-*}                                              \
-{flex,cups,bison,antlr}{,-*}                            \
-open{blas,cv,ssl,ssh,ldap}{,-*}                         \
-{gflags,glog,protobuf}{,-*}                             \
-ImageMagick{,-*}                                        \
-cuda                                                    \
-                                                        \
-{hdf5}{,-*}                                             \
-{leveldb,lmdb}{,-*}                                     \
-{mariadb,postgresql}{,-*}                               \
-                                                        \
-{fio,filebench}{,-*}                                    \
-                                                        \
-{sudo,nss,sssd}{,-*}                                    \
-                                                        \
-gitlab-ci-multi-runner                                  \
+until yum install -y --disableplugin=axelget,fastestmirror  \
+                                                            \
+qpid-cpp-client{,-*}                                        \
+{gcc,distcc,ccache}{,-*}                                    \
+java-1.8.0-openjdk{,-*}                                     \
+texlive{,-*}                                                \
+{gdb,valgrind,perf,{l,s}trace}{,-*}                         \
+{make,cmake{,3},autoconf,libtool,ant,maven}{,-*}            \
+{git,subversion,mercurial}{,-*}                             \
+doxygen{,-*}                                                \
+swig{,-*}                                                   \
+                                                            \
+vim{,-*}                                                    \
+dos2unix{,-*}                                               \
+                                                            \
+{bash,fish,zsh,mosh,tmux}{,-*}                              \
+jq{,-*}                                                     \
+{telnet,tftp,rsh}{,-debuginfo}                              \
+{htop,glances}{,-*}                                         \
+{wget,axel,curl,net-tools}{,-*}                             \
+man{,-*}                                                    \
+{f,tc,dhc,libo,io}ping{,-*}                                 \
+hping3{,-*}                                                 \
+{traceroute,mtr,rsync,tcpdump,whois}{,-*}                   \
+{more,elf,bridge,ib}utils{,-*}                              \
+cyrus-imapd{,-*}                                            \
+net-snmp{,-*}                                               \
+GeoIP{,-*}                                                  \
+dstat{,-*}                                                  \
+lm_sensors{,-*}                                             \
+{{e2fs,btrfs-,xfs,ntfs}progs,xfsdump,nfs-utils}{,-*}        \
+dd{,_}rescue{,-*}                                           \
+docker{,-*}                                                 \
+                                                            \
+ncurses{,-*}                                                \
+hwloc{,-*}                                                  \
+icu{,-*}                                                    \
+{gmp,mpfr,libmpc}{,-*}                                      \
+lib{jpeg-turbo,tiff,png}{,-*}                               \
+{zlib,libzip,{,p}xz,snappy}{,-*}                            \
+lib{telnet,ssh{,2},curl,aio,ffi,edit,icu}{,-*}              \
+boost{,-*}                                                  \
+{flex,cups,bison,antlr}{,-*}                                \
+open{blas,cv,ssl,ssh,ldap}{,-*}                             \
+{gflags,glog,protobuf}{,-*}                                 \
+ImageMagick{,-*}                                            \
+cuda                                                        \
+                                                            \
+{hdf5}{,-*}                                                 \
+{leveldb,lmdb}{,-*}                                         \
+{mariadb,postgresql}{,-*}                                   \
+                                                            \
+{fio,filebench}{,-*}                                        \
+                                                            \
+{sudo,nss,sssd}{,-*}                                        \
+                                                            \
+gitlab-ci-multi-runner                                      \
 
 do echo 'Retrying'; done
 
 # ----------------------------------------------------------------
 
-until yum install -y --skip-broken                      \
-                                                        \
-perl{,-*}                                               \
-{python{,2,34},anaconda}{,-*}                           \
-ruby{,-*}                                               \
-qt5{,-*}                                                \
+until yum install -y --skip-broken --disableplugin=axelget,fastestmirror    \
+                                                                            \
+perl{,-*}                                                                   \
+{python{,2,34},anaconda}{,-*}                                               \
+ruby{,-*}                                                                   \
+qt5{,-*}                                                                    \
 
 do echo 'Retrying'; done
 
@@ -151,10 +151,10 @@ for i in 'BASE' 'URI' 'TLS_CACERT' 'TLS_REQCERT'; do
     fi
 done
 cat ldap.conf | \
-sed 's/^[[:space:]#]*\(BASE[[:space:]][[:space:]]*\).*/\1dc=codingcafe,dc=org/' | \
-sed 's/^[[:space:]#]*\(URI[[:space:]][[:space:]]*\).*/\1ldap:\/\/ldap.codingcafe.org/' | \
-sed 's/^[[:space:]#]*\(TLS_CACERT[[:space:]][[:space:]]*\).*/\1\/etc\/pki\/tls\/certs\/ca-bundle.crt/' | \
-sed 's/^[[:space:]#]*\(TLS_REQCERT[[:space:]][[:space:]]*\).*/\1demand/' \
+sed 's/^[[:space:]#]*\(BASE[[:space:]][[:space:]]*\).*/\1dc=codingcafe,dc=org/' |                           \
+sed 's/^[[:space:]#]*\(URI[[:space:]][[:space:]]*\).*/\1ldap:\/\/ldap.codingcafe.org/' |                    \
+sed 's/^[[:space:]#]*\(TLS_CACERT[[:space:]][[:space:]]*\).*/\1\/etc\/pki\/tls\/certs\/ca-bundle.crt/' |    \
+sed 's/^[[:space:]#]*\(TLS_REQCERT[[:space:]][[:space:]]*\).*/\1demand/'                                    \
 > .ldap.conf
 mv -f .ldap.conf ldap.conf
 cd
