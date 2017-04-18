@@ -4,6 +4,10 @@
 # Repo Cache
 # ================================================================
 
+set -e
+
+# ----------------------------------------------------------------
+
 mkdir -p /var/www/repos/centos/7/{base,updates,extras,centosplus}/{`uname -i`,Source}
 mkdir -p /var/www/repos/centos/7/base/debug/`uname -i`
 ln -sf /var/www/repos/centos/7/base /var/www/repos/centos/7/os
