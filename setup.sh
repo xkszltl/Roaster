@@ -3,6 +3,14 @@
 set -e
 
 # ================================================================
+# Configure Scratch Directory
+# ================================================================
+
+export SCRATCH=/tmp/scratch
+mkdir -p $SCRATCH
+cd $SCRATCH
+
+# ================================================================
 # YUM Configuration
 # ================================================================
 
@@ -22,8 +30,8 @@ until yum install -y yum-axelget; do echo 'Retrying'; done
 
 until yum update -y --skip-broken; do echo 'Retrying'; done
 yum update -y || true
-
-rpm -i "http://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/`curl -s http://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/ | sed -n 's/.*\(cuda-repo-rhel7-.*\.x86_64\.rpm\).*/\1/p' | sort | tail -n 1`"
+rpm -i `curl -s https://developer.nvidia.com/cuda-downloads | grep 'Linux/x86_64/CentOS/7/rpm (network)' | head -n1 | sed "s/.*\('.*developer.download.nvidia.com\/[^\']*\.rpm'\).*/\1/"`
+# rpm -i "http://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/`curl -s http://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/ | sed -n 's/.*\(cuda-repo-rhel7-.*\.x86_64\.rpm\).*/\1/p' | sort | tail -n 1`"
 echo yum-config-manager%--{disable%,enable%cache-}cuda\; | sed 's/%/ /g' | bash
 
 curl -sSL https://packages.gitlab.com/install/repositories/runner/gitlab-ci-multi-runner/script.rpm.sh | bash
@@ -91,14 +99,16 @@ ncurses{,-*}                                                \
 hwloc{,-*}                                                  \
 icu{,-*}                                                    \
 {gmp,mpfr,libmpc}{,-*}                                      \
+{gperftools}{,-*}                                           \
 lib{jpeg-turbo,tiff,png}{,-*}                               \
 {zlib,libzip,{,p}xz,snappy}{,-*}                            \
-lib{telnet,ssh{,2},curl,aio,ffi,edit,icu}{,-*}              \
+lib{telnet,ssh{,2},curl,aio,ffi,edit,icu,xslt}{,-*}         \
 boost{,-*}                                                  \
 {flex,cups,bison,antlr}{,-*}                                \
 open{blas,cv,ssl,ssh,ldap}{,-*}                             \
 {gflags,glog,protobuf}{,-*}                                 \
 ImageMagick{,-*}                                            \
+docbook{,5,2X}{,-*}                                         \
 cuda                                                        \
                                                             \
 hdf5{,-*}                                                   \
@@ -110,6 +120,8 @@ hdf5{,-*}                                                   \
 {sudo,nss,sssd}{,-*}                                        \
                                                             \
 gitlab-ci-multi-runner                                      \
+                                                            \
+youtube-dl                                                  \
 
 do echo 'Retrying'; done
 
@@ -180,23 +192,27 @@ git config --global user.email 'xkszltl@gmail.com'
 git config --global push.default matching
 git config --global core.editor 'vim'
 
+# export GIT_MIRROR=https://github.com
+export GIT_MIRROR=https://git.codingcafe.org/Mirrors
+
 # ================================================================
 # Compile LLVM
 # ================================================================
 
-cd /tmp
-until git clone https://git.codingcafe.org/Mirrors/llvm-mirror/llvm.git; do echo 'Retrying'; done
+export LLVM_MIRROR=$GIT_MIRROR/llvm-mirror
+cd $SCRATCH
+until git clone $LLVM_MIRROR/llvm.git; do echo 'Retrying'; done
 cd llvm
 git checkout release_40
 cd tools
-until git clone https://git.codingcafe.org/Mirrors/llvm-mirror/polly.git; do echo 'Retrying'; done &
-until git clone https://git.codingcafe.org/Mirrors/llvm-mirror/lldb.git; do echo 'Retrying'; done &
-until git clone https://git.codingcafe.org/Mirrors/llvm-mirror/lld.git; do echo 'Retrying'; done &
-until git clone https://git.codingcafe.org/Mirrors/llvm-mirror/clang.git; do echo 'Retrying'; done
+until git clone $LLVM_MIRROR/polly.git; do echo 'Retrying'; done &
+until git clone $LLVM_MIRROR/lldb.git; do echo 'Retrying'; done &
+until git clone $LLVM_MIRROR/lld.git; do echo 'Retrying'; done &
+until git clone $LLVM_MIRROR/clang.git; do echo 'Retrying'; done
 cd clang
 git checkout release_40
 cd tools
-until git clone https://git.codingcafe.org/Mirrors/llvm-mirror/clang-tools-extra.git extra; do echo 'Retrying'; done
+until git clone $LLVM_MIRROR/clang-tools-extra.git extra; do echo 'Retrying'; done
 cd extra
 git checkout release_40 &
 wait
@@ -207,11 +223,11 @@ git checkout release_40 &
 cd ../lld
 git checkout release_40 &
 cd ../../projects
-until git clone https://git.codingcafe.org/Mirrors/llvm-mirror/compiler-rt.git; do echo 'Retrying'; done &
-until git clone https://git.codingcafe.org/Mirrors/llvm-mirror/libunwind.git; do echo 'Retrying'; done &
-until git clone https://git.codingcafe.org/Mirrors/llvm-mirror/libcxx.git; do echo 'Retrying'; done &
-until git clone https://git.codingcafe.org/Mirrors/llvm-mirror/libcxxabi.git; do echo 'Retrying'; done &
-until git clone https://git.codingcafe.org/Mirrors/llvm-mirror/openmp.git; do echo 'Retrying'; done &
+until git clone $LLVM_MIRROR/compiler-rt.git; do echo 'Retrying'; done &
+until git clone $LLVM_MIRROR/libunwind.git; do echo 'Retrying'; done &
+until git clone $LLVM_MIRROR/libcxx.git; do echo 'Retrying'; done &
+until git clone $LLVM_MIRROR/libcxxabi.git; do echo 'Retrying'; done &
+until git clone $LLVM_MIRROR/openmp.git; do echo 'Retrying'; done &
 wait
 cd compiler-rt
 git checkout release_40 &
@@ -247,16 +263,39 @@ time VERBOSE=1 make -j`nproc` install
 # ----------------------------------------------------------------
 
 ldconfig
-cd /tmp
-rm -rf llvm
+cd
+rm -rf $SCRATCH/llvm
+
+# ================================================================
+# Compile Jemalloc
+# ================================================================
+
+cd $SCRATCH
+until git clone $GIT_MIRROR/jemalloc/jemalloc.git; do echo 'Retrying'; done
+cd jemalloc
+git checkout `git tag -l '[0-9\.]*' | tail -n1`
+
+# ----------------------------------------------------------------
+
+CC='clang' CFLAGS='-fuse-ld=lld' LD='lld' ./autogen.sh --with-jemalloc-prefix="" --enable-prof --enable-prof-libunwind
+time VERBOSE=1 make -j`nproc` dist
+time VERBOSE=1 make -j`nproc`
+time VERBOSE=1 make -j`nproc` install
+
+# ----------------------------------------------------------------
+
+ldconfig
+cd
+rm -rf $SCRATCH/jemalloc
 
 # ================================================================
 # Compile Boost
 # ================================================================
 
-cd /tmp
-axel -an 20 -o boost.tar.bz2 https://downloads.sourceforge.net/project/boost/boost/1.63.0/boost_1_63_0.tar.bz2
+axel -an 20 -o $SCRATCH/boost.tar.bz2 https://downloads.sourceforge.net/project/boost/boost/1.64.0/boost_1_64_0.tar.bz2
+cd $SCRATCH
 tar -xvf boost.tar.bz2
+rm -rf boost.tar.bz2
 cd boost*/
 # ./bootstrap.sh --with-icu --with-toolset=clang
 ./bootstrap.sh --with-icu
@@ -266,8 +305,8 @@ cd boost*/
 # ----------------------------------------------------------------
 
 ldconfig
-cd /tmp
-rm -rf boost*
+cd
+rm -rf $SCRATCH/boost*
 
 # ================================================================
 # Cleanup
