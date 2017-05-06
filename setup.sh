@@ -79,7 +79,8 @@ dos2unix{,-*}                                               \
 {parallel,jq}{,-*}                                          \
 {tree,lsof}{,-*}                                            \
 {telnet,tftp,rsh}{,-debuginfo}                              \
-{htop,glances}{,-*}                                         \
+{f,h,if,io,latency,power,tip}top{,-*}                       \
+glances{,-*}                                                \
 {wget,axel,curl,net-tools}{,-*}                             \
 man{,-*}                                                    \
 {f,tc,dhc,libo,io}ping{,-*}                                 \
@@ -92,6 +93,7 @@ GeoIP{,-*}                                                  \
 {d,sys}stat{,-*}                                            \
 lm_sensors{,-*}                                             \
 {{e2fs,btrfs-,xfs,ntfs}progs,xfsdump,nfs-utils}{,-*}        \
+fuse{,-devel,-libs}                                         \
 dd{,_}rescue{,-*}                                           \
 docker{,-*}                                                 \
                                                             \
@@ -99,7 +101,7 @@ ncurses{,-*}                                                \
 hwloc{,-*}                                                  \
 icu{,-*}                                                    \
 {gmp,mpfr,libmpc}{,-*}                                      \
-{gperftools}{,-*}                                           \
+gperftools{,-*}                                             \
 lib{jpeg-turbo,tiff,png}{,-*}                               \
 {zlib,libzip,{,p}xz,snappy}{,-*}                            \
 lib{telnet,ssh{,2},curl,aio,ffi,edit,icu,xslt}{,-*}         \
@@ -257,7 +259,7 @@ ldconfig
 
 # ----------------------------------------------------------------
 
-CC='clang -fPIC -fuse-ld=lld' CXX='clang++ -stdlib=libc++ -lc++abi -fPIC -fuse-ld=lld' LD='lld' cmake3 -DCMAKE_BUILD_TYPE=Release -DCLANG_DEFAULT_CXX_STDLIB=libc++ -DENABLE_X86_RELAX_RELOCATIONS=ON -DLLVM_CCACHE_BUILD=ON -DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=ON -DLLVM_ENABLE_LIBCXX=ON -DLIBCLANG_BUILD_STATIC=ON -DLIBCXX_CONFIGURE_IDE=ON -DLIBOMP_OMPT_SUPPORT=ON -DLIBOMP_STATS=OFF -DLIBOMP_TSAN_SUPPORT=ON -DLIBOMP_USE_HWLOC=ON -DLIBOMP_USE_STDCPPLIB=ON -DLIBUNWIND_ENABLE_CROSS_UNWINDING=ON -DLLDB_DISABLE_PYTHON=ON -DLLVM_BUILD_LLVM_DYLIB=ON -DLLVM_ENABLE_CXX1Y=ON -DLLVM_ENABLE_EH=ON -DLLVM_ENABLE_FFI=ON -DLLVM_ENABLE_RTTI=ON -DLLVM_INSTALL_UTILS=ON -DLLVM_LINK_LLVM_DYLIB=OFF -DLLVM_OPTIMIZED_TABLEGEN=ON -DPOLLY_ENABLE_GPGPU_CODEGEN=ON ../..
+CC='clang -fPIC -fuse-ld=lld' CXX='clang++ -stdlib=libc++ -lc++abi -fPIC -fuse-ld=lld' LD=$(which lld) cmake3 -DCMAKE_BUILD_TYPE=Release -DCLANG_DEFAULT_CXX_STDLIB=libc++ -DENABLE_X86_RELAX_RELOCATIONS=ON -DLLVM_CCACHE_BUILD=ON -DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=ON -DLLVM_ENABLE_LIBCXX=ON -DLIBCLANG_BUILD_STATIC=ON -DLIBCXX_CONFIGURE_IDE=ON -DLIBOMP_OMPT_SUPPORT=ON -DLIBOMP_STATS=OFF -DLIBOMP_TSAN_SUPPORT=ON -DLIBOMP_USE_HWLOC=ON -DLIBOMP_USE_STDCPPLIB=ON -DLIBUNWIND_ENABLE_CROSS_UNWINDING=ON -DLLDB_DISABLE_PYTHON=ON -DLLVM_BUILD_LLVM_DYLIB=ON -DLLVM_ENABLE_CXX1Y=ON -DLLVM_ENABLE_EH=ON -DLLVM_ENABLE_FFI=ON -DLLVM_ENABLE_RTTI=ON -DLLVM_INSTALL_UTILS=ON -DLLVM_LINK_LLVM_DYLIB=OFF -DLLVM_OPTIMIZED_TABLEGEN=ON -DPOLLY_ENABLE_GPGPU_CODEGEN=ON ../..
 time VERBOSE=1 make -j`nproc` install
 
 # ----------------------------------------------------------------
@@ -277,10 +279,10 @@ git checkout `git tag -l '[0-9\.]*' | tail -n1`
 
 # ----------------------------------------------------------------
 
-CC='clang' CFLAGS='-fuse-ld=lld' LD='lld' ./autogen.sh --with-jemalloc-prefix="" --enable-prof --enable-prof-libunwind
-time VERBOSE=1 make -j`nproc` dist
-time VERBOSE=1 make -j`nproc`
-time VERBOSE=1 make -j`nproc` install
+CC='clang -fuse-ld=lld' LD=$(which lld) ./autogen.sh --with-jemalloc-prefix="" --enable-prof --enable-prof-libunwind
+time make -j`nproc` dist
+time LD=$(which lld) make -j`nproc`
+time make -j`nproc` install
 
 # ----------------------------------------------------------------
 
@@ -297,9 +299,9 @@ cd $SCRATCH
 tar -xvf boost.tar.bz2
 rm -rf boost.tar.bz2
 cd boost*/
-# ./bootstrap.sh --with-icu --with-toolset=clang
-./bootstrap.sh --with-icu
-# LD=lld ./b2 cxxflags="-std=c++1z -stdlib=libc++ -fuse-ld=lld" linkflags="-stdlib=libc++" -aj`nproc --all` install
+# CC=$(which clang) CXX=$(which clang++) LD=$(which lld) ./bootstrap.sh --with-toolset=clang
+./bootstrap.sh
+# CC=$(which clang) CXX=$(which clang++) LD=$(which lld) ./b2 cxxflags="-std=c++11 -stdlib=libc++ -fuse-ld=lld" linkflags="-stdlib=libc++" -aj`nproc --all` install
 ./b2 -aj`nproc` install
 
 # ----------------------------------------------------------------
