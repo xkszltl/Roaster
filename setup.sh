@@ -6,7 +6,7 @@ set -e
 # Environment Configuration
 # ================================================================
 
-export SCRATCH=/tmp/scratch
+export SCRATCH=/dev/shm/scratch
 
 export RPM_CACHE_REPO=/etc/yum.repos.d/cache.repo
 
@@ -15,40 +15,30 @@ export RPM_CACHE_REPO=/etc/yum.repos.d/cache.repo
 export GIT_MIRROR_GITHUB=https://github.com
 export GIT_MIRROR_CODINGCAFE=https://git.codingcafe.org/Mirrors
 
-export GIT_MIRROR=$(
-    for i in $(env | sed -n 's/^GIT_MIRROR_[^=]*=//p'); do
-        ping -nfc 100 $(sed 's/.*:\/\///' <<<"$i" | sed 's/\/.*//')                         \
-        | sed -n '/ms$/p'                                                                   \
-        | sed 's/.*[^0-9]\([0-9]*\)%.*[^0-9\.]\([0-9\.]*\).*ms/\1 \2/'                      \
-        | sed 's/.*ewma.*\/\([0-9\.]*\).*/\1/'                                              \
-        | xargs                                                                             \
-        | sed 's/\([0-9\.][0-9\.]*\).*[[:space:]]\([0-9\.][0-9\.]*\).*/\2\*\(\1\*10+1\)/'   \
-        | bc
-        echo "$i"
-    done | paste - - | sort -n | head -n1 | xargs -n1 | tail -n1
-)
-
 # ================================================================
 # Configure Scratch Directory
 # ================================================================
 
 mkdir -p $SCRATCH
+# mount -t tmpfs -o size=100% tmpfs $SCRATCH
 cd $SCRATCH
 
 # ================================================================
 # YUM Configuration
 # ================================================================
 
+until yum install -y yum-utils{,-*}; do echo 'Retrying'; done
+
 yum-config-manager --setopt=tsflags= --save
 
-if [ -f "$RPM_CACHE_REPO"]; then
+if [ -f "$RPM_CACHE_REPO" ]; then
     echo yum-config-manager%--{disable%,enable%cache-}{{base,updates,extras,centosplus}{,-source},base-debuginfo}\; | sed 's/%/ /g' | bash
 fi
 
 until yum install -y yum-plugin-{priorities,fastestmirror} curl kernel-headers; do echo 'Retrying'; done
 
 until yum install -y epel-release; do echo 'Retrying'; done
-if [ -f "$RPM_CACHE_REPO"]; then
+if [ -f "$RPM_CACHE_REPO" ]; then
     echo yum-config-manager%--{disable%,enable%cache-}epel{,-source,-debuginfo}\; | sed 's/%/ /g' | bash
 fi
 
@@ -64,24 +54,54 @@ rpm -i $(
     | grep 'Linux/x86_64/CentOS/7/rpm (network)'                            \
     | head -n1                                                              \
     | sed "s/.*\('.*developer.download.nvidia.com\/[^\']*\.rpm'\).*/\1/"
-)
+) || true
 # rpm -i "http://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/`curl -s http://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/ | sed -n 's/.*\(cuda-repo-rhel7-.*\.x86_64\.rpm\).*/\1/p' | sort | tail -n 1`"
-if [ -f "$RPM_CACHE_REPO"]; then
+if [ -f "$RPM_CACHE_REPO" ]; then
     echo yum-config-manager%--{disable%,enable%cache-}cuda\; | sed 's/%/ /g' | bash
 fi
 
 curl -sSL https://packages.gitlab.com/install/repositories/runner/gitlab-ci-multi-runner/script.rpm.sh | bash
-if [ -f "$RPM_CACHE_REPO"]; then
+if [ -f "$RPM_CACHE_REPO" ]; then
     echo yum-config-manager%--{disable%,enable%cache-}runner_gitlab-ci-multi-runner{,-source}\; | sed 's/%/ /g' | bash
 fi
 
+rm -rf /etc/yum.repos.d/gitlab_gitlab-ce.repo
 curl -sSL https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh | bash
-if [ -f "$RPM_CACHE_REPO"]; then
+if [ -f "$RPM_CACHE_REPO" ]; then
     echo yum-config-manager%--{disable%,enable%cache-}gitlab_gitlab-ce{,-source}\; | sed 's/%/ /g' | bash
 fi
 
 until yum update -y --skip-broken; do echo 'Retrying'; done
 yum update -y || true
+
+# ================================================================
+# Git Mirror
+# ================================================================
+
+until yum install -y $(
+    if [ -f "$RPM_CACHE_REPO" ]; then
+        echo "--disableplugin=axelget,fastestmirror"
+    fi)                             \
+                                    \
+{bc,sed}{,-*}                       \
+{core,find,ip}utils{,-*}            \
+
+do echo 'Retrying'; done
+
+export GIT_MIRROR=$(
+    for i in $(env | sed -n 's/^GIT_MIRROR_[^=]*=//p'); do
+        ping -nfc 100 $(sed 's/.*:\/\///' <<<"$i" | sed 's/\/.*//')                         \
+        | sed -n '/ms$/p'                                                                   \
+        | sed 's/.*[^0-9]\([0-9]*\)%.*[^0-9\.]\([0-9\.]*\).*ms/\1 \2/'                      \
+        | sed 's/.*ewma.*\/\([0-9\.]*\).*/\1/'                                              \
+        | xargs                                                                             \
+        | sed 's/\([0-9\.][0-9\.]*\).*[[:space:]]\([0-9\.][0-9\.]*\).*/\2\*\(\1\*10+1\)/'   \
+        | bc
+        echo "$i"
+    done | paste - - | sort -n | head -n1 | xargs -n1 | tail -n1
+)
+
+echo "GIT_MIRROR=$GIT_MIRROR"
 
 # ================================================================
 # Install Packages
@@ -95,7 +115,10 @@ do echo 'Retrying'; done
 
 # ----------------------------------------------------------------
 
-until yum install -y --disableplugin=axelget,fastestmirror  \
+until yum install -y $(
+    if [ -f "$RPM_CACHE_REPO" ]; then
+        echo "--disableplugin=axelget,fastestmirror"
+    fi)                                                     \
                                                             \
 qpid-cpp-client{,-*}                                        \
 {gcc,distcc,ccache}{,-*}                                    \
@@ -132,6 +155,7 @@ lm_sensors{,-*}                                             \
 fuse{,-devel,-libs}                                         \
 dd{,_}rescue{,-*}                                           \
 docker{,-*}                                                 \
+yum-utils{,-*}                                              \
                                                             \
 ncurses{,-*}                                                \
 hwloc{,-*}                                                  \
@@ -163,33 +187,42 @@ youtube-dl                                                  \
 
 do echo 'Retrying'; done
 
+yum autoremove -y
+yum clean packages
+
 parallel --will-cite < /dev/null
 
 # ----------------------------------------------------------------
 
-until yum install -y --skip-broken --disableplugin=axelget,fastestmirror    \
-                                                                            \
-perl{,-*}                                                                   \
-{python{,2,34},anaconda}{,-*}                                               \
-ruby{,-*}                                                                   \
-qt5{,-*}                                                                    \
+until yum install -y --skip-broken $(
+    if [ -f "$RPM_CACHE_REPO" ]; then
+        echo "--disableplugin=axelget,fastestmirror"
+    fi) libreoffice; do echo 'Retrying'; done
 
-do echo 'Retrying'; done
+yum autoremove -y
+yum clean packages
 
 # ----------------------------------------------------------------
+
+for i in qt5 perl python{,2,34} anaconda ruby; do
+    until yum install -y --skip-broken $(
+        if [ -f "$RPM_CACHE_REPO" ]; then
+            echo "--disableplugin=axelget,fastestmirror"
+        fi) $i{,-*}; do echo 'Retrying'; done
+    yum autoremove -y
+    yum clean packages
+done
+
+# ================================================================
+# YUM Cleanup
+# ================================================================
 
 until yum update -y --skip-broken; do echo 'Retrying'; done
 yum update -y || true
 
-# ================================================================
-# Enable/Start Services
-# ================================================================
-
-systemctl daemon-reload
-for i in sssd; do
-    systemctl enable $i
-    systemctl start $i
-done
+# package-cleanup --oldkernels --count=1
+yum autoremove -y
+yum clean all
 
 # ================================================================
 # Account Configuration
@@ -231,6 +264,12 @@ authconfig                                                                      
     --passalgo=sha512                                                               \
     --smbsecurity=user                                                              \
     --update
+
+systemctl daemon-reload
+for i in sssd; do
+    systemctl enable $i
+    systemctl start $i
+done
 
 # ================================================================
 # Personalize
@@ -321,6 +360,7 @@ cd build/Release
 
 # ----------------------------------------------------------------
 
+# ccache -C
 cmake3                                      \
     -DCMAKE_BUILD_TYPE=Release              \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++       \
@@ -356,6 +396,7 @@ ldconfig
 
 # ----------------------------------------------------------------
 
+# ccache -C
 CC='clang -fPIC -fuse-ld=lld'                               \
 CXX='clang++ -stdlib=libc++ -lc++abi -fPIC -fuse-ld=lld'    \
 LD=$(which lld)                                             \
@@ -408,6 +449,7 @@ git checkout `git tag -l '[0-9\.]*' | tail -n1`
 
 # ----------------------------------------------------------------
 
+# ccache -C
 CC='clang -fuse-ld=lld' LD=$(which lld) ./autogen.sh --with-jemalloc-prefix="" --enable-prof --enable-prof-libunwind
 time make -j`nproc` dist
 time LD=$(which lld) make -j`nproc`
@@ -428,6 +470,7 @@ cd $SCRATCH
 tar -xvf boost.tar.bz2
 rm -rf boost.tar.bz2
 cd boost*/
+# ccache -C
 # CC=$(which clang) CXX=$(which clang++) LD=$(which lld) ./bootstrap.sh --with-toolset=clang
 ./bootstrap.sh
 # CC=$(which clang) CXX=$(which clang++) LD=$(which lld) ./b2 cxxflags="-std=c++11 -stdlib=libc++ -fuse-ld=lld" linkflags="-stdlib=libc++" -aj`nproc --all` install
@@ -443,7 +486,7 @@ rm -rf $SCRATCH/boost*
 # Cleanup
 # ================================================================
 
-yum autoremove -y
-yum clean all
+# umount $SCRATCH
+rm -rf $SCRATCH
 cd
 truncate -s 0 .bash_history
