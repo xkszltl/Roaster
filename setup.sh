@@ -3,6 +3,27 @@
 set -e
 
 # ================================================================
+# Infomation
+# ================================================================
+
+echo '================================================================'
+date
+echo '----------------------------------------------------------------'
+echo '                  CodingCafe CentOS Deployment                  '
+echo '----------------------------------------------------------------'
+echo -n '| Node     | '
+uname -no
+echo -n '| Kernel   | '
+uname -sr
+echo -n '| Platform | '
+uname -m
+echo '----------------------------------------------------------------'
+df -Th
+echo '================================================================'
+echo
+echo
+
+# ================================================================
 # Environment Configuration
 # ================================================================
 
@@ -31,16 +52,12 @@ until yum install -y yum-utils{,-*}; do echo 'Retrying'; done
 
 yum-config-manager --setopt=tsflags= --save
 
-if [ -f "$RPM_CACHE_REPO" ]; then
-    echo yum-config-manager%--{disable%,enable%cache-}{{base,updates,extras,centosplus}{,-source},base-debuginfo}\; | sed 's/%/ /g' | bash
-fi
+echo yum-config-manager%--{disable%,enable%$(if [ -f "$RPM_CACHE_REPO" ]; then echo 'cache-'; fi)}{{base,updates,extras,centosplus}{,-source},base-debuginfo}\; | sed 's/%/ /g' | bash
 
 until yum install -y yum-plugin-{priorities,fastestmirror} curl kernel-headers; do echo 'Retrying'; done
 
 until yum install -y epel-release; do echo 'Retrying'; done
-if [ -f "$RPM_CACHE_REPO" ]; then
-    echo yum-config-manager%--{disable%,enable%cache-}epel{,-source,-debuginfo}\; | sed 's/%/ /g' | bash
-fi
+echo yum-config-manager%--{disable%,enable%$(if [ -f "$RPM_CACHE_REPO" ]; then echo 'cache-'; fi)}epel{,-source,-debuginfo}\; | sed 's/%/ /g' | bash
 
 until yum install -y yum-axelget; do echo 'Retrying'; done
 
@@ -56,20 +73,14 @@ rpm -i $(
     | sed "s/.*\('.*developer.download.nvidia.com\/[^\']*\.rpm'\).*/\1/"
 ) || true
 # rpm -i "http://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/`curl -s http://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/ | sed -n 's/.*\(cuda-repo-rhel7-.*\.x86_64\.rpm\).*/\1/p' | sort | tail -n 1`"
-if [ -f "$RPM_CACHE_REPO" ]; then
-    echo yum-config-manager%--{disable%,enable%cache-}cuda\; | sed 's/%/ /g' | bash
-fi
+echo yum-config-manager%--{disable%,enable%$(if [ -f "$RPM_CACHE_REPO" ]; then echo 'cache-'; fi)}cuda\; | sed 's/%/ /g' | bash
 
 curl -sSL https://packages.gitlab.com/install/repositories/runner/gitlab-ci-multi-runner/script.rpm.sh | bash
-if [ -f "$RPM_CACHE_REPO" ]; then
-    echo yum-config-manager%--{disable%,enable%cache-}runner_gitlab-ci-multi-runner{,-source}\; | sed 's/%/ /g' | bash
-fi
+echo yum-config-manager%--{disable%,enable%$(if [ -f "$RPM_CACHE_REPO" ]; then echo 'cache-'; fi)}runner_gitlab-ci-multi-runner{,-source}\; | sed 's/%/ /g' | bash
 
 rm -rf /etc/yum.repos.d/gitlab_gitlab-ce.repo
 curl -sSL https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh | bash
-if [ -f "$RPM_CACHE_REPO" ]; then
-    echo yum-config-manager%--{disable%,enable%cache-}gitlab_gitlab-ce{,-source}\; | sed 's/%/ /g' | bash
-fi
+echo yum-config-manager%--{disable%,enable%$(if [ -f "$RPM_CACHE_REPO" ]; then echo 'cache-'; fi)}gitlab_gitlab-ce{,-source}\; | sed 's/%/ /g' | bash
 
 until yum update -y --skip-broken; do echo 'Retrying'; done
 yum update -y || true
@@ -126,7 +137,8 @@ java-1.8.0-openjdk{,-*}                                     \
 texlive{,-*}                                                \
 octave{,-*}                                                 \
 {gdb,valgrind,perf,{l,s}trace}{,-*}                         \
-{make,cmake{,3},autoconf,libtool,ant,maven}{,-*}            \
+{make,ninja-build,cmake{,3},autoconf,libtool}{,-*}          \
+{ant,maven}{,-*}                                            \
 {git,subversion,mercurial}{,-*}                             \
 doxygen{,-*}                                                \
 swig{,-*}                                                   \
@@ -179,7 +191,7 @@ hdf5{,-*}                                                   \
                                                             \
 {fio,filebench}{,-*}                                        \
                                                             \
-{sudo,nss,sssd}{,-*}                                        \
+{sudo,nss,sssd,authconfig}{,-*}                             \
                                                             \
 gitlab-ci-multi-runner                                      \
                                                             \
@@ -256,19 +268,23 @@ cat ldap.conf                                                                   
 mv -f .ldap.conf ldap.conf
 cd
 
-authconfig                                                                          \
-    --enable{sssd{,auth},ldap{,auth,tls},locauthorize,cachecreds,mkhomedir}         \
-    --disable{cache,nis,rfc2307bis}                                                 \
-    --ldapserver=ldap://ldap.codingcafe.org                                         \
-    --ldapbasedn=dc=codingcafe,dc=org                                               \
-    --passalgo=sha512                                                               \
-    --smbsecurity=user                                                              \
-    --update
+# May fail at the first time in unprivileged docker due to domainname change.
+for i in true false; do
+    authconfig                                                                          \
+        --enable{sssd{,auth},ldap{,auth,tls},locauthorize,cachecreds,mkhomedir}         \
+        --disable{cache,md5,nis,rfc2307bis}                                             \
+        --ldapserver=ldap://ldap.codingcafe.org                                         \
+        --ldapbasedn=dc=codingcafe,dc=org                                               \
+        --passalgo=sha512                                                               \
+        --smbsecurity=user                                                              \
+        --update                                                                        \
+    || $i
+done
 
-systemctl daemon-reload
+systemctl daemon-reload || true
 for i in sssd; do
     systemctl enable $i
-    systemctl start $i
+    systemctl start $i || true
 done
 
 # ================================================================
@@ -284,7 +300,13 @@ git config --global core.editor     'vim'
 # Shadowsocks
 # ================================================================
 
-pip install $GIT_MIRROR/shadowsocks/shadowsocks/archive/master.zip
+pip install $GIT_MIRROR/shadowsocks/shadowsocks/$(
+    if [ $GIT_MIRROR == $GIT_MIRROR_CODINGCAFE ]; then
+        echo -n 'repository/archive.zip?ref=master'
+    else
+        echo -n 'archive/master.zip'
+    fi
+)
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 cat << EOF > /usr/lib/systemd/system/shadowsocks.service
@@ -302,10 +324,10 @@ WantedBy=multi-user.target
 EOF
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-systemctl daemon-reload
+systemctl daemon-reload || true
 for i in shadowsocks; do
     systemctl enable $i
-    systemctl start $i
+    # systemctl start $i
 done
 
 # ================================================================
@@ -355,20 +377,21 @@ cd ../openmp
 git checkout release_40 &
 cd ../..
 wait
-mkdir -p build/Release
-cd build/Release
 
 # ----------------------------------------------------------------
 
-# ccache -C
-cmake3                                      \
-    -DCMAKE_BUILD_TYPE=Release              \
-    -DCLANG_DEFAULT_CXX_STDLIB=libc++       \
-    -DLLVM_CCACHE_BUILD=ON                  \
-    -DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=ON   \
-    -DLLVM_ENABLE_LIBCXX=ON                 \
+export LLVM_BUILD_TYPE=Release
+
+mkdir -p $SCRATCH/llvm/build/$LLVM_BUILD_TYPE
+cd $SCRATCH/llvm/build/$LLVM_BUILD_TYPE
+ccache -C
+cmake3 -G Ninja                             \
+    -DCMAKE_BUILD_TYPE=$LLVM_BUILD_TYPE     \
+    -DCMAKE_INSTALL_PREFIX='\usr\'          \
+    -DCMAKE_VERBOSE_MAKEFILE=ON             \
     -DLIBCLANG_BUILD_STATIC=ON              \
     -DLIBCXX_CONFIGURE_IDE=ON               \
+    -DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=ON   \
     -DLIBOMP_OMPT_SUPPORT=ON                \
     -DLIBOMP_STATS=OFF                      \
     -DLIBOMP_TSAN_SUPPORT=ON                \
@@ -377,40 +400,44 @@ cmake3                                      \
     -DLIBUNWIND_ENABLE_CROSS_UNWINDING=ON   \
     -DLLDB_DISABLE_PYTHON=ON                \
     -DLLVM_BUILD_LLVM_DYLIB=ON              \
+    -DLLVM_CCACHE_BUILD=ON                  \
     -DLLVM_ENABLE_CXX1Y=ON                  \
     -DLLVM_ENABLE_EH=ON                     \
     -DLLVM_ENABLE_FFI=ON                    \
     -DLLVM_ENABLE_RTTI=ON                   \
     -DLLVM_INSTALL_UTILS=ON                 \
-    -DLLVM_LINK_LLVM_DYLIB=OFF              \
+    -DLLVM_LINK_LLVM_DYLIB=ON               \
     -DLLVM_OPTIMIZED_TABLEGEN=ON            \
     -DPOLLY_ENABLE_GPGPU_CODEGEN=ON         \
     ../..
-time VERBOSE=1 make -j`nproc` install
-rm -rf *
+time cmake3 --build . --target install
+ldconfig &
+hash -r &
+cd
+rm -rf $SCRATCH/llvm/build &
+wait
 
 # ----------------------------------------------------------------
 
-echo /usr/local/lib > /etc/ld.so.conf.d/libc++-x86_64.conf
-ldconfig
+export LLVM_BUILD_TYPE=Release
 
-# ----------------------------------------------------------------
-
-# ccache -C
-CC='clang -fPIC -fuse-ld=lld'                               \
-CXX='clang++ -stdlib=libc++ -lc++abi -fPIC -fuse-ld=lld'    \
-LD=$(which lld)                                             \
-cmake3                                                      \
-    -DCMAKE_BUILD_TYPE=Release              \
+mkdir -p $SCRATCH/llvm/build/$LLVM_BUILD_TYPE
+cd $SCRATCH/llvm/build/$LLVM_BUILD_TYPE
+ccache -C
+CC='clang'                                  \
+CXX='clang++'                               \
+LD=$(which lld)                             \
+cmake3 -G Ninja                             \
+    -DCMAKE_BUILD_TYPE=$LLVM_BUILD_TYPE     \
+    -DCMAKE_INSTALL_PREFIX='\usr\'          \
+    -DCMAKE_VERBOSE_MAKEFILE=ON             \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++       \
     -DENABLE_X86_RELAX_RELOCATIONS=ON       \
-    -DLLVM_CCACHE_BUILD=ON                  \
+    -DLIBCLANG_BUILD_STATIC=ON              \
     -DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=ON   \
+    -DLIBCXX_CONFIGURE_IDE=ON               \
     -DLIBCXXABI_USE_COMPILER_RT=ON          \
     -DLIBCXXABI_USE_LLVM_UNWINDER=ON        \
-    -DLLVM_ENABLE_LIBCXX=ON                 \
-    -DLIBCLANG_BUILD_STATIC=ON              \
-    -DLIBCXX_CONFIGURE_IDE=ON               \
     -DLIBOMP_OMPT_SUPPORT=ON                \
     -DLIBOMP_STATS=OFF                      \
     -DLIBOMP_TSAN_SUPPORT=ON                \
@@ -419,22 +446,27 @@ cmake3                                                      \
     -DLIBUNWIND_ENABLE_CROSS_UNWINDING=ON   \
     -DLLDB_DISABLE_PYTHON=ON                \
     -DLLVM_BUILD_LLVM_DYLIB=ON              \
+    -DLLVM_CCACHE_BUILD=ON                  \
     -DLLVM_ENABLE_CXX1Y=ON                  \
     -DLLVM_ENABLE_EH=ON                     \
     -DLLVM_ENABLE_FFI=ON                    \
-    -DLLVM_ENABLE_RTTI=ON                   \
-    -DLLVM_INSTALL_UTILS=ON                 \
-    -DLLVM_LINK_LLVM_DYLIB=OFF              \
-    -DLLVM_OPTIMIZED_TABLEGEN=ON            \
     -DLLVM_ENABLE_LLD=ON                    \
     -DLLVM_ENABLE_LTO=OFF                   \
+    -DLLVM_ENABLE_RTTI=ON                   \
+    -DLLVM_INSTALL_UTILS=ON                 \
+    -DLLVM_LINK_LLVM_DYLIB=ON               \
+    -DLLVM_OPTIMIZED_TABLEGEN=ON            \
     -DPOLLY_ENABLE_GPGPU_CODEGEN=ON         \
     ../..
-time VERBOSE=1 make -j`nproc` install
+time cmake3 --build . --target install
+ldconfig &
+hash -r &
+cd
+rm -rf $SCRATCH/llvm/build &
+wait
 
 # ----------------------------------------------------------------
 
-ldconfig
 cd
 rm -rf $SCRATCH/llvm
 
@@ -449,7 +481,7 @@ git checkout `git tag -l '[0-9\.]*' | tail -n1`
 
 # ----------------------------------------------------------------
 
-# ccache -C
+ccache -C
 CC='clang -fuse-ld=lld' LD=$(which lld) ./autogen.sh --with-jemalloc-prefix="" --enable-prof --enable-prof-libunwind
 time make -j`nproc` dist
 time LD=$(which lld) make -j`nproc`
@@ -470,7 +502,7 @@ cd $SCRATCH
 tar -xvf boost.tar.bz2
 rm -rf boost.tar.bz2
 cd boost*/
-# ccache -C
+ccache -C
 # CC=$(which clang) CXX=$(which clang++) LD=$(which lld) ./bootstrap.sh --with-toolset=clang
 ./bootstrap.sh
 # CC=$(which clang) CXX=$(which clang++) LD=$(which lld) ./b2 cxxflags="-std=c++11 -stdlib=libc++ -fuse-ld=lld" linkflags="-stdlib=libc++" -aj`nproc --all` install
@@ -489,4 +521,15 @@ rm -rf $SCRATCH/boost*
 # umount $SCRATCH
 rm -rf $SCRATCH
 cd
+
+echo
+echo
+echo '================================================================'
+date
+echo '----------------------------------------------------------------'
+echo '                           Completed!                           '
+echo '----------------------------------------------------------------'
+df -Th
+echo '================================================================'
+
 truncate -s 0 .bash_history
