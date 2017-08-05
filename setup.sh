@@ -27,7 +27,7 @@ echo
 # Environment Configuration
 # ================================================================
 
-export SCRATCH=/dev/shm/scratch
+export SCRATCH=/tmp/scratch
 
 export RPM_CACHE_REPO=/etc/yum.repos.d/cache.repo
 
@@ -425,7 +425,7 @@ mkdir -p $SCRATCH/llvm/build/$LLVM_BUILD_TYPE
 cd $SCRATCH/llvm/build/$LLVM_BUILD_TYPE
 ccache -C
 CC='clang'                                  \
-CXX='clang++'                               \
+CXX='clang++ -stdlib=libc++'                \
 LD=$(which lld)                             \
 cmake3 -G Ninja                             \
     -DCMAKE_BUILD_TYPE=$LLVM_BUILD_TYPE     \
