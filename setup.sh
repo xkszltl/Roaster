@@ -52,12 +52,12 @@ until yum install -y yum-utils{,-*}; do echo 'Retrying'; done
 
 yum-config-manager --setopt=tsflags= --save
 
-echo yum-config-manager%--{disable%,enable%$(if [ -f "$RPM_CACHE_REPO" ]; then echo 'cache-'; fi)}{{base,updates,extras,centosplus}{,-source},base-debuginfo}\; | sed 's/%/ /g' | bash
+echo yum-config-manager%--{disable%,enable%$([ -f "$RPM_CACHE_REPO" ] && echo 'cache-')}{{base,updates,extras,centosplus}{,-source},base-debuginfo}\; | sed 's/%/ /g' | bash
 
 until yum install -y yum-plugin-{priorities,fastestmirror} curl kernel-headers; do echo 'Retrying'; done
 
 until yum install -y epel-release; do echo 'Retrying'; done
-echo yum-config-manager%--{disable%,enable%$(if [ -f "$RPM_CACHE_REPO" ]; then echo 'cache-'; fi)}epel{,-source,-debuginfo}\; | sed 's/%/ /g' | bash
+echo yum-config-manager%--{disable%,enable%$([ -f "$RPM_CACHE_REPO" ] && echo 'cache-')}epel{,-source,-debuginfo}\; | sed 's/%/ /g' | bash
 
 until yum install -y yum-axelget; do echo 'Retrying'; done
 
@@ -73,14 +73,14 @@ rpm -i $(
     | sed "s/.*\('.*developer.download.nvidia.com\/[^\']*\.rpm'\).*/\1/"
 ) || true
 # rpm -i "http://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/`curl -s http://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/ | sed -n 's/.*\(cuda-repo-rhel7-.*\.x86_64\.rpm\).*/\1/p' | sort | tail -n 1`"
-echo yum-config-manager%--{disable%,enable%$(if [ -f "$RPM_CACHE_REPO" ]; then echo 'cache-'; fi)}cuda\; | sed 's/%/ /g' | bash
+echo yum-config-manager%--{disable%,enable%$([ -f "$RPM_CACHE_REPO" ] && echo 'cache-')}cuda\; | sed 's/%/ /g' | bash
 
 curl -sSL https://packages.gitlab.com/install/repositories/runner/gitlab-ci-multi-runner/script.rpm.sh | bash
-echo yum-config-manager%--{disable%,enable%$(if [ -f "$RPM_CACHE_REPO" ]; then echo 'cache-'; fi)}runner_gitlab-ci-multi-runner{,-source}\; | sed 's/%/ /g' | bash
+echo yum-config-manager%--{disable%,enable%$([ -f "$RPM_CACHE_REPO" ] && echo 'cache-')}runner_gitlab-ci-multi-runner{,-source}\; | sed 's/%/ /g' | bash
 
 rm -rf /etc/yum.repos.d/gitlab_gitlab-ce.repo
 curl -sSL https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh | bash
-echo yum-config-manager%--{disable%,enable%$(if [ -f "$RPM_CACHE_REPO" ]; then echo 'cache-'; fi)}gitlab_gitlab-ce{,-source}\; | sed 's/%/ /g' | bash
+echo yum-config-manager%--{disable%,enable%$([ -f "$RPM_CACHE_REPO" ] && echo 'cache-')}gitlab_gitlab-ce{,-source}\; | sed 's/%/ /g' | bash
 
 until yum update -y --skip-broken; do echo 'Retrying'; done
 yum update -y || true
@@ -89,10 +89,7 @@ yum update -y || true
 # Git Mirror
 # ================================================================
 
-until yum install -y $(
-    if [ -f "$RPM_CACHE_REPO" ]; then
-        echo "--disableplugin=axelget,fastestmirror"
-    fi)                             \
+until yum install -y $([ -f "$RPM_CACHE_REPO" ] && echo "--disableplugin=axelget,fastestmirror")    \
                                     \
 {bc,sed}{,-*}                       \
 {core,find,ip}utils{,-*}            \
@@ -126,10 +123,7 @@ do echo 'Retrying'; done
 
 # ----------------------------------------------------------------
 
-until yum install -y $(
-    if [ -f "$RPM_CACHE_REPO" ]; then
-        echo "--disableplugin=axelget,fastestmirror"
-    fi)                                                     \
+until yum install -y $([ -f "$RPM_CACHE_REPO" ] && echo "--disableplugin=axelget,fastestmirror")    \
                                                             \
 qpid-cpp-client{,-*}                                        \
 {gcc,distcc,ccache}{,-*}                                    \
@@ -206,10 +200,7 @@ parallel --will-cite < /dev/null
 
 # ----------------------------------------------------------------
 
-until yum install -y --skip-broken $(
-    if [ -f "$RPM_CACHE_REPO" ]; then
-        echo "--disableplugin=axelget,fastestmirror"
-    fi) libreoffice; do echo 'Retrying'; done
+until yum install -y --skip-broken $([ -f "$RPM_CACHE_REPO" ] && echo "--disableplugin=axelget,fastestmirror") libreoffice; do echo 'Retrying'; done
 
 yum autoremove -y
 yum clean packages
@@ -217,10 +208,7 @@ yum clean packages
 # ----------------------------------------------------------------
 
 for i in qt5 perl python{,2,34} anaconda ruby; do
-    until yum install -y --skip-broken $(
-        if [ -f "$RPM_CACHE_REPO" ]; then
-            echo "--disableplugin=axelget,fastestmirror"
-        fi) $i{,-*}; do echo 'Retrying'; done
+    until yum install -y --skip-broken $([ -f "$RPM_CACHE_REPO" ] && echo "--disableplugin=axelget,fastestmirror") $i{,-*}; do echo 'Retrying'; done
     yum autoremove -y
     yum clean packages
 done
@@ -300,13 +288,7 @@ git config --global core.editor     'vim'
 # Shadowsocks
 # ================================================================
 
-pip install $GIT_MIRROR/shadowsocks/shadowsocks/$(
-    if [ $GIT_MIRROR == $GIT_MIRROR_CODINGCAFE ]; then
-        echo -n 'repository/archive.zip?ref=master'
-    else
-        echo -n 'archive/master.zip'
-    fi
-)
+pip install $GIT_MIRROR/shadowsocks/shadowsocks/$([ $GIT_MIRROR == $GIT_MIRROR_CODINGCAFE ] && echo 'repository/archive.zip?ref=master' || echo 'archive/master.zip')
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 cat << EOF > /usr/lib/systemd/system/shadowsocks.service
