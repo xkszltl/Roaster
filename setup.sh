@@ -3,27 +3,6 @@
 set -e
 
 # ================================================================
-# Infomation
-# ================================================================
-
-echo '================================================================'
-date
-echo '----------------------------------------------------------------'
-echo '                  CodingCafe CentOS Deployment                  '
-echo '----------------------------------------------------------------'
-echo -n '| Node     | '
-uname -no
-echo -n '| Kernel   | '
-uname -sr
-echo -n '| Platform | '
-uname -m
-echo '----------------------------------------------------------------'
-df -Th
-echo '================================================================'
-echo
-echo
-
-# ================================================================
 # Environment Configuration
 # ================================================================
 
@@ -35,6 +14,33 @@ export RPM_CACHE_REPO=/etc/yum.repos.d/cache.repo
 
 export GIT_MIRROR_GITHUB=https://github.com
 export GIT_MIRROR_CODINGCAFE=https://git.codingcafe.org/Mirrors
+
+# ----------------------------------------------------------------
+
+export IS_CONTAINER=$([ -e /proc/1/cgroup ] && [ $(sed -n 's/^[^:]*:[^:]*:\(..\)/\1/p' /proc/1/cgroup | wc -l) -gt 0 ] && echo true || echo false)
+
+# ================================================================
+# Infomation
+# ================================================================
+
+echo '================================================================'
+date
+echo '----------------------------------------------------------------'
+echo '                  CodingCafe CentOS Deployment                  '
+$IS_CONTAINER && \
+echo '                       -- In Container --                       '
+echo '----------------------------------------------------------------'
+echo -n '| Node     | '
+uname -no
+echo -n '| Kernel   | '
+uname -sr
+echo -n '| Platform | '
+uname -m
+echo '----------------------------------------------------------------'
+df -h --sync --output=target,fstype,size,avail,pcent,source | sed 's/^/| /'
+echo '================================================================'
+echo
+echo
 
 # ================================================================
 # Configure Scratch Directory
@@ -220,7 +226,7 @@ done
 until yum update -y --skip-broken; do echo 'Retrying'; done
 yum update -y || true
 
-# package-cleanup --oldkernels --count=1
+$IS_CONTAINER || package-cleanup --oldkernels --count=2
 yum autoremove -y
 yum clean all
 
@@ -257,7 +263,7 @@ mv -f .ldap.conf ldap.conf
 cd
 
 # May fail at the first time in unprivileged docker due to domainname change.
-for i in true false; do
+for i in $($IS_CONTAINER && echo true) false; do
     authconfig                                                                          \
         --enable{sssd{,auth},ldap{,auth,tls},locauthorize,cachecreds,mkhomedir}         \
         --disable{cache,md5,nis,rfc2307bis}                                             \
@@ -269,10 +275,10 @@ for i in true false; do
     || $i
 done
 
-systemctl daemon-reload || true
+systemctl daemon-reload || $IS_CONTAINER
 for i in sssd; do
     systemctl enable $i
-    systemctl start $i || true
+    systemctl start $i || $IS_CONTAINER
 done
 
 # ================================================================
@@ -306,10 +312,10 @@ WantedBy=multi-user.target
 EOF
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-systemctl daemon-reload || true
+systemctl daemon-reload || $IS_CONTAINER
 for i in shadowsocks; do
     systemctl enable $i
-    # systemctl start $i
+    systemctl start $i || $IS_CONTAINER
 done
 
 # ================================================================

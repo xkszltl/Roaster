@@ -1,0 +1,19 @@
+stages:
+  - build
+  - push
+
+build:
+  stage: build
+  tags:
+    - docker
+    - large_log
+  script:
+    - docker build --rm --pull --no-cache -t docker.codingcafe.org/sandbox/centos .
+
+push:
+  stage: push
+  tags:
+    - docker
+  script:
+    - docker push docker.codingcafe.org/sandbox/centos
+
