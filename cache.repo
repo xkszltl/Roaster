@@ -1,9 +1,11 @@
+################################################################################
+
 [cache-base]
 name=[Cache] CentOS-$releasever - Base
 baseurl=https://repo.codingcafe.org/centos/$releasever/base/$basearch/
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
-priority = 1
+priority=1
 enabled=0
 
 [cache-updates]
@@ -11,7 +13,7 @@ name=[Cache] CentOS-$releasever - Updates
 baseurl=https://repo.codingcafe.org/centos/$releasever/updates/$basearch/
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
-priority = 1
+priority=1
 enabled=0
 
 [cache-extras]
@@ -19,7 +21,7 @@ name=[Cache ]CentOS-$releasever - Extras
 baseurl=https://repo.codingcafe.org/centos/$releasever/extras/$basearch/
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
-priority = 1
+priority=1
 enabled=0
 
 [cache-centosplus]
@@ -27,7 +29,7 @@ name=[Cache] CentOS-$releasever - Plus
 baseurl=https://repo.codingcafe.org/centos/$releasever/centosplus/$basearch/
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
-priority = 1
+priority=1
 enabled=0
 
 [cache-base-debuginfo]
@@ -35,7 +37,7 @@ name=[Cache] CentOS-$releasever - Debuginfo
 baseurl=https://repo.codingcafe.org/centos/$releasever/base/debug/$basearch
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-Debug-7
-priority = 1
+priority=1
 enabled=0
 
 [cache-base-source]
@@ -44,7 +46,7 @@ baseurl=https://repo.codingcafe.org/centos/$releasever/base/Source
 gpgcheck=1
 enabled=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
-priority = 1
+priority=1
 enabled=0
 
 [cache-updates-source]
@@ -53,7 +55,7 @@ baseurl=https://repo.codingcafe.org/centos/$releasever/updates/Source
 gpgcheck=1
 enabled=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
-priority = 1
+priority=1
 enabled=0
 
 [cache-extras-source]
@@ -62,7 +64,7 @@ baseurl=https://repo.codingcafe.org/centos/$releasever/extras/Source
 gpgcheck=1
 enabled=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
-priority = 1
+priority=1
 enabled=0
 
 [cache-centosplus-source]
@@ -71,8 +73,10 @@ baseurl=https://repo.codingcafe.org/centos/$releasever/centosplus/Source
 gpgcheck=1
 enabled=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
-priority = 1
+priority=1
 enabled=0
+
+################################################################################
 
 [cache-epel]
 name=[Cache] Extra Packages for Enterprise Linux $releasever - $basearch
@@ -101,12 +105,127 @@ gpgcheck=1
 priority=1
 enabled=0
 
+################################################################################
+
+[cache-elrepo]
+name=[Cache] ELRepo.org Community Enterprise Linux Repository - el7
+baseurl=https://repo.codingcafe.org/elrepo/el7/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-elrepo.org
+protect=0
+priority=1
+enabled=0
+
+[cache-elrepo-testing]
+name=[Cache] ELRepo.org Community Enterprise Linux Testing Repository - el7
+baseurl=https://repo.codingcafe.org/elrepo/testing/el7/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-elrepo.org
+protect=0
+enabled=0
+
+[cache-elrepo-kernel]
+name=[Cache] ELRepo.org Community Enterprise Linux Kernel Repository - el7
+baseurl=https://repo.codingcafe.org/elrepo/kernel/el7/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-elrepo.org
+protect=0
+priority=1
+enabled=0
+
+[cache-elrepo-extras]
+name=[Cache] ELRepo.org Community Enterprise Linux Extras Repository - el7
+baseurl=https://repo.codingcafe.org/elrepo/extras/el7/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-elrepo.org
+protect=0
+priority=1
+enabled=0
+
+################################################################################
+
 [cache-cuda]
 name=[Cache] cuda
 baseurl=https://repo.codingcafe.org/cuda/rhel$releasever/$basearch
 gpgcheck=1
 gpgkey=https://repo.codingcafe.org/cuda/rhel$releasever/$basearch/7fa2af80.pub
 enabled=0
+
+################################################################################
+
+[cache-docker-ce-stable]
+name=[Cache] Docker CE Stable - $basearch
+baseurl=https://repo.codingcafe.org/docker/linux/centos/7/$basearch/stable
+gpgcheck=1
+gpgkey=https://download.docker.com/linux/centos/gpg
+priority=1
+enabled=0
+
+[cache-docker-ce-stable-debuginfo]
+name=[Cache] Docker CE Stable - Debuginfo $basearch
+baseurl=https://repo.codingcafe.org/docker/linux/centos/7/debug-$basearch/stable
+gpgcheck=1
+gpgkey=https://download.docker.com/linux/centos/gpg
+priority=1
+enabled=0
+
+[cache-docker-ce-stable-source]
+name=[Cache] Docker CE Stable - Sources
+baseurl=https://repo.codingcafe.org/docker/linux/centos/7/source/stable
+gpgcheck=1
+gpgkey=https://download.docker.com/linux/centos/gpg
+priority=1
+enabled=0
+
+[cache-docker-ce-edge]
+name=[Cache] Docker CE Edge - $basearch
+baseurl=https://repo.codingcafe.org/docker/linux/centos/7/$basearch/edge
+gpgcheck=1
+gpgkey=https://download.docker.com/linux/centos/gpg
+priority=1
+enabled=0
+
+[cache-docker-ce-edge-debuginfo]
+name=[Cache] Docker CE Edge - Debuginfo $basearch
+baseurl=https://repo.codingcafe.org/docker/linux/centos/7/debug-$basearch/edge
+gpgcheck=1
+gpgkey=https://download.docker.com/linux/centos/gpg
+priority=1
+enabled=0
+
+[cache-docker-ce-edge-source]
+name=[Cache] Docker CE Edge - Sources
+baseurl=https://repo.codingcafe.org/docker/linux/centos/7/source/edge
+gpgcheck=1
+gpgkey=https://download.docker.com/linux/centos/gpg
+priority=1
+enabled=0
+
+[cache-docker-ce-test]
+name=[Cache] Docker CE Test - $basearch
+baseurl=https://repo.codingcafe.org/docker/linux/centos/7/$basearch/test
+gpgcheck=1
+gpgkey=https://download.docker.com/linux/centos/gpg
+priority=1
+enabled=0
+
+[cache-docker-ce-test-debuginfo]
+name=[Cache] Docker CE Test - Debuginfo $basearch
+baseurl=https://repo.codingcafe.org/docker/linux/centos/7/debug-$basearch/test
+gpgcheck=1
+gpgkey=https://download.docker.com/linux/centos/gpg
+priority=1
+enabled=0
+
+[cache-docker-ce-test-source]
+name=[Cache] Docker CE Test - Sources
+baseurl=https://repo.codingcafe.org/docker/linux/centos/7/source/test
+gpgcheck=1
+gpgkey=https://download.docker.com/linux/centos/gpg
+priority=1
+enabled=0
+
+################################################################################
 
 [cache-runner_gitlab-ci-multi-runner]
 name=[Cache] runner_gitlab-ci-multi-runner
@@ -137,3 +256,5 @@ baseurl=https://repo.codingcafe.org/gitlab/gitlab-ce/el/$releasever/SRPMS
 gpgcheck=0
 gpgkey=https://packages.gitlab.com/gpg.key
 enabled=0
+
+################################################################################

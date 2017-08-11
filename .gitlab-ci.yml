@@ -1,19 +1,11 @@
 stages:
   - build
-  - push
 
 build:
   stage: build
   tags:
     - docker
-    - large_log
   script:
-    - docker build --rm --pull --no-cache -t docker.codingcafe.org/sandbox/centos .
-
-push:
-  stage: push
-  tags:
-    - docker
-  script:
-    - docker push docker.codingcafe.org/sandbox/centos
-
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build --pull --no-cache --cpu-shares 128 -t $CI_REGISTRY_IMAGE .
+    - docker push $CI_REGISTRY_IMAGE

@@ -1,4 +1,4 @@
-# Build with "docker build --rm --pull --no-cache --shm-size 100% --compress --squash -t docker.codingcafe.org/sandbox/centos git@git.codingcafe.org:Sandbox/CentOS.git"
+# Build with "docker build --pull --no-cache -t docker.codingcafe.org/sandbox/centos git@git.codingcafe.org:Sandbox/CentOS.git"
 
 FROM centos
 ENV container docker
