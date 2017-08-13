@@ -37,7 +37,7 @@ uname -sr
 echo -n '| Platform | '
 uname -m
 echo '----------------------------------------------------------------'
-df -h --sync --output=target,fstype,size,avail,pcent,source | sed 's/^/| /'
+df -h --sync --output=target,fstype,size,used,avail,pcent,source | sed 's/^/| /'
 echo '================================================================'
 echo
 echo
@@ -537,7 +537,7 @@ uname -sr
 echo -n '| Platform | '
 uname -m
 echo '----------------------------------------------------------------'
-df -h --sync --output=target,fstype,size,avail,pcent,source | sed 's/^/| /'
+df -h --sync --output=target,fstype,size,used,avail,pcent,source | sed 's/^/| /'
 echo '================================================================'
 
 truncate -s 0 .bash_history
