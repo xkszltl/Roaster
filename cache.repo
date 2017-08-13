@@ -107,6 +107,72 @@ enabled=0
 
 ################################################################################
 
+[cache-centos-sclo-sclo]
+name=[Cache] CentOS-7 - SCLo sclo
+baseurl=https://repo.codingcafe.org/centos/7/sclo/$basearch/sclo/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-SCLo
+priority=1
+enabled=0
+
+[cache-centos-sclo-sclo-testing]
+name=[Cache] CentOS-7 - SCLo sclo Testing
+baseurl=https://repo.codingcafe.org/centos/7/sclo/$basearch/sclo/testing
+gpgcheck=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-SCLo
+priority=1
+enabled=0
+
+[cache-centos-sclo-sclo-source]
+name=[Cache] CentOS-7 - SCLo sclo Sources
+baseurl=https://repo.codingcafe.org/centos/7/sclo/Source/sclo/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-SCLo
+priority=1
+enabled=0
+
+[cache-centos-sclo-sclo-debuginfo]
+name=[Cache] CentOS-7 - SCLo sclo Debuginfo
+baseurl=https://repo.codingcafe.org/centos/7/sclo/$basearch/sclo/debuginfo
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-SCLo
+priority=1
+enabled=0
+
+[cache-centos-sclo-rh]
+name=[Cache] CentOS-7 - SCLo rh
+baseurl=https://repo.codingcafe.org/centos/7/sclo/$basearch/rh/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-SCLo
+priority=1
+enabled=0
+
+[cache-centos-sclo-rh-testing]
+name=[Cache] CentOS-7 - SCLo rh Testing
+baseurl=https://repo.codingcafe.org/centos/7/sclo/$basearch/rh/testing
+gpgcheck=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-SCLo
+priority=1
+enabled=0
+
+[cache-centos-sclo-rh-source]
+name=[Cache] CentOS-7 - SCLo rh Sources
+baseurl=https://repo.codingcafe.org/centos/7/sclo/Source/rh/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-SCLo
+priority=1
+enabled=0
+
+[cache-centos-sclo-rh-debuginfo]
+name=[Cache] CentOS-7 - SCLo rh Debuginfo
+baseurl=https://repo.codingcafe.org/centos/7/sclo/$basearch/rh/debuginfo
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-SCLo
+priority=1
+enabled=0
+
+################################################################################
+
 [cache-elrepo]
 name=[Cache] ELRepo.org Community Enterprise Linux Repository - el7
 baseurl=https://repo.codingcafe.org/elrepo/el7/$basearch/

@@ -5,6 +5,7 @@
 # ================================================================
 
 set -e
+trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
 # ----------------------------------------------------------------
 
@@ -19,13 +20,13 @@ REPOSYNC='reposync
     -r
 '
 
-CREATEREPO='createrepo
+CREATEREPO='createrepo_c
     --cachedir=.cache
     --checksum=sha512
     --compress-type=xz
+    --database
     $([ -f comps.xml ] && echo --groupfile=comps.xml)
     --pretty
-    --profile
     --update
     --workers $(nproc)
     $(pwd)
@@ -36,7 +37,19 @@ CREATEREPO='createrepo
 mkdir -p /var/www/repos
 cd $_
 
-yum makecache fast || true
+for i in $(find . -name .repodata -type d); do
+(
+    set -e
+    rm -rf $i
+) &
+done
+
+(
+    set -e
+    yum makecache fast || true
+) &
+
+wait
 
 # ----------------------------------------------------------------
 
@@ -64,6 +77,20 @@ for i in {=,-debuginfo=debug/}$(uname -i) -source=SRPMS; do
     eval $REPOSYNC epel$(sed 's/=.*//' <<< $i)
     eval $CREATEREPO
 ) &
+done
+
+# ----------------------------------------------------------------
+
+for i in sclo rh; do
+for j in =$(uname -i)/$i -testing=$(uname -i)/$i/testing -source=Source/$i -debuginfo=$(uname -i)/$i/debuginfo; do
+(
+    set -e
+    mkdir -p centos/7/sclo/$(sed 's/.*=//' <<< $j)
+    cd $_
+    eval $REPOSYNC centos-sclo-$i$(sed 's/=.*//' <<< $j)
+    eval $CREATEREPO
+) &
+done
 done
 
 # ----------------------------------------------------------------
@@ -122,3 +149,4 @@ done
 # ----------------------------------------------------------------
 
 wait
+trap - SIGTERM SIGINT EXIT

@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -e
+trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
 # ================================================================
 # Environment Configuration
@@ -69,8 +70,8 @@ echo yum-config-manager%--{disable%,enable%$([ -f $RPM_CACHE_REPO ] && echo 'cac
 
 until yum install -y yum-axelget; do echo 'Retrying'; done
 
-# until yum install -y centos-release-scl{,-rh}; do echo 'Retrying'; done
-# yum-config-manager --enable centos-sclo-{sclo,rh}-debuginfo
+until yum install -y centos-release-scl{,-rh}; do echo 'Retrying'; done
+echo yum-config-manager%--{disable%,enable%$([ -f $RPM_CACHE_REPO ] && echo 'cache-')}centos-sclo-{sclo,rh}{,-source,-debuginfo}\; | sed 's/%/ /g' | bash
 
 until yum update -y --skip-broken; do echo 'Retrying'; done
 yum update -y || true
@@ -162,7 +163,8 @@ man{,-*}                                                    \
 {f,tc,dhc,libo,io}ping{,-*}                                 \
 hping3{,-*}                                                 \
 {traceroute,mtr,rsync,tcpdump,whois,net-snmp}{,-*}          \
-{elf,bridge-,ib}utils{,-*}                                  \
+torsocks{,-*}                                               \
+{elf,bridge-,ib,crypto-}utils{,-*}                          \
 moreutils{,-debuginfo}                                      \
 cyrus-imapd{,-*}                                            \
 GeoIP{,-*}                                                  \
@@ -174,6 +176,7 @@ fuse{,-devel,-libs}                                         \
 dd{,_}rescue{,-*}                                           \
 {docker-ce,container-selinux}{,-*}                          \
 yum-utils{,-*}                                              \
+createrepo{,_c}{,-*}                                        \
                                                             \
 ncurses{,-*}                                                \
 hwloc{,-*}                                                  \
@@ -186,6 +189,7 @@ lib{telnet,ssh{,2},curl,aio,ffi,edit,icu,xslt}{,-*}         \
 boost{,-*}                                                  \
 {flex,cups,bison,antlr}{,-*}                                \
 open{blas,cv,ssl,ssh,ldap}{,-*}                             \
+{libsodium,mbedtls}{,-*}                                    \
 {gflags,glog,protobuf}{,-*}                                 \
 ImageMagick{,-*}                                            \
 docbook{,5,2X}{,-*}                                         \
@@ -202,6 +206,8 @@ hdf5{,-*}                                                   \
 gitlab-ci-multi-runner                                      \
                                                             \
 youtube-dl                                                  \
+                                                            \
+privoxy{,-*}                                                \
                                                             \
 libselinux{,-*}                                             \
 policycoreutils{,-*}                                        \
@@ -328,6 +334,12 @@ for i in shadowsocks; do
     systemctl enable $i
     systemctl start $i || $IS_CONTAINER
 done
+
+# ----------------------------------------------------------------
+
+echo 'net.ipv4.tcp_fastopen = 3' > /etc/sysctl.d/tcp-fast-open.conf
+sysctl -p
+# sslocal -s sensitive_url -p 8388 -k sensitive_password_removed -m aes-256-gcm --fast-open -d restart
 
 # ================================================================
 # Compile LLVM
@@ -539,5 +551,9 @@ uname -m
 echo '----------------------------------------------------------------'
 df -h --sync --output=target,fstype,size,used,avail,pcent,source | sed 's/^/| /'
 echo '================================================================'
+
+# ----------------------------------------------------------------
+
+trap - SIGTERM SIGINT EXIT
 
 truncate -s 0 .bash_history
