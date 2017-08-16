@@ -9,6 +9,11 @@ trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
 # ----------------------------------------------------------------
 
+# export http_proxy=http://127.0.0.1:8118
+export https_proxy=https://127.0.0.1:8118
+# export HTTP_PROXY=$http_proxy
+export HTTPS_PROXY=$https_proxy
+
 REPOSYNC='reposync
     --cachedir=$(mktemp -d)
     --download-metadata
@@ -46,7 +51,7 @@ done
 
 (
     set -e
-    yum makecache fast || true
+    yum makecache fast -y || true
 ) &
 
 wait
