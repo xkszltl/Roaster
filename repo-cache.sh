@@ -19,6 +19,7 @@ REPOSYNC='reposync
     --download-metadata
     --downloadcomps
     --gpgcheck
+    --newest-only
     --norepopath
     --plugin
     --source
@@ -69,8 +70,6 @@ for j in =$(uname -i) -source=Source $([ $i = base ] && echo -debuginfo=debug/$(
 ) &
 done
 done
-
-ln -sf centos/7/{base,os}
 
 # ----------------------------------------------------------------
 
