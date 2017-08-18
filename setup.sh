@@ -127,20 +127,11 @@ echo "GIT_MIRROR=$GIT_MIRROR"
 # Install Packages
 # ================================================================
 
-until yum remove -y             \
-                                \
-compat-qpid-cpp-client{,-*}     \
-
-do echo 'Retrying'; done
-
-# ----------------------------------------------------------------
-
 until yum install -y $([ -f $RPM_CACHE_REPO ] && echo "--disableplugin=axelget,fastestmirror")    \
                                                             \
 qpid-cpp-client{,-*}                                        \
 {gcc,distcc,ccache}{,-*}                                    \
 java-1.8.0-openjdk{,-*}                                     \
-texlive{,-*}                                                \
 octave{,-*}                                                 \
 {gdb,valgrind,perf,{l,s}trace}{,-*}                         \
 {make,ninja-build,cmake{,3},autoconf,libtool}{,-*}          \
@@ -209,10 +200,14 @@ youtube-dl                                                  \
                                                             \
 privoxy{,-*}                                                \
                                                             \
+wine                                                        \
+                                                            \
 libselinux{,-*}                                             \
 policycoreutils{,-*}                                        \
 se{troubleshoot,tools}{,-*}                                 \
 selinux-policy{,-*}                                         \
+                                                            \
+cabextract{,-*}                                             \
 
 do echo 'Retrying'; done
 
@@ -230,11 +225,49 @@ yum clean packages
 
 # ----------------------------------------------------------------
 
-for i in qt5 perl python{,2,34} anaconda ruby; do
+for i in anaconda perl python{,2,34} qt5 ruby; do
     until yum install -y --skip-broken $([ -f $RPM_CACHE_REPO ] && echo "--disableplugin=axelget,fastestmirror") $i{,-*}; do echo 'Retrying'; done
     yum autoremove -y
     yum clean packages
 done
+
+# ----------------------------------------------------------------
+
+until yum install -y --skip-broken *-fonts; do echo 'Retrying'; done
+
+until yum install -y "https://downloads.sourceforge.net/project/mscorefonts2/rpms/$(
+    curl -sSL https://sourceforge.net/projects/mscorefonts2/files/rpms/                                         \
+    | sed -n 's/.*\(msttcore-fonts-installer-\([0-9]*\).\([0-9]*\)-\([0-9]*\).noarch.rpm\).*/\2 \3 \4 \1/p'     \
+    | sort -n | tail -n1 | cut -d' ' -f4 -
+)"; do echo 'Retrying'; done
+
+yum autoremove -y
+yum clean packages
+
+fc-cache -fv
+
+# ================================================================
+# Install TeX Live
+# ================================================================
+
+export TEXLIVE_MIRROR=https://repo.codingcafe.org/CTAN/systems/texlive/tlnet
+
+cd $SCRATCH
+curl -sSL $TEXLIVE_MIRROR/install-tl-unx.tar.gz | tar -zxvf -
+cd install-tl-*
+./install-tl --version
+
+./install-tl --repository $TEXLIVE_MIRROR --profile <(
+# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+cat << EOF
+selected_scheme scheme-full
+instopt_adjustpath 1
+EOF
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+)
+
+cd
+rm -rf $SCRATCH/install-tl-*
 
 # ================================================================
 # YUM Cleanup

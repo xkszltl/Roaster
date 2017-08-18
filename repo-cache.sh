@@ -43,6 +43,12 @@ CREATEREPO='createrepo_c
 mkdir -p /var/www/repos
 cd $_
 
+(
+    set -e
+    rsync -avPz --delete --address 10.0.0.12 rsync://rsync.mirrors.ustc.edu.cn/CTAN/ CTAN    \
+    || rsync -avPz --delete --address 10.0.0.11 rsync://mirrors.tuna.tsinghua.edu.cn/CTAN/ CTAN
+) &
+
 for i in $(find . -name .repodata -type d); do
 (
     set -e
