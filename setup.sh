@@ -362,8 +362,24 @@ WantedBy=multi-user.target
 EOF
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
+# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+cat << EOF > /usr/lib/systemd/system/shadowsocks-client.service
+[Unit]
+Description=Shadowsocks client daemon
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/sslocal -l 1080 -s foam.codingcafe.org -p 8388 -k sensitive_password_removed -m aes-256-gcm --fast-open
+User=nobody
+
+[Install]
+WantedBy=multi-user.target
+EOF
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
 systemctl daemon-reload || $IS_CONTAINER
-for i in shadowsocks; do
+for i in shadowsocks{,-client}; do
     systemctl enable $i
     systemctl start $i || $IS_CONTAINER
 done
