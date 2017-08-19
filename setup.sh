@@ -148,6 +148,7 @@ dos2unix{,-*}                                               \
 {tree,lsof}{,-*}                                            \
 {telnet,tftp,rsh}{,-debuginfo}                              \
 {f,h,if,io,latency,power,tip}top{,-*}                       \
+procps-ng{,-*}                                              \
 glances{,-*}                                                \
 {wget,axel,curl,net-tools}{,-*}                             \
 man{,-*}                                                    \
@@ -174,7 +175,7 @@ hwloc{,-*}                                                  \
 icu{,-*}                                                    \
 {gmp,mpfr,libmpc}{,-*}                                      \
 gperftools{,-*}                                             \
-lib{jpeg-turbo,tiff,png}{,-*}                               \
+lib{jpeg-turbo,tiff,png,glvnd}{,-*}                         \
 {zlib,libzip,{,p}xz,snappy}{,-*}                            \
 lib{telnet,ssh{,2},curl,aio,ffi,edit,icu,xslt}{,-*}         \
 boost{,-*}                                                  \
