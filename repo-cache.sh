@@ -10,8 +10,8 @@ trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 # ----------------------------------------------------------------
 
 export http_proxy=127.0.0.1:8118
-export https_proxy=$http_proxy
 export HTTP_PROXY=$http_proxy
+export https_proxy=$http_proxy
 export HTTPS_PROXY=$https_proxy
 
 REPOSYNC='reposync
@@ -19,9 +19,7 @@ REPOSYNC='reposync
     --download-metadata
     --downloadcomps
     --gpgcheck
-    --newest-only
     --norepopath
-    --plugin
     --source
     -r
 '
@@ -71,7 +69,7 @@ for j in =$(uname -i) -source=Source $([ $i = base ] && echo -debuginfo=debug/$(
     set -e
     mkdir -p centos/7/$i/$(sed 's/.*=//' <<< $j)
     cd $_
-    eval $REPOSYNC $i$(sed 's/=.*//' <<< $j)
+    eval $REPOSYNC $i$(sed 's/=.*//' <<< $j) || true
     eval $CREATEREPO
 ) &
 done
@@ -84,7 +82,7 @@ for i in {=,-debuginfo=debug/}$(uname -i) -source=SRPMS; do
     set -e
     mkdir -p epel/7/$(sed 's/.*=//' <<< $i)
     cd $_
-    eval $REPOSYNC epel$(sed 's/=.*//' <<< $i)
+    eval $REPOSYNC epel$(sed 's/=.*//' <<< $i) || true
     eval $CREATEREPO
 ) &
 done
@@ -97,7 +95,7 @@ for j in =$(uname -i)/$i -testing=$(uname -i)/$i/testing -source=Source/$i -debu
     set -e
     mkdir -p centos/7/sclo/$(sed 's/.*=//' <<< $j)
     cd $_
-    eval $REPOSYNC centos-sclo-$i$(sed 's/=.*//' <<< $j)
+    eval $REPOSYNC centos-sclo-$i$(sed 's/=.*//' <<< $j) || true
     eval $CREATEREPO
 ) &
 done
@@ -110,7 +108,7 @@ for i in elrepo{,-testing,-kernel,-extras}; do
     set -e
     mkdir -p $(sed 's/-/\//' <<< $i)/el7
     cd $_
-    eval $REPOSYNC $i
+    eval $REPOSYNC $i || true
     eval $CREATEREPO
 ) &
 done
@@ -150,7 +148,7 @@ for j in =$(uname -i) -source=SRPMS; do
     set -e
     mkdir -p gitlab/$(sed 's/.*=//' <<< $i)/el/7/$(sed 's/.*=//' <<< $j)
     cd $_
-    eval $REPOSYNC $(sed 's/=.*//' <<< $i)_$(sed 's/.*=//' <<< $i)$(sed 's/=.*//' <<< $j)
+    eval $REPOSYNC $([ $(sed 's/=.*//' <<< $i) = gitlab ] && echo '--newest-only') $(sed 's/=.*//' <<< $i)_$(sed 's/.*=//' <<< $i)$(sed 's/=.*//' <<< $j)
     eval $CREATEREPO
 ) &
 done
