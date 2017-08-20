@@ -173,6 +173,7 @@ createrepo{,_c}{,-*}                                        \
 ncurses{,-*}                                                \
 hwloc{,-*}                                                  \
 icu{,-*}                                                    \
+{glibc{,-devel},libgcc}{,.i686}                             \
 {gmp,mpfr,libmpc}{,-*}                                      \
 gperftools{,-*}                                             \
 lib{jpeg-turbo,tiff,png,glvnd}{,-*}                         \
@@ -487,7 +488,7 @@ cd $SCRATCH/llvm/build/$LLVM_BUILD_TYPE
 ccache -C
 CC='clang'                                  \
 CXX='clang++ -stdlib=libc++'                \
-LD=$(which lld)                             \
+LD=$(which ld.lld)                          \
 cmake3 -G Ninja                             \
     -DCMAKE_BUILD_TYPE=$LLVM_BUILD_TYPE     \
     -DCMAKE_INSTALL_PREFIX='\usr\'          \
