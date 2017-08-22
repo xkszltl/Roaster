@@ -47,7 +47,7 @@ cd $_
     || rsync -avPz --delete --address 10.0.0.11 rsync://mirrors.tuna.tsinghua.edu.cn/CTAN/ CTAN
 ) &
 
-for i in $(find . -name .repodata -type d); do
+for i in $(find . -name .repodata -type d); do :
 (
     set -e
     rm -rf $i
@@ -63,8 +63,8 @@ wait
 
 # ----------------------------------------------------------------
 
-for i in base updates extras centosplus; do
-for j in =$(uname -i) -source=Source $([ $i = base ] && echo -debuginfo=debug/$(uname -i)); do
+for i in base updates extras centosplus; do :
+for j in =$(uname -i) -source=Source $([ $i = base ] && echo -debuginfo=debug/$(uname -i)); do :
 (
     set -e
     mkdir -p centos/7/$i/$(sed 's/.*=//' <<< $j)
@@ -77,7 +77,7 @@ done
 
 # ----------------------------------------------------------------
 
-for i in {=,-debuginfo=debug/}$(uname -i) -source=SRPMS; do
+for i in {=,-debuginfo=debug/}$(uname -i) -source=SRPMS; do :
 (
     set -e
     mkdir -p epel/7/$(sed 's/.*=//' <<< $i)
@@ -89,8 +89,8 @@ done
 
 # ----------------------------------------------------------------
 
-for i in sclo rh; do
-for j in =$(uname -i)/$i -testing=$(uname -i)/$i/testing -source=Source/$i -debuginfo=$(uname -i)/$i/debuginfo; do
+for i in sclo rh; do :
+for j in =$(uname -i)/$i -testing=$(uname -i)/$i/testing -source=Source/$i -debuginfo=$(uname -i)/$i/debuginfo; do :
 (
     set -e
     mkdir -p centos/7/sclo/$(sed 's/.*=//' <<< $j)
@@ -103,7 +103,7 @@ done
 
 # ----------------------------------------------------------------
 
-for i in elrepo{,-testing,-kernel,-extras}; do
+for i in elrepo{,-testing,-kernel,-extras}; do :
 (
     set -e
     mkdir -p $(sed 's/-/\//' <<< $i)/el7
@@ -126,8 +126,8 @@ done
 
 # ----------------------------------------------------------------
 
-for i in {=,-debuginfo=debug-}$(uname -i) -source=source; do
-for j in stable edge test; do
+for i in {=,-debuginfo=debug-}$(uname -i) -source=source; do :
+for j in stable edge test; do :
 (
     set -e
     mkdir -p docker/linux/centos/7/$(sed 's/.*=//' <<< $i)/$j
@@ -142,8 +142,8 @@ done
 
 # ----------------------------------------------------------------
 
-for i in gitlab=gitlab-ce runner=gitlab-ci-multi-runner; do
-for j in =$(uname -i) -source=SRPMS; do
+for i in gitlab=gitlab-ce runner=gitlab-ci-multi-runner; do :
+for j in =$(uname -i) -source=SRPMS; do :
 (
     set -e
     mkdir -p gitlab/$(sed 's/.*=//' <<< $i)/el/7/$(sed 's/.*=//' <<< $j)

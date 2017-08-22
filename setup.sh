@@ -48,7 +48,7 @@ echo
 # ================================================================
 
 mkdir -p $SCRATCH
-# mount -t tmpfs -o size=100% tmpfs $SCRATCH
+# $IS_CONTAINER || mount -t tmpfs -o size=100% tmpfs $SCRATCH
 cd $SCRATCH
 
 # ================================================================
@@ -109,7 +109,7 @@ until yum install -y $([ -f $RPM_CACHE_REPO ] && echo "--disableplugin=axelget,f
 do echo 'Retrying'; done
 
 export GIT_MIRROR=$(
-    for i in $(env | sed -n 's/^GIT_MIRROR_[^=]*=//p'); do
+    for i in $(env | sed -n 's/^GIT_MIRROR_[^=]*=//p'); do :
         ping -nfc 100 $(sed 's/.*:\/\///' <<<"$i" | sed 's/\/.*//')                         \
         | sed -n '/ms$/p'                                                                   \
         | sed 's/.*[^0-9]\([0-9]*\)%.*[^0-9\.]\([0-9\.]*\).*ms/\1 \2/'                      \
@@ -162,7 +162,7 @@ cyrus-imapd{,-*}                                            \
 GeoIP{,-*}                                                  \
 {device-mapper,lvm2}{,-*}                                   \
 {d,sys}stat{,-*}                                            \
-lm_sensors{,-*}                                             \
+{lm_sensors,hddtemp}{,-*}                                   \
 {{e2fs,btrfs-,xfs,ntfs}progs,xfsdump,nfs-utils}{,-*}        \
 fuse{,-devel,-libs}                                         \
 dd{,_}rescue{,-*}                                           \
@@ -186,6 +186,9 @@ open{blas,cv,ssl,ssh,ldap}{,-*}                             \
 {gflags,glog,protobuf}{,-*}                                 \
 ImageMagick{,-*}                                            \
 docbook{,5,2X}{,-*}                                         \
+nagios{,selinux,devel,debuginfo,-plugins-all}               \
+nrpe,nsca                                                   \
+{collectd,rrdtool,pnp4nagios}{,-*}                          \
 cuda                                                        \
                                                             \
 hdf5{,-*}                                                   \
@@ -194,6 +197,7 @@ hdf5{,-*}                                                   \
                                                             \
 {fio,filebench}{,-*}                                        \
                                                             \
+{,pam_}krb5{,-*}                                            \
 {sudo,nss,sssd,authconfig}{,-*}                             \
                                                             \
 gitlab-ci-multi-runner                                      \
@@ -208,6 +212,8 @@ libselinux{,-*}                                             \
 policycoreutils{,-*}                                        \
 se{troubleshoot,tools}{,-*}                                 \
 selinux-policy{,-*}                                         \
+                                                            \
+mod_authnz_*                                                \
                                                             \
 cabextract{,-*}                                             \
 
@@ -227,7 +233,7 @@ yum clean packages
 
 # ----------------------------------------------------------------
 
-for i in anaconda perl python{,2,34} qt5 ruby; do
+for i in anaconda perl python{,2,34} qt5 ruby; do :
     until yum install -y --skip-broken $([ -f $RPM_CACHE_REPO ] && echo "--disableplugin=axelget,fastestmirror") $i{,-*}; do echo 'Retrying'; done
     yum autoremove -y
     yum clean packages
@@ -298,7 +304,7 @@ cd
 # ----------------------------------------------------------------
 
 cd /etc/openldap
-for i in 'BASE' 'URI' 'TLS_CACERT' 'TLS_REQCERT'; do
+for i in 'BASE' 'URI' 'TLS_CACERT' 'TLS_REQCERT'; do :
     if [ `grep '^[[:space:]#]*'$i'[[:space:]]' ldap.conf | wc -l` -ne 1 ]; then
         sed 's/^[[:space:]#]*'$i'[[:space:]].*//' ldap.conf > .ldap.conf
         mv -f .ldap.conf ldap.conf
@@ -315,7 +321,7 @@ mv -f .ldap.conf ldap.conf
 cd
 
 # May fail at the first time in unprivileged docker due to domainname change.
-for i in $($IS_CONTAINER && echo true) false; do
+for i in $($IS_CONTAINER && echo true) false; do :
     authconfig                                                                          \
         --enable{sssd{,auth},ldap{,auth,tls},locauthorize,cachecreds,mkhomedir}         \
         --disable{cache,md5,nis,rfc2307bis}                                             \
@@ -328,7 +334,7 @@ for i in $($IS_CONTAINER && echo true) false; do
 done
 
 systemctl daemon-reload || $IS_CONTAINER
-for i in sssd; do
+for i in sssd; do :
     systemctl enable $i
     systemctl start $i || $IS_CONTAINER
 done
@@ -381,7 +387,7 @@ EOF
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 systemctl daemon-reload || $IS_CONTAINER
-for i in shadowsocks{,-client}; do
+for i in shadowsocks{,-client}; do :
     systemctl enable $i
     systemctl start $i || $IS_CONTAINER
 done
@@ -391,6 +397,40 @@ done
 echo 'net.ipv4.tcp_fastopen = 3' > /etc/sysctl.d/tcp-fast-open.conf
 sysctl -p
 # sslocal -s sensitive_url -p 8388 -k sensitive_password_removed -m aes-256-gcm --fast-open -d restart
+
+# ================================================================
+# Nagios
+# ================================================================
+
+setsebool -P daemons_enable_cluster_mode 1 || $IS_CONTAINER
+
+mkdir -p $SCRATCH/nagios-selinux
+cd $_
+
+# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+cat << EOF > nagios-statusjsoncgi.te
+module nagios-statusjsoncgi 1.0;
+require {
+  type nagios_script_t;
+  type nagios_spool_t;
+  class file { getattr read open };
+}
+allow nagios_script_t nagios_spool_t:file { getattr read open };
+EOF
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+checkmodule -M -m -o nagios-statusjsoncgi.{mod,te}
+semodule_package -m nagios-statusjsoncgi.mod -o nagios-statusjsoncgi.pp
+semodule -i $_
+
+cd
+rm -rf $SCRATCH/nagios-selinux
+
+systemctl daemon-reload || $IS_CONTAINER
+for i in nagios; do :
+#     systemctl enable $i
+#     systemctl start $i || $IS_CONTAINER
+done
 
 # ================================================================
 # Compile LLVM
@@ -580,7 +620,7 @@ rm -rf $SCRATCH/boost*
 # Cleanup
 # ================================================================
 
-# umount $SCRATCH
+# $IS_CONTAINER || umount $SCRATCH
 rm -rf $SCRATCH
 cd
 
