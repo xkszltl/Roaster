@@ -8,6 +8,7 @@ trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 # ================================================================
 
 export SCRATCH=/tmp/scratch
+export STAGE=/etc/codingcafe/stage
 
 export RPM_CACHE_REPO=/etc/yum.repos.d/cache.repo
 
@@ -47,66 +48,220 @@ echo
 # Configure Scratch Directory
 # ================================================================
 
+rm -rvf $SCRATCH
 mkdir -p $SCRATCH
 # $IS_CONTAINER || mount -t tmpfs -o size=100% tmpfs $SCRATCH
 cd $SCRATCH
 
 # ================================================================
+# Initialize Setup Stage
+# ================================================================
+
+[ -d $STAGE ] && [ $# -eq 0 ] || ( set -e
+    rm -rvf $STAGE
+    mkdir -p $(dirname $STAGE)/.$(basename $STAGE)
+    cd $_
+    [ $# -gt 0 ] && touch $@ || touch repo pkg auth nagios ss tex llvm boost jemalloc
+    sync || true
+    cd $SCRATCH
+    mv -vf $(dirname $STAGE)/.$(basename $STAGE) $STAGE
+)
+
+# ================================================================
 # YUM Configuration
 # ================================================================
 
-until yum install -y yum-utils{,-*}; do echo 'Retrying'; done
+[ -e $STAGE/repo ] && ( set -e
+    until yum install -y yum-utils{,-*}; do echo 'Retrying'; done
 
-yum-config-manager --setopt=tsflags= --save
+    yum-config-manager --setopt=tsflags= --save
 
-[ -f $RPM_CACHE_REPO ] || yum-config-manager --add-repo https://repo.codingcafe.org/cache/el/7/cache.repo
+    [ -f $RPM_CACHE_REPO ] || yum-config-manager --add-repo https://repo.codingcafe.org/cache/el/7/cache.repo
 
-echo yum-config-manager%--{disable%,enable%$([ -f $RPM_CACHE_REPO ] && echo 'cache-')}{{base,updates,extras,centosplus}{,-source},base-debuginfo}\; | sed 's/%/ /g' | bash
+    echo yum-config-manager%--{disable%,enable%$([ -f $RPM_CACHE_REPO ] && echo 'cache-')}{{base,updates,extras,centosplus}{,-source},base-debuginfo}\; | sed 's/%/ /g' | bash
 
-until yum install -y yum-plugin-{priorities,fastestmirror} curl kernel-headers; do echo 'Retrying'; done
+    until yum install -y yum-plugin-{priorities,fastestmirror} curl kernel-headers; do echo 'Retrying'; done
 
-until yum install -y epel-release; do echo 'Retrying'; done
-echo yum-config-manager%--{disable%,enable%$([ -f $RPM_CACHE_REPO ] && echo 'cache-')}epel{,-source,-debuginfo}\; | sed 's/%/ /g' | bash
+    until yum install -y epel-release; do echo 'Retrying'; done
+    echo yum-config-manager%--{disable%,enable%$([ -f $RPM_CACHE_REPO ] && echo 'cache-')}epel{,-source,-debuginfo}\; | sed 's/%/ /g' | bash
 
-until yum install -y yum-axelget; do echo 'Retrying'; done
+    until yum install -y yum-axelget; do echo 'Retrying'; done
 
-until yum install -y centos-release-scl{,-rh}; do echo 'Retrying'; done
-echo yum-config-manager%--{disable%,enable%$([ -f $RPM_CACHE_REPO ] && echo 'cache-')}centos-sclo-{sclo,rh}{,-source,-debuginfo}\; | sed 's/%/ /g' | bash
+    until yum install -y centos-release-scl{,-rh}; do echo 'Retrying'; done
+    echo yum-config-manager%--{disable%,enable%$([ -f $RPM_CACHE_REPO ] && echo 'cache-')}centos-sclo-{sclo,rh}{,-source,-debuginfo}\; | sed 's/%/ /g' | bash
 
-until yum update -y --skip-broken; do echo 'Retrying'; done
-yum update -y || true
-rpm -i $(
-    curl -s https://developer.nvidia.com/cuda-downloads                     \
-    | grep 'Linux/x86_64/CentOS/7/rpm (network)'                            \
-    | head -n1                                                              \
-    | sed "s/.*\('.*developer.download.nvidia.com\/[^\']*\.rpm'\).*/\1/"
-) || true
-# rpm -i "http://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/`curl -s http://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/ | sed -n 's/.*\(cuda-repo-rhel7-.*\.x86_64\.rpm\).*/\1/p' | sort | tail -n 1`"
-echo yum-config-manager%--{disable%,enable%$([ -f $RPM_CACHE_REPO ] && echo 'cache-')}cuda\; | sed 's/%/ /g' | bash
+    until yum update -y --skip-broken; do echo 'Retrying'; done
+    yum update -y || true
 
-yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-echo yum-config-manager%--{disable%,enable%$([ -f $RPM_CACHE_REPO ] && echo 'cache-')}docker-ce-stable{,-source,-debuginfo}\; | sed 's/%/ /g' | bash
+    rpm -i $(
+        curl -s https://developer.nvidia.com/cuda-downloads                     \
+        | grep 'Linux/x86_64/CentOS/7/rpm (network)'                            \
+        | head -n1                                                              \
+        | sed "s/.*\('.*developer.download.nvidia.com\/[^\']*\.rpm'\).*/\1/"
+    ) || true
+    echo yum-config-manager%--{disable%,enable%$([ -f $RPM_CACHE_REPO ] && echo 'cache-')}cuda\; | sed 's/%/ /g' | bash
 
-curl -sSL https://packages.gitlab.com/install/repositories/runner/gitlab-ci-multi-runner/script.rpm.sh | bash
-echo yum-config-manager%--{disable%,enable%$([ -f $RPM_CACHE_REPO ] && echo 'cache-')}runner_gitlab-ci-multi-runner{,-source}\; | sed 's/%/ /g' | bash
+    yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+    echo yum-config-manager%--{disable%,enable%$([ -f $RPM_CACHE_REPO ] && echo 'cache-')}docker-ce-stable{,-source,-debuginfo}\; | sed 's/%/ /g' | bash
 
-rm -rf /etc/yum.repos.d/gitlab_gitlab-ce.repo
-curl -sSL https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh | bash
-echo yum-config-manager%--{disable%,enable%$([ -f $RPM_CACHE_REPO ] && echo 'cache-')}gitlab_gitlab-ce{,-source}\; | sed 's/%/ /g' | bash
+    curl -sSL https://packages.gitlab.com/install/repositories/runner/gitlab-ci-multi-runner/script.rpm.sh | bash
+    echo yum-config-manager%--{disable%,enable%$([ -f $RPM_CACHE_REPO ] && echo 'cache-')}runner_gitlab-ci-multi-runner{,-source}\; | sed 's/%/ /g' | bash
 
-until yum update -y --skip-broken; do echo 'Retrying'; done
-yum update -y || true
+    rm -rvf /etc/yum.repos.d/gitlab_gitlab-ce.repo
+    curl -sSL https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh | bash
+    echo yum-config-manager%--{disable%,enable%$([ -f $RPM_CACHE_REPO ] && echo 'cache-')}gitlab_gitlab-ce{,-source}\; | sed 's/%/ /g' | bash
+
+    until yum update -y --skip-broken; do echo 'Retrying'; done
+    yum update -y || true
+) && rm -rvf $STAGE/repo
+sync || true
+
+# ================================================================
+# Install Packages
+# ================================================================
+
+[ -e $STAGE/pkg ] && ( set -e
+    until yum install -y $([ -f $RPM_CACHE_REPO ] && echo "--disableplugin=axelget,fastestmirror")    \
+                                                                \
+    qpid-cpp-client{,-*}                                        \
+    {gcc,distcc,ccache}{,-*}                                    \
+    java-1.8.0-openjdk{,-*}                                     \
+    octave{,-*}                                                 \
+    {gdb,valgrind,perf,{l,s}trace}{,-*}                         \
+    {make,ninja-build,cmake{,3},autoconf,libtool}{,-*}          \
+    {ant,maven}{,-*}                                            \
+    {git,subversion,mercurial}{,-*}                             \
+    doxygen{,-*}                                                \
+    swig{,-*}                                                   \
+                                                                \
+    vim{,-*}                                                    \
+    dos2unix{,-*}                                               \
+                                                                \
+    {bash,fish,zsh,mosh,tmux}{,-*}                              \
+    {bc,sed,man}{,-*}                                           \
+    {parallel,jq}{,-*}                                          \
+    {tree,lsof}{,-*}                                            \
+    {telnet,tftp,rsh}{,-debuginfo}                              \
+    {f,h,if,io,latency,power,tip}top{,-*}                       \
+    procps-ng{,-*}                                              \
+    glances{,-*}                                                \
+    {wget,axel,curl,net-tools}{,-*}                             \
+    {f,tc,dhc,libo,io}ping{,-*}                                 \
+    hping3{,-*}                                                 \
+    {traceroute,mtr,rsync,tcpdump,whois,net-snmp}{,-*}          \
+    torsocks{,-*}                                               \
+    {bridge-,core,crypto-,elf,find,ib,ip}utils{,-*}             \
+    moreutils{,-debuginfo}                                      \
+    cyrus-imapd{,-*}                                            \
+    GeoIP{,-*}                                                  \
+    {device-mapper,lvm2}{,-*}                                   \
+    {d,sys}stat{,-*}                                            \
+    {lm_sensors,hddtemp}{,-*}                                   \
+    {{e2fs,btrfs-,xfs,ntfs}progs,xfsdump,nfs-utils}{,-*}        \
+    fuse{,-devel,-libs}                                         \
+    dd{,_}rescue{,-*}                                           \
+    {docker-ce,container-selinux}{,-*}                          \
+    yum-utils{,-*}                                              \
+    createrepo{,_c}{,-*}                                        \
+                                                                \
+    ncurses{,-*}                                                \
+    hwloc{,-*}                                                  \
+    icu{,-*}                                                    \
+    {glibc{,-devel},libgcc}{,.i686}                             \
+    {gmp,mpfr,libmpc}{,-*}                                      \
+    gperftools{,-*}                                             \
+    lib{jpeg-turbo,tiff,png,glvnd}{,-*}                         \
+    {zlib,libzip,{,p}xz,snappy}{,-*}                            \
+    lib{telnet,ssh{,2},curl,aio,ffi,edit,icu,xslt}{,-*}         \
+    boost{,-*}                                                  \
+    {flex,cups,bison,antlr}{,-*}                                \
+    open{blas,cv,ssl,ssh,ldap}{,-*}                             \
+    {libsodium,mbedtls}{,-*}                                    \
+    {gflags,glog,protobuf}{,-*}                                 \
+    ImageMagick{,-*}                                            \
+    docbook{,5,2X}{,-*}                                         \
+    nagios{,selinux,devel,debuginfo,-plugins-all}               \
+    nrpe,nsca                                                   \
+    {collectd,rrdtool,pnp4nagios}{,-*}                          \
+    cuda                                                        \
+                                                                \
+    hdf5{,-*}                                                   \
+    {leveldb,lmdb}{,-*}                                         \
+    {mariadb,postgresql}{,-*}                                   \
+                                                                \
+    {fio,filebench}{,-*}                                        \
+                                                                \
+    {,pam_}krb5{,-*}                                            \
+    {sudo,nss,sssd,authconfig}{,-*}                             \
+                                                                \
+    gitlab-ci-multi-runner                                      \
+                                                                \
+    youtube-dl                                                  \
+                                                                \
+    privoxy{,-*}                                                \
+                                                                \
+    wine                                                        \
+                                                                \
+    libselinux{,-*}                                             \
+    policycoreutils{,-*}                                        \
+    se{troubleshoot,tools}{,-*}                                 \
+    selinux-policy{,-*}                                         \
+                                                                \
+    mod_authnz_*                                                \
+                                                                \
+    cabextract{,-*}                                             \
+
+    do echo 'Retrying'; done
+
+    yum autoremove -y
+    yum clean packages
+
+    parallel --will-cite < /dev/null
+
+    # ------------------------------------------------------------
+
+    until yum install -y --skip-broken $([ -f $RPM_CACHE_REPO ] && echo "--disableplugin=axelget,fastestmirror") libreoffice; do echo 'Retrying'; done
+
+    yum autoremove -y
+    yum clean packages
+
+    # ------------------------------------------------------------
+
+    for i in anaconda perl python{,2,34} qt5 ruby; do :
+        until yum install -y --skip-broken $([ -f $RPM_CACHE_REPO ] && echo "--disableplugin=axelget,fastestmirror") $i{,-*}; do echo 'Retrying'; done
+        yum autoremove -y
+        yum clean packages
+    done
+
+    # ------------------------------------------------------------
+
+    until yum install -y --skip-broken *-fonts; do echo 'Retrying'; done
+
+    until yum install -y "https://downloads.sourceforge.net/project/mscorefonts2/rpms/$(
+        curl -sSL https://sourceforge.net/projects/mscorefonts2/files/rpms/                                         \
+        | sed -n 's/.*\(msttcore-fonts-installer-\([0-9]*\).\([0-9]*\)-\([0-9]*\).noarch.rpm\).*/\2 \3 \4 \1/p'     \
+        | sort -n | tail -n1 | cut -d' ' -f4 -
+    )"; do echo 'Retrying'; done
+
+    yum autoremove -y
+    yum clean packages
+
+    fc-cache -fv
+
+    # ------------------------------------------------------------
+
+    until yum update -y --skip-broken; do echo 'Retrying'; done
+    yum update -y || true
+
+    $IS_CONTAINER || package-cleanup --oldkernels --count=2
+    yum autoremove -y
+    yum clean all
+) && rm -rvf $STAGE/pkg
+sync || true
 
 # ================================================================
 # Git Mirror
 # ================================================================
-
-until yum install -y $([ -f $RPM_CACHE_REPO ] && echo "--disableplugin=axelget,fastestmirror")    \
-                                    \
-{bc,sed}{,-*}                       \
-{core,find,ip}utils{,-*}            \
-
-do echo 'Retrying'; done
 
 export GIT_MIRROR=$(
     for i in $(env | sed -n 's/^GIT_MIRROR_[^=]*=//p'); do :
@@ -123,239 +278,113 @@ export GIT_MIRROR=$(
 
 echo "GIT_MIRROR=$GIT_MIRROR"
 
-# ================================================================
-# Install Packages
-# ================================================================
-
-until yum install -y $([ -f $RPM_CACHE_REPO ] && echo "--disableplugin=axelget,fastestmirror")    \
-                                                            \
-qpid-cpp-client{,-*}                                        \
-{gcc,distcc,ccache}{,-*}                                    \
-java-1.8.0-openjdk{,-*}                                     \
-octave{,-*}                                                 \
-{gdb,valgrind,perf,{l,s}trace}{,-*}                         \
-{make,ninja-build,cmake{,3},autoconf,libtool}{,-*}          \
-{ant,maven}{,-*}                                            \
-{git,subversion,mercurial}{,-*}                             \
-doxygen{,-*}                                                \
-swig{,-*}                                                   \
-                                                            \
-vim{,-*}                                                    \
-dos2unix{,-*}                                               \
-                                                            \
-{bash,fish,zsh,mosh,tmux}{,-*}                              \
-{parallel,jq}{,-*}                                          \
-{tree,lsof}{,-*}                                            \
-{telnet,tftp,rsh}{,-debuginfo}                              \
-{f,h,if,io,latency,power,tip}top{,-*}                       \
-procps-ng{,-*}                                              \
-glances{,-*}                                                \
-{wget,axel,curl,net-tools}{,-*}                             \
-man{,-*}                                                    \
-{f,tc,dhc,libo,io}ping{,-*}                                 \
-hping3{,-*}                                                 \
-{traceroute,mtr,rsync,tcpdump,whois,net-snmp}{,-*}          \
-torsocks{,-*}                                               \
-{elf,bridge-,ib,crypto-}utils{,-*}                          \
-moreutils{,-debuginfo}                                      \
-cyrus-imapd{,-*}                                            \
-GeoIP{,-*}                                                  \
-{device-mapper,lvm2}{,-*}                                   \
-{d,sys}stat{,-*}                                            \
-{lm_sensors,hddtemp}{,-*}                                   \
-{{e2fs,btrfs-,xfs,ntfs}progs,xfsdump,nfs-utils}{,-*}        \
-fuse{,-devel,-libs}                                         \
-dd{,_}rescue{,-*}                                           \
-{docker-ce,container-selinux}{,-*}                          \
-yum-utils{,-*}                                              \
-createrepo{,_c}{,-*}                                        \
-                                                            \
-ncurses{,-*}                                                \
-hwloc{,-*}                                                  \
-icu{,-*}                                                    \
-{glibc{,-devel},libgcc}{,.i686}                             \
-{gmp,mpfr,libmpc}{,-*}                                      \
-gperftools{,-*}                                             \
-lib{jpeg-turbo,tiff,png,glvnd}{,-*}                         \
-{zlib,libzip,{,p}xz,snappy}{,-*}                            \
-lib{telnet,ssh{,2},curl,aio,ffi,edit,icu,xslt}{,-*}         \
-boost{,-*}                                                  \
-{flex,cups,bison,antlr}{,-*}                                \
-open{blas,cv,ssl,ssh,ldap}{,-*}                             \
-{libsodium,mbedtls}{,-*}                                    \
-{gflags,glog,protobuf}{,-*}                                 \
-ImageMagick{,-*}                                            \
-docbook{,5,2X}{,-*}                                         \
-nagios{,selinux,devel,debuginfo,-plugins-all}               \
-nrpe,nsca                                                   \
-{collectd,rrdtool,pnp4nagios}{,-*}                          \
-cuda                                                        \
-                                                            \
-hdf5{,-*}                                                   \
-{leveldb,lmdb}{,-*}                                         \
-{mariadb,postgresql}{,-*}                                   \
-                                                            \
-{fio,filebench}{,-*}                                        \
-                                                            \
-{,pam_}krb5{,-*}                                            \
-{sudo,nss,sssd,authconfig}{,-*}                             \
-                                                            \
-gitlab-ci-multi-runner                                      \
-                                                            \
-youtube-dl                                                  \
-                                                            \
-privoxy{,-*}                                                \
-                                                            \
-wine                                                        \
-                                                            \
-libselinux{,-*}                                             \
-policycoreutils{,-*}                                        \
-se{troubleshoot,tools}{,-*}                                 \
-selinux-policy{,-*}                                         \
-                                                            \
-mod_authnz_*                                                \
-                                                            \
-cabextract{,-*}                                             \
-
-do echo 'Retrying'; done
-
-yum autoremove -y
-yum clean packages
-
-parallel --will-cite < /dev/null
-
-# ----------------------------------------------------------------
-
-until yum install -y --skip-broken $([ -f $RPM_CACHE_REPO ] && echo "--disableplugin=axelget,fastestmirror") libreoffice; do echo 'Retrying'; done
-
-yum autoremove -y
-yum clean packages
-
-# ----------------------------------------------------------------
-
-for i in anaconda perl python{,2,34} qt5 ruby; do :
-    until yum install -y --skip-broken $([ -f $RPM_CACHE_REPO ] && echo "--disableplugin=axelget,fastestmirror") $i{,-*}; do echo 'Retrying'; done
-    yum autoremove -y
-    yum clean packages
-done
-
-# ----------------------------------------------------------------
-
-until yum install -y --skip-broken *-fonts; do echo 'Retrying'; done
-
-until yum install -y "https://downloads.sourceforge.net/project/mscorefonts2/rpms/$(
-    curl -sSL https://sourceforge.net/projects/mscorefonts2/files/rpms/                                         \
-    | sed -n 's/.*\(msttcore-fonts-installer-\([0-9]*\).\([0-9]*\)-\([0-9]*\).noarch.rpm\).*/\2 \3 \4 \1/p'     \
-    | sort -n | tail -n1 | cut -d' ' -f4 -
-)"; do echo 'Retrying'; done
-
-yum autoremove -y
-yum clean packages
-
-fc-cache -fv
-
-# ================================================================
-# Install TeX Live
-# ================================================================
-
-export TEXLIVE_MIRROR=https://repo.codingcafe.org/CTAN/systems/texlive/tlnet
-
-cd $SCRATCH
-curl -sSL $TEXLIVE_MIRROR/install-tl-unx.tar.gz | tar -zxvf -
-cd install-tl-*
-./install-tl --version
-
-./install-tl --repository $TEXLIVE_MIRROR --profile <(
-# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-cat << EOF
-selected_scheme scheme-full
-instopt_adjustpath 1
-EOF
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-)
-
-cd
-rm -rf $SCRATCH/install-tl-*
-
-# ================================================================
-# YUM Cleanup
-# ================================================================
-
-until yum update -y --skip-broken; do echo 'Retrying'; done
-yum update -y || true
-
-$IS_CONTAINER || package-cleanup --oldkernels --count=2
-yum autoremove -y
-yum clean all
-
-# ================================================================
-# Account Configuration
-# ================================================================
-
-cd
-mkdir -p .ssh
-cd .ssh
-rm -rf id_{ecdsa,rsa}{,.pub}
-ssh-keygen -N '' -f id_ecdsa -qt ecdsa -b 521 &
-ssh-keygen -N '' -f id_rsa -qt rsa -b 8192 &
-wait
-cd
-
-# ----------------------------------------------------------------
-
-cd /etc/openldap
-for i in 'BASE' 'URI' 'TLS_CACERT' 'TLS_REQCERT'; do :
-    if [ `grep '^[[:space:]#]*'$i'[[:space:]]' ldap.conf | wc -l` -ne 1 ]; then
-        sed 's/^[[:space:]#]*'$i'[[:space:]].*//' ldap.conf > .ldap.conf
-        mv -f .ldap.conf ldap.conf
-        echo '#'$i' ' >> ldap.conf
-    fi
-done
-cat ldap.conf                                                                                               \
-| sed 's/^[[:space:]#]*\(BASE[[:space:]][[:space:]]*\).*/\1dc=codingcafe,dc=org/'                           \
-| sed 's/^[[:space:]#]*\(URI[[:space:]][[:space:]]*\).*/\1ldap:\/\/ldap.codingcafe.org/'                    \
-| sed 's/^[[:space:]#]*\(TLS_CACERT[[:space:]][[:space:]]*\).*/\1\/etc\/pki\/tls\/certs\/ca-bundle.crt/'    \
-| sed 's/^[[:space:]#]*\(TLS_REQCERT[[:space:]][[:space:]]*\).*/\1demand/'                                  \
-> .ldap.conf
-mv -f .ldap.conf ldap.conf
-cd
-
-# May fail at the first time in unprivileged docker due to domainname change.
-for i in $($IS_CONTAINER && echo true) false; do :
-    authconfig                                                                          \
-        --enable{sssd{,auth},ldap{,auth,tls},locauthorize,cachecreds,mkhomedir}         \
-        --disable{cache,md5,nis,rfc2307bis}                                             \
-        --ldapserver=ldap://ldap.codingcafe.org                                         \
-        --ldapbasedn=dc=codingcafe,dc=org                                               \
-        --passalgo=sha512                                                               \
-        --smbsecurity=user                                                              \
-        --update                                                                        \
-    || $i
-done
-
-systemctl daemon-reload || $IS_CONTAINER
-for i in sssd; do :
-    systemctl enable $i
-    systemctl start $i || $IS_CONTAINER
-done
-
-# ================================================================
-# Personalize
-# ================================================================
-
 git config --global user.name       'Tongliang Liao'
 git config --global user.email      'xkszltl@gmail.com'
 git config --global push.default    'matching'
 git config --global core.editor     'vim'
 
 # ================================================================
+# Account Configuration
+# ================================================================
+
+[ -e $STAGE/auth ] && ( set -e
+    cd
+    mkdir -p .ssh
+    cd .ssh
+    rm -rvf id_{ecdsa,rsa}{,.pub}
+    ssh-keygen -N '' -f id_ecdsa -qt ecdsa -b 521 &
+    ssh-keygen -N '' -f id_rsa -qt rsa -b 8192 &
+    wait
+    cd $SCRATCH
+
+    # ------------------------------------------------------------
+
+    cd /etc/openldap
+    for i in 'BASE' 'URI' 'TLS_CACERT' 'TLS_REQCERT'; do :
+        if [ `grep '^[[:space:]#]*'$i'[[:space:]]' ldap.conf | wc -l` -ne 1 ]; then
+            sed 's/^[[:space:]#]*'$i'[[:space:]].*//' ldap.conf > .ldap.conf
+            mv -f .ldap.conf ldap.conf
+            echo '#'$i' ' >> ldap.conf
+        fi
+    done
+    cat ldap.conf                                                                                               \
+    | sed 's/^[[:space:]#]*\(BASE[[:space:]][[:space:]]*\).*/\1dc=codingcafe,dc=org/'                           \
+    | sed 's/^[[:space:]#]*\(URI[[:space:]][[:space:]]*\).*/\1ldap:\/\/ldap.codingcafe.org/'                    \
+    | sed 's/^[[:space:]#]*\(TLS_CACERT[[:space:]][[:space:]]*\).*/\1\/etc\/pki\/tls\/certs\/ca-bundle.crt/'    \
+    | sed 's/^[[:space:]#]*\(TLS_REQCERT[[:space:]][[:space:]]*\).*/\1demand/'                                  \
+    > .ldap.conf
+    mv -f .ldap.conf ldap.conf
+    cd $SCRATCH
+
+    # ------------------------------------------------------------
+
+    # May fail at the first time in unprivileged docker due to domainname change.
+    for i in $($IS_CONTAINER && echo true) false; do :
+        authconfig                                                                          \
+            --enable{sssd{,auth},ldap{,auth,tls},locauthorize,cachecreds,mkhomedir}         \
+            --disable{cache,md5,nis,rfc2307bis}                                             \
+            --ldapserver=ldap://ldap.codingcafe.org                                         \
+            --ldapbasedn=dc=codingcafe,dc=org                                               \
+            --passalgo=sha512                                                               \
+            --smbsecurity=user                                                              \
+            --update                                                                        \
+        || $i
+    done
+
+    systemctl daemon-reload || $IS_CONTAINER
+    for i in sssd; do :
+        systemctl enable $i
+        systemctl start $i || $IS_CONTAINER
+    done
+) && rm -rvf $STAGE/auth
+sync || true
+
+# ================================================================
+# Nagios
+# ================================================================
+
+[ -e $STAGE/nagios ] && ( set -e
+    setsebool -P daemons_enable_cluster_mode 1 || $IS_CONTAINER
+
+    mkdir -p $SCRATCH/nagios-selinux
+    cd $_
+
+    # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    cat << EOF > nagios-statusjsoncgi.te
+module nagios-statusjsoncgi 1.0;
+require {
+  type nagios_script_t;
+  type nagios_spool_t;
+  class file { getattr read open };
+}
+allow nagios_script_t nagios_spool_t:file { getattr read open };
+EOF
+    # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    checkmodule -M -m -o nagios-statusjsoncgi.{mod,te}
+    semodule_package -m nagios-statusjsoncgi.mod -o nagios-statusjsoncgi.pp
+    semodule -i $_
+
+    systemctl daemon-reload || $IS_CONTAINER
+    for i in nagios; do :
+    #     systemctl enable $i
+    #     systemctl start $i || $IS_CONTAINER
+    done
+
+    cd
+    rm -rvf $SCRATCH/nagios-selinux
+) && rm -rvf $STAGE/nagios
+sync || true
+
+# ================================================================
 # Shadowsocks
 # ================================================================
 
-pip install $GIT_MIRROR/shadowsocks/shadowsocks/$([ $GIT_MIRROR == $GIT_MIRROR_CODINGCAFE ] && echo 'repository/archive.zip?ref=master' || echo 'archive/master.zip')
+[ -e $STAGE/ss ] && ( set -e
+    pip install $GIT_MIRROR/shadowsocks/shadowsocks/$([ $GIT_MIRROR == $GIT_MIRROR_CODINGCAFE ] && echo 'repository/archive.zip?ref=master' || echo 'archive/master.zip')
 
-# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-cat << EOF > /usr/lib/systemd/system/shadowsocks.service
+    # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    cat << EOF > /usr/lib/systemd/system/shadowsocks.service
 [Unit]
 Description=Shadowsocks daemon
 After=network.target
@@ -368,260 +397,244 @@ User=nobody
 [Install]
 WantedBy=multi-user.target
 EOF
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-cat << EOF > /usr/lib/systemd/system/shadowsocks-client.service
+    # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    cat << EOF > /usr/lib/systemd/system/shadowsocks-client.service
 [Unit]
 Description=Shadowsocks client daemon
 After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/sslocal -l 1080 -s foam.codingcafe.org -p 8388 -k sensitive_password_removed -m aes-256-gcm --fast-open
+ExecStart=/usr/bin/sslocal -l 1080 -s sensitive_url_removed -p 8388 -k sensitive_password_removed -m aes-256-gcm --fast-open
 User=nobody
 
 [Install]
 WantedBy=multi-user.target
 EOF
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-systemctl daemon-reload || $IS_CONTAINER
-for i in shadowsocks{,-client}; do :
-    systemctl enable $i
-    systemctl start $i || $IS_CONTAINER
-done
+    systemctl daemon-reload || $IS_CONTAINER
+    for i in shadowsocks{,-client}; do :
+        systemctl enable $i
+        systemctl start $i || $IS_CONTAINER
+    done
 
-# ----------------------------------------------------------------
+    # ------------------------------------------------------------
 
-echo 'net.ipv4.tcp_fastopen = 3' > /etc/sysctl.d/tcp-fast-open.conf
-sysctl -p
-# sslocal -s sensitive_url -p 8388 -k sensitive_password_removed -m aes-256-gcm --fast-open -d restart
+    echo 'net.ipv4.tcp_fastopen = 3' > /etc/sysctl.d/tcp-fast-open.conf
+    sysctl -p
+    # sslocal -s sensitive_url_removed -p 8388 -k sensitive_password_removed -m aes-256-gcm --fast-open -d restart
+) && rm -rvf $STAGE/ss
+sync || true
 
 # ================================================================
-# Nagios
+# Install TeX Live
 # ================================================================
 
-setsebool -P daemons_enable_cluster_mode 1 || $IS_CONTAINER
+[ -e $STAGE/tex ] && ( set -e set -e
+    export TEXLIVE_MIRROR=https://repo.codingcafe.org/CTAN/systems/texlive/tlnet
 
-mkdir -p $SCRATCH/nagios-selinux
-cd $_
+    cd $SCRATCH
+    curl -sSL $TEXLIVE_MIRROR/install-tl-unx.tar.gz | tar -zxvf -
+    cd install-tl-*
+    ./install-tl --version
 
-# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-cat << EOF > nagios-statusjsoncgi.te
-module nagios-statusjsoncgi 1.0;
-require {
-  type nagios_script_t;
-  type nagios_spool_t;
-  class file { getattr read open };
-}
-allow nagios_script_t nagios_spool_t:file { getattr read open };
+    ./install-tl --repository $TEXLIVE_MIRROR --profile <(
+    # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    cat << EOF
+selected_scheme scheme-full
+instopt_adjustpath 1
 EOF
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    )
 
-checkmodule -M -m -o nagios-statusjsoncgi.{mod,te}
-semodule_package -m nagios-statusjsoncgi.mod -o nagios-statusjsoncgi.pp
-semodule -i $_
-
-cd
-rm -rf $SCRATCH/nagios-selinux
-
-systemctl daemon-reload || $IS_CONTAINER
-for i in nagios; do :
-#     systemctl enable $i
-#     systemctl start $i || $IS_CONTAINER
-done
+    cd
+    rm -rvf $SCRATCH/install-tl-*
+) && rm -rvf $STAGE/tex
+sync || true
 
 # ================================================================
 # Compile LLVM
 # ================================================================
 
-export LLVM_MIRROR=$GIT_MIRROR/llvm-mirror
+[ -e $STAGE/llvm ] && ( set -e
+    export LLVM_MIRROR=$GIT_MIRROR/llvm-mirror
 
-cd $SCRATCH
-until git clone $LLVM_MIRROR/llvm.git; do echo 'Retrying'; done
-cd llvm
-git checkout release_40
-cd tools
-until git clone $LLVM_MIRROR/polly.git; do echo 'Retrying'; done &
-until git clone $LLVM_MIRROR/lldb.git; do echo 'Retrying'; done &
-until git clone $LLVM_MIRROR/lld.git; do echo 'Retrying'; done &
-until git clone $LLVM_MIRROR/clang.git; do echo 'Retrying'; done
-cd clang
-git checkout release_40
-cd tools
-until git clone $LLVM_MIRROR/clang-tools-extra.git extra; do echo 'Retrying'; done
-cd extra
-git checkout release_40 &
-wait
-cd ../../../polly
-git checkout release_40 &
-cd ../lldb
-git checkout release_40 &
-cd ../lld
-git checkout release_40 &
-cd ../../projects
-until git clone $LLVM_MIRROR/compiler-rt.git; do echo 'Retrying'; done &
-until git clone $LLVM_MIRROR/libunwind.git; do echo 'Retrying'; done &
-until git clone $LLVM_MIRROR/libcxx.git; do echo 'Retrying'; done &
-until git clone $LLVM_MIRROR/libcxxabi.git; do echo 'Retrying'; done &
-until git clone $LLVM_MIRROR/openmp.git; do echo 'Retrying'; done &
-wait
-cd compiler-rt
-git checkout release_40 &
-cd ../libunwind
-git checkout release_40 &
-cd ../libcxx
-git checkout release_40 &
-cd ../libcxxabi
-git checkout release_40 &
-cd ../openmp
-git checkout release_40 &
-cd ../..
-wait
+    cd $SCRATCH
+    until git clone $LLVM_MIRROR/llvm.git; do echo 'Retrying'; done
+    cd llvm
+    git checkout release_40
+    cd tools
+    until git clone $LLVM_MIRROR/polly.git; do echo 'Retrying'; done &
+    until git clone $LLVM_MIRROR/lldb.git; do echo 'Retrying'; done &
+    until git clone $LLVM_MIRROR/lld.git; do echo 'Retrying'; done &
+    until git clone $LLVM_MIRROR/clang.git; do echo 'Retrying'; done
+    cd clang
+    git checkout release_40
+    cd tools
+    until git clone $LLVM_MIRROR/clang-tools-extra.git extra; do echo 'Retrying'; done
+    cd extra
+    git checkout release_40 &
+    wait
+    cd ../../../polly
+    git checkout release_40 &
+    cd ../lldb
+    git checkout release_40 &
+    cd ../lld
+    git checkout release_40 &
+    cd ../../projects
+    until git clone $LLVM_MIRROR/compiler-rt.git; do echo 'Retrying'; done &
+    until git clone $LLVM_MIRROR/libunwind.git; do echo 'Retrying'; done &
+    until git clone $LLVM_MIRROR/libcxx.git; do echo 'Retrying'; done &
+    until git clone $LLVM_MIRROR/libcxxabi.git; do echo 'Retrying'; done &
+    until git clone $LLVM_MIRROR/openmp.git; do echo 'Retrying'; done &
+    wait
+    cd compiler-rt
+    git checkout release_40 &
+    cd ../libunwind
+    git checkout release_40 &
+    cd ../libcxx
+    git checkout release_40 &
+    cd ../libcxxabi
+    git checkout release_40 &
+    cd ../openmp
+    git checkout release_40 &
+    cd ../..
+    wait
 
-# ----------------------------------------------------------------
+    # ------------------------------------------------------------
 
-export LLVM_BUILD_TYPE=Release
+    export LLVM_BUILD_TYPE=Release
+    export LLVM_COMMON_ARGS="
+        -DCMAKE_BUILD_TYPE=$LLVM_BUILD_TYPE
+        -DCMAKE_INSTALL_PREFIX='\usr\'
+        -DCMAKE_VERBOSE_MAKEFILE=ON
+        -DLIBCLANG_BUILD_STATIC=ON
+        -DLIBCXX_CONFIGURE_IDE=ON
+        -DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=ON
+        -DLIBOMP_OMPT_SUPPORT=ON
+        -DLIBOMP_STATS=OFF
+        -DLIBOMP_TSAN_SUPPORT=ON
+        -DLIBOMP_USE_HWLOC=ON
+        -DLIBOMP_USE_STDCPPLIB=ON
+        -DLIBUNWIND_ENABLE_CROSS_UNWINDING=ON
+        -DLLDB_DISABLE_PYTHON=ON
+        -DLLVM_BUILD_LLVM_DYLIB=ON
+        -DLLVM_CCACHE_BUILD=ON
+        -DLLVM_ENABLE_CXX1Y=ON
+        -DLLVM_ENABLE_EH=ON
+        -DLLVM_ENABLE_FFI=ON
+        -DLLVM_ENABLE_RTTI=ON
+        -DLLVM_INSTALL_UTILS=ON
+        -DLLVM_LINK_LLVM_DYLIB=ON
+        -DLLVM_OPTIMIZED_TABLEGEN=ON
+        -DPOLLY_ENABLE_GPGPU_CODEGEN=ON
+        -G Ninja
+        ../..
+    "
 
-mkdir -p $SCRATCH/llvm/build/$LLVM_BUILD_TYPE
-cd $SCRATCH/llvm/build/$LLVM_BUILD_TYPE
-ccache -C
-cmake3 -G Ninja                             \
-    -DCMAKE_BUILD_TYPE=$LLVM_BUILD_TYPE     \
-    -DCMAKE_INSTALL_PREFIX='\usr\'          \
-    -DCMAKE_VERBOSE_MAKEFILE=ON             \
-    -DLIBCLANG_BUILD_STATIC=ON              \
-    -DLIBCXX_CONFIGURE_IDE=ON               \
-    -DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=ON   \
-    -DLIBOMP_OMPT_SUPPORT=ON                \
-    -DLIBOMP_STATS=OFF                      \
-    -DLIBOMP_TSAN_SUPPORT=ON                \
-    -DLIBOMP_USE_HWLOC=ON                   \
-    -DLIBOMP_USE_STDCPPLIB=ON               \
-    -DLIBUNWIND_ENABLE_CROSS_UNWINDING=ON   \
-    -DLLDB_DISABLE_PYTHON=ON                \
-    -DLLVM_BUILD_LLVM_DYLIB=ON              \
-    -DLLVM_CCACHE_BUILD=ON                  \
-    -DLLVM_ENABLE_CXX1Y=ON                  \
-    -DLLVM_ENABLE_EH=ON                     \
-    -DLLVM_ENABLE_FFI=ON                    \
-    -DLLVM_ENABLE_RTTI=ON                   \
-    -DLLVM_INSTALL_UTILS=ON                 \
-    -DLLVM_LINK_LLVM_DYLIB=ON               \
-    -DLLVM_OPTIMIZED_TABLEGEN=ON            \
-    -DPOLLY_ENABLE_GPGPU_CODEGEN=ON         \
-    ../..
-time cmake3 --build . --target install
-ldconfig &
-hash -r &
-cd
-rm -rf $SCRATCH/llvm/build &
-wait
+    # ------------------------------------------------------------
+    
+    ccache -C &
+    rm -rvf $SCRATCH/llvm/build/$LLVM_BUILD_TYPE
+    mkdir -p $_
+    cd $_
+    wait
 
-# ----------------------------------------------------------------
+    cmake3 $LLVM_COMMON_ARGS
+    time cmake3 --build . --target install
 
-export LLVM_BUILD_TYPE=Release
+    ldconfig &
+    cd
+    rm -rvf $SCRATCH/llvm/build
+    wait
 
-mkdir -p $SCRATCH/llvm/build/$LLVM_BUILD_TYPE
-cd $SCRATCH/llvm/build/$LLVM_BUILD_TYPE
-ccache -C
-CC='clang'                                  \
-CXX='clang++ -stdlib=libc++'                \
-LD=$(which ld.lld)                          \
-cmake3 -G Ninja                             \
-    -DCMAKE_BUILD_TYPE=$LLVM_BUILD_TYPE     \
-    -DCMAKE_INSTALL_PREFIX='\usr\'          \
-    -DCMAKE_VERBOSE_MAKEFILE=ON             \
-    -DCLANG_DEFAULT_CXX_STDLIB=libc++       \
-    -DENABLE_X86_RELAX_RELOCATIONS=ON       \
-    -DLIBCLANG_BUILD_STATIC=ON              \
-    -DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=ON   \
-    -DLIBCXX_CONFIGURE_IDE=ON               \
-    -DLIBCXXABI_USE_COMPILER_RT=ON          \
-    -DLIBCXXABI_USE_LLVM_UNWINDER=ON        \
-    -DLIBOMP_OMPT_SUPPORT=ON                \
-    -DLIBOMP_STATS=OFF                      \
-    -DLIBOMP_TSAN_SUPPORT=ON                \
-    -DLIBOMP_USE_HWLOC=ON                   \
-    -DLIBOMP_USE_STDCPPLIB=ON               \
-    -DLIBUNWIND_ENABLE_CROSS_UNWINDING=ON   \
-    -DLLDB_DISABLE_PYTHON=ON                \
-    -DLLVM_BUILD_LLVM_DYLIB=ON              \
-    -DLLVM_CCACHE_BUILD=ON                  \
-    -DLLVM_ENABLE_CXX1Y=ON                  \
-    -DLLVM_ENABLE_EH=ON                     \
-    -DLLVM_ENABLE_FFI=ON                    \
-    -DLLVM_ENABLE_LLD=ON                    \
-    -DLLVM_ENABLE_LTO=OFF                   \
-    -DLLVM_ENABLE_RTTI=ON                   \
-    -DLLVM_INSTALL_UTILS=ON                 \
-    -DLLVM_LINK_LLVM_DYLIB=ON               \
-    -DLLVM_OPTIMIZED_TABLEGEN=ON            \
-    -DPOLLY_ENABLE_GPGPU_CODEGEN=ON         \
-    ../..
-time cmake3 --build . --target install
-ldconfig &
-hash -r &
-cd
-rm -rf $SCRATCH/llvm/build &
-wait
+    # ------------------------------------------------------------
 
-# ----------------------------------------------------------------
+    ccache -C &
+    rm -rvf $SCRATCH/llvm/build/$LLVM_BUILD_TYPE
+    mkdir -p $_
+    cd $_
+    wait
 
-cd
-rm -rf $SCRATCH/llvm
+    CC='clang'                                  \
+    CXX='clang++ -stdlib=libc++'                \
+    LD=$(which ld.lld)                          \
+    cmake3                                      \
+        -DCLANG_DEFAULT_CXX_STDLIB=libc++       \
+        -DENABLE_X86_RELAX_RELOCATIONS=ON       \
+        -DLIBCXXABI_USE_COMPILER_RT=ON          \
+        -DLIBCXXABI_USE_LLVM_UNWINDER=ON        \
+        -DLLVM_ENABLE_LLD=ON                    \
+        -DLLVM_ENABLE_LTO=OFF                   \
+        $LLVM_COMMON_ARGS
+    time cmake3 --build . --target install
 
-# ================================================================
-# Compile Jemalloc
-# ================================================================
-
-cd $SCRATCH
-until git clone $GIT_MIRROR/jemalloc/jemalloc.git; do echo 'Retrying'; done
-cd jemalloc
-git checkout `git tag -l '[0-9\.]*' | tail -n1`
-
-# ----------------------------------------------------------------
-
-ccache -C
-CC='clang -fuse-ld=lld' LD=$(which lld) ./autogen.sh --with-jemalloc-prefix="" --enable-prof --enable-prof-libunwind
-time make -j`nproc` dist
-time LD=$(which lld) make -j`nproc`
-time make -j`nproc` install
-
-# ----------------------------------------------------------------
-
-ldconfig
-cd
-rm -rf $SCRATCH/jemalloc
+    ldconfig &
+    cd
+    rm -rvf $SCRATCH/llvm
+    wait
+) && rm -rvf $STAGE/llvm
+sync || true
 
 # ================================================================
 # Compile Boost
 # ================================================================
 
-axel -an 20 -o $SCRATCH/boost.tar.bz2 https://downloads.sourceforge.net/project/boost/boost/1.64.0/boost_1_64_0.tar.bz2
-cd $SCRATCH
-tar -xvf boost.tar.bz2
-rm -rf boost.tar.bz2
-cd boost*/
-ccache -C
-# CC=$(which clang) CXX=$(which clang++) LD=$(which lld) ./bootstrap.sh --with-toolset=clang
-./bootstrap.sh
-# CC=$(which clang) CXX=$(which clang++) LD=$(which lld) ./b2 cxxflags="-std=c++11 -stdlib=libc++ -fuse-ld=lld" linkflags="-stdlib=libc++" -aj`nproc --all` install
-./b2 -aj`nproc` install
+[ -e $STAGE/boost ] && ( set -e
+    cd $SCRATCH
+    ccache -C &
+    axel -an 20 https://dl.bintray.com/boostorg/release/1.65.0/source/boost_1_65_0.tar.bz2
+    wait
+    tar -xvf boost*.tar.bz2
+    cd boost*/
+    # CC=$(which clang) CXX=$(which clang++) LD=$(which lld) ./bootstrap.sh --with-toolset=clang
+    ./bootstrap.sh
+    # CC=$(which clang) CXX=$(which clang++) LD=$(which lld) ./b2 cxxflags="-std=c++11 -stdlib=libc++ -fuse-ld=lld" linkflags="-stdlib=libc++" -aj`nproc --all` install
+    ./b2 -aj`nproc` install
 
-# ----------------------------------------------------------------
+    # ------------------------------------------------------------
 
-ldconfig
-cd
-rm -rf $SCRATCH/boost*
+    ldconfig
+    cd
+    rm -rvf $SCRATCH/boost*
+) && rm -rvf $STAGE/boost
+sync || true
+
+# ================================================================
+# Compile Jemalloc
+# ================================================================
+
+[ -e $STAGE/jemalloc ] && ( set -e
+    cd $SCRATCH
+    until git clone $GIT_MIRROR/jemalloc/jemalloc.git; do echo 'Retrying'; done
+    cd jemalloc
+    git checkout `git tag -l '[0-9\.]*' | tail -n1`
+
+    # ------------------------------------------------------------
+
+    ccache -C
+    CC='clang -fuse-ld=lld' LD=$(which lld) ./autogen.sh --with-jemalloc-prefix="" --enable-prof --enable-prof-libunwind
+    time make -j`nproc` dist
+    time LD=$(which lld) make -j`nproc`
+    time make -j`nproc` install
+
+    # ------------------------------------------------------------
+
+    ldconfig
+    cd
+    rm -rvf $SCRATCH/jemalloc
+) && rm -rvf $STAGE/jemalloc
+sync || true
 
 # ================================================================
 # Cleanup
 # ================================================================
 
 # $IS_CONTAINER || umount $SCRATCH
-rm -rf $SCRATCH
+rm -rvf $SCRATCH
 cd
 
 echo
