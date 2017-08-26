@@ -461,29 +461,30 @@ sync || true
 
 [ -e $STAGE/llvm ] && ( set -e
     export LLVM_MIRROR=$GIT_MIRROR/llvm-mirror
+    export LLVM_GIT_TAG=release_40
 
     cd $SCRATCH
     until git clone $LLVM_MIRROR/llvm.git; do echo 'Retrying'; done
     cd llvm
-    git checkout release_40
+    git checkout $LLVM_GIT_TAG
     cd tools
     until git clone $LLVM_MIRROR/polly.git; do echo 'Retrying'; done &
     until git clone $LLVM_MIRROR/lldb.git; do echo 'Retrying'; done &
     until git clone $LLVM_MIRROR/lld.git; do echo 'Retrying'; done &
     until git clone $LLVM_MIRROR/clang.git; do echo 'Retrying'; done
     cd clang
-    git checkout release_40
+    git checkout $LLVM_GIT_TAG
     cd tools
     until git clone $LLVM_MIRROR/clang-tools-extra.git extra; do echo 'Retrying'; done
     cd extra
-    git checkout release_40 &
+    git checkout $LLVM_GIT_TAG &
     wait
     cd ../../../polly
-    git checkout release_40 &
+    git checkout $LLVM_GIT_TAG &
     cd ../lldb
-    git checkout release_40 &
+    git checkout $LLVM_GIT_TAG &
     cd ../lld
-    git checkout release_40 &
+    git checkout $LLVM_GIT_TAG &
     cd ../../projects
     until git clone $LLVM_MIRROR/compiler-rt.git; do echo 'Retrying'; done &
     until git clone $LLVM_MIRROR/libunwind.git; do echo 'Retrying'; done &
@@ -492,15 +493,15 @@ sync || true
     until git clone $LLVM_MIRROR/openmp.git; do echo 'Retrying'; done &
     wait
     cd compiler-rt
-    git checkout release_40 &
+    git checkout $LLVM_GIT_TAG &
     cd ../libunwind
-    git checkout release_40 &
+    git checkout $LLVM_GIT_TAG &
     cd ../libcxx
-    git checkout release_40 &
+    git checkout $LLVM_GIT_TAG &
     cd ../libcxxabi
-    git checkout release_40 &
+    git checkout $LLVM_GIT_TAG &
     cd ../openmp
-    git checkout release_40 &
+    git checkout $LLVM_GIT_TAG &
     cd ../..
     wait
 
