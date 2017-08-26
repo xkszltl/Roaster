@@ -138,7 +138,7 @@ sync || true
     dos2unix{,-*}                                               \
                                                                 \
     {bash,fish,zsh,mosh,tmux}{,-*}                              \
-    {bc,sed,man}{,-*}                                           \
+    {bc,sed,man,pv}{,-*}                                        \
     {parallel,jq}{,-*}                                          \
     {tree,lsof}{,-*}                                            \
     {telnet,tftp,rsh}{,-debuginfo}                              \
