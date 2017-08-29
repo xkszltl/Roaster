@@ -213,6 +213,11 @@ sync || true
 
     do echo 'Retrying'; done
 
+    # TODO: Fix the following issue:
+    #       LLVM may select the wrong gcc toolchain without libgcc_s integrated.
+    #       The correct choice is x86_64-redhat-linux instead of x86_64-linux-gnu.
+    yum remove -y gcc-x86_64-linux-gnu
+
     yum autoremove -y
     yum clean packages
 
@@ -461,7 +466,7 @@ sync || true
 
 [ -e $STAGE/llvm ] && ( set -e
     export LLVM_MIRROR=$GIT_MIRROR/llvm-mirror
-    export LLVM_GIT_TAG=release_40
+    export LLVM_GIT_TAG=release_50
 
     cd $SCRATCH
     until git clone $LLVM_MIRROR/llvm.git; do echo 'Retrying'; done
@@ -509,6 +514,8 @@ sync || true
 
     export LLVM_BUILD_TYPE=Release
     export LLVM_COMMON_ARGS="
+        -DCLANG_ANALYZER_BUILD_Z3=OFF
+        -DCLANG_DEFAULT_CXX_STDLIB=libc++
         -DCMAKE_BUILD_TYPE=$LLVM_BUILD_TYPE
         -DCMAKE_INSTALL_PREFIX='\usr\'
         -DCMAKE_VERBOSE_MAKEFILE=ON
@@ -524,7 +531,6 @@ sync || true
         -DLLDB_DISABLE_PYTHON=ON
         -DLLVM_BUILD_LLVM_DYLIB=ON
         -DLLVM_CCACHE_BUILD=ON
-        -DLLVM_ENABLE_CXX1Y=ON
         -DLLVM_ENABLE_EH=ON
         -DLLVM_ENABLE_FFI=ON
         -DLLVM_ENABLE_RTTI=ON
@@ -544,7 +550,9 @@ sync || true
     cd $_
     wait
 
-    cmake3 $LLVM_COMMON_ARGS
+    cmake3                                      \
+        -DLLVM_ENABLE_CXX1Y=ON                  \
+        $LLVM_COMMON_ARGS
     time cmake3 --build . --target install
 
     ldconfig &
@@ -561,15 +569,21 @@ sync || true
     wait
 
     CC='clang'                                  \
-    CXX='clang++ -stdlib=libc++'                \
+    CXX='clang++'                               \
     LD=$(which ld.lld)                          \
     cmake3                                      \
-        -DCLANG_DEFAULT_CXX_STDLIB=libc++       \
         -DENABLE_X86_RELAX_RELOCATIONS=ON       \
+        -DLIBCXX_USE_COMPILER_RT=ON             \
         -DLIBCXXABI_USE_COMPILER_RT=ON          \
         -DLIBCXXABI_USE_LLVM_UNWINDER=ON        \
+        -DLIBUNWIND_USE_COMPILER_RT=ON          \
+        -DLLVM_ENABLE_LIBCXX=ON                 \
         -DLLVM_ENABLE_LLD=ON                    \
         -DLLVM_ENABLE_LTO=OFF                   \
+        -DLLVM_ENABLE_MODULE_DEBUGGING=ON       \
+        -DLLVM_ENABLE_MODULES=OFF               \
+        -DLLVM_ENABLE_CXX1Y=ON                  \
+        -DLLVM_ENABLE_CXX1Z=OFF                 \
         $LLVM_COMMON_ARGS
     time cmake3 --build . --target install
 
