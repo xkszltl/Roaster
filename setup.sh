@@ -464,135 +464,125 @@ sync || true
 # Compile LLVM
 # ================================================================
 
-[ -e $STAGE/llvm ] && ( set -e
-    export LLVM_MIRROR=$GIT_MIRROR/llvm-mirror
-    export LLVM_GIT_TAG=release_50
+for i in llvm-{gcc,clang}; do
+    [ -e $STAGE/$i ] && ( set -e
+        export LLVM_MIRROR=$GIT_MIRROR/llvm-mirror
+        export LLVM_GIT_TAG=release_50
 
-    cd $SCRATCH
-    until git clone $LLVM_MIRROR/llvm.git; do echo 'Retrying'; done
-    cd llvm
-    git checkout $LLVM_GIT_TAG
-    cd tools
-    until git clone $LLVM_MIRROR/polly.git; do echo 'Retrying'; done &
-    until git clone $LLVM_MIRROR/lldb.git; do echo 'Retrying'; done &
-    until git clone $LLVM_MIRROR/lld.git; do echo 'Retrying'; done &
-    until git clone $LLVM_MIRROR/clang.git; do echo 'Retrying'; done
-    cd clang
-    git checkout $LLVM_GIT_TAG
-    cd tools
-    until git clone $LLVM_MIRROR/clang-tools-extra.git extra; do echo 'Retrying'; done
-    cd extra
-    git checkout $LLVM_GIT_TAG &
-    wait
-    cd ../../../polly
-    git checkout $LLVM_GIT_TAG &
-    cd ../lldb
-    git checkout $LLVM_GIT_TAG &
-    cd ../lld
-    git checkout $LLVM_GIT_TAG &
-    cd ../../projects
-    until git clone $LLVM_MIRROR/compiler-rt.git; do echo 'Retrying'; done &
-    until git clone $LLVM_MIRROR/libunwind.git; do echo 'Retrying'; done &
-    until git clone $LLVM_MIRROR/libcxx.git; do echo 'Retrying'; done &
-    until git clone $LLVM_MIRROR/libcxxabi.git; do echo 'Retrying'; done &
-    until git clone $LLVM_MIRROR/openmp.git; do echo 'Retrying'; done &
-    wait
-    cd compiler-rt
-    git checkout $LLVM_GIT_TAG &
-    cd ../libunwind
-    git checkout $LLVM_GIT_TAG &
-    cd ../libcxx
-    git checkout $LLVM_GIT_TAG &
-    cd ../libcxxabi
-    git checkout $LLVM_GIT_TAG &
-    cd ../openmp
-    git checkout $LLVM_GIT_TAG &
-    cd ../..
-    wait
+        cd $SCRATCH
+        until git clone $LLVM_MIRROR/llvm.git; do echo 'Retrying'; done
+        cd llvm
+        git checkout $LLVM_GIT_TAG
+        cd tools
+        until git clone $LLVM_MIRROR/polly.git; do echo 'Retrying'; done &
+        until git clone $LLVM_MIRROR/lldb.git; do echo 'Retrying'; done &
+        until git clone $LLVM_MIRROR/lld.git; do echo 'Retrying'; done &
+        until git clone $LLVM_MIRROR/clang.git; do echo 'Retrying'; done
+        cd clang
+        git checkout $LLVM_GIT_TAG
+        cd tools
+        until git clone $LLVM_MIRROR/clang-tools-extra.git extra; do echo 'Retrying'; done
+        cd extra
+        git checkout $LLVM_GIT_TAG &
+        wait
+        cd ../../../polly
+        git checkout $LLVM_GIT_TAG &
+        cd ../lldb
+        git checkout $LLVM_GIT_TAG &
+        cd ../lld
+        git checkout $LLVM_GIT_TAG &
+        cd ../../projects
+        until git clone $LLVM_MIRROR/compiler-rt.git; do echo 'Retrying'; done &
+        until git clone $LLVM_MIRROR/libunwind.git; do echo 'Retrying'; done &
+        until git clone $LLVM_MIRROR/libcxx.git; do echo 'Retrying'; done &
+        until git clone $LLVM_MIRROR/libcxxabi.git; do echo 'Retrying'; done &
+        until git clone $LLVM_MIRROR/openmp.git; do echo 'Retrying'; done &
+        wait
+        cd compiler-rt
+        git checkout $LLVM_GIT_TAG &
+        cd ../libunwind
+        git checkout $LLVM_GIT_TAG &
+        cd ../libcxx
+        git checkout $LLVM_GIT_TAG &
+        cd ../libcxxabi
+        git checkout $LLVM_GIT_TAG &
+        cd ../openmp
+        git checkout $LLVM_GIT_TAG &
+        cd ../..
+        wait
 
-    # ------------------------------------------------------------
+        # ------------------------------------------------------------
 
-    export LLVM_BUILD_TYPE=Release
-    export LLVM_COMMON_ARGS="
-        -DCLANG_ANALYZER_BUILD_Z3=OFF
-        -DCLANG_DEFAULT_CXX_STDLIB=libc++
-        -DCMAKE_BUILD_TYPE=$LLVM_BUILD_TYPE
-        -DCMAKE_INSTALL_PREFIX='\usr\'
-        -DCMAKE_VERBOSE_MAKEFILE=ON
-        -DLIBCLANG_BUILD_STATIC=ON
-        -DLIBCXX_CONFIGURE_IDE=ON
-        -DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=ON
-        -DLIBOMP_OMPT_SUPPORT=ON
-        -DLIBOMP_STATS=OFF
-        -DLIBOMP_TSAN_SUPPORT=ON
-        -DLIBOMP_USE_HWLOC=ON
-        -DLIBOMP_USE_STDCPPLIB=ON
-        -DLIBUNWIND_ENABLE_CROSS_UNWINDING=ON
-        -DLLDB_DISABLE_PYTHON=ON
-        -DLLVM_BUILD_LLVM_DYLIB=ON
-        -DLLVM_CCACHE_BUILD=ON
-        -DLLVM_ENABLE_EH=ON
-        -DLLVM_ENABLE_FFI=ON
-        -DLLVM_ENABLE_RTTI=ON
-        -DLLVM_INSTALL_UTILS=ON
-        -DLLVM_LINK_LLVM_DYLIB=ON
-        -DLLVM_OPTIMIZED_TABLEGEN=ON
-        -DPOLLY_ENABLE_GPGPU_CODEGEN=ON
-        -G Ninja
-        ../..
-    "
+        ccache -C &
+        rm -rvf $SCRATCH/llvm/build
+        mkdir -p $_
+        cd $_
+        wait
 
-    # ------------------------------------------------------------
-    
-    ccache -C &
-    rm -rvf $SCRATCH/llvm/build/$LLVM_BUILD_TYPE
-    mkdir -p $_
-    cd $_
-    wait
+        # ------------------------------------------------------------
 
-    cmake3                                      \
-        -DLLVM_ENABLE_CXX1Y=ON                  \
-        $LLVM_COMMON_ARGS
-    time cmake3 --build . --target install
+        export LLVM_COMMON_ARGS="
+            -DCLANG_ANALYZER_BUILD_Z3=OFF
+            -DCLANG_DEFAULT_CXX_STDLIB=libc++
+            -DCMAKE_BUILD_TYPE=Release
+            -DCMAKE_INSTALL_PREFIX='\usr\'
+            -DCMAKE_VERBOSE_MAKEFILE=ON
+            -DLIBCLANG_BUILD_STATIC=ON
+            -DLIBCXX_CONFIGURE_IDE=ON
+            -DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=ON
+            -DLIBOMP_OMPT_SUPPORT=ON
+            -DLIBOMP_STATS=OFF
+            -DLIBOMP_TSAN_SUPPORT=ON
+            -DLIBOMP_USE_HWLOC=ON
+            -DLIBOMP_USE_STDCPPLIB=ON
+            -DLIBUNWIND_ENABLE_CROSS_UNWINDING=ON
+            -DLLDB_DISABLE_PYTHON=ON
+            -DLLVM_BUILD_LLVM_DYLIB=ON
+            -DLLVM_CCACHE_BUILD=ON
+            -DLLVM_ENABLE_EH=ON
+            -DLLVM_ENABLE_FFI=ON
+            -DLLVM_ENABLE_RTTI=ON
+            -DLLVM_INSTALL_UTILS=ON
+            -DLLVM_LINK_LLVM_DYLIB=ON
+            -DLLVM_OPTIMIZED_TABLEGEN=ON
+            -DPOLLY_ENABLE_GPGPU_CODEGEN=ON
+            -G Ninja
+            .."
+        
+        [ $i = llvm-gcc ] && cmake3                 \
+            -DLLVM_ENABLE_CXX1Y=ON                  \
+            $LLVM_COMMON_ARGS
 
-    ldconfig &
-    cd
-    rm -rvf $SCRATCH/llvm/build
-    wait
+        [ $i = llvm-clang ] &&                      \
+        CC='clang'                                  \
+        CXX='clang++'                               \
+        LD=$(which ld.lld)                          \
+        cmake3                                      \
+            -DENABLE_X86_RELAX_RELOCATIONS=ON       \
+            -DLIBCXX_USE_COMPILER_RT=ON             \
+            -DLIBCXXABI_USE_COMPILER_RT=ON          \
+            -DLIBCXXABI_USE_LLVM_UNWINDER=ON        \
+            -DLIBUNWIND_USE_COMPILER_RT=ON          \
+            -DLLVM_ENABLE_LIBCXX=ON                 \
+            -DLLVM_ENABLE_LLD=ON                    \
+            -DLLVM_ENABLE_LTO=OFF                   \
+            -DLLVM_ENABLE_MODULE_DEBUGGING=ON       \
+            -DLLVM_ENABLE_MODULES=OFF               \
+            -DLLVM_ENABLE_CXX1Y=ON                  \
+            -DLLVM_ENABLE_CXX1Z=OFF                 \
+            $LLVM_COMMON_ARGS
 
-    # ------------------------------------------------------------
+        # ------------------------------------------------------------
 
-    ccache -C &
-    rm -rvf $SCRATCH/llvm/build/$LLVM_BUILD_TYPE
-    mkdir -p $_
-    cd $_
-    wait
+        time cmake3 --build . --target install
 
-    CC='clang'                                  \
-    CXX='clang++'                               \
-    LD=$(which ld.lld)                          \
-    cmake3                                      \
-        -DENABLE_X86_RELAX_RELOCATIONS=ON       \
-        -DLIBCXX_USE_COMPILER_RT=ON             \
-        -DLIBCXXABI_USE_COMPILER_RT=ON          \
-        -DLIBCXXABI_USE_LLVM_UNWINDER=ON        \
-        -DLIBUNWIND_USE_COMPILER_RT=ON          \
-        -DLLVM_ENABLE_LIBCXX=ON                 \
-        -DLLVM_ENABLE_LLD=ON                    \
-        -DLLVM_ENABLE_LTO=OFF                   \
-        -DLLVM_ENABLE_MODULE_DEBUGGING=ON       \
-        -DLLVM_ENABLE_MODULES=OFF               \
-        -DLLVM_ENABLE_CXX1Y=ON                  \
-        -DLLVM_ENABLE_CXX1Z=OFF                 \
-        $LLVM_COMMON_ARGS
-    time cmake3 --build . --target install
-
-    ldconfig &
-    cd
-    rm -rvf $SCRATCH/llvm
-    wait
-) && rm -rvf $STAGE/llvm
-sync || true
+        ldconfig &
+        cd
+        rm -rvf $SCRATCH/llvm
+        wait
+    ) && rm -rvf $STAGE/$i
+    sync || true
+done
 
 # ================================================================
 # Compile Boost

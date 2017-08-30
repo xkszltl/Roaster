@@ -2,7 +2,8 @@ stages:
   - init
   - ss
   - tex
-  - llvm
+  - llvm-gcc
+  - llvm-clang
   - misc
 
 init:
@@ -44,18 +45,31 @@ tex:
     - docker build --pull --no-cache --cpu-shares 128 -t $CI_REGISTRY_IMAGE:stage-tex -f stage/tex .
     - docker push $CI_REGISTRY_IMAGE:stage-tex
 
-llvm:
-  stage: llvm
+llvm-gcc:
+  stage: llvm-gcc
   tags:
     - docker
   only:
-    - /^build-(init|ss|tex|llvm)$/
+    - /^build-(init|ss|tex|llvm-gcc)$/
   except:
     - branches
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build --pull --no-cache --cpu-shares 128 -t $CI_REGISTRY_IMAGE:stage-llvm -f stage/llvm .
-    - docker push $CI_REGISTRY_IMAGE:stage-llvm
+    - docker build --pull --no-cache --cpu-shares 128 -t $CI_REGISTRY_IMAGE:stage-llvm-gcc -f stage/llvm-gcc .
+    - docker push $CI_REGISTRY_IMAGE:stage-llvm-gcc
+
+llvm-clang:
+  stage: llvm-clang
+  tags:
+    - docker
+  only:
+    - /^build-(init|ss|tex|llvm-gcc|llvm-clang)$/
+  except:
+    - branches
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build --pull --no-cache --cpu-shares 128 -t $CI_REGISTRY_IMAGE:stage-llvm-clang -f stage/llvm-clang .
+    - docker push $CI_REGISTRY_IMAGE:stage-llvm-clang
 
 misc:
   stage: misc
