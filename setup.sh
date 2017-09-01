@@ -61,7 +61,7 @@ cd $SCRATCH
     rm -rvf $STAGE
     mkdir -p $(dirname $STAGE)/.$(basename $STAGE)
     cd $_
-    [ $# -gt 0 ] && touch $@ || touch repo pkg auth nagios ss tex llvm boost jemalloc
+    [ $# -gt 0 ] && touch $@ || touch repo pkg auth nagios ss tex llvm boost jemalloc caffe2
     sync || true
     cd $SCRATCH
     mv -vf $(dirname $STAGE)/.$(basename $STAGE) $STAGE
@@ -128,7 +128,7 @@ sync || true
     java-1.8.0-openjdk{,-*}                                     \
     octave{,-*}                                                 \
     {gdb,valgrind,perf,{l,s}trace}{,-*}                         \
-    {make,ninja-build,cmake{,3},autoconf,libtool}{,-*}          \
+    {make,ninja-build,confu,cmake{,3},autoconf,libtool}{,-*}    \
     {ant,maven}{,-*}                                            \
     {git,subversion,mercurial}{,-*}                             \
     doxygen{,-*}                                                \
@@ -176,8 +176,10 @@ sync || true
     boost{,-*}                                                  \
     {flex,cups,bison,antlr}{,-*}                                \
     open{blas,cv,ssl,ssh,ldap}{,-*}                             \
+    eigen3{,-*}                                                 \
     {libsodium,mbedtls}{,-*}                                    \
-    {gflags,glog,protobuf}{,-*}                                 \
+    {gflags,glog,gtest,protobuf}{,-*}                           \
+    {redis,hiredis}{,-*}                                        \
     ImageMagick{,-*}                                            \
     docbook{,5,2X}{,-*}                                         \
     nagios{,selinux,devel,debuginfo,-plugins-all}               \
@@ -261,6 +263,8 @@ sync || true
     $IS_CONTAINER || package-cleanup --oldkernels --count=2
     yum autoremove -y
     yum clean all
+
+    curl -sSL https://repo.codingcafe.org/cudnn/$(curl -sSL https://repo.codingcafe.org/cudnn | sed -n 's/.*href="\(.*linux-x64.*\)".*/\1/p') | tar -zxvf - -C /usr/local/
 ) && rm -rvf $STAGE/pkg
 sync || true
 
@@ -467,7 +471,7 @@ sync || true
 for i in llvm-{gcc,clang}; do
     [ -e $STAGE/$i ] && ( set -e
         export LLVM_MIRROR=$GIT_MIRROR/llvm-mirror
-        export LLVM_GIT_TAG=release_50
+        export LLVM_GIT_TAG=release_40
 
         cd $SCRATCH
         until git clone $LLVM_MIRROR/llvm.git; do echo 'Retrying'; done
@@ -632,6 +636,40 @@ sync || true
     cd
     rm -rvf $SCRATCH/jemalloc
 ) && rm -rvf $STAGE/jemalloc
+sync || true
+
+# ================================================================
+# Compile Caffe2
+# ================================================================
+
+[ -e $STAGE/caffe2 ] && ( set -e
+    cd $SCRATCH
+    until git clone --recursive $GIT_MIRROR/caffe2/caffe2.git; do echo 'Retrying'; done
+    cd caffe2
+
+    # ------------------------------------------------------------
+
+    mkdir -p build
+    cd $_
+
+    CC='clang -fuse-ld=lld'                             \
+    CXX='clang++ -fuse-ld=lld'                          \
+    LD=$(which lld)                                     \
+    cmake3                                              \
+        -DCMAKE_BUILD_TYPE=Release                      \
+        -DBENCHMARK_ENABLE_LTO=ON                       \
+        -DBENCHMARK_USE_LIBCXX=ON                       \
+        -DBLAS=OpenBLAS                                 \
+        -DBUILD_BENCHMARK=OFF                           \
+        -DBUILD_GTEST=ON                                \
+        -DCAFFE2_NINJA_COMMAND=$(which ninja-build)     \
+        ..
+
+    time cmake3 --build . --target install
+    ldconfig
+    cd
+    rm -rvf $SCRATCH/caffe2
+) && rm -rvf $STAGE/caffe2
 sync || true
 
 # ================================================================
