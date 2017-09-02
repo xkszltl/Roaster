@@ -224,7 +224,7 @@ sync || true
     #       The correct choice is x86_64-redhat-linux instead of x86_64-linux-gnu.
     yum remove -y gcc-x86_64-linux-gnu
 
-    until yum install -y --nogpgcheck $RPM_CACHE_ARGS devtoolset-6; do echo 'Retrying'; done
+    until yum install -y --nogpgcheck $RPM_CACHE_ARGS devtoolset-{4,6}; do echo 'Retrying'; done
 
     yum autoremove -y
     yum clean packages
@@ -677,7 +677,7 @@ sync || true
     mkdir -p build
     cd $_
     ( set -e
-        . scl_source enable devtoolset-6
+        . scl_source enable devtoolset-4
 
         # CC='clang -fuse-ld=lld'                             \
         # CXX='clang++ -fuse-ld=lld'                          \
