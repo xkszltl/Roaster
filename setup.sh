@@ -121,7 +121,9 @@ sync || true
 # ================================================================
 
 [ -e $STAGE/pkg ] && ( set -e
-    until yum install -y $([ -f $RPM_CACHE_REPO ] && echo "--disableplugin=axelget,fastestmirror")    \
+    export RPM_CACHE_ARGS=$([ -f $RPM_CACHE_REPO ] && echo "--disableplugin=axelget,fastestmirror")
+
+    until yum install -y $RPM_CACHE_ARGS                        \
                                                                 \
     qpid-cpp-client{,-*}                                        \
     {gcc,distcc,ccache}{,-*}                                    \
@@ -138,9 +140,9 @@ sync || true
     dos2unix{,-*}                                               \
                                                                 \
     {bash,fish,zsh,mosh,tmux}{,-*}                              \
-    {bc,sed,man,pv}{,-*}                                        \
+    {bc,sed,man,pv,which}{,-*}                                  \
     {parallel,jq}{,-*}                                          \
-    {tree,lsof}{,-*}                                            \
+    {tree,whereami,mlocate,lsof}{,-*}                           \
     {telnet,tftp,rsh}{,-debuginfo}                              \
     {f,h,if,io,latency,power,tip}top{,-*}                       \
     procps-ng{,-*}                                              \
@@ -164,6 +166,8 @@ sync || true
     yum-utils{,-*}                                              \
     createrepo{,_c}{,-*}                                        \
                                                                 \
+    scl-utils{,-*}                                              \
+                                                                \
     ncurses{,-*}                                                \
     hwloc{,-*}                                                  \
     icu{,-*}                                                    \
@@ -176,7 +180,7 @@ sync || true
     boost{,-*}                                                  \
     {flex,cups,bison,antlr}{,-*}                                \
     open{blas,cv,ssl,ssh,ldap}{,-*}                             \
-    eigen3{,-*}                                                 \
+    {atlas,eigen3}{,-*}                                         \
     {libsodium,mbedtls}{,-*}                                    \
     {gflags,glog,gmock,gtest,protobuf}{,-*}                     \
     {redis,hiredis}{,-*}                                        \
@@ -220,6 +224,8 @@ sync || true
     #       The correct choice is x86_64-redhat-linux instead of x86_64-linux-gnu.
     yum remove -y gcc-x86_64-linux-gnu
 
+    until yum install -y --nogpgcheck $RPM_CACHE_ARGS devtoolset-6; do echo 'Retrying'; done
+
     yum autoremove -y
     yum clean packages
 
@@ -227,7 +233,7 @@ sync || true
 
     # ------------------------------------------------------------
 
-    until yum install -y --skip-broken $([ -f $RPM_CACHE_REPO ] && echo "--disableplugin=axelget,fastestmirror") libreoffice; do echo 'Retrying'; done
+    until yum install -y --skip-broken $RPM_CACHE_ARGS libreoffice; do echo 'Retrying'; done
 
     yum autoremove -y
     yum clean packages
@@ -235,7 +241,7 @@ sync || true
     # ------------------------------------------------------------
 
     for i in anaconda perl python{,2,34} qt5 ruby; do :
-        until yum install -y --skip-broken $([ -f $RPM_CACHE_REPO ] && echo "--disableplugin=axelget,fastestmirror") $i{,-*}; do echo 'Retrying'; done
+        until yum install -y --skip-broken $RPM_CACHE_ARGS $i{,-*}; do echo 'Retrying'; done
         yum autoremove -y
         yum clean packages
     done
@@ -265,6 +271,8 @@ sync || true
     yum clean all
 
     curl -sSL https://repo.codingcafe.org/cudnn/$(curl -sSL https://repo.codingcafe.org/cudnn | sed -n 's/.*href="\(.*linux-x64.*\)".*/\1/p') | tar -zxvf - -C /usr/local/
+
+    updatedb
 ) && rm -rvf $STAGE/pkg
 sync || true
 
@@ -553,7 +561,8 @@ for i in llvm-{gcc,clang}; do
             -G Ninja
             .."
         
-        [ $i = llvm-gcc ] && cmake3                 \
+        [ $i = llvm-gcc ] &&                        \
+        cmake3                                      \
             -DLLVM_ENABLE_CXX1Y=ON                  \
             $LLVM_COMMON_ARGS
 
@@ -648,38 +657,46 @@ sync || true
     cd caffe2
     ( set -e
         export TMP_GITMODULES=$(mktemp)
-        cat .gitmodules                                                 \
-        | sed 's/github.com\(\/Maratyszcza\)/git.codingcafe.org\/Mirrors\1/'     \
-        | sed 's/github.com\(\/NVLabs\)/git.codingcafe.org\/Mirrors\1/'          \
-        | sed 's/github.com\(\/NervanaSystems\)/git.codingcafe.org\/Mirrors\1/'  \
-        | sed 's/github.com\(\/glog\)/git.codingcafe.org\/Mirrors\1/'            \
-        | sed 's/github.com\(\/google\)/git.codingcafe.org\/Mirrors\1/'          \
-        | sed 's/github.com\/nvidia/git.codingcafe.org\/Mirrors\/NVIDIA/'        \
+        cat .gitmodules                                                             \
+        | sed 's/github.com\(\/Maratyszcza\)/git.codingcafe.org\/Mirrors\1/'        \
+        | sed 's/github.com\(\/NVLabs\)/git.codingcafe.org\/Mirrors\1/'             \
+        | sed 's/github.com\(\/NervanaSystems\)/git.codingcafe.org\/Mirrors\1/'     \
+        | sed 's/github.com\(\/glog\)/git.codingcafe.org\/Mirrors\1/'               \
+        | sed 's/github.com\(\/google\)/git.codingcafe.org\/Mirrors\1/'             \
+        | sed 's/github.com\/nvidia/git.codingcafe.org\/Mirrors\/NVIDIA/'           \
         > $TMP_GITMODULES
         cat $TMP_GITMODULES > .gitmodules
         rm -rf $TMP_GITMODULES
     )
     until git submodule update --init --recursive; do echo 'Retrying'; done
 
+    echo "list(REMOVE_ITEM Caffe2_DEPENDENCY_LIBS cblas)" >> cmake/Dependencies.cmake
+
     # ------------------------------------------------------------
 
     mkdir -p build
     cd $_
+    ( set -e
+        . scl_source enable devtoolset-6
 
-    CC='clang -fuse-ld=lld'                             \
-    CXX='clang++ -fuse-ld=lld'                          \
-    LD=$(which lld)                                     \
-    cmake3                                              \
-        -DCMAKE_BUILD_TYPE=Release                      \
-        -DBENCHMARK_ENABLE_LTO=ON                       \
-        -DBENCHMARK_USE_LIBCXX=ON                       \
-        -DBLAS=OpenBLAS                                 \
-        -DBUILD_BENCHMARK=OFF                           \
-        -DBUILD_GTEST=ON                                \
-        -DCAFFE2_NINJA_COMMAND=$(which ninja-build)     \
-        ..
+        # CC='clang -fuse-ld=lld'                             \
+        # CXX='clang++ -fuse-ld=lld'                          \
+        # LD=$(which lld)                                     \
+        cmake3                                              \
+            -G Ninja                                        \
+            -DCMAKE_BUILD_TYPE=Release                      \
+            -DCMAKE_VERBOSE_MAKEFILE=ON                     \
+            -DBENCHMARK_ENABLE_LTO=ON                       \
+            -DBENCHMARK_USE_LIBCXX=OFF                      \
+            -DBLAS=OpenBLAS                                 \
+            -DBUILD_BENCHMARK=OFF                           \
+            -DBUILD_GTEST=ON                                \
+            -DCAFFE2_NINJA_COMMAND=$(which ninja-build)     \
+            ..
 
-    time cmake3 --build . --target install
+        time cmake3 --build . --target install
+    )
+
     ldconfig
     cd
     rm -rvf $SCRATCH/caffe2
