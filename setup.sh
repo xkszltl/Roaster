@@ -178,7 +178,7 @@ sync || true
     open{blas,cv,ssl,ssh,ldap}{,-*}                             \
     eigen3{,-*}                                                 \
     {libsodium,mbedtls}{,-*}                                    \
-    {gflags,glog,gtest,protobuf}{,-*}                           \
+    {gflags,glog,gmock,gtest,protobuf}{,-*}                     \
     {redis,hiredis}{,-*}                                        \
     ImageMagick{,-*}                                            \
     docbook{,5,2X}{,-*}                                         \
@@ -644,8 +644,22 @@ sync || true
 
 [ -e $STAGE/caffe2 ] && ( set -e
     cd $SCRATCH
-    until git clone --recursive $GIT_MIRROR/caffe2/caffe2.git; do echo 'Retrying'; done
+    until git clone $GIT_MIRROR/caffe2/caffe2.git; do echo 'Retrying'; done
     cd caffe2
+    ( set -e
+        export TMP_GITMODULES=$(mktemp)
+        cat .gitmodules                                                 \
+        | sed 's/github.com\(\/Maratyszcza\)/git.codingcafe.org\/Mirrors\1/'     \
+        | sed 's/github.com\(\/NVLabs\)/git.codingcafe.org\/Mirrors\1/'          \
+        | sed 's/github.com\(\/NervanaSystems\)/git.codingcafe.org\/Mirrors\1/'  \
+        | sed 's/github.com\(\/glog\)/git.codingcafe.org\/Mirrors\1/'            \
+        | sed 's/github.com\(\/google\)/git.codingcafe.org\/Mirrors\1/'          \
+        | sed 's/github.com\/nvidia/git.codingcafe.org\/Mirrors\/NVIDIA/'        \
+        > $TMP_GITMODULES
+        cat $TMP_GITMODULES > .gitmodules
+        rm -rf $TMP_GITMODULES
+    )
+    until git submodule update --init --recursive; do echo 'Retrying'; done
 
     # ------------------------------------------------------------
 

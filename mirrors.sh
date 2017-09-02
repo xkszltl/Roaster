@@ -11,4 +11,17 @@ if [ ! -d $ROOT/{} ]; then mkdir -p $ROOT/$(dirname {}) && cd $ROOT/$(dirname {}
 else cd $ROOT/{} && git fetch --all
 fi &&
 git remote set-url --push origin git@git.codingcafe.org:Mirrors/{} && git push --mirror
-'"'" ::: {BVLC/caffe,caffe2/{caffe2,models},llvm-mirror/{ll{vm,d,db,go},clang{,-tools-extra},polly,compiler-rt,openmp,lib{unwind,cxx{,abi}},test-suite},jemalloc/jemalloc,aws/aws-{cli,sdk-{cpp,go,java,js,net,php,ruby}},shadowsocks/shadowsocks}.git
+'"'" ::: {\
+BVLC/caffe,\
+Maratyszcza/{FP16,FXdiv,NNPACK,confu,psimd,pthreadpool},\
+NVIDIA/{DIGITS,cnmem,libglvnd,nccl},\
+NVLabs/{cub,xmp},\
+NervanaSystems/{neon,nervanagpu},\
+aws/aws-{cli,sdk-{cpp,go,java,js,net,php,ruby}},\
+caffe2/{caffe2,models},\
+gflags/gflags,\
+google/{benchmark,snappy,glog,googletest,leveldb,protobuf},\
+jemalloc/jemalloc,\
+llvm-mirror/{ll{vm,d,db,go},clang{,-tools-extra},polly,compiler-rt,openmp,lib{unwind,cxx{,abi}},test-suite},\
+shadowsocks/shadowsocks\
+}.git
