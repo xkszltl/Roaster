@@ -189,7 +189,7 @@ sync || true
     ImageMagick{,-*}                                            \
     docbook{,5,2X}{,-*}                                         \
     nagios{,selinux,devel,debuginfo,-plugins-all}               \
-    nrpe,nsca                                                   \
+    {nrpe,nsca}                                                 \
     {collectd,rrdtool,pnp4nagios}{,-*}                          \
     cuda                                                        \
                                                                 \
