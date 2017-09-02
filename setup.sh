@@ -130,7 +130,7 @@ sync || true
     java-1.8.0-openjdk{,-*}                                     \
     octave{,-*}                                                 \
     {gdb,valgrind,perf,{l,s}trace}{,-*}                         \
-    {make,ninja-build,confu,cmake{,3},autoconf,libtool}{,-*}    \
+    {make,ninja-build,cmake{,3},autoconf,libtool}{,-*}          \
     {ant,maven}{,-*}                                            \
     {git,subversion,mercurial}{,-*}                             \
     doxygen{,-*}                                                \

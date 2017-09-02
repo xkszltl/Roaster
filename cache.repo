@@ -88,7 +88,7 @@ baseurl=https://repo.codingcafe.org/epel/$releasever/$basearch
 failovermethod=priority
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
-priority=2
+priority=1
 enabled=0
 
 [cache-epel-debuginfo]
@@ -97,7 +97,7 @@ baseurl=https://repo.codingcafe.org/epel/$releasever/debug/$basearch
 failovermethod=priority
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
 gpgcheck=1
-priority=2
+priority=1
 enabled=0
 
 [cache-epel-source]
@@ -106,7 +106,7 @@ baseurl=https://repo.codingcafe.org/epel/$releasever/SRPMS
 failovermethod=priority
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
 gpgcheck=1
-priority=2
+priority=1
 enabled=0
 
 ################################################################################
