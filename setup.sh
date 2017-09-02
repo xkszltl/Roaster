@@ -182,6 +182,8 @@ sync || true
     open{blas,cv,ssl,ssh,ldap}{,-*}                             \
     {atlas,eigen3}{,-*}                                         \
     {libsodium,mbedtls}{,-*}                                    \
+    libev{,-devel,-source,-debuginfo}                           \
+    {asciidoc,gettext,xmlto,c-ares,pcre{,2}}{,-*}               \
     {gflags,glog,gmock,gtest,protobuf}{,-*}                     \
     {redis,hiredis}{,-*}                                        \
     ImageMagick{,-*}                                            \
@@ -440,8 +442,34 @@ EOF
 
     # ------------------------------------------------------------
 
-    echo 'net.ipv4.tcp_fastopen = 3' > /etc/sysctl.d/tcp-fast-open.conf
-    sysctl -p
+    modprobe -a tcp_htcp tcp_hybla
+    # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    cat << EOF > /etc/modules-load.d/90-shadowsocks.conf
+tcp_htcp
+tcp_hybla
+EOF
+    # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    cat << EOF > /etc/sysctl.d/90-shadowsocks.conf
+net.core.rmem_max = 67108864
+net.core.wmem_max = 67108864
+net.core.netdev_max_backlog = 250000
+
+net.ipv4.tcp_fastopen = 3
+net.ipv4.tcp_syncookies = 1
+net.ipv4.tcp_tw_reuse = 1
+net.ipv4.tcp_tw_recycle = 0
+net.ipv4.tcp_max_tw_buckets = 5000
+net.ipv4.tcp_max_syn_backlog = 8192
+net.ipv4.tcp_rmem = 4096 87380 67108864
+net.ipv4.tcp_wmem = 4096 65536 67108864
+net.ipv4.tcp_mtu_probing = 1
+net.ipv4.tcp_congestion_control = htcp
+EOF
+    # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    sysctl --system
     # sslocal -s sensitive_url_removed -p 8388 -k sensitive_password_removed -m aes-256-gcm --fast-open -d restart
 ) && rm -rvf $STAGE/ss
 sync || true

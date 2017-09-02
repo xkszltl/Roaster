@@ -226,6 +226,7 @@ name=[Cache] cuda
 baseurl=https://repo.codingcafe.org/cuda/rhel$releasever/$basearch
 gpgcheck=1
 gpgkey=https://repo.codingcafe.org/cuda/rhel$releasever/$basearch/7fa2af80.pub
+priority=1
 enabled=0
 
 ################################################################################
@@ -236,7 +237,7 @@ enabled=0
 name=[Cache] Docker CE Stable - $basearch
 baseurl=https://repo.codingcafe.org/docker/linux/centos/7/$basearch/stable
 gpgcheck=1
-gpgkey=https://download.docker.com/linux/centos/gpg
+gpgkey=https://repo.codingcafe.org/docker/linux/centos/gpg
 priority=2
 enabled=0
 

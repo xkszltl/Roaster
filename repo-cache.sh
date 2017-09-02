@@ -14,7 +14,7 @@ export HTTP_PROXY=$http_proxy
 export https_proxy=$http_proxy
 export HTTPS_PROXY=$https_proxy
 
-REPOSYNC='reposync
+export REPOSYNC='reposync
     --cachedir=$(mktemp -d)
     --download-metadata
     --downloadcomps
@@ -24,7 +24,7 @@ REPOSYNC='reposync
     -r
 '
 
-CREATEREPO='createrepo_c
+export CREATEREPO='createrepo_c
     --cachedir=.cache
     --checksum=sha512
     --compress-type=xz
@@ -120,11 +120,20 @@ done
     mkdir -p cuda/rhel7/$(uname -i)
     cd $_
     wget -cq https://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/7fa2af80.pub
+    rpm --import 7fa2af80.gpg
     eval $REPOSYNC cuda
     eval $CREATEREPO
 ) &
 
 # ----------------------------------------------------------------
+
+(
+    set -e
+    mkdir -p docker/linux/centos
+    cd $_
+    wget -cq https://download.docker.com/linux/centos/gpg
+    rpm --import gpg
+)
 
 for i in {=,-debuginfo=debug-}$(uname -i) -source=source; do :
 for j in stable edge test; do :
@@ -148,7 +157,7 @@ for j in =$(uname -i) -source=SRPMS; do :
     set -e
     mkdir -p gitlab/$(sed 's/.*=//' <<< $i)/el/7/$(sed 's/.*=//' <<< $j)
     cd $_
-    eval $REPOSYNC $([ $(sed 's/=.*//' <<< $i) = gitlab ] && echo '--newest-only') $(sed 's/=.*//' <<< $i)_$(sed 's/.*=//' <<< $i)$(sed 's/=.*//' <<< $j)
+    eval $REPOSYNC $(sed 's/=.*//' <<< $i)_$(sed 's/.*=//' <<< $i)$(sed 's/=.*//' <<< $j) $([ $(sed 's/=.*//' <<< $i) = gitlab ] && echo '--newest-only')
     eval $CREATEREPO
 ) &
 done
