@@ -4,7 +4,7 @@ set -e
 
 mkdir -p /var/mirrors
 cd /var/mirrors
-parallel --ungroup 'bash -c '"'"'
+parallel -j 10 --ungroup 'bash -c '"'"'
 set -e
 export ROOT=/var/mirrors
 if [ ! -d $ROOT/{} ]; then mkdir -p $ROOT/$(dirname {}) && cd $ROOT/$(dirname {}) && git clone --mirror git@github.com:{} && cd $ROOT/{}
@@ -23,5 +23,5 @@ gflags/gflags,\
 google/{benchmark,snappy,glog,googletest,leveldb,protobuf},\
 jemalloc/jemalloc,\
 llvm-mirror/{ll{vm,d,db,go},clang{,-tools-extra},polly,compiler-rt,openmp,lib{unwind,cxx{,abi}},test-suite},\
-shadowsocks/shadowsocks\
+shadowsocks/{ShadowsocksX-NG,libQtShadowsocks,shadowsocks{,-go,-libev,-manager,-windows}}\
 }.git
