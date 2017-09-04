@@ -300,6 +300,12 @@ export GIT_MIRROR=$(
         curl -sSL https://repo.codingcafe.org/nvidia/nccl/$(curl -sSL https://repo.codingcafe.org/nvidia/nccl | sed -n 's/.*href="\(.*amd64.*\)".*/\1/p' | sort | tail -n1) | tar -Jxvf - --strip-components=1 -C /usr/local/
         ldconfig
         rpm -i https://github.com/NVIDIA/nvidia-docker/releases/download/v1.0.1/nvidia-docker-1.0.1-1.x86_64.rpm
+
+        ( set -e
+            cd $(dirname $(which nvcc))/../samples
+            . scl_source enable devtoolset-4
+            VERBOSE=1 time make -j $(nproc)
+        )
     )
 
     updatedb
@@ -522,58 +528,35 @@ sync || true
 for i in llvm-{gcc,clang}; do
     [ -e $STAGE/$i ] && ( set -e
         export LLVM_MIRROR=$GIT_MIRROR/llvm-mirror
-        export LLVM_GIT_TAG=release_50
+        export LLVM_GIT_TAG=release_40
 
         cd $SCRATCH
-        until git clone $LLVM_MIRROR/llvm.git; do echo 'Retrying'; done
-        cd llvm
-        git checkout $LLVM_GIT_TAG
-        cd tools
-        until git clone $LLVM_MIRROR/polly.git; do echo 'Retrying'; done &
-        until git clone $LLVM_MIRROR/lldb.git; do echo 'Retrying'; done &
-        until git clone $LLVM_MIRROR/lld.git; do echo 'Retrying'; done &
-        until git clone $LLVM_MIRROR/clang.git; do echo 'Retrying'; done
-        cd clang
-        git checkout $LLVM_GIT_TAG
-        cd tools
-        until git clone $LLVM_MIRROR/clang-tools-extra.git extra; do echo 'Retrying'; done
-        cd extra
-        git checkout $LLVM_GIT_TAG &
-        wait
-        cd ../../../polly
-        git checkout $LLVM_GIT_TAG &
-        cd ../lldb
-        git checkout $LLVM_GIT_TAG &
-        cd ../lld
-        git checkout $LLVM_GIT_TAG &
-        cd ../../projects
-        until git clone $LLVM_MIRROR/compiler-rt.git; do echo 'Retrying'; done &
-        until git clone $LLVM_MIRROR/libunwind.git; do echo 'Retrying'; done &
-        until git clone $LLVM_MIRROR/libcxx.git; do echo 'Retrying'; done &
-        until git clone $LLVM_MIRROR/libcxxabi.git; do echo 'Retrying'; done &
-        until git clone $LLVM_MIRROR/openmp.git; do echo 'Retrying'; done &
-        wait
-        cd compiler-rt
-        git checkout $LLVM_GIT_TAG &
-        cd ../libunwind
-        git checkout $LLVM_GIT_TAG &
-        cd ../libcxx
-        git checkout $LLVM_GIT_TAG &
-        cd ../libcxxabi
-        git checkout $LLVM_GIT_TAG &
-        cd ../openmp
-        git checkout $LLVM_GIT_TAG &
-        cd ../..
-        wait
+
+        ( set -e
+            echo "Retriving LLVM "$LLVM_GIT_TAG"..."
+            until git clone --branch $LLVM_GIT_TAG $LLVM_MIRROR/llvm.git; do echo 'Retrying'; done
+            cd llvm
+            cd projects
+            for i in compiler-rt lib{cxx{,abi},unwind} openmp; do
+                until git clone --branch $LLVM_GIT_TAG $LLVM_MIRROR/$i.git; do echo 'Retrying'; done &
+            done
+            cd ../tools
+            for i in lld lldb polly; do
+                until git clone --branch $LLVM_GIT_TAG $LLVM_MIRROR/$i.git; do echo 'Retrying'; done &
+            done
+            until git clone --branch $LLVM_GIT_TAG $LLVM_MIRROR/clang.git; do echo 'Retrying'; done
+            cd clang/tools
+            until git clone --branch $LLVM_GIT_TAG $LLVM_MIRROR/clang-tools-extra.git extra; do echo 'Retrying'; done
+            wait
+        )
 
         # ------------------------------------------------------------
 
-        ccache -C &
-        mkdir -p $SCRATCH/llvm/build
+        mkdir -p llvm/build
         cd $_
-        wait
 
-        # ------------------------------------------------------------
+        . scl_source enable devtoolset-6
+        ccache -C
 
         export LLVM_COMMON_ARGS="
             -DCLANG_ANALYZER_BUILD_Z3=OFF
@@ -603,32 +586,33 @@ for i in llvm-{gcc,clang}; do
             -G Ninja
             .."
         
-        [ $i = llvm-gcc ] &&                        \
-        cmake3                                      \
-            -DLLVM_ENABLE_CXX1Y=ON                  \
-            $LLVM_COMMON_ARGS
-
-        [ $i = llvm-clang ] &&                      \
-        CC='clang'                                  \
-        CXX='clang++'                               \
-        LD=$(which ld.lld)                          \
-        cmake3                                      \
-            -DENABLE_X86_RELAX_RELOCATIONS=ON       \
-            -DLIBCXX_USE_COMPILER_RT=ON             \
-            -DLIBCXXABI_USE_COMPILER_RT=ON          \
-            -DLIBCXXABI_USE_LLVM_UNWINDER=ON        \
-            -DLIBUNWIND_USE_COMPILER_RT=ON          \
-            -DLLVM_ENABLE_LIBCXX=ON                 \
-            -DLLVM_ENABLE_LLD=ON                    \
-            -DLLVM_ENABLE_LTO=OFF                   \
-            -DLLVM_ENABLE_MODULE_DEBUGGING=ON       \
-            -DLLVM_ENABLE_MODULES=OFF               \
-            -DLLVM_ENABLE_CXX1Y=ON                  \
-            -DLLVM_ENABLE_CXX1Z=OFF                 \
-            $LLVM_COMMON_ARGS
+        if [ $i = llvm-gcc ]; then
+            cmake3                                  \
+                -DLLVM_ENABLE_CXX1Y=ON              \
+                $LLVM_COMMON_ARGS
+        else
+            CC='clang'                              \
+            CXX='clang++'                           \
+            LD=$(which ld.lld)                      \
+            cmake3                                  \
+                -DENABLE_X86_RELAX_RELOCATIONS=ON   \
+                -DLIBCXX_USE_COMPILER_RT=ON         \
+                -DLIBCXXABI_USE_COMPILER_RT=ON      \
+                -DLIBCXXABI_USE_LLVM_UNWINDER=ON    \
+                -DLIBUNWIND_USE_COMPILER_RT=ON      \
+                -DLLVM_ENABLE_LIBCXX=ON             \
+                -DLLVM_ENABLE_LLD=ON                \
+                -DLLVM_ENABLE_LTO=OFF               \
+                -DLLVM_ENABLE_CXX1Y=ON              \
+                -DLLVM_ENABLE_CXX1Z=OFF             \
+                $LLVM_COMMON_ARGS
+        fi
 
         # ------------------------------------------------------------
 
+        # time cmake3 --build . --target dist
+        # time cmake3 --build . --target dist-check
+        # time cmake3 --build . --target rpm
         time cmake3 --build . --target install
 
         ldconfig &
