@@ -5,6 +5,7 @@ stages:
   - llvm-gcc
   - llvm-clang
   - misc
+  - dl
 
 init:
   stage: init
@@ -73,6 +74,19 @@ llvm-clang:
 
 misc:
   stage: misc
+  tags:
+    - docker
+  only:
+    - /^build-.*$/
+  except:
+    - branches
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build --pull --no-cache --cpu-shares 128 -t $CI_REGISTRY_IMAGE:stage-misc -f stage/misc .
+    - docker push $CI_REGISTRY_IMAGE:stage-misc
+
+dl:
+  stage: dl
   tags:
     - docker
   only:

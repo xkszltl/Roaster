@@ -61,7 +61,7 @@ cd $SCRATCH
     rm -rvf $STAGE
     mkdir -p $(dirname $STAGE)/.$(basename $STAGE)
     cd $_
-    [ $# -gt 0 ] && touch $@ || touch repo pkg auth nagios ss tex llvm boost jemalloc caffe2
+    [ $# -gt 0 ] && touch $@ || touch repo pkg auth nagios ss tex llvm boost jemalloc caffe caffe2
     sync || true
     cd $SCRATCH
     mv -vf $(dirname $STAGE)/.$(basename $STAGE) $STAGE
@@ -72,7 +72,7 @@ cd $SCRATCH
 # ================================================================
 
 [ -e $STAGE/repo ] && ( set -e
-    until yum install -y yum-utils{,-*}; do echo 'Retrying'; done
+    until yum install -y sed yum-utils; do echo 'Retrying'; done
 
     yum-config-manager --setopt=tsflags= --save
 
@@ -80,7 +80,7 @@ cd $SCRATCH
 
     echo yum-config-manager%--{disable%,enable%$([ -f $RPM_CACHE_REPO ] && echo 'cache-')}{{base,updates,extras,centosplus}{,-source},base-debuginfo}\; | sed 's/%/ /g' | bash
 
-    until yum install -y yum-plugin-{priorities,fastestmirror} curl kernel-headers; do echo 'Retrying'; done
+    until yum install -y yum-plugin-{priorities,fastestmirror} bc {core,find,ip}utils curl kernel-headers; do echo 'Retrying'; done
 
     until yum install -y epel-release; do echo 'Retrying'; done
     echo yum-config-manager%--{disable%,enable%$([ -f $RPM_CACHE_REPO ] && echo 'cache-')}epel{,-source,-debuginfo}\; | sed 's/%/ /g' | bash
@@ -115,6 +115,19 @@ cd $SCRATCH
     yum update -y || true
 ) && rm -rvf $STAGE/repo
 sync || true
+
+export GIT_MIRROR=$(
+    for i in $(env | sed -n 's/^GIT_MIRROR_[^=]*=//p'); do :
+        ping -nfc 100 $(sed 's/.*:\/\///' <<<"$i" | sed 's/\/.*//')                         \
+        | sed -n '/ms$/p'                                                                   \
+        | sed 's/.*[^0-9]\([0-9]*\)%.*[^0-9\.]\([0-9\.]*\).*ms/\1 \2/'                      \
+        | sed 's/.*ewma.*\/\([0-9\.]*\).*/\1/'                                              \
+        | xargs                                                                             \
+        | sed 's/\([0-9\.][0-9\.]*\).*[[:space:]]\([0-9\.][0-9\.]*\).*/\2\*\(\1\*10+1\)/'   \
+        | bc
+        echo "$i"
+    done | paste - - | sort -n | head -n1 | xargs -n1 | tail -n1
+)
 
 # ================================================================
 # Install Packages
@@ -152,7 +165,7 @@ sync || true
     hping3{,-*}                                                 \
     {traceroute,mtr,rsync,tcpdump,whois,net-snmp}{,-*}          \
     torsocks{,-*}                                               \
-    {bridge-,core,crypto-,elf,find,ib,ip}utils{,-*}             \
+    {bridge-,core,crypto-,elf,find,ib,ip,yum-}utils{,-*}        \
     moreutils{,-debuginfo}                                      \
     cyrus-imapd{,-*}                                            \
     GeoIP{,-*}                                                  \
@@ -163,7 +176,6 @@ sync || true
     fuse{,-devel,-libs}                                         \
     dd{,_}rescue{,-*}                                           \
     {docker-ce,container-selinux}{,-*}                          \
-    yum-utils{,-*}                                              \
     createrepo{,_c}{,-*}                                        \
                                                                 \
     scl-utils{,-*}                                              \
@@ -272,7 +284,23 @@ sync || true
     yum autoremove -y
     yum clean all
 
-    curl -sSL https://repo.codingcafe.org/cudnn/$(curl -sSL https://repo.codingcafe.org/cudnn | sed -n 's/.*href="\(.*linux-x64.*\)".*/\1/p') | tar -zxvf - -C /usr/local/
+    # For nvidia-docker
+    $IS_CONTAINER && echo /usr/local/nvidia/lib{,64} | xargs -n1 >> /etc/ld.so.conf.d/nvidia.conf
+    ldconfig
+
+    ( set -e
+        if [ $GIT_MIRROR == $GIT_MIRROR_CODINGCAFE ]; then
+            export HTTP_PROXY=proxy.codingcafe.org:8118
+            export HTTPS_PROXY=$HTTP_PROXY
+            export http_proxy=$HTTP_PROXY
+            export https_proxy=$HTTPS_PROXY
+        fi
+        # curl -sSL https://developer.download.nvidia.com/compute/redist/cudnn/v7.0.1/cudnn-8.0-linux-x64-v7.tgz | tar -zxvf - -C /usr/local/
+        curl -sSL https://repo.codingcafe.org/nvidia/cudnn/$(curl -sSL https://repo.codingcafe.org/nvidia/cudnn | sed -n 's/.*href="\(.*linux-x64.*\)".*/\1/p' | sort | tail -n1) | tar -zxvf - -C /usr/local/
+        curl -sSL https://repo.codingcafe.org/nvidia/nccl/$(curl -sSL https://repo.codingcafe.org/nvidia/nccl | sed -n 's/.*href="\(.*amd64.*\)".*/\1/p' | sort | tail -n1) | tar -Jxvf - --strip-components=1 -C /usr/local/
+        ldconfig
+        rpm -i https://github.com/NVIDIA/nvidia-docker/releases/download/v1.0.1/nvidia-docker-1.0.1-1.x86_64.rpm
+    )
 
     updatedb
 ) && rm -rvf $STAGE/pkg
@@ -281,19 +309,6 @@ sync || true
 # ================================================================
 # Git Mirror
 # ================================================================
-
-export GIT_MIRROR=$(
-    for i in $(env | sed -n 's/^GIT_MIRROR_[^=]*=//p'); do :
-        ping -nfc 100 $(sed 's/.*:\/\///' <<<"$i" | sed 's/\/.*//')                         \
-        | sed -n '/ms$/p'                                                                   \
-        | sed 's/.*[^0-9]\([0-9]*\)%.*[^0-9\.]\([0-9\.]*\).*ms/\1 \2/'                      \
-        | sed 's/.*ewma.*\/\([0-9\.]*\).*/\1/'                                              \
-        | xargs                                                                             \
-        | sed 's/\([0-9\.][0-9\.]*\).*[[:space:]]\([0-9\.][0-9\.]*\).*/\2\*\(\1\*10+1\)/'   \
-        | bc
-        echo "$i"
-    done | paste - - | sort -n | head -n1 | xargs -n1 | tail -n1
-)
 
 echo "GIT_MIRROR=$GIT_MIRROR"
 
@@ -496,7 +511,7 @@ EOF
     )
 
     cd
-    rm -rvf $SCRATCH/install-tl-*
+    rm -rf $SCRATCH/install-tl-*
 ) && rm -rvf $STAGE/tex
 sync || true
 
@@ -507,7 +522,7 @@ sync || true
 for i in llvm-{gcc,clang}; do
     [ -e $STAGE/$i ] && ( set -e
         export LLVM_MIRROR=$GIT_MIRROR/llvm-mirror
-        export LLVM_GIT_TAG=release_40
+        export LLVM_GIT_TAG=release_50
 
         cd $SCRATCH
         until git clone $LLVM_MIRROR/llvm.git; do echo 'Retrying'; done
@@ -554,8 +569,7 @@ for i in llvm-{gcc,clang}; do
         # ------------------------------------------------------------
 
         ccache -C &
-        rm -rvf $SCRATCH/llvm/build
-        mkdir -p $_
+        mkdir -p $SCRATCH/llvm/build
         cd $_
         wait
 
@@ -619,7 +633,7 @@ for i in llvm-{gcc,clang}; do
 
         ldconfig &
         cd
-        rm -rvf $SCRATCH/llvm
+        rm -rf $SCRATCH/llvm
         wait
     ) && rm -rvf $STAGE/$i
     sync || true
@@ -631,21 +645,27 @@ done
 
 [ -e $STAGE/boost ] && ( set -e
     cd $SCRATCH
-    ccache -C &
-    axel -an 20 https://dl.bintray.com/boostorg/release/1.65.0/source/boost_1_65_0.tar.bz2
-    wait
-    tar -xvf boost*.tar.bz2
-    cd boost*/
-    # CC=$(which clang) CXX=$(which clang++) LD=$(which lld) ./bootstrap.sh --with-toolset=clang
+
+    if [ $GIT_MIRROR == $GIT_MIRROR_CODINGCAFE ]; then
+        export HTTP_PROXY=proxy.codingcafe.org:8118
+        export HTTPS_PROXY=$HTTP_PROXY
+        export http_proxy=$HTTP_PROXY
+        export https_proxy=$HTTPS_PROXY
+    fi
+
+    mkdir -p boost
+    cd $_
+    curl -sSL https://dl.bintray.com/boostorg/release/1.65.0/source/boost_1_65_0.tar.bz2 | tar -jxvf - --strip-components=1
+
+    . scl_source enable devtoolset-6
     ./bootstrap.sh
-    # CC=$(which clang) CXX=$(which clang++) LD=$(which lld) ./b2 cxxflags="-std=c++11 -stdlib=libc++ -fuse-ld=lld" linkflags="-stdlib=libc++" -aj`nproc --all` install
     ./b2 -aj`nproc` install
 
     # ------------------------------------------------------------
 
     ldconfig
     cd
-    rm -rvf $SCRATCH/boost*
+    rm -rf $SCRATCH/boost
 ) && rm -rvf $STAGE/boost
 sync || true
 
@@ -671,8 +691,44 @@ sync || true
 
     ldconfig
     cd
-    rm -rvf $SCRATCH/jemalloc
+    rm -rf $SCRATCH/jemalloc
 ) && rm -rvf $STAGE/jemalloc
+sync || true
+
+# ================================================================
+# Compile Caffe
+# ================================================================
+
+[ -e $STAGE/caffe ] && ( set -e
+    cd $SCRATCH
+
+    until git clone $GIT_MIRROR/BVLC/caffe.git; do echo 'Retrying'; done
+    cd caffe
+
+    # ------------------------------------------------------------
+
+    mkdir -p build
+    cd $_
+    ( set -e
+        . scl_source enable devtoolset-4
+
+        cmake3                              \
+            -G"Unix Makefiles"              \
+            -DCMAKE_BUILD_TYPE=Release      \
+            -DCMAKE_VERBOSE_MAKEFILE=ON     \
+            -DBLAS=Open                     \
+            -DUSE_NCCL=ON                   \
+            ..
+
+        time cmake3 --build . -- -j $(nproc)
+        time cmake3 --build . --target test -- -j $(nproc)
+        time cmake3 --build . --target install -- -j $(nproc)
+    )
+
+    ldconfig
+    cd
+    rm -rf $SCRATCH/caffe
+) && rm -rvf $STAGE/caffe
 sync || true
 
 # ================================================================
@@ -681,21 +737,20 @@ sync || true
 
 [ -e $STAGE/caffe2 ] && ( set -e
     cd $SCRATCH
+
     until git clone $GIT_MIRROR/caffe2/caffe2.git; do echo 'Retrying'; done
     cd caffe2
-    ( set -e
-        export TMP_GITMODULES=$(mktemp)
-        cat .gitmodules                                                             \
-        | sed 's/github.com\(\/Maratyszcza\)/git.codingcafe.org\/Mirrors\1/'        \
-        | sed 's/github.com\(\/NVLabs\)/git.codingcafe.org\/Mirrors\1/'             \
-        | sed 's/github.com\(\/NervanaSystems\)/git.codingcafe.org\/Mirrors\1/'     \
-        | sed 's/github.com\(\/glog\)/git.codingcafe.org\/Mirrors\1/'               \
-        | sed 's/github.com\(\/google\)/git.codingcafe.org\/Mirrors\1/'             \
-        | sed 's/github.com\/nvidia/git.codingcafe.org\/Mirrors\/NVIDIA/'           \
-        > $TMP_GITMODULES
-        cat $TMP_GITMODULES > .gitmodules
-        rm -rf $TMP_GITMODULES
-    )
+
+    if [ $GIT_MIRROR == $GIT_MIRROR_CODINGCAFE ]; then
+        export HTTP_PROXY=proxy.codingcafe.org:8118
+        export HTTPS_PROXY=$HTTP_PROXY
+        export http_proxy=$HTTP_PROXY
+        export https_proxy=$HTTPS_PROXY
+        for i in Maratyszcza NVLabs NervanaSystems glog google nvidia; do
+            sed -i "s/[^[:space:]]*:\/\/[^\/]*\/$i/$(sed 's/\//\\\//g' <<<$GIT_MIRROR )\/$i/" .gitmodules
+        done
+    fi
+
     until git submodule update --init --recursive; do echo 'Retrying'; done
 
     echo "list(REMOVE_ITEM Caffe2_DEPENDENCY_LIBS cblas)" >> cmake/Dependencies.cmake
@@ -707,11 +762,8 @@ sync || true
     ( set -e
         . scl_source enable devtoolset-4
 
-        # CC='clang -fuse-ld=lld'                             \
-        # CXX='clang++ -fuse-ld=lld'                          \
-        # LD=$(which lld)                                     \
         cmake3                                              \
-            -G Ninja                                        \
+            -G"Unix Makefiles"                              \
             -DCMAKE_BUILD_TYPE=Release                      \
             -DCMAKE_VERBOSE_MAKEFILE=ON                     \
             -DBENCHMARK_ENABLE_LTO=ON                       \
@@ -722,12 +774,14 @@ sync || true
             -DCAFFE2_NINJA_COMMAND=$(which ninja-build)     \
             ..
 
-        time cmake3 --build . --target install
+        time cmake3 --build . -- -j $(nproc)
+        time cmake3 --build . --target test -- -j $(nproc)
+        time cmake3 --build . --target install -- -j $(nproc)
     )
 
     ldconfig
     cd
-    rm -rvf $SCRATCH/caffe2
+    rm -rf $SCRATCH/caffe2
 ) && rm -rvf $STAGE/caffe2
 sync || true
 
@@ -735,9 +789,11 @@ sync || true
 # Cleanup
 # ================================================================
 
+ccache -C
+ldconfig
+cd
 # $IS_CONTAINER || umount $SCRATCH
 rm -rvf $SCRATCH
-cd
 
 echo
 echo
