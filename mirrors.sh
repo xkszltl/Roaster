@@ -2,21 +2,34 @@
 
 set -e
 
-export http_proxy=127.0.0.1:8118
-export HTTP_PROXY=$http_proxy
-export https_proxy=$http_proxy
-export HTTPS_PROXY=$https_proxy
+export HTTP_PROXY=127.0.0.1:8118
+export HTTPS_PROXY=$HTTP_PROXY
+export http_proxy=$HTTP_PROXY
+export https_proxy=$HTTPS_PROXY
 
-mkdir -p /var/mirrors
-cd /var/mirrors
+export ROOT=/var/mirrors
+
+mkdir -p $ROOT
+cd $_
+
 parallel -j 10 --ungroup 'bash -c '"'"'
 set -e
-export ROOT=/var/mirrors
-if [ ! -d $ROOT/{} ]; then mkdir -p $ROOT/$(dirname {}) && cd $ROOT/$(dirname {}) && git clone --mirror git@github.com:{} && cd $ROOT/{}
-else cd $ROOT/{} && git fetch --all
+[ $(xargs -n1 <<<{} | wc -l) -ne 2 ] && exit 0
+export SRC_SITE=$(xargs -n1 <<<{} 2>/dev/null | head -n1)
+export SRC_DIR=$(xargs -n1 <<<{} 2>/dev/null | tail -n1)
+export SRC=$SRC_SITE$SRC_DIR.git
+export DST_SITE=git@git.codingcafe.org:Mirrors/
+export DST_DIR=$SRC_DIR
+export DST=$DST_SITE$DST_DIR.git
+export LOCAL=$(pwd)/$DST_DIR.git
+if [ -d $LOCAL ]; then
+	cd $LOCAL && git fetch --all
+else
+	mkdir -p $(dirname $LOCAL) && cd $(dirname $LOCAL) && git clone --mirror $SRC && cd $LOCAL
 fi &&
-git remote set-url --push origin git@git.codingcafe.org:Mirrors/{} && git push --mirror
+git remote set-url --push origin $DST && git push --mirror
 '"'" ::: {\
+https://github.com/\ {\
 aws/aws-{cli,sdk-{cpp,go,java,js,net,php,ruby}},\
 BVLC/caffe,\
 caffe2/{caffe2,models},\
@@ -28,5 +41,9 @@ Maratyszcza/{FP16,FXdiv,NNPACK,confu,psimd,pthreadpool},\
 NervanaSystems/{neon,nervanagpu},\
 NVIDIA/{DIGITS,cnmem,libglvnd,nccl,nvidia-docker},\
 NVLabs/{cub,xmp},\
-shadowsocks/{ShadowsocksX-NG,libQtShadowsocks,shadowsocks{,-go,-libev,-manager,-windows}}\
-}.git
+shadowsocks/{ShadowsocksX-NG,libQtShadowsocks,shadowsocks{,-go,-libev,-manager,-windows}},\
+},\
+https://gitlab.com/\ {\
+NVIDIA/cuda,\
+}\
+}
