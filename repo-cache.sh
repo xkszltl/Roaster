@@ -9,10 +9,10 @@ trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
 # ----------------------------------------------------------------
 
-export http_proxy=127.0.0.1:8118
-export HTTP_PROXY=$http_proxy
-export https_proxy=$http_proxy
-export HTTPS_PROXY=$https_proxy
+export HTTP_PROXY=127.0.0.1:8118
+export HTTPS_PROXY=$HTTP_PROXY
+export http_proxy=$HTTP_PROXY
+export https_proxy=$HTTPS_PROXY
 
 export REPOSYNC='reposync
     --cachedir=$(mktemp -d)
