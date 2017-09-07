@@ -38,10 +38,12 @@ gflags/gflags,\
 google/{benchmark,snappy,glog,googletest,leveldb,protobuf},\
 jemalloc/jemalloc,\
 llvm-mirror/{ll{vm,d,db,go},clang{,-tools-extra},polly,compiler-rt,openmp,lib{unwind,cxx{,abi}},test-suite},\
-Maratyszcza/{FP16,FXdiv,NNPACK,confu,psimd,pthreadpool},\
+Maratyszcza/{confu,FP16,FXdiv,NNPACK,PeachPy,psimd,pthreadpool},\
 NervanaSystems/{neon,nervanagpu},\
 NVIDIA/{DIGITS,cnmem,libglvnd,nccl,nvidia-docker},\
 NVLabs/{cub,xmp},\
+open-mpi/ompi,\
+SchedMD/slurm,\
 shadowsocks/{ShadowsocksX-NG,libQtShadowsocks,shadowsocks{,-go,-libev,-manager,-windows}},\
 },\
 https://gitlab.com/\ {\

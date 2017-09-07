@@ -1,2 +1,2 @@
 FROM docker.codingcafe.org/sandbox/centos:stage-misc
-RUN cp -f /etc/hosts /tmp && echo 10.0.0.10 {git,proxy,repo}.codingcafe.org > /etc/hosts && /etc/codingcafe/setup.sh rocksdb caffe caffe2 && cat /tmp/hosts > /etc/hosts && rm -f /tmp/hosts
+RUN cp -f /etc/hosts /tmp && echo 10.0.0.10 {git,proxy,repo}.codingcafe.org > /etc/hosts && /etc/codingcafe/setup.sh caffe caffe2 && cat /tmp/hosts > /etc/hosts && rm -f /tmp/hosts

@@ -61,7 +61,7 @@ cd $SCRATCH
     rm -rvf $STAGE
     mkdir -p $(dirname $STAGE)/.$(basename $STAGE)
     cd $_
-    [ $# -gt 0 ] && touch $@ || touch repo pkg auth nagios ss tex llvm boost jemalloc rocksdb caffe caffe2
+    [ $# -gt 0 ] && touch $@ || touch repo pkg auth slurm ompi nagios ss tex llvm boost jemalloc rocksdb caffe caffe2
     sync || true
     cd $SCRATCH
     mv -vf $(dirname $STAGE)/.$(basename $STAGE) $STAGE
@@ -142,8 +142,9 @@ echo "GIT_MIRROR=$GIT_MIRROR"
                                                                 \
     qpid-cpp-client{,-*}                                        \
     {gcc,distcc,ccache}{,-*}                                    \
-    {openmpi,mpich-3.2}{,-*}                                    \
+    {openmpi,mpich-3.{0,2}}{,-devel,-doc,-debuginfo}            \
     java-1.8.0-openjdk{,-*}                                     \
+    lua{,-*}                                                    \
     octave{,-*}                                                 \
     {gdb,valgrind,perf,{l,s}trace}{,-*}                         \
     {make,ninja-build,cmake{,3},autoconf,libtool}{,-*}          \
@@ -180,6 +181,9 @@ echo "GIT_MIRROR=$GIT_MIRROR"
     dd{,_}rescue{,-*}                                           \
     {docker-ce,container-selinux}{,-*}                          \
     createrepo{,_c}{,-*}                                        \
+    environment-modules{,-*}                                    \
+    fpm2{,-*}                                                   \
+    munge{,-*}                                                  \
                                                                 \
     scl-utils{,-*}                                              \
                                                                 \
@@ -311,7 +315,7 @@ echo "GIT_MIRROR=$GIT_MIRROR"
         ( set -e
             cd $(dirname $(which nvcc))/../samples
             . scl_source enable devtoolset-4
-            VERBOSE=1 time make -j $(nproc)
+            VERBOSE=1 time make -j$(nproc)
         )
     )
 
@@ -382,6 +386,80 @@ git config --global core.editor     'vim'
         systemctl start $i || $IS_CONTAINER
     done
 ) && rm -rvf $STAGE/auth
+sync || true
+
+# ================================================================
+# SLURM
+# ================================================================
+
+[ -e $STAGE/slurm ] && ( set -e
+    cd $SCRATCH
+
+    git clone $GIT_MIRROR/SchedMD/slurm.git
+    cd slurm
+    git checkout $(git tag | sed -n '/^slurm-[0-9\-]*$/p' | sort -V | tail -n1)
+
+    . scl_source enable devtoolset-6
+
+    for i in $(sed -n 's/^[[:space:]]*\(.*:\).* META .*/\1/p' slurm.spec); do
+        sed -i "s/^\([[:space:]]*$i[[:space:]]*\).* META .*/\1"$(sed -n "s/[[:space:]]*$i[[:space:]]*\(.*\)/\1/p" META | head -n1)"/" slurm.spec
+    done
+
+    export SLURM_NAME=$(for i in Name Version Release; do
+        sed -n "s/^[[:space:]]*$i:[[:space:]]*\(.*\)/\1/p" META | head -n1
+    done | xargs | sed 's/[[:space:]][[:space:]]*/-/g')
+
+    export SLURM_EXT=$(sed -n "s/^[[:space:]]*Source:[^\.]*\(.*\)/\1/p" slurm.spec | head -n1)
+
+    export SLURM_TAR=$SLURM_NAME$SLURM_EXT
+
+    cd ..
+    mkdir -p $SLURM_NAME
+    cp -rf slurm/* $_/
+    tar -acvf $SLURM_TAR $SLURM_NAME
+    rm -rf $SCRATCH/$SLURM_NAME
+
+    rpmbuild -ta $SLURM_TAR --with lua --with multiple_slurmd --with mysql --with openssl
+
+    rm -rf $SCRATCH/slurm*
+
+    yum install $HOME/rpmbuild/RPMS/$(uname -i)/slurm{,-*}.rpm
+    rm -rf $HOME/rpmbuild
+) && rm -rvf $STAGE/slurm
+sync || true
+
+# ================================================================
+# OpenMPI
+# ================================================================
+
+[ -e $STAGE/opmi ] && ( set -e
+    cd $SCRATCH
+
+    git clone $GIT_MIRROR/open-mpi/ompi.git
+    cd ompi
+    git checkout $(git tag | sed -n '/^v[0-9\.]*$/p' | sort -V | tail -n1)
+
+    . scl_source enable devtoolset-6
+
+    ./autogen.pl
+    ./configure                             \
+        --enable-mpi-cxx                    \
+        --enable-mpi-ext                    \
+        --enable-mpi-java                   \
+        --enable-mpirun-prefix-by-default   \
+        --enable-sparse-groups              \
+        --enable-static                     \
+        --prefix=/usr/local/openmpi         \
+        --with-cuda                         \
+        --with-sge                          \
+        --with-slurm
+
+    make -j$(nproc)
+    make -j install
+
+    cd
+    rm -rf $SCRATCH/opmi
+) && rm -rvf $STAGE/opmi
 sync || true
 
 # ================================================================
@@ -666,18 +744,19 @@ sync || true
     cd $SCRATCH
     until git clone $GIT_MIRROR/jemalloc/jemalloc.git; do echo 'Retrying'; done
     cd jemalloc
-    git checkout `git tag -l '[0-9\.]*' | sort -V | tail -n1`
+    git checkout $(git tag | sed -n '/^[0-9\.]*$/p' | sort -V | tail -n1)
 
     # ------------------------------------------------------------
 
-    ccache -C
-    CC='clang -fuse-ld=lld' LD=$(which lld) ./autogen.sh --with-jemalloc-prefix="" --enable-prof --enable-prof-libunwind
-    time make -j`nproc` dist
-    time LD=$(which lld) make -j`nproc`
-    time make -j`nproc` install
+    . scl_source enable devtoolset-6
+    ./autogen.sh --with-jemalloc-prefix="" --enable-{prof,xmalloc}
+    time make -j$(nproc) dist
+    time make -j$(nproc)
+    time make -j$(nproc) install
 
     # ------------------------------------------------------------
 
+    echo '/usr/local/lib' > /etc/ld.so.conf.d/jemalloc.conf
     ldconfig
     cd
     rm -rf $SCRATCH/jemalloc
@@ -691,17 +770,17 @@ sync || true
 [ -e $STAGE/rocksdb ] && ( set -e
     cd $SCRATCH
 
+    pip install -U git+$GIT_MIRROR/Maratyszcza/{confu,PeachPy}.git
+
+    . scl_source enable devtoolset-6
+
     until git clone $GIT_MIRROR/facebook/rocksdb.git; do echo 'Retrying'; done
     cd rocksdb
-    git checkout `git tag -l 'v[0-9\.]*' | sort -V | tail -n1`
-
-    # ------------------------------------------------------------
+    git checkout $(git tag | sed -n '/^v[0-9\.]*$/p' | sort -V | tail -n1)
 
 #     mkdir -p build
 #     cd $_
 #     ( set -e
-#         . scl_source enable devtoolset-6
-# 
 #         cmake3                              \
 #             -G Ninja                        \
 #             -DCMAKE_BUILD_TYPE=Release      \
@@ -721,15 +800,14 @@ sync || true
 #         time cmake3 --build . --target install
 #     )
 
-    time make -j $(nproc) static_lib
+    time make -j$(nproc) static_lib
     # time make -j install
-    time make -j $(nproc) shared_lib
+    time make -j$(nproc) shared_lib
     # time make -j install-shared
     time make -j package
 
     yum install -y package/rocksdb-*.rpm
 
-    ldconfig
     cd
     rm -rf $SCRATCH/rocksdb
 ) && rm -rvf $STAGE/rocksdb
@@ -778,9 +856,6 @@ sync || true
 [ -e $STAGE/caffe2 ] && ( set -e
     cd $SCRATCH
 
-    pip install -U pybind11
-    pip install -U git+$GIT_MIRROR/Maratyszcza/confu.git
-
     # ------------------------------------------------------------
 
     until git clone $GIT_MIRROR/caffe2/caffe2.git; do echo 'Retrying'; done
@@ -808,21 +883,26 @@ sync || true
     ( set -e
         . scl_source enable devtoolset-4
 
-        cmake3                                              \
-            -G"Unix Makefiles"                              \
-            -DCAFFE2_NINJA_COMMAND=$(which ninja-build)     \
-            -DCMAKE_BUILD_TYPE=Release                      \
-            -DCMAKE_VERBOSE_MAKEFILE=ON                     \
-            -DBENCHMARK_ENABLE_LTO=ON                       \
-            -DBENCHMARK_USE_LIBCXX=OFF                      \
-            -DBLAS=OpenBLAS                                 \
-            -DBUILD_BENCHMARK=OFF                           \
-            -DBUILD_GTEST=ON                                \
+        ln -sf $(which ninja-build) /usr/bin/ninja
+
+        cmake3                                                  \
+            -G"Unix Makefiles"                                  \
+            -DCMAKE_BUILD_TYPE=Release                          \
+            -DCMAKE_VERBOSE_MAKEFILE=ON                         \
+            -DBENCHMARK_ENABLE_LTO=ON                           \
+            -DBENCHMARK_USE_LIBCXX=OFF                          \
+            -DBLAS=OpenBLAS                                     \
+            -DBUILD_BENCHMARK=OFF                               \
+            -DBUILD_GTEST=ON                                    \
+            -DMPI_EXTRA_LIBRARY=/usr/lib64/openmpi/libmpi.so    \
+            -DMPI_LIBRARY=/usr/lib64/openmpi/libmpi_cxx.so      \
             ..
 
         time cmake3 --build . -- -j $(nproc)
-        time cmake3 --build . --target test -- -j $(nproc)
-        time cmake3 --build . --target install -- -j $(nproc)
+        time cmake3 --build . --target test || true
+        time cmake3 --build . --target install -- -j
+
+        rm -rf /usr/bin/ninja
     )
 
     echo '/usr/local/lib' > /etc/ld.so.conf.d/caffe2.conf
