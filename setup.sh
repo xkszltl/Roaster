@@ -61,7 +61,7 @@ cd $SCRATCH
     rm -rvf $STAGE
     mkdir -p $(dirname $STAGE)/.$(basename $STAGE)
     cd $_
-    [ $# -gt 0 ] && touch $@ || touch repo pkg auth nagios ss tex llvm boost jemalloc caffe caffe2
+    [ $# -gt 0 ] && touch $@ || touch repo pkg auth nagios ss tex llvm boost jemalloc rocksdb caffe caffe2
     sync || true
     cd $SCRATCH
     mv -vf $(dirname $STAGE)/.$(basename $STAGE) $STAGE
@@ -129,6 +129,8 @@ export GIT_MIRROR=$(
     done | paste - - | sort -n | head -n1 | xargs -n1 | tail -n1
 )
 
+echo "GIT_MIRROR=$GIT_MIRROR"
+
 # ================================================================
 # Install Packages
 # ================================================================
@@ -140,6 +142,7 @@ export GIT_MIRROR=$(
                                                                 \
     qpid-cpp-client{,-*}                                        \
     {gcc,distcc,ccache}{,-*}                                    \
+    {openmpi,mpich-3.2}{,-*}                                    \
     java-1.8.0-openjdk{,-*}                                     \
     octave{,-*}                                                 \
     {gdb,valgrind,perf,{l,s}trace}{,-*}                         \
@@ -186,8 +189,9 @@ export GIT_MIRROR=$(
     {glibc{,-devel},libgcc}{,.i686}                             \
     {gmp,mpfr,libmpc}{,-*}                                      \
     gperftools{,-*}                                             \
+    lib{asan{,2,3},tsan}{,-*}                                   \
     lib{jpeg-turbo,tiff,png,glvnd}{,-*}                         \
-    {zlib,libzip,{,p}xz,snappy}{,-*}                            \
+    {zlib,libzip,{,lib}zstd,lz4,{,p}xz,snappy}{,-*}             \
     lib{telnet,ssh{,2},curl,aio,ffi,edit,icu,xslt}{,-*}         \
     boost{,-*}                                                  \
     {flex,cups,bison,antlr}{,-*}                                \
@@ -196,6 +200,7 @@ export GIT_MIRROR=$(
     {libsodium,mbedtls}{,-*}                                    \
     libev{,-devel,-source,-debuginfo}                           \
     {asciidoc,gettext,xmlto,c-ares,pcre{,2}}{,-*}               \
+    librados2{,-*}                                              \
     {gflags,glog,gmock,gtest,protobuf}{,-*}                     \
     {redis,hiredis}{,-*}                                        \
     ImageMagick{,-*}                                            \
@@ -230,6 +235,8 @@ export GIT_MIRROR=$(
     mod_authnz_*                                                \
                                                                 \
     cabextract{,-*}                                             \
+                                                                \
+    devtoolset-3                                                \
 
     do echo 'Retrying'; done
 
@@ -238,7 +245,7 @@ export GIT_MIRROR=$(
     #       The correct choice is x86_64-redhat-linux instead of x86_64-linux-gnu.
     yum remove -y gcc-x86_64-linux-gnu
 
-    until yum install -y --nogpgcheck $RPM_CACHE_ARGS devtoolset-{4,6}; do echo 'Retrying'; done
+    until yum install -y --nogpgcheck $RPM_CACHE_ARGS libubsan{,-*} devtoolset-{4,6}; do echo 'Retrying'; done
 
     yum autoremove -y
     yum clean packages
@@ -313,10 +320,8 @@ export GIT_MIRROR=$(
 sync || true
 
 # ================================================================
-# Git Mirror
+# Git Configuration
 # ================================================================
-
-echo "GIT_MIRROR=$GIT_MIRROR"
 
 git config --global user.name       'Tongliang Liao'
 git config --global user.email      'xkszltl@gmail.com'
@@ -661,7 +666,7 @@ sync || true
     cd $SCRATCH
     until git clone $GIT_MIRROR/jemalloc/jemalloc.git; do echo 'Retrying'; done
     cd jemalloc
-    git checkout `git tag -l '[0-9\.]*' | tail -n1`
+    git checkout `git tag -l '[0-9\.]*' | sort -V | tail -n1`
 
     # ------------------------------------------------------------
 
@@ -677,6 +682,57 @@ sync || true
     cd
     rm -rf $SCRATCH/jemalloc
 ) && rm -rvf $STAGE/jemalloc
+sync || true
+
+# ================================================================
+# Compile RocksDB
+# ================================================================
+
+[ -e $STAGE/rocksdb ] && ( set -e
+    cd $SCRATCH
+
+    until git clone $GIT_MIRROR/facebook/rocksdb.git; do echo 'Retrying'; done
+    cd rocksdb
+    git checkout `git tag -l 'v[0-9\.]*' | sort -V | tail -n1`
+
+    # ------------------------------------------------------------
+
+#     mkdir -p build
+#     cd $_
+#     ( set -e
+#         . scl_source enable devtoolset-6
+# 
+#         cmake3                              \
+#             -G Ninja                        \
+#             -DCMAKE_BUILD_TYPE=Release      \
+#             -DCMAKE_VERBOSE_MAKEFILE=ON     \
+#             -DWITH_ASAN=ON                  \
+#             -DWITH_BZ2=ON                   \
+#             -DWITH_JEMALLOC=ON              \
+#             -DWITH_LIBRADOS=ON              \
+#             -DWITH_LZ4=ON                   \
+#             -DWITH_SNAPPY=ON                \
+#             -DWITH_TSAN=ON                  \
+#             _DWITH_UBSAN=ON                 \
+#             -DWITH_ZLIB=ON                  \
+#             -DWITH_ZSTD=ON                  \
+#             ..
+# 
+#         time cmake3 --build . --target install
+#     )
+
+    time make -j $(nproc) static_lib
+    # time make -j install
+    time make -j $(nproc) shared_lib
+    # time make -j install-shared
+    time make -j package
+
+    yum install -y package/rocksdb-*.rpm
+
+    ldconfig
+    cd
+    rm -rf $SCRATCH/rocksdb
+) && rm -rvf $STAGE/rocksdb
 sync || true
 
 # ================================================================
@@ -722,6 +778,11 @@ sync || true
 [ -e $STAGE/caffe2 ] && ( set -e
     cd $SCRATCH
 
+    pip install -U pybind11
+    pip install -U git+$GIT_MIRROR/Maratyszcza/confu.git
+
+    # ------------------------------------------------------------
+
     until git clone $GIT_MIRROR/caffe2/caffe2.git; do echo 'Retrying'; done
     cd caffe2
 
@@ -743,11 +804,13 @@ sync || true
 
     mkdir -p build
     cd $_
+
     ( set -e
         . scl_source enable devtoolset-4
 
         cmake3                                              \
             -G"Unix Makefiles"                              \
+            -DCAFFE2_NINJA_COMMAND=$(which ninja-build)     \
             -DCMAKE_BUILD_TYPE=Release                      \
             -DCMAKE_VERBOSE_MAKEFILE=ON                     \
             -DBENCHMARK_ENABLE_LTO=ON                       \
@@ -755,7 +818,6 @@ sync || true
             -DBLAS=OpenBLAS                                 \
             -DBUILD_BENCHMARK=OFF                           \
             -DBUILD_GTEST=ON                                \
-            -DCAFFE2_NINJA_COMMAND=$(which ninja-build)     \
             ..
 
         time cmake3 --build . -- -j $(nproc)
@@ -763,7 +825,17 @@ sync || true
         time cmake3 --build . --target install -- -j $(nproc)
     )
 
-    ldconfig
+    echo '/usr/local/lib' > /etc/ld.so.conf.d/caffe2.conf
+    ldconfig &
+
+    for i in /usr/lib/python*/site-packages; do
+    for j in caffe{,2}; do
+        ln -sf /usr/local/$j $i/$j &
+    done
+    done
+
+    wait
+
     cd
     rm -rf $SCRATCH/caffe2
 ) && rm -rvf $STAGE/caffe2

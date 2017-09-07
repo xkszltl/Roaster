@@ -11,6 +11,7 @@ init:
   stage: init
   tags:
     - docker
+    - gpu
   only:
     - /^build-init$/
   except:
@@ -24,6 +25,7 @@ ss:
   stage: ss
   tags:
     - docker
+    - gpu
   only:
     - /^build-(init|ss)$/
   except:
@@ -37,6 +39,7 @@ tex:
   stage: tex
   tags:
     - docker
+    - gpu
   only:
     - /^build-(init|ss|tex)$/
   except:
@@ -50,6 +53,7 @@ llvm-gcc:
   stage: llvm-gcc
   tags:
     - docker
+    - gpu
   only:
     - /^build-(init|ss|tex|llvm-gcc)$/
   except:
@@ -63,6 +67,7 @@ llvm-clang:
   stage: llvm-clang
   tags:
     - docker
+    - gpu
   only:
     - /^build-(init|ss|tex|llvm-gcc|llvm-clang)$/
   except:
@@ -76,6 +81,7 @@ misc:
   stage: misc
   tags:
     - docker
+    - gpu
   only:
     - /^build-(init|ss|tex|llvm-gcc|llvm-clang|misc)$/
   except:
@@ -89,6 +95,7 @@ dl:
   stage: dl
   tags:
     - docker
+    - gpu
   only:
     - /^build-.*$/
   except:
