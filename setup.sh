@@ -885,6 +885,8 @@ sync || true
 
         ln -sf $(which ninja-build) /usr/bin/ninja
 
+        export MPI_HOME=/usr/local/openmpi
+
         cmake3                                                  \
             -G"Unix Makefiles"                                  \
             -DCMAKE_BUILD_TYPE=Release                          \
@@ -894,11 +896,9 @@ sync || true
             -DBLAS=OpenBLAS                                     \
             -DBUILD_BENCHMARK=OFF                               \
             -DBUILD_GTEST=ON                                    \
-            -DMPI_EXTRA_LIBRARY=/usr/lib64/openmpi/libmpi.so    \
-            -DMPI_LIBRARY=/usr/lib64/openmpi/libmpi_cxx.so      \
             ..
 
-        time cmake3 --build . -- -j $(nproc)
+        time cmake3 --build . -- -j$(nproc)
         time cmake3 --build . --target test || true
         time cmake3 --build . --target install -- -j
 
