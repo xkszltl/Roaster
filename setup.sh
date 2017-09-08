@@ -138,7 +138,7 @@ echo "GIT_MIRROR=$GIT_MIRROR"
 [ -e $STAGE/pkg ] && ( set -e
     export RPM_CACHE_ARGS=$([ -f $RPM_CACHE_REPO ] && echo "--disableplugin=axelget,fastestmirror")
 
-    until yum install -y $RPM_CACHE_ARGS                        \
+    until yum install -y --nogpgcheck $RPM_CACHE_ARGS           \
                                                                 \
     qpid-cpp-client{,-*}                                        \
     {gcc,distcc,ccache}{,-*}                                    \
@@ -193,8 +193,8 @@ echo "GIT_MIRROR=$GIT_MIRROR"
     {glibc{,-devel},libgcc}{,.i686}                             \
     {gmp,mpfr,libmpc}{,-*}                                      \
     gperftools{,-*}                                             \
-    lib{asan{,2,3},tsan}{,-*}                                   \
-    lib{jpeg-turbo,tiff,png,glvnd}{,-*}                         \
+    lib{asan{,3},tsan,ubsan}{,-*}                               \
+    lib{jpeg-turbo,tiff,png,glvnd,gomp}{,-*}                    \
     {zlib,libzip,{,lib}zstd,lz4,{,p}xz,snappy}{,-*}             \
     lib{telnet,ssh{,2},curl,aio,ffi,edit,icu,xslt}{,-*}         \
     boost{,-*}                                                  \
@@ -240,7 +240,7 @@ echo "GIT_MIRROR=$GIT_MIRROR"
                                                                 \
     cabextract{,-*}                                             \
                                                                 \
-    devtoolset-3                                                \
+    devtoolset-{3,4,6}                                          \
 
     do echo 'Retrying'; done
 
@@ -248,8 +248,6 @@ echo "GIT_MIRROR=$GIT_MIRROR"
     #       LLVM may select the wrong gcc toolchain without libgcc_s integrated.
     #       The correct choice is x86_64-redhat-linux instead of x86_64-linux-gnu.
     yum remove -y gcc-x86_64-linux-gnu
-
-    until yum install -y --nogpgcheck $RPM_CACHE_ARGS libubsan{,-*} devtoolset-{4,6}; do echo 'Retrying'; done
 
     yum autoremove -y
     yum clean packages
@@ -611,7 +609,7 @@ sync || true
 for i in llvm-{gcc,clang}; do
     [ -e $STAGE/$i ] && ( set -e
         export LLVM_MIRROR=$GIT_MIRROR/llvm-mirror
-        export LLVM_GIT_TAG=release_40
+        export LLVM_GIT_TAG=release_50
 
         cd $SCRATCH
 
