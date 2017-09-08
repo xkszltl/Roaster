@@ -45,6 +45,7 @@ NVLabs/{cub,xmp},\
 open-mpi/ompi,\
 SchedMD/slurm,\
 shadowsocks/{ShadowsocksX-NG,libQtShadowsocks,shadowsocks{,-go,-libev,-manager,-windows}},\
+tensorflow/tensorflow,\
 },\
 https://gitlab.com/\ {\
 NVIDIA/cuda,\

@@ -6,6 +6,7 @@ stages:
   - llvm-clang
   - misc
   - dl
+  - finish
 
 init:
   stage: init
@@ -17,9 +18,7 @@ init:
   except:
     - branches
   script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build --pull --no-cache --cpu-shares 128 -t $CI_REGISTRY_IMAGE:stage-init -f stage/init .
-    - docker push $CI_REGISTRY_IMAGE:stage-init
+    - gitlab-ci/build_stage.sh
 
 ss:
   stage: ss
@@ -31,9 +30,7 @@ ss:
   except:
     - branches
   script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build --pull --no-cache --cpu-shares 128 -t $CI_REGISTRY_IMAGE:stage-ss -f stage/ss .
-    - docker push $CI_REGISTRY_IMAGE:stage-ss
+    - gitlab-ci/build_stage.sh
 
 tex:
   stage: tex
@@ -45,9 +42,7 @@ tex:
   except:
     - branches
   script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build --pull --no-cache --cpu-shares 128 -t $CI_REGISTRY_IMAGE:stage-tex -f stage/tex .
-    - docker push $CI_REGISTRY_IMAGE:stage-tex
+    - gitlab-ci/build_stage.sh
 
 llvm-gcc:
   stage: llvm-gcc
@@ -59,9 +54,7 @@ llvm-gcc:
   except:
     - branches
   script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build --pull --no-cache --cpu-shares 128 -t $CI_REGISTRY_IMAGE:stage-llvm-gcc -f stage/llvm-gcc .
-    - docker push $CI_REGISTRY_IMAGE:stage-llvm-gcc
+    - gitlab-ci/build_stage.sh
 
 llvm-clang:
   stage: llvm-clang
@@ -73,9 +66,7 @@ llvm-clang:
   except:
     - branches
   script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build --pull --no-cache --cpu-shares 128 -t $CI_REGISTRY_IMAGE:stage-llvm-clang -f stage/llvm-clang .
-    - docker push $CI_REGISTRY_IMAGE:stage-llvm-clang
+    - gitlab-ci/build_stage.sh
 
 misc:
   stage: misc
@@ -87,12 +78,22 @@ misc:
   except:
     - branches
   script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build --pull --no-cache --cpu-shares 128 -t $CI_REGISTRY_IMAGE:stage-misc -f stage/misc .
-    - docker push $CI_REGISTRY_IMAGE:stage-misc
+    - gitlab-ci/build_stage.sh
 
 dl:
   stage: dl
+  tags:
+    - docker
+    - gpu
+  only:
+    - /^build-(init|ss|tex|llvm-gcc|llvm-clang|misc|dl)$/
+  except:
+    - branches
+  script:
+    - gitlab-ci/build_stage.sh
+
+finish:
+  stage: finish
   tags:
     - docker
     - gpu
@@ -102,5 +103,5 @@ dl:
     - branches
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build --pull --no-cache --cpu-shares 128 -t $CI_REGISTRY_IMAGE -f stage/dl .
-    - docker push $CI_REGISTRY_IMAGE
+    - docker tag $CI_REGISTRY_IMAGE:stage-dl $CI_REGISTRY_IMAGE:latest
+    - docker push $CI_REGISTRY_IMAGE:latest

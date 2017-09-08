@@ -213,6 +213,7 @@ echo "GIT_MIRROR=$GIT_MIRROR"
     {nrpe,nsca}                                                 \
     {collectd,rrdtool,pnp4nagios}{,-*}                          \
     cuda                                                        \
+    https://github.com/NVIDIA/nvidia-docker/releases/download/v1.0.1/nvidia-docker-1.0.1-1.x86_64.rpm   \
                                                                 \
     hdf5{,-*}                                                   \
     {leveldb,lmdb}{,-*}                                         \
@@ -254,24 +255,20 @@ echo "GIT_MIRROR=$GIT_MIRROR"
 
     parallel --will-cite < /dev/null
 
+    systemctl enable nvidia-docker || $IS_CONTAINER
+    systemctl restart nvidia-docker || $IS_CONTAINER
+
+    # For nvidia-docker
+    $IS_CONTAINER && echo /usr/local/nvidia/lib{,64} | xargs -n1 >> /etc/ld.so.conf.d/nvidia.conf
+    ldconfig
+
+    nvidia-smi
+
     # ------------------------------------------------------------
 
-    until yum install -y --skip-broken $RPM_CACHE_ARGS libreoffice; do echo 'Retrying'; done
-
-    yum autoremove -y
-    yum clean packages
-
-    # ------------------------------------------------------------
-
-    for i in anaconda perl python{,2,34} qt5 ruby; do :
+    for i in anaconda libreoffice perl python{,2,34} qt5 ruby *-fonts; do :
         until yum install -y --skip-broken $RPM_CACHE_ARGS $i{,-*}; do echo 'Retrying'; done
-        yum autoremove -y
-        yum clean packages
     done
-
-    # ------------------------------------------------------------
-
-    until yum install -y --skip-broken *-fonts; do echo 'Retrying'; done
 
     until yum install -y "https://downloads.sourceforge.net/project/mscorefonts2/rpms/$(
         curl -sSL https://sourceforge.net/projects/mscorefonts2/files/rpms/                                         \
@@ -279,23 +276,9 @@ echo "GIT_MIRROR=$GIT_MIRROR"
         | sort -n | tail -n1 | cut -d' ' -f4 -
     )"; do echo 'Retrying'; done
 
-    yum autoremove -y
-    yum clean packages
-
     fc-cache -fv
 
     # ------------------------------------------------------------
-
-    until yum update -y --skip-broken; do echo 'Retrying'; done
-    yum update -y || true
-
-    $IS_CONTAINER || package-cleanup --oldkernels --count=2
-    yum autoremove -y
-    yum clean all
-
-    # For nvidia-docker
-    $IS_CONTAINER && echo /usr/local/nvidia/lib{,64} | xargs -n1 >> /etc/ld.so.conf.d/nvidia.conf
-    ldconfig
 
     ( set -e
         if [ $GIT_MIRROR == $GIT_MIRROR_CODINGCAFE ]; then
@@ -308,14 +291,18 @@ echo "GIT_MIRROR=$GIT_MIRROR"
         curl -sSL https://repo.codingcafe.org/nvidia/cudnn/$(curl -sSL https://repo.codingcafe.org/nvidia/cudnn | sed -n 's/.*href="\(.*linux-x64.*\)".*/\1/p' | sort | tail -n1) | tar -zxvf - -C /usr/local/
         curl -sSL https://repo.codingcafe.org/nvidia/nccl/$(curl -sSL https://repo.codingcafe.org/nvidia/nccl | sed -n 's/.*href="\(.*amd64.*\)".*/\1/p' | sort | tail -n1) | tar -Jxvf - --strip-components=1 -C /usr/local/
         ldconfig
-        rpm -i https://github.com/NVIDIA/nvidia-docker/releases/download/v1.0.1/nvidia-docker-1.0.1-1.x86_64.rpm
 
-        ( set -e
-            cd $(dirname $(which nvcc))/../samples
-            . scl_source enable devtoolset-4
-            VERBOSE=1 time make -j$(nproc)
-        )
+        cd $(dirname $(which nvcc))/../samples
+        . scl_source enable devtoolset-4
+        VERBOSE=1 time make -j$(nproc)
     )
+
+    until yum update -y --skip-broken; do echo 'Retrying'; done
+    yum update -y || true
+
+    $IS_CONTAINER || package-cleanup --oldkernels --count=2
+    yum autoremove -y
+    yum clean all
 
     updatedb
 ) && rm -rvf $STAGE/pkg
@@ -680,12 +667,12 @@ for i in llvm-{gcc,clang}; do
                 -DLIBCXX_USE_COMPILER_RT=ON         \
                 -DLIBCXXABI_USE_COMPILER_RT=ON      \
                 -DLIBCXXABI_USE_LLVM_UNWINDER=ON    \
+                -DLIBOMP_ENABLE_SHARED=OFF          \
                 -DLIBUNWIND_USE_COMPILER_RT=ON      \
                 -DLLVM_ENABLE_LIBCXX=ON             \
                 -DLLVM_ENABLE_LLD=ON                \
                 -DLLVM_ENABLE_LTO=OFF               \
                 -DLLVM_ENABLE_CXX1Y=ON              \
-                -DLLVM_ENABLE_CXX1Z=OFF             \
                 $LLVM_COMMON_ARGS
         fi
 
@@ -697,6 +684,7 @@ for i in llvm-{gcc,clang}; do
         time cmake3 --build . --target install
 
         ldconfig &
+        ccache -C &
         cd
         rm -rf $SCRATCH/llvm
         wait
@@ -728,9 +716,11 @@ done
 
     # ------------------------------------------------------------
 
-    ldconfig
+    ldconfig &
+    ccache -C &
     cd
     rm -rf $SCRATCH/boost
+    wait
 ) && rm -rvf $STAGE/boost
 sync || true
 
@@ -755,9 +745,11 @@ sync || true
     # ------------------------------------------------------------
 
     echo '/usr/local/lib' > /etc/ld.so.conf.d/jemalloc.conf
-    ldconfig
+    ldconfig &
+    ccache -C &
     cd
     rm -rf $SCRATCH/jemalloc
+    wait
 ) && rm -rvf $STAGE/jemalloc
 sync || true
 
@@ -806,8 +798,10 @@ sync || true
 
     yum install -y package/rocksdb-*.rpm
 
+    ccache -C &
     cd
     rm -rf $SCRATCH/rocksdb
+    wait
 ) && rm -rvf $STAGE/rocksdb
 sync || true
 
@@ -841,9 +835,11 @@ sync || true
         time cmake3 --build . --target install -- -j $(nproc)
     )
 
-    ldconfig
+    ldconfig &
+    ccache -C &
     cd
     rm -rf $SCRATCH/caffe
+    wait
 ) && rm -rvf $STAGE/caffe
 sync || true
 
@@ -903,19 +899,18 @@ sync || true
         rm -rf /usr/bin/ninja
     )
 
-    echo '/usr/local/lib' > /etc/ld.so.conf.d/caffe2.conf
-    ldconfig &
-
     for i in /usr/lib/python*/site-packages; do
     for j in caffe{,2}; do
         ln -sf /usr/local/$j $i/$j &
     done
     done
 
-    wait
-
+    echo '/usr/local/lib' > /etc/ld.so.conf.d/caffe2.conf
+    ldconfig &
+    ccache -C &
     cd
     rm -rf $SCRATCH/caffe2
+    wait
 ) && rm -rvf $STAGE/caffe2
 sync || true
 
@@ -923,11 +918,12 @@ sync || true
 # Cleanup
 # ================================================================
 
-ccache -C
-ldconfig
+ccache -C &
+ldconfig &
 cd
 # $IS_CONTAINER || umount $SCRATCH
 rm -rvf $SCRATCH
+wait
 
 echo
 echo
