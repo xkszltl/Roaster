@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 if [ $GITLAB_CI ]; then
 	docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
 

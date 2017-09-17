@@ -708,7 +708,7 @@ done
 
     mkdir -p boost
     cd $_
-    curl -sSL https://dl.bintray.com/boostorg/release/1.65.0/source/boost_1_65_0.tar.bz2 | tar -jxvf - --strip-components=1
+    curl -sSL https://dl.bintray.com/boostorg/release/1.65.1/source/boost_1_65_1.tar.bz2 | tar -jxvf - --strip-components=1
 
     . scl_source enable devtoolset-6
     ./bootstrap.sh
