@@ -286,9 +286,11 @@ echo "GIT_MIRROR=$GIT_MIRROR"
             export HTTPS_PROXY=$HTTP_PROXY
             export http_proxy=$HTTP_PROXY
             export https_proxy=$HTTPS_PROXY
+
+            curl -sSL https://repo.codingcafe.org/nvidia/cudnn/$(curl -sSL https://repo.codingcafe.org/nvidia/cudnn | sed -n 's/.*href="\(.*linux-x64.*\)".*/\1/p' | sort | tail -n1) | tar -zxvf - -C /usr/local/
+        else
+            curl -sSL https://developer.download.nvidia.com/compute/redist/cudnn/v7.0.2/cudnn-8.0-linux-x64-v7.tgz | tar -zxvf - -C /usr/local/
         fi
-        # curl -sSL https://developer.download.nvidia.com/compute/redist/cudnn/v7.0.1/cudnn-8.0-linux-x64-v7.tgz | tar -zxvf - -C /usr/local/
-        curl -sSL https://repo.codingcafe.org/nvidia/cudnn/$(curl -sSL https://repo.codingcafe.org/nvidia/cudnn | sed -n 's/.*href="\(.*linux-x64.*\)".*/\1/p' | sort | tail -n1) | tar -zxvf - -C /usr/local/
         curl -sSL https://repo.codingcafe.org/nvidia/nccl/$(curl -sSL https://repo.codingcafe.org/nvidia/nccl | sed -n 's/.*href="\(.*amd64.*\)".*/\1/p' | sort | tail -n1) | tar -Jxvf - --strip-components=1 -C /usr/local/
         ldconfig
 
