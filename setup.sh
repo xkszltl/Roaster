@@ -867,7 +867,8 @@ sync || true
         done
     fi
 
-    until git submodule update --init --recursive; do echo 'Retrying'; done
+    git submodule init
+    until git config --file .gitmodules --get-regexp path | cut -d' ' -f2 | parallel -j0 --ungroup --bar 'git submodule update --recursive {}'; do echo 'Retrying'; done
 
     echo "list(REMOVE_ITEM Caffe2_DEPENDENCY_LIBS cblas)" >> cmake/Dependencies.cmake
 
