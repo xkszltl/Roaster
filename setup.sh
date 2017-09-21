@@ -195,7 +195,7 @@ echo "GIT_MIRROR=$GIT_MIRROR"
     gperftools{,-*}                                             \
     lib{asan{,3},tsan,ubsan}{,-*}                               \
     lib{jpeg-turbo,tiff,png,glvnd,gomp}{,-*}                    \
-    {zlib,libzip,{,lib}zstd,lz4,{,p}xz,snappy}{,-*}             \
+    {bzip2,zlib,libzip,{,lib}zstd,lz4,{,p}xz,snappy}{,-*}       \
     lib{telnet,ssh{,2},curl,aio,ffi,edit,icu,xslt}{,-*}         \
     boost{,-*}                                                  \
     {flex,cups,bison,antlr}{,-*}                                \
@@ -773,20 +773,20 @@ sync || true
 #     mkdir -p build
 #     cd $_
 #     ( set -e
-#         cmake3                              \
-#             -G Ninja                        \
-#             -DCMAKE_BUILD_TYPE=Release      \
-#             -DCMAKE_VERBOSE_MAKEFILE=ON     \
-#             -DWITH_ASAN=ON                  \
-#             -DWITH_BZ2=ON                   \
-#             -DWITH_JEMALLOC=ON              \
-#             -DWITH_LIBRADOS=ON              \
-#             -DWITH_LZ4=ON                   \
-#             -DWITH_SNAPPY=ON                \
-#             -DWITH_TSAN=ON                  \
-#             _DWITH_UBSAN=ON                 \
-#             -DWITH_ZLIB=ON                  \
-#             -DWITH_ZSTD=ON                  \
+#         cmake3                                  \
+#             -G Ninja                            \
+#             -DCMAKE_BUILD_TYPE=RelWithDebInfo   \
+#             -DCMAKE_VERBOSE_MAKEFILE=ON         \
+#             -DWITH_ASAN=ON                      \
+#             -DWITH_BZ2=ON                       \
+#             -DWITH_JEMALLOC=ON                  \
+#             -DWITH_LIBRADOS=ON                  \
+#             -DWITH_LZ4=ON                       \
+#             -DWITH_SNAPPY=ON                    \
+#             -DWITH_TSAN=ON                      \
+#             _DWITH_UBSAN=ON                     \
+#             -DWITH_ZLIB=ON                      \
+#             -DWITH_ZSTD=ON                      \
 #             ..
 # 
 #         time cmake3 --build . --target install
@@ -824,12 +824,12 @@ sync || true
     ( set -e
         . scl_source enable devtoolset-4
 
-        cmake3                              \
-            -G"Unix Makefiles"              \
-            -DCMAKE_BUILD_TYPE=Release      \
-            -DCMAKE_VERBOSE_MAKEFILE=ON     \
-            -DBLAS=Open                     \
-            -DUSE_NCCL=ON                   \
+        cmake3                                  \
+            -G"Unix Makefiles"                  \
+            -DCMAKE_BUILD_TYPE=RelWithDebInfo   \
+            -DCMAKE_VERBOSE_MAKEFILE=ON         \
+            -DBLAS=Open                         \
+            -DUSE_NCCL=ON                       \
             ..
 
         time cmake3 --build . -- -j $(nproc)
@@ -885,7 +885,7 @@ sync || true
 
         cmake3                                                  \
             -G"Unix Makefiles"                                  \
-            -DCMAKE_BUILD_TYPE=Release                          \
+            -DCMAKE_BUILD_TYPE=RelWithDebInfo                   \
             -DCMAKE_VERBOSE_MAKEFILE=ON                         \
             -DBENCHMARK_ENABLE_LTO=ON                           \
             -DBENCHMARK_USE_LIBCXX=OFF                          \
