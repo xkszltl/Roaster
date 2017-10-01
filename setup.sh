@@ -914,6 +914,11 @@ sync || true
     cd
     rm -rf $SCRATCH/caffe2
     wait
+
+    parallel -j0 --bar --line-buffer python -m caffe2.python.models.download -f -i {} :::   \
+        bvlc_{alexnet,googlenet,reference_caffenet}                                         \
+        finetune_flickr_style                                                               \
+        squeezenet
 ) && rm -rvf $STAGE/caffe2
 sync || true
 

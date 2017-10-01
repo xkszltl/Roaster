@@ -12,7 +12,7 @@ export ROOT=/var/mirrors
 mkdir -p $ROOT
 cd $_
 
-parallel -j 10 --ungroup --bar 'bash -c '"'"'
+parallel -j 10 --line-buffer --bar 'bash -c '"'"'
 set -e
 [ $(xargs -n1 <<<{} | wc -l) -ne 2 ] && exit 0
 export SRC_SITE=$(xargs -n1 <<<{} 2>/dev/null | head -n1)
