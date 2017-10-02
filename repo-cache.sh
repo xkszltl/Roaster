@@ -119,8 +119,7 @@ done
     set -e
     mkdir -p cuda/rhel7/$(uname -i)
     cd $_
-    wget -cq https://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/7fa2af80.pub
-    rpm --import 7fa2af80.gpg
+    rpm --import https://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/7fa2af80.pub
     eval $REPOSYNC cuda
     eval $CREATEREPO
 ) &
