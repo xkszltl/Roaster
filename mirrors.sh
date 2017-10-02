@@ -49,5 +49,6 @@ tensorflow/tensorflow,\
 },\
 https://gitlab.com/\ {\
 NVIDIA/cuda,\
-}\
+},\
+https://gitlab.kitware.com/\ cmake/cmake\
 }

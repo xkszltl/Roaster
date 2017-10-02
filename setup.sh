@@ -61,7 +61,7 @@ cd $SCRATCH
     rm -rvf $STAGE
     mkdir -p $(dirname $STAGE)/.$(basename $STAGE)
     cd $_
-    [ $# -gt 0 ] && touch $@ || touch repo pkg auth slurm ompi nagios ss tex llvm boost jemalloc rocksdb caffe caffe2
+    [ $# -gt 0 ] && touch $@ || touch repo pkg auth slurm ompi nagios ss tex cmake llvm boost jemalloc rocksdb caffe caffe2
     sync || true
     cd $SCRATCH
     mv -vf $(dirname $STAGE)/.$(basename $STAGE) $STAGE
@@ -592,6 +592,31 @@ EOF
 sync || true
 
 # ================================================================
+# Install CMake
+# ================================================================
+
+[ -e $STAGE/cmake ] && ( set -e
+    cd $SCRATCH
+
+    [ $GIT_MIRROR = $GIT_MIRROR_CODINGCAFE ] && export CMAKE_MIRROR=$GIT_MIRROR || export CMAKE_MIRROR=https://gitlab.kitware.com
+
+    until git clone $CMAKE_MIRROR/cmake/cmake.git; do echo 'Retrying'; done
+    cd cmake
+    # git checkout $(git tag | sed -n '/^[0-9\.]*$/p' | sort -V | tail -n1)
+    git checkout release
+
+    . scl_source enable devtoolset-6
+
+    ./bootstrap --prefix=/usr --parallel=$(nproc)
+    VERBOSE=1 time make -j$(nproc)
+    VERBOSE=1 time make -j install
+
+    cd
+    rm -rf $SCRATCH/cmake
+) && rm -rvf $STAGE/cmake
+sync || true
+
+# ================================================================
 # Compile LLVM
 # ================================================================
 
@@ -657,14 +682,14 @@ for i in llvm-{gcc,clang}; do
             .."
         
         if [ $i = llvm-gcc ]; then
-            cmake3                                  \
+            cmake                                   \
                 -DLLVM_ENABLE_CXX1Y=ON              \
                 $LLVM_COMMON_ARGS
         else
             CC='clang'                              \
             CXX='clang++'                           \
             LD=$(which ld.lld)                      \
-            cmake3                                  \
+            cmake                                   \
                 -DENABLE_X86_RELAX_RELOCATIONS=ON   \
                 -DLIBCXX_USE_COMPILER_RT=ON         \
                 -DLIBCXXABI_USE_COMPILER_RT=ON      \
@@ -680,10 +705,10 @@ for i in llvm-{gcc,clang}; do
 
         # ------------------------------------------------------------
 
-        # time cmake3 --build . --target dist
-        # time cmake3 --build . --target dist-check
-        # time cmake3 --build . --target rpm
-        time cmake3 --build . --target install
+        # time cmake --build . --target dist
+        # time cmake --build . --target dist-check
+        # time cmake --build . --target rpm
+        time cmake --build . --target install
 
         ldconfig &
         ccache -C &
@@ -773,7 +798,7 @@ sync || true
 #     mkdir -p build
 #     cd $_
 #     ( set -e
-#         cmake3                                  \
+#         cmake                                   \
 #             -G Ninja                            \
 #             -DCMAKE_BUILD_TYPE=RelWithDebInfo   \
 #             -DCMAKE_VERBOSE_MAKEFILE=ON         \
@@ -789,7 +814,7 @@ sync || true
 #             -DWITH_ZSTD=ON                      \
 #             ..
 # 
-#         time cmake3 --build . --target install
+#         time cmake  --build . --target install
 #     )
 
     time make -j$(nproc) static_lib
@@ -824,7 +849,7 @@ sync || true
     ( set -e
         . scl_source enable devtoolset-6
 
-        cmake3                                  \
+        cmake                                   \
             -G"Unix Makefiles"                  \
             -DCMAKE_BUILD_TYPE=RelWithDebInfo   \
             -DCMAKE_VERBOSE_MAKEFILE=ON         \
@@ -832,9 +857,9 @@ sync || true
             -DUSE_NCCL=ON                       \
             ..
 
-        time cmake3 --build . -- -j $(nproc)
-        time cmake3 --build . --target test -- -j $(nproc)
-        time cmake3 --build . --target install -- -j $(nproc)
+        time cmake --build . -- -j $(nproc)
+        time cmake --build . --target test -- -j $(nproc)
+        time cmake --build . --target install -- -j $(nproc)
     )
 
     ldconfig &
@@ -884,7 +909,7 @@ sync || true
 
         export MPI_HOME=/usr/local/openmpi
 
-        cmake3                                                  \
+        cmake                                                   \
             -G"Unix Makefiles"                                  \
             -DCMAKE_BUILD_TYPE=RelWithDebInfo                   \
             -DCMAKE_VERBOSE_MAKEFILE=ON                         \
@@ -895,9 +920,9 @@ sync || true
             -DBUILD_GTEST=ON                                    \
             ..
 
-        time cmake3 --build . -- -j$(nproc)
-        time cmake3 --build . --target test || true
-        time cmake3 --build . --target install -- -j
+        time cmake --build . -- -j$(nproc)
+        time cmake --build . --target test || true
+        time cmake --build . --target install -- -j
 
         rm -rf /usr/bin/ninja
     )
