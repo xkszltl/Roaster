@@ -19,7 +19,7 @@ priority=1
 enabled=0
 
 [cache-extras]
-name=[Cache ]CentOS-$releasever - Extras
+name=[Cache] CentOS-$releasever - Extras
 baseurl=https://repo.codingcafe.org/centos/$releasever/extras/$basearch/
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
