@@ -798,7 +798,7 @@ sync || true
     git checkout $(git tag | sed -n '/^[0-9\.]*$/p' | sort -V | tail -n1)
     git checkout master
 
-    . scl_source enable devtoolset-7
+    . scl_source enable devtoolset-6
 
     mkdir -p build
     cd $_
