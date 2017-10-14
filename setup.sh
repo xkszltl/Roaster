@@ -61,7 +61,7 @@ cd $SCRATCH
     rm -rvf $STAGE
     mkdir -p $(dirname $STAGE)/.$(basename $STAGE)
     cd $_
-    [ $# -gt 0 ] && touch $@ || touch repo pkg auth slurm ompi nagios ss tex cmake llvm boost jemalloc rocksdb caffe caffe2
+    [ $# -gt 0 ] && touch $@ || touch repo pkg auth slurm ompi nagios ss tex cmake llvm boost jemalloc opencv rocksdb caffe caffe2
     sync || true
     cd $SCRATCH
     mv -vf $(dirname $STAGE)/.$(basename $STAGE) $STAGE
@@ -194,13 +194,19 @@ echo "GIT_MIRROR=$GIT_MIRROR"
     {gmp,mpfr,libmpc}{,-*}                                      \
     gperftools{,-*}                                             \
     lib{asan{,3},tsan,ubsan}{,-*}                               \
-    lib{jpeg-turbo,tiff,png,glvnd,gomp}{,-*}                    \
+    lib{exif,jpeg-turbo,tiff,png,gomp,gphoto2}{,-*}             \
+    OpenEXR{,-*}                                                \
+    {libv4l,v4l-utils}{,-*}                                     \
+    libunicap{,gtk}{,-*}                                        \
+    libglvnd{,-*}                                               \
+    tbb{,-*}                                                    \
     {bzip2,zlib,libzip,{,lib}zstd,lz4,{,p}xz,snappy}{,-*}       \
     lib{telnet,ssh{,2},curl,aio,ffi,edit,icu,xslt}{,-*}         \
     boost{,-*}                                                  \
     {flex,cups,bison,antlr}{,-*}                                \
-    open{blas,cv,ssl,ssh,ldap}{,-*}                             \
+    open{blas,cv,ldap,ni,ssh,ssl}{,-*}                          \
     {atlas,eigen3}{,-*}                                         \
+    lapack{,64}{,-*}                                            \
     {libsodium,mbedtls}{,-*}                                    \
     libev{,-devel,-source,-debuginfo}                           \
     {asciidoc,gettext,xmlto,c-ares,pcre{,2}}{,-*}               \
@@ -241,7 +247,7 @@ echo "GIT_MIRROR=$GIT_MIRROR"
                                                                 \
     cabextract{,-*}                                             \
                                                                 \
-    devtoolset-{3,4,6}                                          \
+    devtoolset-{3,4,6,7}                                        \
 
     do echo 'Retrying'; done
 
@@ -778,6 +784,70 @@ sync || true
     rm -rf $SCRATCH/jemalloc
     wait
 ) && rm -rvf $STAGE/jemalloc
+sync || true
+
+# ================================================================
+# Compile OpenCV
+# ================================================================
+
+[ -e $STAGE/opencv ] && ( set -e
+    cd $SCRATCH
+
+    git clone $GIT_MIRROR/opencv/opencv.git
+    cd opencv
+    git checkout $(git tag | sed -n '/^[0-9\.]*$/p' | sort -V | tail -n1)
+    git checkout master
+
+    . scl_source enable devtoolset-7
+
+    mkdir -p build
+    cd $_
+
+    if [ $GIT_MIRROR == $GIT_MIRROR_CODINGCAFE ]; then
+        export HTTP_PROXY=proxy.codingcafe.org:8118
+        export HTTPS_PROXY=$HTTP_PROXY
+        export http_proxy=$HTTP_PROXY
+        export https_proxy=$HTTPS_PROXY
+    fi
+    cmake                                               \
+        -G"Ninja"                                       \
+        -DBUILD_opencv_world=OFF                        \
+        -DCMAKE_BUILD_TYPE=Release                      \
+        -DCMAKE_INSTALL_PREFIX=/usr/local               \
+        -DCMAKE_VERBOSE_MAKEFILE=ON                     \
+        -DCPACK_BINARY_DEB=OFF                          \
+        -DCPACK_BINARY_RPM=ON                           \
+        -DCPACK_BINARY_STGZ=OFF                         \
+        -DCPACK_BINARY_TBZ2=OFF                         \
+        -DCPACK_BINARY_TGZ=OFF                          \
+        -DCPACK_BINARY_TXZ=OFF                          \
+        -DCPACK_BINARY_TZ=OFF                           \
+        -DCPACK_SOURCE_RPM=ON                           \
+        -DCPACK_SOURCE_STGZ=OFF                         \
+        -DCPACK_SOURCE_TBZ2=OFF                         \
+        -DCPACK_SOURCE_TGZ=OFF                          \
+        -DCPACK_SOURCE_TXZ=OFF                          \
+        -DCPACK_SOURCE_ZIP=OFF                          \
+        -DCUDA_NVCC_FLAGS='--expt-relaxed-constexpr'    \
+        -DENABLE_CXX11=ON                               \
+        -DINSTALL_CREATE_DISTRIB=ON                     \
+        -DOPENCV_ENABLE_NONFREE=ON                      \
+        -DWITH_LIBV4L=ON                                \
+        -DWITH_NVCUVID=ON                               \
+        -DWITH_OPENGL=ON                                \
+        -DWITH_OPENMP=ON                                \
+        -DWITH_QT=ON                                    \
+        -DWITH_TBB=ON                                   \
+        -DWITH_UNICAP=ON                                \
+        ..
+
+    time cmake --build . --target package
+    yum install ./OpenCV*.rpm || rpm -ivh --nodeps ./OpenCV*.rpm
+
+    cd
+    rm -rf $SCRATCH/opencv
+    wait
+) && rm -rvf $STAGE/opencv
 sync || true
 
 # ================================================================

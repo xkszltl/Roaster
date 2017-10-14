@@ -3,16 +3,16 @@
 set -e
 
 export HTTP_PROXY=127.0.0.1:8118
-export HTTPS_PROXY=$HTTP_PROXY
-export http_proxy=$HTTP_PROXY
-export https_proxy=$HTTPS_PROXY
+[ $HTTP_PROXY ] && export HTTPS_PROXY=$HTTP_PROXY
+[ $HTTP_PROXY ] && export http_proxy=$HTTP_PROXY
+[ $HTTPS_PROXY ] && export https_proxy=$HTTPS_PROXY
 
 export ROOT=/var/mirrors
 
 mkdir -p $ROOT
 cd $_
 
-parallel -j 10 --line-buffer --bar 'bash -c '"'"'
+parallel -j 8 --line-buffer --bar 'bash -c '"'"'
 set -e
 [ $(xargs -n1 <<<{} | wc -l) -ne 2 ] && exit 0
 export SRC_SITE=$(xargs -n1 <<<{} 2>/dev/null | head -n1)
