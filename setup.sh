@@ -822,6 +822,7 @@ sync || true
         -DCPACK_BINARY_TGZ=OFF                          \
         -DCPACK_BINARY_TXZ=OFF                          \
         -DCPACK_BINARY_TZ=OFF                           \
+        -DCPACK_SET_DESTDIR=ON                          \
         -DCPACK_SOURCE_RPM=ON                           \
         -DCPACK_SOURCE_STGZ=OFF                         \
         -DCPACK_SOURCE_TBZ2=OFF                         \
@@ -842,7 +843,7 @@ sync || true
         ..
 
     time cmake --build . --target package
-    yum install ./OpenCV*.rpm || rpm -ivh --nodeps ./OpenCV*.rpm
+    yum install ./OpenCV*.rpm || rpm -ivh --nodeps ./OpenCV*.rpm || time cmake --build . --target install
 
     cd
     rm -rf $SCRATCH/opencv
