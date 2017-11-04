@@ -16,7 +16,7 @@
     cd $_
     curl -sSL https://dl.bintray.com/boostorg/release/1.65.1/source/boost_1_65_1.tar.bz2 | tar -jxvf - --strip-components=1
 
-    . scl_source enable devtoolset-6
+    . scl_source enable devtoolset-7
     ./bootstrap.sh
     ./b2 -aj`nproc` install
 
