@@ -10,7 +10,7 @@
 
     # ------------------------------------------------------------
 
-    . scl_source enable devtoolset-6
+    . scl_source enable devtoolset-7
     ./autogen.sh --with-jemalloc-prefix="" --enable-{prof,xmalloc}
     time make -j$(nproc) dist
     time make -j$(nproc)
