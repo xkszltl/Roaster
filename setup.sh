@@ -225,7 +225,7 @@ echo "GIT_MIRROR=$GIT_MIRROR"
     {leveldb,lmdb}{,-*}                                         \
     {mariadb,postgresql}{,-*}                                   \
                                                                 \
-    {fio,filebench}{,-*}                                        \
+    {fio,{file,sys}bench}{,-*}                                  \
                                                                 \
     {,pam_}krb5{,-*}                                            \
     {sudo,nss,sssd,authconfig}{,-*}                             \
