@@ -15,7 +15,7 @@
         [ $HTTP_PROXY ] && export HTTPS_PROXY=$HTTP_PROXY
         [ $HTTP_PROXY ] && export http_proxy=$HTTP_PROXY
         [ $HTTPS_PROXY ] && export https_proxy=$HTTPS_PROXY
-        for i in facebook glog google Maratyszcza NervanaSystems nvidia NVlabs pybind; do
+        for i in facebook glog google Maratyszcza NervanaSystems nvidia NVlabs pybind RLovelett; do
             sed -i "s/[^[:space:]]*:\/\/[^\/]*\/$i\//$(sed 's/\//\\\//g' <<<$GIT_MIRROR )\/$i\//" .gitmodules
         done
     fi
