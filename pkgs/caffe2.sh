@@ -16,7 +16,8 @@
         [ $HTTP_PROXY ] && export http_proxy=$HTTP_PROXY
         [ $HTTPS_PROXY ] && export https_proxy=$HTTPS_PROXY
         for i in facebook glog google Maratyszcza NervanaSystems nvidia NVlabs pybind RLovelett zdevito; do
-            sed -i "s/[^[:space:]]*:\/\/[^\/]*\/$i\//$(sed 's/\//\\\//g' <<<$GIT_MIRROR )\/$i\//" .gitmodules
+            sed -i "s/[^[:space:]]*:\/\/[^\/]*\(\/$i\/.*\)/$(sed 's/\//\\\//g' <<<$GIT_MIRROR )\1.git/" .gitmodules
+            sed -i "s/\($(sed 's/\//\\\//g' <<<$GIT_MIRROR )\/$i\/.*\.git\)\.git[[:space:]]*$/\1/" .gitmodules
         done
     fi
 
@@ -35,6 +36,7 @@
 
         export MPI_HOME=/usr/local/openmpi
 
+        # Some platform may need -DCUDA_ARCH_NAME=Pascal
         cmake                                                   \
             -G"Unix Makefiles"                                  \
             -DCMAKE_BUILD_TYPE=RelWithDebInfo                   \
@@ -43,7 +45,6 @@
             -DBENCHMARK_USE_LIBCXX=OFF                          \
             -DBLAS=OpenBLAS                                     \
             -DBUILD_GTEST=ON                                    \
-            -DCUDA_ARCH_NAME=Pascal                             \
             -DUSE_OPENMP=ON                                     \
             ..
 
