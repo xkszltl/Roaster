@@ -46,6 +46,7 @@ NVIDIA/{DIGITS,cnmem,libglvnd,nccl,nvidia-docker},\
 NVLabs/{cub,xmp},\
 open-mpi/ompi,\
 opencv/opencv,\
+pybind/pybind11,\
 SchedMD/slurm,\
 shadowsocks/{ShadowsocksX-NG,libQtShadowsocks,shadowsocks{,-go,-libev,-manager,-windows}},\
 tensorflow/tensorflow,\
