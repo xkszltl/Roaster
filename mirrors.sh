@@ -52,6 +52,7 @@ SchedMD/slurm,\
 shadowsocks/{ShadowsocksX-NG,libQtShadowsocks,shadowsocks{,-go,-libev,-manager,-windows}},\
 tensorflow/tensorflow,\
 xianyi/OpenBLAS,\
+zdevito/ATen,\
 },\
 https://gitlab.com/\ {\
 NVIDIA/cuda,\
