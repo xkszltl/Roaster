@@ -15,7 +15,7 @@
         [ $HTTP_PROXY ] && export HTTPS_PROXY=$HTTP_PROXY
         [ $HTTP_PROXY ] && export http_proxy=$HTTP_PROXY
         [ $HTTPS_PROXY ] && export https_proxy=$HTTPS_PROXY
-        for i in Maratyszcza NVLabs NervanaSystems glog google nvidia; do
+        for i in facebook glog google Maratyszcza NervanaSystems nvidia NVlabs; do
             sed -i "s/[^[:space:]]*:\/\/[^\/]*\/$i/$(sed 's/\//\\\//g' <<<$GIT_MIRROR )\/$i/" .gitmodules
         done
     fi
@@ -23,15 +23,13 @@
     git submodule init
     until git config --file .gitmodules --get-regexp path | cut -d' ' -f2 | parallel -j0 --ungroup --bar 'git submodule update --recursive {}'; do echo 'Retrying'; done
 
-    echo "list(REMOVE_ITEM Caffe2_DEPENDENCY_LIBS cblas)" >> cmake/Dependencies.cmake
-
     # ------------------------------------------------------------
 
     mkdir -p build
     cd $_
 
     ( set -e
-        . scl_source enable devtoolset-6
+        . scl_source enable devtoolset-4
 
         ln -sf $(which ninja-build) /usr/bin/ninja
 
@@ -44,8 +42,9 @@
             -DBENCHMARK_ENABLE_LTO=ON                           \
             -DBENCHMARK_USE_LIBCXX=OFF                          \
             -DBLAS=OpenBLAS                                     \
-            -DBUILD_BENCHMARK=OFF                               \
             -DBUILD_GTEST=ON                                    \
+            -DCUDA_ARCH_NAME=Pascal                             \
+            -DUSE_OPENMP=ON                                     \
             ..
 
         time cmake --build . -- -j$(nproc)

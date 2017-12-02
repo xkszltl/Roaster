@@ -33,7 +33,7 @@ https://github.com/\ {\
 aws/aws-{cli,sdk-{cpp,go,java,js,net,php,ruby}},\
 BVLC/caffe,\
 caffe2/{caffe2,models},\
-facebook/rocksdb,\
+facebook/{rocksdb,zstd},\
 gflags/gflags,\
 google/{benchmark,snappy,glog,googletest,leveldb,protobuf},\
 jemalloc/jemalloc,\
