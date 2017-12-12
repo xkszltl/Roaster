@@ -39,7 +39,7 @@ for i in llvm-{gcc,clang}; do
             -DCLANG_ANALYZER_BUILD_Z3=OFF
             -DCLANG_DEFAULT_CXX_STDLIB=libc++
             -DCMAKE_BUILD_TYPE=Release
-            -DCMAKE_INSTALL_PREFIX='\usr\'
+            -DCMAKE_INSTALL_PREFIX=/usr/
             -DCMAKE_VERBOSE_MAKEFILE=ON
             -DLIBCLANG_BUILD_STATIC=ON
             -DLIBCXX_CONFIGURE_IDE=ON
