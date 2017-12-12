@@ -33,6 +33,7 @@ https://github.com/\ {\
 aws/aws-{cli,sdk-{cpp,go,java,js,net,php,ruby}},\
 BVLC/caffe,\
 caffe2/{caffe2,models},\
+ccache/ccache,\
 facebook/{rocksdb,zstd},\
 gflags/gflags,\
 google/{benchmark,snappy,glog,googletest,leveldb,protobuf},\
@@ -42,6 +43,7 @@ llvm-mirror/{ll{vm,d,db,go},clang{,-tools-extra},polly,compiler-rt,openmp,lib{un
 LMDB/lmdb,\
 Maratyszcza/{confu,FP16,FXdiv,NNPACK,PeachPy,psimd,pthreadpool},\
 NervanaSystems/{neon,nervanagpu},\
+ninja-build/ninja,\
 NVIDIA/{DIGITS,cnmem,libglvnd,nccl,nvidia-docker},\
 NVLabs/{cub,xmp},\
 open-mpi/ompi,\

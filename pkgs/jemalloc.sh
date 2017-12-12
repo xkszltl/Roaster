@@ -11,7 +11,12 @@
     # ------------------------------------------------------------
 
     . scl_source enable devtoolset-7
-    ./autogen.sh --with-jemalloc-prefix="" --enable-{prof,xmalloc}
+
+    ./autogen.sh                    \
+        --enable-{prof,xmalloc}     \
+        --prefix="/usr/local/"      \
+        --with-jemalloc-prefix=""
+
     time make -j$(nproc) dist
     time make -j$(nproc)
     time make -j$(nproc) install
