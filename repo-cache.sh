@@ -9,11 +9,6 @@ trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
 # ----------------------------------------------------------------
 
-export HTTP_PROXY=proxy.codingcafe.org:8118
-[ $HTTP_PROXY ] && export HTTPS_PROXY=$HTTP_PROXY
-[ $HTTP_PROXY ] && export http_proxy=$HTTP_PROXY
-[ $HTTPS_PROXY ] && export https_proxy=$HTTPS_PROXY
-
 export REPOSYNC='reposync
     --cachedir=$(mktemp -d)
     --download-metadata
@@ -36,30 +31,52 @@ export CREATEREPO='createrepo_c
     $(pwd)
 '
 
-# ----------------------------------------------------------------
-
 mkdir -p /var/www/repos
 cd $_
 
+# ----------------------------------------------------------------
+
+if ping -nfc 10 rsync.mirrors.ustc.edu.cn -I 10.0.0.12; then
+    rsync -avPz --delete --address 10.0.0.12 rsync://rsync.mirrors.ustc.edu.cn/CTAN/ CTAN &
+elif ping -nfc 10 mirrors.tuna.tsinghua.edu.cn -I 10.0.0.11; then
+    rsync -avPz --delete --address 10.0.0.11 rsync://mirrors.tuna.tsinghua.edu.cn/CTAN/ CTAN &
+elif ping -nfc 10 mirrors.tuna.tsinghua.edu.cn -I 10.0.0.12; then
+    rsync -avPz --delete --address 10.0.0.12 rsync://mirrors.tuna.tsinghua.edu.cn/CTAN/ CTAN &
+elif ping -nfc 10 rsync.mirrors.ustc.edu.cn -I 10.0.0.11; then
+    rsync -avPz --delete --address 10.0.0.11 rsync://rsync.mirrors.ustc.edu.cn/CTAN/ CTAN &
+else
+    echo "No mirror to try for CTAN"
+    exit 1
+fi
+
+# ----------------------------------------------------------------
+
+export HTTP_PROXY=proxy.codingcafe.org:8118
+[ $HTTP_PROXY ] && export HTTPS_PROXY=$HTTP_PROXY
+[ $HTTP_PROXY ] && export http_proxy=$HTTP_PROXY
+[ $HTTPS_PROXY ] && export https_proxy=$HTTPS_PROXY
+
+# ----------------------------------------------------------------
+
 (
     set -e
-    rsync -avPz --delete --address 10.0.0.12 rsync://rsync.mirrors.ustc.edu.cn/CTAN/ CTAN    \
-    || rsync -avPz --delete --address 10.0.0.11 rsync://mirrors.tuna.tsinghua.edu.cn/CTAN/ CTAN
-) &
+    mkdir -p nvidia/cudnn
+    cd $_
 
-for i in $(find . -name .repodata -type d); do :
-(
-    set -e
-    rm -rf $i
-) &
-done
+    for i in v7.0.{4,5}; do
+        mkdir -p $i
+        pushd $_
+        for j in 9.{0,1,2,3,4,5,6,7,8,9}-{{linux,osx}-%s.tgz,windows10-%s.zip}; do
+            wget -c https://developer.download.nvidia.com/compute/redist/cudnn/$(basename $(pwd))/cudnn-$(printf $j x64-$(basename $(pwd) | sed 's/\..*//')) &
+        done
+        popd
+    done
+)
 
-(
-    set -e
-    yum makecache fast -y || true
-) &
+# ----------------------------------------------------------------
 
-wait
+yum makecache fast -y || true
+rm -rf $(find . -name .repodata -type d)
 
 # ----------------------------------------------------------------
 

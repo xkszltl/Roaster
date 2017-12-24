@@ -2,8 +2,6 @@
 
 FROM centos/systemd
 
-LABEL com.nvidia.volumes.needed="nvidia_driver"
-
 SHELL ["/bin/bash", "-c"]
 
 ENV PATH /usr/local/nvidia/bin:/usr/local/cuda/bin:${PATH}
