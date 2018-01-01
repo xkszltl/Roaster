@@ -7,6 +7,7 @@ trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 # Environment Configuration
 # ================================================================
 
+export ROOT_DIR=$(cd $(dirname $0) && pwd)
 export SCRATCH=/tmp/scratch
 export STAGE=/etc/codingcafe/stage
 
@@ -116,8 +117,13 @@ cd $SCRATCH
 ) && rm -rvf $STAGE/repo
 sync || true
 
-ping -nfc 10 localhost && export GIT_MIRROR=$(
-    export PING_ROUND=$(ping -f localhost > /dev/null && echo '-fc100' || echo '-i0.2 -c10')
+ping -nfc 10 localhost > /dev/null                                          \
+&& echo '----------------------------------------------------------------'  \
+&& echo '               Measure link quality to git mirrors              '  \
+&& echo '----------------------------------------------------------------'  \
+&& env | sed -n 's/^GIT_MIRROR_[^=]*=/| /p'                                 \
+&& export GIT_MIRROR=$(
+    export PING_ROUND=$(ping -nfc 10 localhost > /dev/null && echo '-fc100' || echo '-i0.2 -c10')
     for i in $(env | sed -n 's/^GIT_MIRROR_[^=]*=//p'); do :
         ping -n $PING_ROUND $(sed 's/.*:\/\///' <<<"$i" | sed 's/\/.*//')                   \
         | sed -n '/ms$/p'                                                                   \
@@ -129,8 +135,9 @@ ping -nfc 10 localhost && export GIT_MIRROR=$(
         echo "$i"
     done | paste - - | sort -n | head -n1 | xargs -n1 | tail -n1
 )
-
-echo "GIT_MIRROR=$GIT_MIRROR"
+echo '----------------------------------------------------------------'
+echo "| GIT_MIRROR | $GIT_MIRROR"
+echo '----------------------------------------------------------------'
 
 # ================================================================
 # Install Packages
@@ -377,25 +384,29 @@ git config --global core.editor     'vim'
 ) && rm -rvf $STAGE/auth
 sync || true
 
-. pkgs/slurm.sh
-. pkgs/openmpi.sh
-. pkgs/nagios.sh
-. pkgs/shadowsocks.sh
-. pkgs/texlive.sh
-. pkgs/cmake.sh
-. pkgs/llvm.sh
-. pkgs/boost.sh
-. pkgs/jemalloc.sh
-. pkgs/gflags.sh
-. pkgs/glog.sh
-. pkgs/protobuf.sh
-. pkgs/leveldb.sh
-. pkgs/lmdb.sh
-. pkgs/openblas.sh
-. pkgs/opencv.sh
-. pkgs/rocksdb.sh
-. pkgs/caffe.sh
-. pkgs/caffe2.sh
+for i in $(echo "
+    slurm
+    openmpi
+    nagios
+    shadowsocks
+    texlive
+    cmake
+    llvm
+    boost
+    jemalloc
+    gflags
+    glog
+    protobuf
+    leveldb
+    lmdb
+    openblas
+    opencv
+    rocksdb
+    caffe
+    caffe2
+"); do
+    . $ROOT_DIR/pkgs/$i.sh
+done
 
 # ================================================================
 # Cleanup
