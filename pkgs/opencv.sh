@@ -55,8 +55,12 @@
         -DWITH_UNICAP=ON                                \
         ..
 
-    time cmake --build . --target package
-    yum install ./OpenCV*.rpm || rpm -ivh --nodeps ./OpenCV*.rpm || $IS_CONTAINER && time cmake --build . --target install
+    if $IS_CONTAINER; then
+        time cmake --build . --target install
+    else
+        time cmake --build . --target package
+        yum install ./OpenCV*.rpm || yum update ./OpenCV*.rpm || rpm -ivh --nodeps ./OpenCV*.rpm || rpm -Uvh --nodeps ./OpenCV*.rpm
+    fi
 
     cd
     rm -rf $SCRATCH/opencv
