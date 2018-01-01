@@ -116,7 +116,7 @@ cd $SCRATCH
 ) && rm -rvf $STAGE/repo
 sync || true
 
-ping -f localhost && export GIT_MIRROR=$(
+ping -nfc 10 localhost && export GIT_MIRROR=$(
     export PING_ROUND=$(ping -f localhost > /dev/null && echo '-fc100' || echo '-i0.2 -c10')
     for i in $(env | sed -n 's/^GIT_MIRROR_[^=]*=//p'); do :
         ping -n $PING_ROUND $(sed 's/.*:\/\///' <<<"$i" | sed 's/\/.*//')                   \
