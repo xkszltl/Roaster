@@ -22,12 +22,14 @@ export DST_SITE=git@git.codingcafe.org:Mirrors/
 export DST_DIR=$SRC_DIR
 export DST=$DST_SITE$DST_DIR.git
 export LOCAL=$(pwd)/$DST_DIR.git
-if [ -d $LOCAL ]; then
-	cd $LOCAL && git fetch --all
-else
-	mkdir -p $(dirname $LOCAL) && cd $(dirname $LOCAL) && git clone --mirror $SRC && cd $LOCAL
-fi &&
-git remote set-url --push origin $DST && git push --mirror
+if [ $# -eq 0 ] || grep $1 <<<$SRC_DIR; then
+    if [ -d $LOCAL ]; then
+	    cd $LOCAL && git fetch --all
+    else
+	    mkdir -p $(dirname $LOCAL) && cd $(dirname $LOCAL) && git clone --mirror $SRC && cd $LOCAL
+    fi &&
+    git remote set-url --push origin $DST && git push --mirror
+fi
 '"'" ::: {\
 https://github.com/\ {\
 aws/aws-{cli,sdk-{cpp,go,java,js,net,php,ruby}},\
