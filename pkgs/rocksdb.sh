@@ -7,7 +7,7 @@
 
     pip install -U git+$GIT_MIRROR/Maratyszcza/{confu,PeachPy}.git
 
-    . scl_source enable devtoolset-6
+    . scl_source enable devtoolset-7
 
     until git clone $GIT_MIRROR/facebook/rocksdb.git; do echo 'Retrying'; done
     cd rocksdb
@@ -36,12 +36,12 @@
 #     )
 
     time make -j$(nproc) static_lib
-    # time make -j install
     time make -j$(nproc) shared_lib
-    # time make -j install-shared
-    time make -j package
+    time make -j install
+    time make -j install-shared
+    # time make -j package
 
-    yum install -y package/rocksdb-*.rpm
+    yum install -y package/rocksdb-*.rpm || yum update -y package/rocksdb-*.rpm
 
     ccache -C &
     cd
