@@ -59,7 +59,7 @@
         time cmake --build . --target install
     else
         time cmake --build . --target package
-        yum install ./OpenCV*.rpm || yum update ./OpenCV*.rpm || rpm -ivh --nodeps ./OpenCV*.rpm || rpm -Uvh --nodeps ./OpenCV*.rpm
+        yum install -y ./OpenCV*.rpm || yum update -y ./OpenCV*.rpm || rpm -ivh --nodeps ./OpenCV*.rpm || rpm -Uvh --nodeps ./OpenCV*.rpm
     fi
 
     cd
