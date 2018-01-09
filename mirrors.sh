@@ -12,6 +12,8 @@ export ROOT=/var/mirrors
 mkdir -p $ROOT
 cd $_
 
+[ $# -ge 1 ] && export PATTERN=$1
+
 parallel -j 8 --line-buffer --bar 'bash -c '"'"'
 set -e
 [ $(xargs -n1 <<<{} | wc -l) -ne 2 ] && exit 0
@@ -22,7 +24,7 @@ export DST_SITE=git@git.codingcafe.org:Mirrors/
 export DST_DIR=$SRC_DIR
 export DST=$DST_SITE$DST_DIR.git
 export LOCAL=$(pwd)/$DST_DIR.git
-if [ $# -eq 0 ] || grep $1 <<<$SRC_DIR; then
+if [ ! $PATTERN ] || grep $PATTERN <<<$SRC_DIR; then
     if [ -d $LOCAL ]; then
 	    cd $LOCAL && git fetch --all
     else
