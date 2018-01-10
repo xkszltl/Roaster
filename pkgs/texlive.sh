@@ -2,7 +2,7 @@
 # Install TeX Live
 # ================================================================
 
-[ -e $STAGE/tex ] && ( set -e set -e
+[ -e $STAGE/tex ] && ( set -e
     export TEXLIVE_MIRROR=https://repo.codingcafe.org/CTAN/systems/texlive/tlnet
 
     cd $SCRATCH
