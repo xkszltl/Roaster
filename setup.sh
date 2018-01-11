@@ -7,8 +7,16 @@ trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 # Environment Configuration
 # ================================================================
 
+export IS_CONTAINER=$([ -e /proc/1/cgroup ] && [ $(sed -n 's/^[^:]*:[^:]*:\(..\)/\1/p' /proc/1/cgroup | wc -l) -gt 0 ] && echo true || echo false)
+
+# ----------------------------------------------------------------
+
 export ROOT_DIR=$(cd $(dirname $0) && pwd)
-export SCRATCH=/tmp/scratch
+if $IS_CONTAINER || [ ! -d /media/Scratch ]; then
+    export SCRATCH=/tmp/scratch
+else
+    export SCRATCH=$(mktemp -p /media/Scratch)
+fi
 export STAGE=/etc/codingcafe/stage
 
 export RPM_CACHE_REPO=/etc/yum.repos.d/cache.repo
@@ -17,10 +25,6 @@ export RPM_CACHE_REPO=/etc/yum.repos.d/cache.repo
 
 export GIT_MIRROR_GITHUB=https://github.com
 export GIT_MIRROR_CODINGCAFE=https://git.codingcafe.org/Mirrors
-
-# ----------------------------------------------------------------
-
-export IS_CONTAINER=$([ -e /proc/1/cgroup ] && [ $(sed -n 's/^[^:]*:[^:]*:\(..\)/\1/p' /proc/1/cgroup | wc -l) -gt 0 ] && echo true || echo false)
 
 # ================================================================
 # Infomation
