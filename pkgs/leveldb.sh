@@ -19,7 +19,7 @@
     install out-*/libleveldb.* $_
 
     ldconfig &
-    ccache -C &
+    $IS_CONTAINER && ccache -C &
     cd
     rm -rf $SCRATCH/leveldb
     wait

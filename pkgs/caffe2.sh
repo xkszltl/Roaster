@@ -63,7 +63,7 @@
 
     echo '/usr/local/lib' > /etc/ld.so.conf.d/caffe2.conf
     ldconfig &
-    ccache -C &
+    $IS_CONTAINER && ccache -C &
     cd
     rm -rf $SCRATCH/caffe2
     wait

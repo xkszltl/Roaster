@@ -29,7 +29,7 @@
     )
 
     ldconfig &
-    ccache -C &
+    $IS_CONTAINER && ccache -C &
     cd
     rm -rf $SCRATCH/caffe
     wait

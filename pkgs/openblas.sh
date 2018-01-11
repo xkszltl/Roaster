@@ -31,7 +31,7 @@
     make PREFIX=/usr/local install
 
     ldconfig &
-    ccache -C &
+    $IS_CONTAINER && ccache -C &
     cd
     rm -rf $SCRATCH/OpenBLAS
     wait

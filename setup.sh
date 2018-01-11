@@ -396,7 +396,7 @@ done
 # Cleanup
 # ================================================================
 
-ccache -C &
+$IS_CONTAINER && ccache -C &
 ldconfig &
 cd
 # $IS_CONTAINER || umount $SCRATCH

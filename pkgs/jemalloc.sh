@@ -25,7 +25,7 @@
 
     echo '/usr/local/lib' > /etc/ld.so.conf.d/jemalloc.conf
     ldconfig &
-    ccache -C &
+    $IS_CONTAINER && ccache -C &
     cd
     rm -rf $SCRATCH/jemalloc
     wait

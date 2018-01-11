@@ -28,7 +28,7 @@
     time cmake --build . --target install
 
     ldconfig &
-    ccache -C &
+    $IS_CONTAINER && ccache -C &
     cd
     rm -rf $SCRATCH/gflags
     wait

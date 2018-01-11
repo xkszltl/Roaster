@@ -43,7 +43,7 @@
 
     yum install -y package/rocksdb-*.rpm || yum update -y package/rocksdb-*.rpm
 
-    ccache -C &
+    $IS_CONTAINER && ccache -C &
     cd
     rm -rf $SCRATCH/rocksdb
     wait
