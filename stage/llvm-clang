@@ -1,4 +1,6 @@
 FROM docker.codingcafe.org/sandbox/centos:stage-llvm-gcc
 
 ADD ["setup.sh", "/etc/codingcafe/"]
+ADD ["pkgs", "/etc/codingcafe/pkgs"]
+
 RUN cp -f /etc/hosts /tmp && echo 10.0.0.10 {git,proxy,repo}.codingcafe.org > /etc/hosts && /etc/codingcafe/setup.sh llvm-clang && cat /tmp/hosts > /etc/hosts && rm -f /tmp/hosts

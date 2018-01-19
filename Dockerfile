@@ -10,6 +10,7 @@ ENV NVIDIA_VISIBLE_DEVICES all
 ENV NVIDIA_DRIVER_CAPABILITIES compute,utility
 
 ADD ["setup.sh", "/etc/codingcafe/"]
+ADD ["pkgs", "/etc/codingcafe/pkgs"]
 ADD ["cache.repo", "/etc/yum.repos.d/"]
 VOLUME ["/var/log"]
 

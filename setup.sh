@@ -66,7 +66,7 @@ cd $SCRATCH
     rm -rvf $STAGE
     mkdir -p $(dirname $STAGE)/.$(basename $STAGE)
     cd $_
-    [ $# -gt 0 ] && touch $@ || touch repo pkg auth cuda slurm ompi nagios ss tex cmake llvm boost jemalloc gflags glog protobuf leveldb opencv rocksdb caffe caffe2
+    [ $# -gt 0 ] && touch $@ || touch repo pkg-{skip,all} auth cuda slurm ompi nagios ss tex cmake llvm-{gcc,clang} boost jemalloc gflags glog protobuf leveldb opencv rocksdb caffe caffe2
     sync || true
     cd $SCRATCH
     mv -vf $(dirname $STAGE)/.$(basename $STAGE) $STAGE
@@ -147,11 +147,11 @@ echo '----------------------------------------------------------------'
 # Install Packages
 # ================================================================
 
-[ -e $STAGE/pkg ] && ( set -e
-    export RPM_CACHE_ARGS=$([ -f $RPM_CACHE_REPO ] && echo "--disableplugin=axelget,fastestmirror")
+for i in pkg-{skip,all}; do
+    [ -e $STAGE/$i ] && ( set -e
+        export RPM_CACHE_ARGS=$([ -f $RPM_CACHE_REPO ] && echo "--disableplugin=axelget,fastestmirror")
 
-    for i in --skip-broken --nogpgcheck; do
-        until yum install -y --nogpgcheck $RPM_CACHE_ARGS           \
+        until yum install -y --nogpgcheck $([ $i = pkg-skip ] && echo --skip-broken) $RPM_CACHE_ARGS    \
                                                                     \
         qpid-cpp-client{,-*}                                        \
         {gcc,distcc,ccache}{,-*}                                    \
@@ -263,55 +263,46 @@ echo '----------------------------------------------------------------'
         devtoolset-{3,4,6,7}                                        \
 
         do echo 'Retrying'; done
-    done
 
-    # TODO: Fix the following issue:
-    #       LLVM may select the wrong gcc toolchain without libgcc_s integrated.
-    #       The correct choice is x86_64-redhat-linux instead of x86_64-linux-gnu.
-    yum remove -y gcc-x86_64-linux-gnu
+        # TODO: Fix the following issue:
+        #       LLVM may select the wrong gcc toolchain without libgcc_s integrated.
+        #       The correct choice is x86_64-redhat-linux instead of x86_64-linux-gnu.
+        yum remove -y gcc-x86_64-linux-gnu
 
-    yum autoremove -y
-    yum clean packages
+        yum autoremove -y
+        yum clean packages
 
-    parallel --will-cite < /dev/null
+        which parallel 2>/dev/null && parallel --will-cite < /dev/null
 
-    nvidia-smi
+        nvidia-smi
 
-    # ------------------------------------------------------------
+        # ------------------------------------------------------------
 
-    for i in anaconda libreoffice perl python{,2,34} qt5 ruby *-fonts; do :
-        until yum install -y --skip-broken $RPM_CACHE_ARGS $i{,-*}; do echo 'Retrying'; done
-    done
+        for i in anaconda libreoffice perl python{,2,34} qt5 ruby *-fonts; do :
+            until yum install -y --skip-broken $RPM_CACHE_ARGS $i{,-*}; do echo 'Retrying'; done
+        done
 
-    until yum install -y "https://downloads.sourceforge.net/project/mscorefonts2/rpms/$(
-        curl -sSL https://sourceforge.net/projects/mscorefonts2/files/rpms/                                         \
-        | sed -n 's/.*\(msttcore-fonts-installer-\([0-9]*\).\([0-9]*\)-\([0-9]*\).noarch.rpm\).*/\2 \3 \4 \1/p'     \
-        | sort -n | tail -n1 | cut -d' ' -f4 -
-    )"; do echo 'Retrying'; done
+        until yum install -y "https://downloads.sourceforge.net/project/mscorefonts2/rpms/$(
+            curl -sSL https://sourceforge.net/projects/mscorefonts2/files/rpms/                                         \
+            | sed -n 's/.*\(msttcore-fonts-installer-\([0-9]*\).\([0-9]*\)-\([0-9]*\).noarch.rpm\).*/\2 \3 \4 \1/p'     \
+            | sort -n | tail -n1 | cut -d' ' -f4 -
+        )"; do echo 'Retrying'; done
 
-    fc-cache -fv
+        fc-cache -fv
 
-    # ------------------------------------------------------------
+        # ------------------------------------------------------------
 
-    until yum update -y --skip-broken; do echo 'Retrying'; done
-    yum update -y || true
+        until yum update -y --skip-broken; do echo 'Retrying'; done
+        yum update -y || true
 
-    $IS_CONTAINER || package-cleanup --oldkernels --count=2
-    yum autoremove -y
-    yum clean all
+        $IS_CONTAINER || package-cleanup --oldkernels --count=2
+        yum autoremove -y
+        yum clean all
 
-    updatedb
-) && rm -rvf $STAGE/pkg
-sync || true
-
-# ================================================================
-# Git Configuration
-# ================================================================
-
-git config --global user.name       'Tongliang Liao'
-git config --global user.email      'xkszltl@gmail.com'
-git config --global push.default    'matching'
-git config --global core.editor     'vim'
+        updatedb
+    ) && rm -rvf $STAGE/$i
+    sync || true
+done
 
 # ================================================================
 # Account Configuration
@@ -366,6 +357,13 @@ git config --global core.editor     'vim'
         systemctl enable $i
         systemctl start $i || $IS_CONTAINER
     done
+
+    # ------------------------------------------------------------
+
+    git config --global user.name       'Tongliang Liao'
+    git config --global user.email      'xkszltl@gmail.com'
+    git config --global push.default    'matching'
+    git config --global core.editor     'vim'
 ) && rm -rvf $STAGE/auth
 sync || true
 
@@ -398,7 +396,7 @@ done
 # Cleanup
 # ================================================================
 
-$IS_CONTAINER && ccache -C &
+$IS_CONTAINER && which ccache 2>&1 > /dev/null && ccache -C &
 ldconfig &
 cd
 # $IS_CONTAINER || umount $SCRATCH
