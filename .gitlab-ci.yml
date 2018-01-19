@@ -1,5 +1,7 @@
 stages:
   - init
+  - repo
+  - pkg
   - ss
   - tex
   - llvm-gcc
@@ -21,13 +23,37 @@ init:
     - until docker pull centos/systemd; do echo "Retry docker pull..."; done
     - gitlab-ci/build_stage.sh
 
+repo:
+  stage: repo
+  tags:
+    - docker
+    - gpu
+  only:
+    - /^build-(init|repo)$/
+  except:
+    - branches
+  script:
+    - gitlab-ci/build_stage.sh
+
+pkg:
+  stage: pkg
+  tags:
+    - docker
+    - gpu
+  only:
+    - /^build-(init|repo|pkg)$/
+  except:
+    - branches
+  script:
+    - gitlab-ci/build_stage.sh
+
 ss:
   stage: ss
   tags:
     - docker
     - gpu
   only:
-    - /^build-(init|ss)$/
+    - /^build-(init|repo|pkg|ss)$/
   except:
     - branches
   script:
@@ -39,7 +65,7 @@ tex:
     - docker
     - gpu
   only:
-    - /^build-(init|ss|tex)$/
+    - /^build-(init|repo|pkg|ss|tex)$/
   except:
     - branches
   script:
@@ -51,7 +77,7 @@ llvm-gcc:
     - docker
     - gpu
   only:
-    - /^build-(init|ss|tex|llvm-gcc)$/
+    - /^build-(init|repo|pkg|ss|tex|llvm-gcc)$/
   except:
     - branches
   script:
@@ -63,7 +89,7 @@ llvm-clang:
     - docker
     - gpu
   only:
-    - /^build-(init|ss|tex|llvm-gcc|llvm-clang)$/
+    - /^build-(init|repo|pkg|ss|tex|llvm-gcc|llvm-clang)$/
   except:
     - branches
   script:
@@ -75,7 +101,7 @@ misc:
     - docker
     - gpu
   only:
-    - /^build-(init|ss|tex|llvm-gcc|llvm-clang|misc)$/
+    - /^build-(init|repo|pkg|ss|tex|llvm-gcc|llvm-clang|misc)$/
   except:
     - branches
   script:
@@ -87,7 +113,7 @@ dl:
     - docker
     - gpu
   only:
-    - /^build-(init|ss|tex|llvm-gcc|llvm-clang|misc|dl)$/
+    - /^build-(init|repo|pkg|ss|tex|llvm-gcc|llvm-clang|misc|dl)$/
   except:
     - branches
   script:
