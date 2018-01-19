@@ -36,10 +36,11 @@ cd $_
 
 # ----------------------------------------------------------------
 
-if ping -nfc 10 rsync.mirrors.ustc.edu.cn -I 10.0.0.12; then
-    rsync -avPz --delete --address 10.0.0.12 rsync://rsync.mirrors.ustc.edu.cn/CTAN/ CTAN &
+if false; then :
 elif ping -nfc 10 mirrors.tuna.tsinghua.edu.cn -I 10.0.0.11; then
     rsync -avPz --delete --address 10.0.0.11 rsync://mirrors.tuna.tsinghua.edu.cn/CTAN/ CTAN &
+elif ping -nfc 10 rsync.mirrors.ustc.edu.cn -I 10.0.0.12; then
+    rsync -avPz --delete --address 10.0.0.12 rsync://rsync.mirrors.ustc.edu.cn/CTAN/ CTAN &
 elif ping -nfc 10 mirrors.tuna.tsinghua.edu.cn -I 10.0.0.12; then
     rsync -avPz --delete --address 10.0.0.12 rsync://mirrors.tuna.tsinghua.edu.cn/CTAN/ CTAN &
 elif ping -nfc 10 rsync.mirrors.ustc.edu.cn -I 10.0.0.11; then
