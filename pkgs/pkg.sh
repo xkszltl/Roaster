@@ -115,7 +115,8 @@ for i in pkg-{skip,all}; do
                                                                     \
         cabextract{,-*}                                             \
                                                                     \
-        devtoolset-{3,4,6,7}                                        \
+        devtoolset-{3,4,6,7}{,-*}                                   \
+        llvm-toolset-7{,-*}                                         \
 
         do echo 'Retrying'; done
 
