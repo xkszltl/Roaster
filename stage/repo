@@ -1,6 +1,6 @@
 FROM docker.codingcafe.org/sandbox/centos:stage-init
 
-WORKDIR /etc/codingcafe
+WORKDIR /etc/codingcafe/scripts
 COPY [".", "."]
 COPY ["cache.repo", "/etc/yum.repos.d/"]
 
