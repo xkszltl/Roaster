@@ -11,6 +11,7 @@ trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
 export REPOSYNC='reposync
     --cachedir=$(mktemp -d)
+    --delete
     --download-metadata
     --downloadcomps
     --gpgcheck
