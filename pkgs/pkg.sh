@@ -9,6 +9,9 @@ for i in pkg-{skip,all}; do
         export RPM_CACHE_ARGS=$([ -f $RPM_CACHE_REPO ] && echo "--disableplugin=axelget,fastestmirror -x *-debuginfo")
 
         for pkg in $(echo "
+            devtoolset-{6,7}{,-*}
+            llvm-toolset-7{,-*}
+
             qpid-cpp-client{,-*}
             {gcc,distcc,ccache}{,-*}
             {openmpi,mpich-3.{0,2}}{,-devel,-doc,-debuginfo}
@@ -114,9 +117,6 @@ for i in pkg-{skip,all}; do
             mod_authnz_*
 
             cabextract{,-*}
-
-            devtoolset-{3,4,6,7}{,-*}
-            llvm-toolset-7{,-*}
         "); do
             until eval "yum install -y --nogpgcheck $([ $i = pkg-skip ] && echo --skip-broken) $RPM_CACHE_ARGS $pkg"; do echo 'Retrying'; done
         done
