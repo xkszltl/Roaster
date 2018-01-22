@@ -26,6 +26,7 @@ export CREATEREPO='createrepo_c
     --compress-type=xz
     --database
     $([ -f comps.xml ] && echo --groupfile=comps.xml)
+    --keep-all-metadata
     --pretty
     --update
     --workers $(nproc)
