@@ -6,7 +6,7 @@ for i in pkg-{skip,all}; do
     [ -e $STAGE/$i ] && ( set -e
         yum clean all
 
-        export RPM_CACHE_ARGS=$([ -f $RPM_CACHE_REPO ] && echo "--disableplugin=axelget,fastestmirror")
+        export RPM_CACHE_ARGS=$([ -f $RPM_CACHE_REPO ] && echo "--disableplugin=axelget,fastestmirror -x *-debuginfo")
 
         for pkg in $(echo "
             qpid-cpp-client{,-*}
@@ -83,7 +83,7 @@ for i in pkg-{skip,all}; do
             {redis,hiredis}{,-*}
             ImageMagick{,-*}
             docbook{,5,2X}{,-*}
-            nagios{,selinux,devel,debuginfo,-plugins-all}
+            nagios{,-selinux,-devel,-debuginfo,-plugins-all}
             {nrpe,nsca}
             {collectd,rrdtool,pnp4nagios}{,-*}
             cuda

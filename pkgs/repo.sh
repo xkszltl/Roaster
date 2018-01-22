@@ -46,5 +46,7 @@
 
     until yum update -y --skip-broken; do echo 'Retrying'; done
     yum update -y || true
+
+    yum clean all
 ) && rm -rvf $STAGE/repo
 sync || true
