@@ -4,6 +4,8 @@
 
 for i in pkg-{skip,all}; do
     [ -e $STAGE/$i ] && ( set -e
+        yum clean all
+
         export RPM_CACHE_ARGS=$([ -f $RPM_CACHE_REPO ] && echo "--disableplugin=axelget,fastestmirror")
 
         for pkg in $(echo "
