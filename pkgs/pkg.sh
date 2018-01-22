@@ -6,7 +6,7 @@ for i in pkg-{skip,all}; do
     [ -e $STAGE/$i ] && ( set -e
         yum clean all
 
-        export RPM_CACHE_ARGS=$([ -f $RPM_CACHE_REPO ] && echo "--disableplugin=axelget,fastestmirror -x *-debuginfo")
+        export RPM_CACHE_ARGS=$([ -f $RPM_CACHE_REPO ] && echo "--disableplugin=axelget,fastestmirror --nogpgcheck -x *-debuginfo")
 
         for pkg in $(echo "
             devtoolset-{6,7}{,-*}
@@ -118,7 +118,7 @@ for i in pkg-{skip,all}; do
 
             cabextract{,-*}
         "); do
-            until eval "yum install -y --nogpgcheck $([ $i = pkg-skip ] && echo --skip-broken) $RPM_CACHE_ARGS $pkg"; do echo 'Retrying'; done
+            until eval "yum install -y $([ $i = pkg-skip ] && echo --skip-broken) $RPM_CACHE_ARGS $pkg"; do echo 'Retrying'; done
         done
 
         # TODO: Fix the following issue:
@@ -139,7 +139,7 @@ for i in pkg-{skip,all}; do
             until yum install -y --skip-broken $RPM_CACHE_ARGS $i{,-*}; do echo 'Retrying'; done
         done
 
-        until yum install -y "https://downloads.sourceforge.net/project/mscorefonts2/rpms/$(
+        until yum install -y $RPM_CACHE_ARGS "https://downloads.sourceforge.net/project/mscorefonts2/rpms/$(
             curl -sSL https://sourceforge.net/projects/mscorefonts2/files/rpms/                                         \
             | sed -n 's/.*\(msttcore-fonts-installer-\([0-9]*\).\([0-9]*\)-\([0-9]*\).noarch.rpm\).*/\2 \3 \4 \1/p'     \
             | sort -n | tail -n1 | cut -d' ' -f4 -

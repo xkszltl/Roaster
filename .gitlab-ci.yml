@@ -9,6 +9,7 @@ stages:
   - llvm-clang
   - misc
   - dl
+  - edit
   - finish
 
 init:
@@ -132,6 +133,18 @@ dl:
   script:
     - gitlab-ci/build_stage.sh
 
+edit:
+  stage: edit
+  tags:
+    - docker
+    - gpu
+  only:
+    - /^build-(init|repo|pkg-skip|pkg-all|ss|tex|llvm-gcc|llvm-clang|misc|dl|edit)$/
+  except:
+    - branches
+  script:
+    - gitlab-ci/build_stage.sh
+
 finish:
   stage: finish
   tags:
@@ -143,5 +156,5 @@ finish:
     - branches
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker tag $CI_REGISTRY_IMAGE:stage-dl $CI_REGISTRY_IMAGE:latest
+    - docker tag $CI_REGISTRY_IMAGE:stage-edit $CI_REGISTRY_IMAGE:latest
     - docker push $CI_REGISTRY_IMAGE:latest
