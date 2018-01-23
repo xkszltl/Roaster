@@ -38,6 +38,8 @@ echo -n '| Kernel   | '
 uname -sr
 echo -n '| Platform | '
 uname -m
+echo    '| GPU      | '
+which nvidia-smi 2>/dev/null >/dev/null && nvidia-smi -L | sed 's/^/|    ******| /'
 echo '----------------------------------------------------------------'
 df -h --sync --output=target,fstype,size,used,avail,pcent,source | sed 's/^/| /'
 echo '================================================================'
@@ -122,6 +124,8 @@ echo -n '| Kernel   | '
 uname -sr
 echo -n '| Platform | '
 uname -m
+echo    '| GPU      | '
+which nvidia-smi 2>/dev/null >/dev/null && nvidia-smi -L | sed 's/^/|    ******| /'
 echo '----------------------------------------------------------------'
 df -h --sync --output=target,fstype,size,used,avail,pcent,source | sed 's/^/| /'
 echo '================================================================'

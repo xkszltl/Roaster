@@ -5,6 +5,7 @@
 for i in pkg-{skip,all}; do
     [ -e $STAGE/$i ] && ( set -e
         yum clean all
+        rm -rf /var/cache/yum
 
         export RPM_MAX_ATTEMPT=10
 
@@ -133,14 +134,12 @@ for i in pkg-{skip,all}; do
                 mod_authnz_*
 
                 cabextract{,-*}
-            " | pv -p | xargs --verbose -I{} -n5 bash -c "$RPM_INSTALL $([ $i = pkg-skip ] && echo --skip-broken) {}" && break
+            " | xargs -n5 echo "$RPM_INSTALL $([ $i = pkg-skip ] && echo --skip-broken)" | pv -p | bash && break
             echo "Retrying... $attempt chance(s) left."
             [ $attempt -gt 0 ] || exit 1
         done
 
         which parallel 2>/dev/null && parallel --will-cite < /dev/null
-
-        nvidia-smi
 
         # ------------------------------------------------------------
 
@@ -159,7 +158,7 @@ for i in pkg-{skip,all}; do
                 lua{,-*}
                 qt5{,-*}
                 *-fonts{,-*}
-            " | pv -p | xargs --verbose -I{} -n1 bash -c "$RPM_INSTALL --skip-broken {}" && break
+            " | xargs --verbose -n1 echo "$RPM_INSTALL --skip-broken" | pv -p | bash && break
             echo "Retrying... $attempt chance(s) left."
             [ $attempt -gt 0 ] || exit 1
         done
@@ -187,6 +186,7 @@ for i in pkg-{skip,all}; do
         $IS_CONTAINER || package-cleanup --oldkernels --count=2
         yum autoremove -y
         yum clean all
+        rm -rf /var/cache/yum
 
         updatedb
     )
