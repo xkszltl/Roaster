@@ -45,7 +45,7 @@ for i in pkg-{skip,all}; do
                 dos2unix{,-*}
 
                 {bash,fish,zsh,mosh,tmux}{,-*}
-                {bc,sed,man,pv,which}{,-*}
+                {bc,sed,man,pv,time,which}{,-*}
                 {parallel,jq}{,-*}
                 {tree,whereami,mlocate,lsof}{,-*}
                 {telnet,tftp,rsh}{,-debuginfo}
