@@ -45,13 +45,16 @@ EOF
 
     # ------------------------------------------------------------
 
-    truncate -s0 /etc/modules-load.d/90-shadowsocks.conf
+    export SS_KMOD_CONF=/etc/modules-load.d/90-shadowsocks.conf
+    export SS_SYSCTL_CONF=/etc/sysctl.d/90-shadowsocks.conf
+
+    truncate -s0 $SS_KMOD_CONF
     for i in tcp_{htcp,hybla}; do
-        modprobe -a $i || echo $i >> /etc/modules-load.d/90-shadowsocks.conf
+        modprobe -a $i || echo $i >> $SS_KMOD_CONF
     done
 
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    cat << EOF > /etc/sysctl.d/90-shadowsocks.conf
+    cat << EOF >> $SS_SYSCTL_CONF
 net.core.rmem_max = 67108864
 net.core.wmem_max = 67108864
 net.core.netdev_max_backlog = 250000
@@ -65,11 +68,14 @@ net.ipv4.tcp_max_syn_backlog = 8192
 net.ipv4.tcp_rmem = 4096 87380 67108864
 net.ipv4.tcp_wmem = 4096 65536 67108864
 net.ipv4.tcp_mtu_probing = 1
-net.ipv4.tcp_congestion_control = htcp
 EOF
     # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-    sysctl --system
+    for i in tcp_{htcp,hybla}; do
+        modprobe -a $i && echo "net.ipv4.tcp_congestion_control = $i" >> $SS_SYSCTL_CONF && break
+    done
+
+    sysctl --system || $IS_CONTAINER
     # sslocal -s sensitive_url_removed -p 8388 -k sensitive_password_removed -m aes-256-gcm --fast-open -d restart
 )
 rm -rvf $STAGE/ss
