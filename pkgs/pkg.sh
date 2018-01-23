@@ -16,9 +16,12 @@ for i in pkg-{skip,all}; do
             gcc-x86_64-linux-gnu
             python-qpid-common
             python2-paramiko
-        " | sed -n '/^[[:space:]]*\([^[:space:]][^[:space:]]*\).*/\-\-exclude \1/p')
+        " | sed -n 's/^[[:space:]]*\([^[:space:]][^[:space:]]*\).*/--exclude \1/p' | paste -s - | xargs)
 
-        export RPM_CACHE_ARGS=$([ -f $RPM_CACHE_REPO ] && echo "--disableplugin=axelget,fastestmirror --nogpgcheck $RPM_BLACKLIST")
+        export RPM_CACHE_ARGS=$([ -f $RPM_CACHE_REPO ] && echo "--disableplugin=axelget,fastestmirror")
+
+        export RPM_INSTALL="yum install -y $RPM_CACHE_ARGS --nogpgcheck $RPM_BLACKLIST"
+        export RPM_UPDATE="yum update -y $RPM_CACHE_ARGS --nogpgcheck $RPM_BLACKLIST"
 
         for attempt in $(seq $RPM_MAX_ATTEMPT -1 0); do
             echo "
@@ -130,7 +133,7 @@ for i in pkg-{skip,all}; do
                 mod_authnz_*
 
                 cabextract{,-*}
-            " | xargs --verbose -I{} -n5 eval "yum install -y $([ $i = pkg-skip ] && echo --skip-broken) $RPM_CACHE_ARGS {}" && break
+            " | pv -p | xargs --verbose -I{} -n5 bash -c "$RPM_INSTALL $([ $i = pkg-skip ] && echo --skip-broken) {}" && break
             echo "Retrying... $attempt chance(s) left."
             [ $attempt -gt 0 ] || exit 1
         done
@@ -156,13 +159,13 @@ for i in pkg-{skip,all}; do
                 lua{,-*}
                 qt5{,-*}
                 *-fonts{,-*}
-            " | xargs --verbose -I{} -n1 eval "yum install -y --skip-broken $RPM_CACHE_ARGS {}" && break
+            " | pv -p | xargs --verbose -I{} -n1 bash -c "$RPM_INSTALL --skip-broken {}" && break
             echo "Retrying... $attempt chance(s) left."
             [ $attempt -gt 0 ] || exit 1
         done
 
         for attempt in $(seq $RPM_MAX_ATTEMPT -1 0); do
-            yum install -y $RPM_CACHE_ARGS "https://downloads.sourceforge.net/project/mscorefonts2/rpms/$(
+            $RPM_INSTALL "https://downloads.sourceforge.net/project/mscorefonts2/rpms/$(
                 curl -sSL https://sourceforge.net/projects/mscorefonts2/files/rpms/                                         \
                 | sed -n 's/.*\(msttcore-fonts-installer-\([0-9]*\).\([0-9]*\)-\([0-9]*\).noarch.rpm\).*/\2 \3 \4 \1/p'     \
                 | sort -n | tail -n1 | cut -d' ' -f4 -
@@ -176,7 +179,7 @@ for i in pkg-{skip,all}; do
         # ------------------------------------------------------------
 
         for attempt in $(seq $RPM_MAX_ATTEMPT -1 0); do
-            yum update -y --skip-broken $(RPM_CACHE_ARGS) && break
+            $RPM_UPDATE --skip-broken && break
             echo "Retrying... $attempt chance(s) left."
             [ $attempt -gt 0 ] || exit 1
         done

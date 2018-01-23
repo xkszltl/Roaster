@@ -97,6 +97,7 @@ for i in llvm-{gcc,clang}; do
         cd
         rm -rf $SCRATCH/llvm
         wait
-    ) && rm -rvf $STAGE/$i
+    )
+    rm -rvf $STAGE/$i
     sync || true
 done

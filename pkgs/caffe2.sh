@@ -72,5 +72,6 @@
         bvlc_{alexnet,googlenet,reference_caffenet}                                         \
         finetune_flickr_style                                                               \
         squeezenet
-) && rm -rvf $STAGE/caffe2
+)
+rm -rvf $STAGE/caffe2
 sync || true

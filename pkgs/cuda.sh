@@ -23,5 +23,6 @@
     cd $(dirname $(which nvcc))/../samples
     . scl_source enable devtoolset-6
     VERBOSE=1 time make -j$(nproc)
-) && rm -rvf $STAGE/cuda
+)
+rm -rvf $STAGE/cuda
 sync || true

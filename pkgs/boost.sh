@@ -27,5 +27,6 @@
     cd
     rm -rf $SCRATCH/boost
     wait
-) && rm -rvf $STAGE/boost
+)
+rm -rvf $STAGE/boost
 sync || true

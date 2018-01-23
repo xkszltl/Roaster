@@ -42,11 +42,12 @@
     curl -sSL https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh | bash
     echo yum-config-manager%--{disable%,enable%$([ -f $RPM_CACHE_REPO ] && echo 'cache-')}gitlab_gitlab-ce{,-source}\; | sed 's/%/ /g' | bash
 
-    until yum install -y bc ping which; do echo 'Retrying'; done
+    until yum install -y bc ping pv which; do echo 'Retrying'; done
 
     until yum update -y --skip-broken; do echo 'Retrying'; done
     yum update -y || true
 
     yum clean all
-) && rm -rvf $STAGE/repo
+)
+rm -rvf $STAGE/repo
 sync || true

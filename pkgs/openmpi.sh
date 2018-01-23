@@ -29,5 +29,6 @@
 
     cd
     rm -rf $SCRATCH/opmi
-) && rm -rvf $STAGE/opmi
+)
+rm -rvf $STAGE/opmi
 sync || true

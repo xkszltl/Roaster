@@ -20,5 +20,6 @@
     cd
     rm -rf $SCRATCH/lmdb
     wait
-) && rm -rvf $STAGE/lmdb
+)
+rm -rvf $STAGE/lmdb
 sync || true

@@ -65,5 +65,6 @@
     cd
     rm -rf $SCRATCH/opencv
     wait
-) && rm -rvf $STAGE/opencv
+)
+rm -rvf $STAGE/opencv
 sync || true

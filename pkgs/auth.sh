@@ -58,5 +58,6 @@
     git config --global user.email      'xkszltl@gmail.com'
     git config --global push.default    'matching'
     git config --global core.editor     'vim'
-) && rm -rvf $STAGE/auth
+)
+rm -rvf $STAGE/auth
 sync || true

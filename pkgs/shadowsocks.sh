@@ -74,5 +74,6 @@ EOF
 
     sysctl --system
     # sslocal -s sensitive_url_removed -p 8388 -k sensitive_password_removed -m aes-256-gcm --fast-open -d restart
-) && rm -rvf $STAGE/ss
+)
+rm -rvf $STAGE/ss
 sync || true

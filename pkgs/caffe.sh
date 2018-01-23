@@ -33,5 +33,6 @@
     cd
     rm -rf $SCRATCH/caffe
     wait
-) && rm -rvf $STAGE/caffe
+)
+rm -rvf $STAGE/caffe
 sync || true

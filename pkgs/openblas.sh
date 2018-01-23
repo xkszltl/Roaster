@@ -35,5 +35,6 @@
     cd
     rm -rf $SCRATCH/OpenBLAS
     wait
-) && rm -rvf $STAGE/openblas
+)
+rm -rvf $STAGE/openblas
 sync || true

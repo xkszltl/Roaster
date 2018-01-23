@@ -47,5 +47,6 @@
     cd
     rm -rf $SCRATCH/rocksdb
     wait
-) && rm -rvf $STAGE/rocksdb
+)
+rm -rvf $STAGE/rocksdb
 sync || true

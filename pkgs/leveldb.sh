@@ -23,5 +23,6 @@
     cd
     rm -rf $SCRATCH/leveldb
     wait
-) && rm -rvf $STAGE/leveldb
+)
+rm -rvf $STAGE/leveldb
 sync || true

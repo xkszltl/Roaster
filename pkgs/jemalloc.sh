@@ -29,5 +29,6 @@
     cd
     rm -rf $SCRATCH/jemalloc
     wait
-) && rm -rvf $STAGE/jemalloc
+)
+rm -rvf $STAGE/jemalloc
 sync || true

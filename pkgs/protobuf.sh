@@ -22,5 +22,6 @@
     cd
     rm -rf $SCRATCH/protobuf
     wait
-) && rm -rvf $STAGE/protobuf
+)
+rm -rvf $STAGE/protobuf
 sync || true

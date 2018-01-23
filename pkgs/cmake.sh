@@ -18,5 +18,6 @@
 
     cd
     rm -rf $SCRATCH/CMake
-) && rm -rvf $STAGE/cmake
+)
+rm -rvf $STAGE/cmake
 sync || true

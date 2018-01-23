@@ -31,5 +31,6 @@
     cd
     rm -rf $SCRATCH/glog
     wait
-) && rm -rvf $STAGE/glog
+)
+rm -rvf $STAGE/glog
 sync || true

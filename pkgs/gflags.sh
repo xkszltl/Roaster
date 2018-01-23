@@ -32,5 +32,6 @@
     cd
     rm -rf $SCRATCH/gflags
     wait
-) && rm -rvf $STAGE/gflags
+)
+rm -rvf $STAGE/gflags
 sync || true
