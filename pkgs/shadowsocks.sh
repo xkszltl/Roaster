@@ -45,13 +45,10 @@ EOF
 
     # ------------------------------------------------------------
 
-    modprobe -a tcp_htcp tcp_hybla
-    # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    cat << EOF > /etc/modules-load.d/90-shadowsocks.conf
-tcp_htcp
-tcp_hybla
-EOF
-    # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    truncate -s0 /etc/modules-load.d/90-shadowsocks.conf
+    for i in tcp_{htcp,hybla}; do
+        modprobe -a $i || echo $i >> /etc/modules-load.d/90-shadowsocks.conf
+    done
 
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     cat << EOF > /etc/sysctl.d/90-shadowsocks.conf
