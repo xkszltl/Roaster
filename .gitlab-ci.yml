@@ -2,7 +2,6 @@ stages:
   - init
   - repo
   - pkg-skip
-  - pkg-all
   - ss
   - tex
   - llvm-gcc
@@ -44,18 +43,6 @@ pkg-skip:
     - gpu
   only:
     - /^build-(init|repo|pkg-skip)$/
-  except:
-    - branches
-  script:
-    - gitlab-ci/build_stage.sh
-
-pkg-all:
-  stage: pkg-all
-  tags:
-    - docker
-    - gpu
-  only:
-    - /^build-(init|repo|pkg-skip|pkg-all)$/
   except:
     - branches
   script:

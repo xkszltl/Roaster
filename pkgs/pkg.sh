@@ -134,17 +134,7 @@ for i in pkg-{skip,all}; do
                 mod_authnz_*
 
                 cabextract{,-*}
-            " | xargs -n5 echo "$RPM_INSTALL $([ $i = pkg-skip ] && echo --skip-broken)" | pv -p | bash && break
-            echo "Retrying... $attempt chance(s) left."
-            [ $attempt -gt 0 ] || exit 1
-        done
 
-        which parallel 2>/dev/null && parallel --will-cite < /dev/null
-
-        # ------------------------------------------------------------
-
-        for attempt in $(seq $RPM_MAX_ATTEMPT -1 0); do
-            echo "
                 anaconda{,-*}
                 libreoffice{,-*}
                 perl{,-*}
@@ -152,16 +142,19 @@ for i in pkg-{skip,all}; do
                 python3{,-*}
                 python34{,-*}
                 python2{,-*}
-                python27{,-*}
                 rh-python36{,-*}
                 ruby{,-*}
                 lua{,-*}
                 qt5{,-*}
                 *-fonts{,-*}
-            " | xargs --verbose -n1 echo "$RPM_INSTALL --skip-broken" | pv -p | bash && break
+            " | xargs -n5 echo "$RPM_INSTALL $([ $i = pkg-skip ] && echo --skip-broken)" | bash && break
             echo "Retrying... $attempt chance(s) left."
             [ $attempt -gt 0 ] || exit 1
         done
+
+        which parallel 2>/dev/null && parallel --will-cite < /dev/null
+
+        # ------------------------------------------------------------
 
         for attempt in $(seq $RPM_MAX_ATTEMPT -1 0); do
             $RPM_INSTALL "https://downloads.sourceforge.net/project/mscorefonts2/rpms/$(

@@ -1,4 +1,4 @@
-FROM docker.codingcafe.org/sandbox/centos:stage-pkg-all
+FROM docker.codingcafe.org/sandbox/centos:stage-pkg-skip
 
 COPY [".", "/etc/codingcafe/scripts"]
 

@@ -7,9 +7,7 @@
 
     yum-config-manager --setopt=tsflags= --save
 
-    [ -f $RPM_CACHE_REPO ] || yum-config-manager --add-repo https://repo.codingcafe.org/cache/el/7/cache.repo
-
-    $ROOT_DIR/apply_cache.sh {{base,updates,extras,centosplus}{,-source},base-debuginfo}
+    $ROOT_DIR/apply_cache.sh {base,updates,extras,centosplus}{,-source} base-debuginfo
 
     until yum install -y yum-plugin-{priorities,fastestmirror} bc {core,find,ip}utils curl kernel-headers; do echo 'Retrying'; done
 
