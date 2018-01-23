@@ -7,7 +7,7 @@
 
     pip install -U git+$GIT_MIRROR/Maratyszcza/{confu,PeachPy}.git
 
-    . scl_source enable devtoolset-7
+    . scl_source enable devtoolset-7 || true
 
     until git clone $GIT_MIRROR/facebook/rocksdb.git; do echo 'Retrying'; done
     cd rocksdb

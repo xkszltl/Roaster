@@ -9,7 +9,7 @@
     cd ompi
     git checkout $(git tag | sed -n '/^v[0-9\.]*$/p' | sort -V | tail -n1)
 
-    . scl_source enable devtoolset-6
+    . scl_source enable devtoolset-6 || true
 
     ./autogen.pl
     ./configure                             \

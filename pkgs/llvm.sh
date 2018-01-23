@@ -32,7 +32,7 @@ for i in llvm-{gcc,clang}; do
         mkdir -p llvm/build
         cd $_
 
-        . scl_source enable devtoolset-7
+        . scl_source enable devtoolset-7 || true
         ccache -C
 
         export LLVM_COMMON_ARGS="

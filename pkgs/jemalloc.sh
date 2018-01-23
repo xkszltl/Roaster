@@ -10,7 +10,7 @@
 
     # ------------------------------------------------------------
 
-    . scl_source enable devtoolset-7
+    . scl_source enable devtoolset-7 || true
 
     ./autogen.sh                    \
         --enable-{prof,xmalloc}     \

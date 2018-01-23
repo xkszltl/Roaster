@@ -9,7 +9,7 @@
     cd protobuf
     git checkout $(git tag | sed -n '/^v[0-9\.]*$/p' | sort -V | tail -n1)
 
-    . scl_source enable devtoolset-7
+    . scl_source enable devtoolset-7 || true
 
     ./autogen.sh
     ./configure --prefix=/usr/local

@@ -13,7 +13,7 @@
     mkdir -p build
     cd $_
     ( set -e
-        . scl_source enable devtoolset-6
+        . scl_source enable devtoolset-6 || true
 
         cmake                                   \
             -G"Unix Makefiles"                  \

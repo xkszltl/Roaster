@@ -21,7 +21,7 @@
     ldconfig
 
     cd $(dirname $(which nvcc))/../samples
-    . scl_source enable devtoolset-6
+    . scl_source enable devtoolset-6 || true
     VERBOSE=1 time make -j$(nproc)
 )
 rm -rvf $STAGE/cuda

@@ -10,7 +10,7 @@
     # git checkout $(git tag | sed -n '/^[0-9\.]*$/p' | sort -V | tail -n1)
     git checkout release
 
-    . scl_source enable devtoolset-7
+    . scl_source enable devtoolset-7 || true
 
     ./bootstrap --prefix=/usr --parallel=$(nproc)
     VERBOSE=1 time make -j$(nproc)
