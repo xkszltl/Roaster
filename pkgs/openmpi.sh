@@ -2,7 +2,7 @@
 # OpenMPI
 # ================================================================
 
-[ -e $STAGE/opmi ] && ( set -e
+[ -e $STAGE/ompi ] && ( set -e
     cd $SCRATCH
 
     git clone $GIT_MIRROR/open-mpi/ompi.git
@@ -28,7 +28,7 @@
     make -j install
 
     cd
-    rm -rf $SCRATCH/opmi
+    rm -rf $SCRATCH/ompi
 )
-rm -rvf $STAGE/opmi
+rm -rvf $STAGE/ompi
 sync || true
