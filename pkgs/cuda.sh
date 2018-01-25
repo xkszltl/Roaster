@@ -24,7 +24,8 @@
     tar -xvf nccl* -C /usr/local/cuda --strip-components=1 --no-overwrite-dir --skip-old-files
     [ -L /usr/local/cuda/lib ] && rm -f /usr/local/cuda/lib
 
-    tar -Jtf nccl* | sed -n 's/^[^\/]*\(\/.*\/.*[^\/]\)$/ln -sf \/usr\/local\/cuda\1 \/usr\1/p' | bash
+    tar -Jtf nccl* | sed -n 's/^[^\/]*\/lib[^\/]*\(\/.*[^\/]\)$/ln -sf \/usr\/local\/cuda\/lib64\1 \/usr\/lib\1/p' | bash
+    tar -Jtf nccl* | sed -n 's/^[^\/]*\(\/include\/.*[^\/]\)$/ln -sf \/usr\/local\/cuda\1 \/usr\1/p' | bash
 
     ldconfig
 
