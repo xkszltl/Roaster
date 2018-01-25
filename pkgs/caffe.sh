@@ -20,8 +20,7 @@
         cmake                                   \
             -G"Unix Makefiles"                  \
             -DCMAKE_BUILD_TYPE=Release          \
-            -DCMAKE_C_FLAGS="-g"                \
-            -DCMAKE_CXX_FLAGS="-g"              \
+            -DCMAKE_C{,XX}_FLAGS="-g"           \
             -DCMAKE_VERBOSE_MAKEFILE=ON         \
             -DCUDA_ARCH_NAME=Pascal             \
             -DBLAS=Open                         \

@@ -15,7 +15,6 @@
     # cd $_
 
     # cmake                                   \
-    #     -G"Ninja"                           \
     #     -DCMAKE_BUILD_TYPE=Release          \
     #     -DCMAKE_C_COMPILER=gcc              \
     #     -DCMAKE_CXX_COMPILER=g++            \
@@ -23,11 +22,13 @@
     #     -DCMAKE_VERBOSE_MAKEFILE=ON         \
     #     ..
 
-    # time cmake --build .
+    # time cmake --build . -- -j$(nproc)
     # time cmake --build . --target test
     # time cmake --build . --target install
 
-    make PREFIX=/usr/local
+    make PREFIX=/usr/local -j$(nproc)
+    make PREFIX=/usr/local lapack-test -j$(nproc)
+    make PREFIX=/usr/local blas-test -j$(nproc)
     make PREFIX=/usr/local install
 
     ldconfig &
