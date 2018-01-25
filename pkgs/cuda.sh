@@ -18,15 +18,13 @@
         curl -sSL https://developer.download.nvidia.com/compute/redist/$CUDNN_REPO/cudnn-9.1-linux-x64-v7.tgz
     fi | tar -zxvf - -C /usr/local/ --no-overwrite-dir
 
-    (set -e
-        pushd /usr/local/cuda
+    wget https://repo.codingcafe.org/nvidia/nccl/$(curl -sSL https://repo.codingcafe.org/nvidia/nccl | sed -n 's/.*href="\(.*x86_64.*\)".*/\1/p' | sort | tail -n1)
 
-        [ -e lib ] || ln -s lib64 lib
-        curl -sSL https://repo.codingcafe.org/nvidia/nccl/$(curl -sSL https://repo.codingcafe.org/nvidia/nccl | sed -n 's/.*href="\(.*x86_64.*\)".*/\1/p' | sort | tail -n1) | tar -Jxvf - --strip-components=1 --no-overwrite-dir --skip-old-files
-        [ -L lib ] && rm -f lib
+    [ -e /usr/local/cuda/lib ] || ln -s /usr/local/cuda/lib{64,}
+    tar -xvf nccl* -C /usr/local/cuda --strip-components=1 --no-overwrite-dir --skip-old-files
+    [ -L /usr/local/cuda/lib ] && rm -f /usr/local/cuda/lib
 
-        popd
-    )
+    tar -Jtf nccl* | sed -n 's/^[^\/]*\(\/.*\/.*[^\/]\)$/ln -sf \/usr\/local\/cuda\1 \/usr\1/p' | bash
 
     ldconfig
 

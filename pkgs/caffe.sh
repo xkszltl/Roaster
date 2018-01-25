@@ -17,7 +17,9 @@
 
         cmake                                   \
             -G"Unix Makefiles"                  \
-            -DCMAKE_BUILD_TYPE=RelWithDebInfo   \
+            -DCMAKE_BUILD_TYPE=Release          \
+            -DCMAKE_C_FLAGS="-g"                \
+            -DCMAKE_CXX_FLAGS="-g"              \
             -DCMAKE_VERBOSE_MAKEFILE=ON         \
             -DBLAS=Open                         \
             -DUSE_NCCL=ON                       \

@@ -39,7 +39,9 @@
         # Some platform may need -DCUDA_ARCH_NAME=Pascal
         cmake                                                   \
             -G"Unix Makefiles"                                  \
-            -DCMAKE_BUILD_TYPE=RelWithDebInfo                   \
+            -DCMAKE_BUILD_TYPE=Release                          \
+            -DCMAKE_C_FLAGS="-g"                                \
+            -DCMAKE_CXX_FLAGS="-g"                              \
             -DCMAKE_VERBOSE_MAKEFILE=ON                         \
             -DBENCHMARK_ENABLE_LTO=ON                           \
             -DBENCHMARK_USE_LIBCXX=OFF                          \
