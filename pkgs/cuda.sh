@@ -31,6 +31,7 @@
 
     cd $(dirname $(which nvcc))/../samples
     . scl_source enable devtoolset-6 || true
+    export MPI_HOME=/usr/local/openmpi
     VERBOSE=1 time make -j$(nproc)
 )
 rm -rvf $STAGE/cuda
