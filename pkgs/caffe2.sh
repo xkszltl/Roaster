@@ -30,23 +30,17 @@
     cd $_
 
     ( set -e
-        # . scl_source enable devtoolset-6 || true
+        . scl_source enable devtoolset-5 || true
 
         ln -sf $(which ninja-build) /usr/bin/ninja
 
         export MPI_HOME=/usr/local/openmpi
 
         # Some platform may need -DCUDA_ARCH_NAME=Pascal
-        CC='clang'                                              \
-        CXX='clang++'                                           \
-        CFLAGS='-fuse-ld=lld'                                   \
-        CXXFLAGS='-fuse-ld=lld'                                 \
-        LD=$(which ld.lld)                                      \
         cmake                                                   \
-            -G"Unix Makefiles"                                  \
+            -GNinja                                             \
             -DCMAKE_BUILD_TYPE=Release                          \
-            -DCMAKE_C_FLAGS="-g"                                \
-            -DCMAKE_CXX_FLAGS="-g"                              \
+            -DCMAKE_C{,XX}_FLAGS="-g"                           \
             -DCMAKE_VERBOSE_MAKEFILE=ON                         \
             -DBENCHMARK_ENABLE_LTO=ON                           \
             -DBENCHMARK_USE_LIBCXX=OFF                          \
@@ -55,9 +49,9 @@
             -DUSE_OPENMP=ON                                     \
             ..
 
-        time cmake --build . -- -j$(nproc)
+        time cmake --build .
         time cmake --build . --target test || true
-        time cmake --build . --target install -- -j
+        time cmake --build . --target install
 
         rm -rf /usr/bin/ninja
     )
