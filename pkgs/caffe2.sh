@@ -30,13 +30,16 @@
     cd $_
 
     ( set -e
-        . scl_source enable devtoolset-6 || true
+        # . scl_source enable devtoolset-6 || true
 
         ln -sf $(which ninja-build) /usr/bin/ninja
 
         export MPI_HOME=/usr/local/openmpi
 
         # Some platform may need -DCUDA_ARCH_NAME=Pascal
+        CC='clang'                                              \
+        CXX='clang++'                                           \
+        LD=ld.lld                                               \
         cmake                                                   \
             -G"Unix Makefiles"                                  \
             -DCMAKE_BUILD_TYPE=Release                          \
