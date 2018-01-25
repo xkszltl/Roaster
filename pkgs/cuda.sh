@@ -17,7 +17,17 @@
 
         curl -sSL https://developer.download.nvidia.com/compute/redist/$CUDNN_REPO/cudnn-9.1-linux-x64-v7.tgz
     fi | tar -zxvf - -C /usr/local/ --no-overwrite-dir
-    curl -sSL https://repo.codingcafe.org/nvidia/nccl/$(curl -sSL https://repo.codingcafe.org/nvidia/nccl | sed -n 's/.*href="\(.*x86_64.*\)".*/\1/p' | sort | tail -n1) | tar -Jxvf - --strip-components=1 -C /usr/local/cuda --no-overwrite-dir --skip-old-files
+
+    (set -e
+        pushd /usr/local/cuda
+
+        [ -e lib ] || ln -s lib64 lib
+        curl -sSL https://repo.codingcafe.org/nvidia/nccl/$(curl -sSL https://repo.codingcafe.org/nvidia/nccl | sed -n 's/.*href="\(.*x86_64.*\)".*/\1/p' | sort | tail -n1) | tar -Jxvf - --strip-components=1 --no-overwrite-dir --skip-old-files
+        [ -L lib ] && rm -f lib
+
+        popd
+    )
+
     ldconfig
 
     cd $(dirname $(which nvcc))/../samples
