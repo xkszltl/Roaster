@@ -39,7 +39,9 @@
         # Some platform may need -DCUDA_ARCH_NAME=Pascal
         CC='clang'                                              \
         CXX='clang++'                                           \
-        LD=ld.lld                                               \
+        CFLAGS='-fuse-ld=lld'                                   \
+        CXXFLAGS='-fuse-ld=lld'                                 \
+        LD=$(which ld.lld)                                      \
         cmake                                                   \
             -G"Unix Makefiles"                                  \
             -DCMAKE_BUILD_TYPE=Release                          \

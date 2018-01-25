@@ -26,7 +26,7 @@ for i in pkg-{skip,all}; do
 
         for attempt in $(seq $RPM_MAX_ATTEMPT -1 0); do
             echo "
-                devtoolset-{6,7}{,-*}
+                devtoolset-{5,6,7}{,-*}
                 llvm-toolset-7{,-*}
 
                 qpid-cpp-client{,-*}
