@@ -39,6 +39,7 @@ BVLC/caffe,\
 caffe2/{caffe2,models},\
 ccache/ccache,\
 facebook/{rocksdb,zstd},\
+facebookincubator/gloo,\
 gflags/gflags,\
 google/{benchmark,snappy,glog,googletest,leveldb,protobuf},\
 jemalloc/jemalloc,\
