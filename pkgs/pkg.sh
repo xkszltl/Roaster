@@ -12,9 +12,12 @@ for i in pkg-{skip,all}; do
         # TODO: Fix the following issue:
         #       LLVM may select the wrong gcc toolchain without libgcc_s integrated.
         #       The correct choice is x86_64-redhat-linux instead of x86_64-linux-gnu.
+        #
+        #       libasan2 seems to contain libasan.so.3.0.0 and causing a conflict with libasan3
         export RPM_BLACKLIST=$(echo "
             *-debuginfo
             gcc-x86_64-linux-gnu
+            libasan2
             python-qpid-common
             python2-paramiko
         " | sed -n 's/^[[:space:]]*\([^[:space:]][^[:space:]]*\).*/--exclude \1/p' | paste -s - | xargs)
