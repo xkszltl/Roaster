@@ -30,11 +30,8 @@
 #
 #     time cmake  --build . --target install
 
-    time make -j$(nproc) static_lib
-    time make -j$(nproc) shared_lib
-    time make -j$(nproc) check
-    # time make -j install
-    # time make -j install-shared
+    time make -j$(nproc) {static,shared}_lib
+    # time make -j install{,-shared}
     time make -j package
 
     yum install -y package/rocksdb-*.rpm || yum update -y package/rocksdb-*.rpm
