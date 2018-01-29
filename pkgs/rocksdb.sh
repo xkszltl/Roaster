@@ -15,28 +15,24 @@
 
 #     mkdir -p build
 #     cd $_
-#     ( set -e
-#         cmake                                   \
-#             -G Ninja                            \
-#             -DCMAKE_BUILD_TYPE=RelWithDebInfo   \
-#             -DCMAKE_VERBOSE_MAKEFILE=ON         \
-#             -DWITH_ASAN=ON                      \
-#             -DWITH_BZ2=ON                       \
-#             -DWITH_JEMALLOC=ON                  \
-#             -DWITH_LIBRADOS=ON                  \
-#             -DWITH_LZ4=ON                       \
-#             -DWITH_SNAPPY=ON                    \
-#             -DWITH_TSAN=ON                      \
-#             _DWITH_UBSAN=ON                     \
-#             -DWITH_ZLIB=ON                      \
-#             -DWITH_ZSTD=ON                      \
-#             ..
-# 
-#         time cmake  --build . --target install
-#     )
+#     cmake                                   \
+#         -G"Ninja"                           \
+#         -DCMAKE_C{,XX}_FLAGS="-O3 -g"       \
+#         -DCMAKE_VERBOSE_MAKEFILE=ON         \
+#         -DWITH_BZ2=ON                       \
+#         -DWITH_JEMALLOC=ON                  \
+#         -DWITH_LIBRADOS=ON                  \
+#         -DWITH_LZ4=ON                       \
+#         -DWITH_SNAPPY=ON                    \
+#         -DWITH_ZLIB=ON                      \
+#         -DWITH_ZSTD=ON                      \
+#         ..
+#
+#     time cmake  --build . --target install
 
     time make -j$(nproc) static_lib
     time make -j$(nproc) shared_lib
+    time make -j$(nproc) check
     # time make -j install
     # time make -j install-shared
     time make -j package
