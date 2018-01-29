@@ -30,7 +30,7 @@
     cd $_
 
     ( set -e
-        . scl_source enable devtoolset-5 || true
+        . scl_source enable devtoolset-4 || true
 
         ln -sf $(which ninja-build) /usr/bin/ninja
 
