@@ -21,6 +21,7 @@
             -G"Ninja"                           \
             -DCMAKE_BUILD_TYPE=Release          \
             -DCMAKE_C{,XX}_FLAGS="-g"           \
+            -DCMAKE_INSTALL_PREFIX="/usr"       \
             -DCMAKE_VERBOSE_MAKEFILE=ON         \
             -DCUDA_ARCH_NAME=Pascal             \
             -DBLAS=Open                         \
