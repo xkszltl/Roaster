@@ -30,6 +30,9 @@
     cd $_
 
     ( set -e
+        # Currently caffe2 can only be built with gcc-5.
+        # CUDA 9.1 only support up to gcc-6.3.0 while devtoolset-6 contains gcc-6.3.1
+        # TODO: Upgrade glog to use new compiler when possible.
         . scl_source enable devtoolset-4 || true
 
         ln -sf $(which ninja-build) /usr/bin/ninja
@@ -50,7 +53,7 @@
             ..
 
         time cmake --build .
-        time cmake --build . --target test || true
+        nvidia-smi && time cmake --build . --target test || true
         time cmake --build . --target install
 
         rm -rf /usr/bin/ninja
