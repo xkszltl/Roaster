@@ -10,7 +10,13 @@ if [ $GITLAB_CI ]; then
 	else
 		grep -v ADD stage/$CI_JOB_STAGE > Dockerfile
 	fi
-	docker build --pull --rm --no-cache --cpu-shares 128 -t $CI_REGISTRY_IMAGE:stage-$CI_JOB_STAGE .
+	docker build                                        \
+        --cpu-shares 128                                \
+        --no-cache                                      \
+        --pull                                          \
+        --rm                                            \
+        --tag $CI_REGISTRY_IMAGE:stage-$CI_JOB_STAGE    \
+        .
 
 	docker push $CI_REGISTRY_IMAGE:stage-$CI_JOB_STAGE
 fi

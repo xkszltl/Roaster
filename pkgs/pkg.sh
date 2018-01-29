@@ -4,9 +4,6 @@
 
 for i in pkg-{skip,all}; do
     [ -e $STAGE/$i ] && ( set -e
-        yum clean all
-        rm -rf /var/cache/yum
-
         export RPM_MAX_ATTEMPT=10
 
         # TODO: Fix the following issue:
@@ -181,8 +178,6 @@ for i in pkg-{skip,all}; do
 
         $IS_CONTAINER || package-cleanup --oldkernels --count=2
         yum autoremove -y
-        yum clean all
-        rm -rf /var/cache/yum
 
         updatedb
     )

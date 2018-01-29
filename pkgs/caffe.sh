@@ -18,7 +18,7 @@
         # CUDA 9.x has removed Fermi (2.x) support.
         # Use CUDA_ARCH_NAME to fix compile error "Unsupported gpu architecture 'compute_20'".
         cmake                                   \
-            -G"Unix Makefiles"                  \
+            -G"Ninja"                           \
             -DCMAKE_BUILD_TYPE=Release          \
             -DCMAKE_C{,XX}_FLAGS="-g"           \
             -DCMAKE_VERBOSE_MAKEFILE=ON         \
@@ -27,9 +27,9 @@
             -DUSE_NCCL=ON                       \
             ..
 
-        time cmake --build . -- -j $(nproc)
-        time cmake --build . --target test -- -j $(nproc)
-        time cmake --build . --target install -- -j $(nproc)
+        time cmake --build .
+        nvidia-smi && time cmake --build . --target runtest
+        time cmake --build . --target install
     )
 
     ldconfig &

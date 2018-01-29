@@ -102,11 +102,16 @@ done
 # Cleanup
 # ================================================================
 
-$IS_CONTAINER && which ccache 2>&1 > /dev/null && ccache -C &
-ldconfig &
 cd
-# $IS_CONTAINER || umount $SCRATCH
-rm -rvf $SCRATCH
+
+ldconfig &
+rm -rvf $SCRATCH &
+
+if $IS_CONTAINER; then
+    which ccache 2>/dev/null >/dev/null && ccache -C &
+    yum clean all && rm -rf /var/cache/yum &
+fi
+
 wait
 
 echo
