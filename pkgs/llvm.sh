@@ -44,6 +44,7 @@ for i in llvm-{gcc,clang}; do
             -DLIBCLANG_BUILD_STATIC=ON
             -DLIBCXX_CONFIGURE_IDE=ON
             -DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=ON
+            -DLIBOMP_FORTRAN_MODULES=OFF
             -DLIBOMP_OMPT_SUPPORT=ON
             -DLIBOMP_STATS=OFF
             -DLIBOMP_TSAN_SUPPORT=ON
@@ -53,6 +54,7 @@ for i in llvm-{gcc,clang}; do
             -DLLDB_DISABLE_PYTHON=ON
             -DLLVM_BUILD_LLVM_DYLIB=ON
             -DLLVM_CCACHE_BUILD=ON
+            -DLLVM_ENABLE_CXX1Y=ON
             -DLLVM_ENABLE_EH=ON
             -DLLVM_ENABLE_FFI=ON
             -DLLVM_ENABLE_RTTI=ON
@@ -65,13 +67,12 @@ for i in llvm-{gcc,clang}; do
         
         if [ $i = llvm-gcc ]; then
             cmake                                   \
-                -DLLVM_ENABLE_CXX1Y=ON              \
                 $LLVM_COMMON_ARGS
         else
-            CC='clang'                              \
-            CXX='clang++'                           \
-            LD=$(which ld.lld)                      \
+            LDFLAGS='-fuse-ld=lld'                  \
             cmake                                   \
+                -DCMAKE_C_COMPILER=clang            \
+                -DCMAKE_CXX_COMPILER=clang++        \
                 -DENABLE_X86_RELAX_RELOCATIONS=ON   \
                 -DLIBCXX_USE_COMPILER_RT=ON         \
                 -DLIBCXXABI_USE_COMPILER_RT=ON      \
@@ -80,8 +81,8 @@ for i in llvm-{gcc,clang}; do
                 -DLIBUNWIND_USE_COMPILER_RT=ON      \
                 -DLLVM_ENABLE_LIBCXX=ON             \
                 -DLLVM_ENABLE_LLD=ON                \
-                -DLLVM_ENABLE_LTO=OFF               \
-                -DLLVM_ENABLE_CXX1Y=ON              \
+                -DLLVM_ENABLE_LTO=Thin              \
+                -DLLVM_ENABLE_CXX1Z=ON              \
                 $LLVM_COMMON_ARGS
         fi
 
