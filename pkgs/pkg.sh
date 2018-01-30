@@ -38,6 +38,7 @@ for i in pkg-{skip,all}; do
                 {make,ninja-build,cmake{,3},autoconf,libtool}{,-*}
                 {ant,maven}{,-*}
                 {git,subversion,mercurial}{,-*}
+                valgrind{,-*}
                 doxygen{,-*}
                 swig{,-*}
 
