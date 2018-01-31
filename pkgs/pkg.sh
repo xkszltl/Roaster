@@ -41,6 +41,7 @@ for i in pkg-{skip,all}; do
                 valgrind{,-*}
                 doxygen{,-*}
                 swig{,-*}
+                sphinx{,-*}
 
                 vim{,-*}
                 dos2unix{,-*}

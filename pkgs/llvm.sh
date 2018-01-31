@@ -5,7 +5,7 @@
 for i in llvm-{gcc,clang}; do
     [ -e $STAGE/$i ] && ( set -e
         export LLVM_MIRROR=$GIT_MIRROR/llvm-mirror
-        export LLVM_GIT_TAG=release_50
+        export LLVM_GIT_TAG=release_60
 
         cd $SCRATCH
 
@@ -35,6 +35,7 @@ for i in llvm-{gcc,clang}; do
         . scl_source enable devtoolset-7 || true
         ccache -C
 
+        # TODO: Enable OpenMP for fortran when ninja supports it.
         export LLVM_COMMON_ARGS="
             -DCLANG_ANALYZER_BUILD_Z3=OFF
             -DCLANG_DEFAULT_CXX_STDLIB=libc++
@@ -55,9 +56,11 @@ for i in llvm-{gcc,clang}; do
             -DLLVM_BUILD_LLVM_DYLIB=ON
             -DLLVM_CCACHE_BUILD=ON
             -DLLVM_ENABLE_CXX1Y=ON
+            -DLLVM_ENABLE_CXX1Z=ON
             -DLLVM_ENABLE_EH=ON
             -DLLVM_ENABLE_FFI=ON
             -DLLVM_ENABLE_RTTI=ON
+            -DLLVM_INSTALL_BINUTILS_SYMLINKS=ON
             -DLLVM_INSTALL_UTILS=ON
             -DLLVM_LINK_LLVM_DYLIB=ON
             -DLLVM_OPTIMIZED_TABLEGEN=ON
@@ -65,8 +68,14 @@ for i in llvm-{gcc,clang}; do
             -G Ninja
             .."
         
+        # GCC only takes plugin processed static lib for LTO.
+        # Need to use ar/ranlib wrapper.
+        #
+        # TODO: Enable LTO after fixing "function redeclared as variable" bug in polly.
         if [ $i = llvm-gcc ]; then
             cmake                                   \
+                -DCMAKE_AR=$(which gcc-ar)          \
+                -DCMAKE_RANLIB=$(which gcc-ranlib)  \
                 $LLVM_COMMON_ARGS
         else
             LDFLAGS='-fuse-ld=lld'                  \
@@ -82,7 +91,6 @@ for i in llvm-{gcc,clang}; do
                 -DLLVM_ENABLE_LIBCXX=ON             \
                 -DLLVM_ENABLE_LLD=ON                \
                 -DLLVM_ENABLE_LTO=Thin              \
-                -DLLVM_ENABLE_CXX1Z=ON              \
                 $LLVM_COMMON_ARGS
         fi
 
