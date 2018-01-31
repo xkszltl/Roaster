@@ -54,6 +54,7 @@ NVLabs/{cub,xmp},\
 open-mpi/ompi,\
 opencv/opencv,\
 pybind/pybind11,\
+pytorch/pytorch,\
 RLovelett/eigen,\
 SchedMD/slurm,\
 shadowsocks/{ShadowsocksX-NG,libQtShadowsocks,shadowsocks{,-go,-libev,-manager,-windows}},\
