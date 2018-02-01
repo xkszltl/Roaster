@@ -30,6 +30,8 @@ export CREATEREPO='createrepo_c
     $(pwd)
 '
 
+export MAX_ATTEMPT=4
+
 mkdir -p /var/www/repos
 cd $_
 
@@ -86,7 +88,10 @@ for j in =$(uname -i) -source=Source $([ $i = base ] && echo -debuginfo=debug/$(
     set -e
     mkdir -p centos/7/$i/$(sed 's/.*=//' <<< $j)
     cd $_
-    eval $REPOSYNC $i$(sed 's/=.*//' <<< $j) || true
+    for attempt in $(seq $MAX_ATTEMPT); do
+        eval $REPOSYNC $i$(sed 's/=.*//' <<< $j) && break
+        echo "Retry \"$i$(sed 's/=.*//' <<< $j)\""
+    done
     eval $CREATEREPO
 ) &
 done
@@ -99,7 +104,10 @@ for i in {=,-debuginfo=debug/}$(uname -i) -source=SRPMS; do :
     set -e
     mkdir -p epel/7/$(sed 's/.*=//' <<< $i)
     cd $_
-    eval $REPOSYNC epel$(sed 's/=.*//' <<< $i) || true
+    for attempt in $(seq $MAX_ATTEMPT); do
+        eval $REPOSYNC epel$(sed 's/=.*//' <<< $i) && break
+        echo "Retry \"epel$(sed 's/=.*//' <<< $i)\""
+    done
     eval $CREATEREPO
 ) &
 done
@@ -112,7 +120,10 @@ for j in =$(uname -i)/$i -testing=$(uname -i)/$i/testing -source=Source/$i -debu
     set -e
     mkdir -p centos/7/sclo/$(sed 's/.*=//' <<< $j)
     cd $_
-    eval $REPOSYNC centos-sclo-$i$(sed 's/=.*//' <<< $j) || true
+    for attempt in $(seq $MAX_ATTEMPT); do
+        eval $REPOSYNC centos-sclo-$i$(sed 's/=.*//' <<< $j) && break
+        echo "Retry \"centos-sclo-$i$(sed 's/=.*//' <<< $j)\""
+    done
     eval $CREATEREPO
 ) &
 done
@@ -125,7 +136,10 @@ for i in elrepo{,-testing,-kernel,-extras}; do :
     set -e
     mkdir -p $(sed 's/-/\//' <<< $i)/el7
     cd $_
-    eval $REPOSYNC $i || true
+    for attempt in $(seq $MAX_ATTEMPT); do
+        eval $REPOSYNC $i && break
+        echo "Retry \"$i\""
+    done
     eval $CREATEREPO
 ) &
 done
@@ -137,7 +151,10 @@ done
     mkdir -p cuda/rhel7/$(uname -i)
     cd $_
     rpm --import https://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/7fa2af80.pub
-    eval $REPOSYNC cuda
+    for attempt in $(seq $MAX_ATTEMPT); do
+        eval $REPOSYNC cuda && break
+        echo "Retry \"cuda\""
+    done
     eval $CREATEREPO
 ) &
 
@@ -157,9 +174,10 @@ for j in stable edge test; do :
     set -e
     mkdir -p docker/linux/centos/7/$(sed 's/.*=//' <<< $i)/$j
     cd $_
-    eval $REPOSYNC docker-ce-$j$(sed 's/=.*//' <<< $i)
-    eval $CREATEREPO
-    eval $REPOSYNC docker-ce-$j$(sed 's/=.*//' <<< $i) --delete
+    for attempt in $(seq $MAX_ATTEMPT); do
+        eval $REPOSYNC docker-ce-$j$(sed 's/=.*//' <<< $i) && break
+        echo "Retry \"docker-ce-$j$(sed 's/=.*//' <<< $i)\""
+    done
     eval $CREATEREPO
 ) &
 done
@@ -173,7 +191,10 @@ for j in =$(uname -i) -source=SRPMS; do :
     set -e
     mkdir -p gitlab/$(sed 's/.*=//' <<< $i)/el/7/$(sed 's/.*=//' <<< $j)
     cd $_
-    eval $REPOSYNC $(sed 's/=.*//' <<< $i)_$(sed 's/.*=//' <<< $i)$(sed 's/=.*//' <<< $j) $([ $(sed 's/=.*//' <<< $i) = gitlab ] && echo '--newest-only')
+    for attempt in $(seq $MAX_ATTEMPT); do
+        eval $REPOSYNC $(sed 's/=.*//' <<< $i)_$(sed 's/.*=//' <<< $i)$(sed 's/=.*//' <<< $j) $([ $(sed 's/=.*//' <<< $i) = gitlab ] && echo '--newest-only') && break
+        echo "Retry \"$(sed 's/=.*//' <<< $i)_$(sed 's/.*=//' <<< $i)$(sed 's/=.*//' <<< $j)\""
+    done
     eval $CREATEREPO
 ) &
 done
