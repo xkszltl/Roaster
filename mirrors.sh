@@ -50,7 +50,7 @@ jemalloc/jemalloc,\
 Kitware/{CMake,VTK},\
 llvm-mirror/{ll{vm,d,db,go},clang{,-tools-extra},polly,compiler-rt,openmp,lib{unwind,cxx{,abi}},test-suite},\
 LMDB/lmdb,\
-Maratyszcza/{confu,FP16,FXdiv,NNPACK,PeachPy,psimd,pthreadpool},\
+Maratyszcza/{confu,cpuinfo,FP16,FXdiv,NNPACK,PeachPy,psimd,pthreadpool},\
 NervanaSystems/{neon,nervanagpu},\
 ninja-build/ninja,\
 NVIDIA/{DIGITS,cnmem,libglvnd,nccl,nvidia-docker},\
