@@ -30,6 +30,8 @@ export CREATEREPO='createrepo_c
     $(pwd)
 '
 
+export ROUTE='10.0.0.$([ $(expr $RANDOM % 15) -lt 10 ] && echo 12 || echo 11)'
+
 export MAX_ATTEMPT=4
 
 mkdir -p /var/www/repos
@@ -53,10 +55,32 @@ fi
 
 # ----------------------------------------------------------------
 
-export HTTP_PROXY=proxy.codingcafe.org:8118
-[ $HTTP_PROXY ] && export HTTPS_PROXY=$HTTP_PROXY
-[ $HTTP_PROXY ] && export http_proxy=$HTTP_PROXY
-[ $HTTPS_PROXY ] && export https_proxy=$HTTPS_PROXY
+(
+    set -e
+    mkdir -p intel
+    cd $_
+
+    export INTEL_URL="http://registrationcenter-download.intel.com/akdlm/irc_nas/tec"
+
+    parallel --line-buffer --bar 'bash -c '"'"'
+        wget -c --bind-address='$ROUTE' $INTEL_URL/{}
+    '"'" :::   \
+        12414/l_daal_2018.1.163.tgz     \
+        12414/l_mkl_2018.1.163.tgz      \
+        12414/l_ipp_2018.1.163.tgz      \
+        12414/l_tbb_2018.1.163.tgz      \
+        12414/l_mpi_2018.1.163.tgz      \
+        12409/m_daal_2018.1.126.dmg     \
+        12334/m_ipp_2018.1.126.dmg      \
+        12335/m_mkl_2018.1.126.dmg      \
+        12415/m_tbb_2018.1.126.dmg      \
+        12396/w_daal_2018.1.156.exe     \
+        12394/w_mkl_2018.1.156.exe      \
+        12395/w_ipp_2018.1.156.exe      \
+        12418/w_tbb_2018.1.156.exe      \
+        12443/w_mpi_p_2018.1.156.exe    \
+    &
+)
 
 # ----------------------------------------------------------------
 
@@ -69,11 +93,18 @@ export HTTP_PROXY=proxy.codingcafe.org:8118
         mkdir -p $i
         pushd $_
         for j in 9.{0,1,2,3,4,5,6,7,8,9}-{{linux,osx}-%s.tgz,windows10-%s.zip}; do
-            wget -c https://developer.download.nvidia.com/compute/redist/cudnn/$(basename $(pwd))/cudnn-$(printf $j x64-$(basename $(pwd) | sed 's/\..*//')) &
+            wget -c --bind-address=$(eval 'echo '$ROUTE) https://developer.download.nvidia.com/compute/redist/cudnn/$(basename $(pwd))/cudnn-$(printf $j x64-$(basename $(pwd) | sed 's/\..*//')) &
         done
         popd
     done
 )
+
+# ----------------------------------------------------------------
+
+export HTTP_PROXY=proxy.codingcafe.org:8118
+[ $HTTP_PROXY ] && export HTTPS_PROXY=$HTTP_PROXY
+[ $HTTP_PROXY ] && export http_proxy=$HTTP_PROXY
+[ $HTTPS_PROXY ] && export https_proxy=$HTTPS_PROXY
 
 # ----------------------------------------------------------------
 
