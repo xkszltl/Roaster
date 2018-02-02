@@ -25,12 +25,16 @@ export DST_DIR=$SRC_DIR
 export DST=$DST_SITE$DST_DIR.git
 export LOCAL=$(pwd)/$DST_DIR.git
 if [ ! $PATTERN ] || grep $PATTERN <<<$SRC_DIR; then
-    if [ -d $LOCAL ]; then
-	    cd $LOCAL && git fetch --all
-    else
-	    mkdir -p $(dirname $LOCAL) && cd $(dirname $LOCAL) && git clone --mirror $SRC && cd $LOCAL
-    fi &&
-    git remote set-url --push origin $DST && git push --mirror
+    mkdir -p $(dirname $LOCAL)
+    cd $(dirname $LOCAL)
+    [ -d $LOCAL ] || git clone --mirror $DST || git clone --mirror $SRC
+    cd $LOCAL
+    git remote set-url origin $DST
+    git fetch --all
+    git remote set-url origin $SRC
+    git fetch --all
+    git remote set-url origin $DST
+    git push --mirror
 fi
 '"'" ::: {\
 https://github.com/\ {\
