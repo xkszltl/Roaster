@@ -47,7 +47,7 @@
             -DCMAKE_VERBOSE_MAKEFILE=ON                         \
             -DBENCHMARK_ENABLE_LTO=ON                           \
             -DBENCHMARK_USE_LIBCXX=OFF                          \
-            -DBLAS=OpenBLAS                                     \
+            -DBLAS=MKL                                          \
             -DBUILD_GTEST=ON                                    \
             -DUSE_OPENMP=ON                                     \
             ..

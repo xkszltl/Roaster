@@ -24,7 +24,7 @@
             -DCMAKE_INSTALL_PREFIX="/usr"       \
             -DCMAKE_VERBOSE_MAKEFILE=ON         \
             -DCUDA_ARCH_NAME=Pascal             \
-            -DBLAS=Open                         \
+            -DBLAS=MKL                          \
             -DUSE_NCCL=ON                       \
             ..
 
