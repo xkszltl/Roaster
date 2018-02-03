@@ -73,25 +73,26 @@ for i in $(echo "
     repo
     mirror
     pkg
-    auth
+    cmake
+    intel
     cuda
-    slurm
     openmpi
+    auth
+    slurm
     nagios
     shadowsocks
     texlive
-    cmake
     llvm
     boost
     jemalloc
+    openblas
+    opencv
     gflags
     glog
     protobuf
     leveldb
-    lmdb
-    openblas
-    opencv
     rocksdb
+    lmdb
     caffe
     caffe2
 "); do
