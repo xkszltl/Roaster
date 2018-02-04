@@ -63,7 +63,7 @@ fi
     export INTEL_URL="http://registrationcenter-download.intel.com/akdlm/irc_nas/tec"
 
     parallel --line-buffer --bar 'bash -c '"'"'
-        wget -c --bind-address='$ROUTE' $INTEL_URL/{}
+        wget -cq --bind-address='$ROUTE' $INTEL_URL/{}
     '"'" :::   \
         12414/l_daal_2018.1.163.tgz     \
         12414/l_mkl_2018.1.163.tgz      \
@@ -93,7 +93,7 @@ fi
         mkdir -p $i
         pushd $_
         for j in 9.{0,1,2,3,4,5,6,7,8,9}-{{linux,osx}-%s.tgz,windows10-%s.zip}; do
-            wget -c --bind-address=$(eval 'echo '$ROUTE) https://developer.download.nvidia.com/compute/redist/cudnn/$(basename $(pwd))/cudnn-$(printf $j x64-$(basename $(pwd) | sed 's/\..*//')) &
+            wget -cq --bind-address=$(eval 'echo '$ROUTE) https://developer.download.nvidia.com/compute/redist/cudnn/$(basename $(pwd))/cudnn-$(printf $j x64-$(basename $(pwd) | sed 's/\..*//')) &
         done
         popd
     done
