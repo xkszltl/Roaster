@@ -49,6 +49,7 @@
             -DBENCHMARK_USE_LIBCXX=OFF                          \
             -DBLAS=MKL                                          \
             -DBUILD_GTEST=ON                                    \
+            -DUSE_NATIVE_ARCH=ON                                \
             -DUSE_OPENMP=ON                                     \
             ..
 

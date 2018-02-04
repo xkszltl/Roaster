@@ -75,8 +75,8 @@ for i in $(echo "
     pkg
     cmake
     intel
-    cuda
     openmpi
+    cuda
     auth
     slurm
     nagios
