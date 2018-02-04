@@ -50,6 +50,7 @@
             -DBLAS=MKL                                          \
             -DUSE_NATIVE_ARCH=ON                                \
             -DUSE_OPENMP=ON                                     \
+            -DUSE_ZMQ=ON                                        \
             ..
 
         time cmake --build .
