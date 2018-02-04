@@ -103,6 +103,7 @@ for i in pkg-{skip,all}; do
                 librados2{,-*}
                 {gflags,glog,gmock,gtest,protobuf}{,-*}
                 {redis,hiredis}{,-*}
+                zeromq{,-*}
                 ImageMagick{,-*}
                 docbook{,5,2X}{,-*}
                 nagios{,-selinux,-devel,-debuginfo,-plugins-all}
