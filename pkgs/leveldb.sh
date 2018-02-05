@@ -5,7 +5,7 @@
 [ -e $STAGE/leveldb ] && ( set -e
     cd $SCRATCH
 
-    git clone $GIT_MIRROR/google/leveldb.git
+    until git clone --depth 1 --no-single-branch $GIT_MIRROR/google/leveldb.git; do echo 'Retrying'; done
     cd leveldb
     git checkout $(git tag | sed -n '/^v[0-9\.]*$/p' | sort -V | tail -n1)
 

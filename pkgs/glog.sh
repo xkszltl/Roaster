@@ -5,7 +5,7 @@
 [ -e $STAGE/glog ] && ( set -e
     cd $SCRATCH
 
-    git clone $GIT_MIRROR/google/glog.git
+    until git clone --depth 1 --no-single-branch $GIT_MIRROR/google/glog.git; do echo 'Retrying'; done
     cd glog
     git checkout $(git tag | sed -n '/^v[0-9\.]*$/p' | sort -V | tail -n1)
 

@@ -5,7 +5,7 @@
 [ -e $STAGE/caffe ] && ( set -e
     cd $SCRATCH
 
-    until git clone $GIT_MIRROR/BVLC/caffe.git; do echo 'Retrying'; done
+    until git clone --depth 1 $GIT_MIRROR/BVLC/caffe.git; do echo 'Retrying'; done
     cd caffe
 
     # ------------------------------------------------------------

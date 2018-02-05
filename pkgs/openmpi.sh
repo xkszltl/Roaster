@@ -5,7 +5,7 @@
 [ -e $STAGE/ompi ] && ( set -e
     cd $SCRATCH
 
-    git clone $GIT_MIRROR/open-mpi/ompi.git
+    until git clone --depth 1 --no-single-branch $GIT_MIRROR/open-mpi/ompi.git; do echo 'Retrying'; done
     cd ompi
     git checkout $(git tag | sed -n '/^v[0-9\.]*$/p' | sort -V | tail -n1)
 

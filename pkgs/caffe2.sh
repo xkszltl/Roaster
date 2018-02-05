@@ -7,7 +7,7 @@
 
     # ------------------------------------------------------------
 
-    until git clone $GIT_MIRROR/caffe2/caffe2.git; do echo 'Retrying'; done
+    until git clone --depth 1 $GIT_MIRROR/caffe2/caffe2.git; do echo 'Retrying'; done
     cd caffe2
 
     if [ $GIT_MIRROR == $GIT_MIRROR_CODINGCAFE ]; then
@@ -48,6 +48,7 @@
             -DBENCHMARK_ENABLE_LTO=ON                           \
             -DBENCHMARK_USE_LIBCXX=OFF                          \
             -DBLAS=MKL                                          \
+            -DUSE_ATEN=ON                                       \
             -DUSE_NATIVE_ARCH=ON                                \
             -DUSE_OPENMP=ON                                     \
             -DUSE_ZMQ=ON                                        \

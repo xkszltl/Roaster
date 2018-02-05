@@ -11,19 +11,19 @@ for i in llvm-{gcc,clang}; do
 
         ( set -e
             echo "Retriving LLVM "$LLVM_GIT_TAG"..."
-            until git clone --branch $LLVM_GIT_TAG $LLVM_MIRROR/llvm.git; do echo 'Retrying'; done
+            until git clone --depth 1 --branch $LLVM_GIT_TAG $LLVM_MIRROR/llvm.git; do echo 'Retrying'; done
             cd llvm
             cd projects
             for i in compiler-rt lib{cxx{,abi},unwind} openmp; do
-                until git clone --branch $LLVM_GIT_TAG $LLVM_MIRROR/$i.git; do echo 'Retrying'; done &
+                until git clone --depth 1 --branch $LLVM_GIT_TAG $LLVM_MIRROR/$i.git; do echo 'Retrying'; done &
             done
             cd ../tools
             for i in lld lldb polly; do
-                until git clone --branch $LLVM_GIT_TAG $LLVM_MIRROR/$i.git; do echo 'Retrying'; done &
+                until git clone --depth 1 --branch $LLVM_GIT_TAG $LLVM_MIRROR/$i.git; do echo 'Retrying'; done &
             done
-            until git clone --branch $LLVM_GIT_TAG $LLVM_MIRROR/clang.git; do echo 'Retrying'; done
+            until git clone --depth 1 --branch $LLVM_GIT_TAG $LLVM_MIRROR/clang.git; do echo 'Retrying'; done
             cd clang/tools
-            until git clone --branch $LLVM_GIT_TAG $LLVM_MIRROR/clang-tools-extra.git extra; do echo 'Retrying'; done
+            until git clone --depth 1 --branch $LLVM_GIT_TAG $LLVM_MIRROR/clang-tools-extra.git extra; do echo 'Retrying'; done
             wait
         )
 
