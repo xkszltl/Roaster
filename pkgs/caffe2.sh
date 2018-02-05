@@ -51,6 +51,7 @@
             -DUSE_NATIVE_ARCH=ON                                \
             -DUSE_OPENMP=ON                                     \
             -DUSE_ZMQ=ON                                        \
+            -DUSE_ZSTD=ON                                       \
             ..
 
         time cmake --build .
