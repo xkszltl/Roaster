@@ -1,2 +1,7 @@
 FROM docker.codingcafe.org/sandbox/centos:stage-dl
 
+yum update -y --skip-broken --nogpgcheck    \
+&& yum clean all                            \
+&& rm -rf /var/cache/yum                    \
+&& truncate -s0 ~/.bash_history
+
