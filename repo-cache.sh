@@ -13,6 +13,7 @@ trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
 export DRY=false
 export REPO_UPDATE=false
+export REPO_GPG=false
 export DEF_RETRIES=2
 export USE_PROXY=false
 
@@ -27,6 +28,7 @@ export REPOSYNC='reposync
     --cachedir=$(mktemp -d)
     --download-metadata
     --downloadcomps
+    '"$($REPO_GPG && echo --gpgcheck)"'
     --norepopath
     --source
     -r
