@@ -1,0 +1,5 @@
+FROM docker.codingcafe.org/sandbox/centos:stage-repo
+
+COPY [".", "/etc/codingcafe/scripts"]
+
+RUN cp -f /etc/hosts /tmp && echo 10.0.0.10 {git,proxy,repo}.codingcafe.org > /etc/hosts && /etc/codingcafe/scripts/setup.sh font && cat /tmp/hosts > /etc/hosts && rm -f /tmp/hosts

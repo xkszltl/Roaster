@@ -1,6 +1,7 @@
 stages:
   - init
   - repo
+  - font
   - pkg-skip
   - ss
   - tex
@@ -36,13 +37,25 @@ repo:
   script:
     - gitlab-ci/build_stage.sh
 
+font:
+  stage: font
+  tags:
+    - docker
+    - gpu
+  only:
+    - /^build-(init|repo|font)$/
+  except:
+    - branches
+  script:
+    - gitlab-ci/build_stage.sh
+
 pkg-skip:
   stage: pkg-skip
   tags:
     - docker
     - gpu
   only:
-    - /^build-(init|repo|pkg-skip)$/
+    - /^build-(init|repo|font|pkg-skip)$/
   except:
     - branches
   script:
@@ -54,7 +67,7 @@ ss:
     - docker
     - gpu
   only:
-    - /^build-(init|repo|pkg-skip|pkg-all|ss)$/
+    - /^build-(init|repo|font|pkg-skip|pkg-all|ss)$/
   except:
     - branches
   script:
@@ -66,7 +79,7 @@ tex:
     - docker
     - gpu
   only:
-    - /^build-(init|repo|pkg-skip|pkg-all|ss|tex)$/
+    - /^build-(init|repo|font|pkg-skip|pkg-all|ss|tex)$/
   except:
     - branches
   script:
@@ -78,7 +91,7 @@ llvm-gcc:
     - docker
     - gpu
   only:
-    - /^build-(init|repo|pkg-skip|pkg-all|ss|tex|llvm-gcc)$/
+    - /^build-(init|repo|font|pkg-skip|pkg-all|ss|tex|llvm-gcc)$/
   except:
     - branches
   script:
@@ -90,7 +103,7 @@ llvm-clang:
     - docker
     - gpu
   only:
-    - /^build-(init|repo|pkg-skip|pkg-all|ss|tex|llvm-gcc|llvm-clang)$/
+    - /^build-(init|repo|font|pkg-skip|pkg-all|ss|tex|llvm-gcc|llvm-clang)$/
   except:
     - branches
   script:
@@ -102,7 +115,7 @@ misc:
     - docker
     - gpu
   only:
-    - /^build-(init|repo|pkg-skip|pkg-all|ss|tex|llvm-gcc|llvm-clang|misc)$/
+    - /^build-(init|repo|font|pkg-skip|pkg-all|ss|tex|llvm-gcc|llvm-clang|misc)$/
   except:
     - branches
   script:
@@ -114,7 +127,7 @@ dl:
     - docker
     - gpu
   only:
-    - /^build-(init|repo|pkg-skip|pkg-all|ss|tex|llvm-gcc|llvm-clang|misc|dl)$/
+    - /^build-(init|repo|font|pkg-skip|pkg-all|ss|tex|llvm-gcc|llvm-clang|misc|dl)$/
   except:
     - branches
   script:
@@ -126,7 +139,7 @@ edit:
     - docker
     - gpu
   only:
-    - /^build-(init|repo|pkg-skip|pkg-all|ss|tex|llvm-gcc|llvm-clang|misc|dl|edit)$/
+    - /^build-(init|repo|font|pkg-skip|pkg-all|ss|tex|llvm-gcc|llvm-clang|misc|dl|edit)$/
   except:
     - branches
   script:

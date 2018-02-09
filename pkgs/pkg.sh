@@ -4,25 +4,13 @@
 
 for i in pkg-{skip,all}; do
     [ -e $STAGE/$i ] && ( set -e
-        export RPM_MAX_ATTEMPT=10
-
-        # TODO: Fix the following issue:
-        #       LLVM may select the wrong gcc toolchain without libgcc_s integrated.
-        #       The correct choice is x86_64-redhat-linux instead of x86_64-linux-gnu.
-        #
-        #       libasan2 seems to contain libasan.so.3.0.0 and causing a conflict with libasan3
-        export RPM_BLACKLIST=$(echo "
-            *-debuginfo
-            gcc-x86_64-linux-gnu
-            libasan2
-            python-qpid-common
-            python2-paramiko
-        " | sed -n 's/^[[:space:]]*\([^[:space:]][^[:space:]]*\).*/--exclude \1/p' | paste -s - | xargs)
-
-        export RPM_CACHE_ARGS=$([ -f $RPM_CACHE_REPO ] && echo "--disableplugin=axelget,fastestmirror")
-
-        export RPM_INSTALL="yum install -y $RPM_CACHE_ARGS --nogpgcheck $RPM_BLACKLIST"
-        export RPM_UPDATE="yum update -y $RPM_CACHE_ARGS --nogpgcheck $RPM_BLACKLIST"
+        for skip in true false; do
+        for attempt in $(seq $RPM_MAX_ATTEMPT -1 0); do
+            $RPM_UPDATE $($skip && echo --skip-broken) && break
+            echo "Retrying... $attempt chance(s) left."
+            [ $attempt -gt 0 ] || exit 1
+        done
+        done
 
         for attempt in $(seq $RPM_MAX_ATTEMPT -1 0); do
             echo "
@@ -149,27 +137,12 @@ for i in pkg-{skip,all}; do
                 ruby{,-*}
                 lua{,-*}
                 qt5{,-*}
-                *-fonts{,-*}
             " | xargs -n5 echo "$RPM_INSTALL $([ $i = pkg-skip ] && echo --skip-broken)" | bash && break
             echo "Retrying... $attempt chance(s) left."
             [ $attempt -gt 0 ] || exit 1
         done
 
         which parallel 2>/dev/null && parallel --will-cite < /dev/null
-
-        # ------------------------------------------------------------
-
-        for attempt in $(seq $RPM_MAX_ATTEMPT -1 0); do
-            $RPM_INSTALL "https://downloads.sourceforge.net/project/mscorefonts2/rpms/$(
-                curl -sSL https://sourceforge.net/projects/mscorefonts2/files/rpms/                                         \
-                | sed -n 's/.*\(msttcore-fonts-installer-\([0-9]*\).\([0-9]*\)-\([0-9]*\).noarch.rpm\).*/\2 \3 \4 \1/p'     \
-                | sort -n | tail -n1 | cut -d' ' -f4 -
-            )" && break
-            echo "Retrying... $attempt chance(s) left."
-            [ $attempt -gt 0 ] || exit 1
-        done
-
-        fc-cache -fv
 
         # ------------------------------------------------------------
 
