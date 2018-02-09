@@ -146,9 +146,9 @@ for j in =$(uname -i) -source=Source $([ $i = base ] && echo -debuginfo=debug/$(
     export rhs=$(sed 's/.*=//' <<< $j)
     export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
     {
-        "repo": "'"$i$lhs"'",
-        "path": "'"centos/7/$i/$rhs"'",
-        "retries": '$DEF_RETRIES'
+        "repo":     "'"$i$lhs"'",
+        "path":     "'"centos/7/$i/$rhs"'",
+        "retries":  '$DEF_RETRIES'
     }')
 done
 done
@@ -160,9 +160,9 @@ for i in {=,-debuginfo=debug/}$(uname -i) -source=SRPMS; do
     export rhs=$(sed 's/.*=//' <<< $i)
     export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
     {
-        "repo": "'"epel$lhs"'",
-        "path": "'"epel/7/$rhs"'",
-        "retries": '$DEF_RETRIES'
+        "repo":     "'"epel$lhs"'",
+        "path":     "'"epel/7/$rhs"'",
+        "retries":  '$DEF_RETRIES'
     }')
 done
 
@@ -176,9 +176,9 @@ for j in =$(uname -i)/$i -testing=$(uname -i)/$i/testing -source=Source/$i -debu
     export rhs=$(sed 's/.*=//' <<< $j)
     export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
     {
-        "repo": "'"centos-sclo-$i$lhs"'",
-        "path": "'"centos/7/sclo/$rhs"'",
-        "retries": '$DEF_RETRIES'
+        "repo":     "'"centos-sclo-$i$lhs"'",
+        "path":     "'"centos/7/sclo/$rhs"'",
+        "retries":  '$DEF_RETRIES'
     }')
 done
 done
@@ -190,9 +190,9 @@ done
 for i in elrepo{,-testing,-kernel,-extras}; do
     export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
     {
-        "repo": "'"$i"'",
-        "path": "'"$(sed 's/-/\//' <<< $i)/el7"'",
-        "retries": '$DEF_RETRIES'
+        "repo":     "'"$i"'",
+        "path":     "'"$(sed 's/-/\//' <<< $i)/el7"'",
+        "retries":  '$DEF_RETRIES'
     }')
 done
 
@@ -211,9 +211,9 @@ done
 
 export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
 {
-    "repo": "'"cuda"'",
-    "path": "'"cuda/rhel7/$(uname -i)"'",
-    "retries": 10
+    "repo":     "'"cuda"'",
+    "path":     "'"cuda/rhel7/$(uname -i)"'",
+    "retries":  10
 }')
 
 # ----------------------------------------------------------------
@@ -235,9 +235,9 @@ for j in {=,-debuginfo=debug-}$(uname -i) -source=source; do
     export rhs=$(sed 's/.*=//' <<< $j)
     export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
     {
-        "repo": "'"docker-ce-$i$lhs"'",
-        "path": "'"docker/linux/centos/7/$rhs/$i"'",
-        "retries": 10
+        "repo":     "'"docker-ce-$i$lhs"'",
+        "path":     "'"docker/linux/centos/7/$rhs/$i"'",
+        "retries":  10
     }')
 done
 done
@@ -251,10 +251,10 @@ for i in =$(uname -i) -source=SRPMS; do
     export rhs=$(sed 's/.*=//' <<< $i)
     export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
     {
-        "repo": "'"gitlab_gitlab-ce$lhs"'",
-        "path": "'"gitlab/gitlab-ce/el/7/$rhs"'",
-        "retries": 10,
-        "sync_args": "--newest-only"
+        "repo":         "'"gitlab_gitlab-ce$lhs"'",
+        "path":         "'"gitlab/gitlab-ce/el/7/$rhs"'",
+        "retries":      10,
+        "sync_args":    "--newest-only"
     }')
 done
 
@@ -267,10 +267,10 @@ for j in =$(uname -i) -source=SRPMS; do
     export rhs=$(sed 's/.*=//' <<< $i)
     export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
     {
-        "repo": "'"runner_gitlab-ci-multi-runner$lhs"'",
-        "path": "'"gitlab/gitlab-ci-multi-runner/el/7/$rhs"'",
-        "retries": 10,
-        "sync_args": "--newest-only"
+        "repo":         "'"runner_gitlab-ci-multi-runner$lhs"'",
+        "path":         "'"gitlab/gitlab-ci-multi-runner/el/7/$rhs"'",
+        "retries":      10,
+        "sync_args":    "--newest-only"
     }')
 done
 
