@@ -163,9 +163,10 @@ for i in {=,-debuginfo=debug/}$(uname -i) -source=SRPMS; do
     export rhs=$(sed 's/.*=//' <<< $i)
     export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
     {
-        "repo":     "'"epel$lhs"'",
-        "path":     "'"epel/7/$rhs"'",
-        "retries":  '$DEF_RETRIES'
+        "repo":         "'"epel$lhs"'",
+        "path":         "'"epel/7/$rhs"'",
+        "retries":      '$DEF_RETRIES',
+        "sync_args":    "--delete '"$([ $lhs = -debuginfo ] && echo --newest-only)"'"
     }')
 done
 
