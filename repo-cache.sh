@@ -38,10 +38,10 @@ export CREATEREPO='createrepo_c
     --compress-type=xz
     --database
     $([ -f comps.xml ] && echo --groupfile=comps.xml)
-    --keep-all-metadata
+    '"$($REPO_UPDATE && echo --keep-all-metadata)"'
     --pretty
     --workers $(nproc)
-    --update
+    '"$($REPO_UPDATE && echo --update)"'
     $(pwd)
 '
 
