@@ -148,9 +148,10 @@ for j in =$(uname -i) -source=Source $([ $i = base ] && echo -debuginfo=debug/$(
     export rhs=$(sed 's/.*=//' <<< $j)
     export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
     {
-        "repo":     "'"$i$lhs"'",
-        "path":     "'"centos/7/$i/$rhs"'",
-        "retries":  '$DEF_RETRIES'
+        "repo":         "'"$i$lhs"'",
+        "path":         "'"centos/7/$i/$rhs"'",
+        "retries":      '$DEF_RETRIES',
+        "sync_args":    "--delete '"$([ $i$lhs = base-debuginfo ] && echo --newest-only)"'"
     }')
 done
 done
