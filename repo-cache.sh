@@ -8,8 +8,18 @@ set -e
 trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
 # ----------------------------------------------------------------
+# Configuration
+# ----------------------------------------------------------------
 
 export DRY=false
+export REPO_UPDATE=false
+export MAX_ATTEMPT=3
+export USE_PROXY=false
+
+# ----------------------------------------------------------------
+# Preparation
+# ----------------------------------------------------------------
+
 export DRY_RSYNC=$($DRY && echo --dry-run)
 export DRY_WGET=$($DRY && echo --spider)
 
@@ -37,11 +47,13 @@ export CREATEREPO='createrepo_c
 
 export ROUTE='10.0.0.$([ $(expr $RANDOM % 15) -lt 10 ] && echo 12 || echo 11)'
 
-export MAX_ATTEMPT=3
+export TASKS=''
 
 mkdir -p /var/www/repos
 cd $_
 
+# ----------------------------------------------------------------
+# CTAN Repository Mirroring
 # ----------------------------------------------------------------
 
 if false; then :
@@ -58,6 +70,8 @@ else
     exit 1
 fi
 
+# ----------------------------------------------------------------
+# Intel Repository Mirroring
 # ----------------------------------------------------------------
 
 (
@@ -88,6 +102,8 @@ fi
 )
 
 # ----------------------------------------------------------------
+# NVIDIA Repository Mirroring
+# ----------------------------------------------------------------
 
 (
     set -e
@@ -105,20 +121,26 @@ fi
 )
 
 # ----------------------------------------------------------------
+# NVIDIA Repository Mirroring
+# ----------------------------------------------------------------
 
 yum makecache fast -y || true
 rm -rf $(find . -name .repodata -type d)
 
 # ----------------------------------------------------------------
-
-export HTTP_PROXY=proxy.codingcafe.org:8118
-[ $HTTP_PROXY ] && export HTTPS_PROXY=$HTTP_PROXY
-[ $HTTP_PROXY ] && export http_proxy=$HTTP_PROXY
-[ $HTTPS_PROXY ] && export https_proxy=$HTTPS_PROXY
-
+# Proxy
 # ----------------------------------------------------------------
 
-export TASKS=''
+if $USE_PROXY; then
+    export HTTP_PROXY=proxy.codingcafe.org:8118
+    [ $HTTP_PROXY ] && export HTTPS_PROXY=$HTTP_PROXY
+    [ $HTTP_PROXY ] && export http_proxy=$HTTP_PROXY
+    [ $HTTPS_PROXY ] && export https_proxy=$HTTPS_PROXY
+fi
+
+# ----------------------------------------------------------------
+# CentOS Repository Mirroring Task
+# ----------------------------------------------------------------
 
 for i in base updates extras centosplus; do
 for j in =$(uname -i) -source=Source $([ $i = base ] && echo -debuginfo=debug/$(uname -i)); do
@@ -145,6 +167,8 @@ for i in {=,-debuginfo=debug/}$(uname -i) -source=SRPMS; do
 done
 
 # ----------------------------------------------------------------
+# SCL Repository Mirroring Task
+# ----------------------------------------------------------------
 
 for i in sclo rh; do
 for j in =$(uname -i)/$i -testing=$(uname -i)/$i/testing -source=Source/$i -debuginfo=$(uname -i)/$i/debuginfo; do
@@ -159,6 +183,8 @@ done
 done
 
 # ----------------------------------------------------------------
+# ELRepo Repository Mirroring Task
+# ----------------------------------------------------------------
 
 for i in elrepo{,-testing,-kernel,-extras}; do
     export REPO_TASKS="$REPO_TASKS
@@ -168,6 +194,8 @@ for i in elrepo{,-testing,-kernel,-extras}; do
     },"
 done
 
+# ----------------------------------------------------------------
+# CUDA Repository Mirroring Task
 # ----------------------------------------------------------------
 
 (
@@ -185,6 +213,8 @@ export REPO_TASKS="$REPO_TASKS
     \"path\": \"cuda/rhel7/$(uname -i)\"
 },"
 
+# ----------------------------------------------------------------
+# Docker Repository Mirroring Task
 # ----------------------------------------------------------------
 
 (
@@ -209,6 +239,8 @@ done
 done
 
 # ----------------------------------------------------------------
+# GitLab-CE Repository Mirroring Task
+# ----------------------------------------------------------------
 
 for i in =$(uname -i) -source=SRPMS; do
     export lhs=$(sed 's/=.*//' <<< $i)
@@ -222,6 +254,8 @@ for i in =$(uname -i) -source=SRPMS; do
 done
 
 # ----------------------------------------------------------------
+# GitLab CI Runner Repository Mirroring Task
+# ----------------------------------------------------------------
 
 for j in =$(uname -i) -source=SRPMS; do
     export lhs=$(sed 's/=.*//' <<< $i)
@@ -234,6 +268,8 @@ for j in =$(uname -i) -source=SRPMS; do
     },"
 done
 
+# ----------------------------------------------------------------
+# Task Execution
 # ----------------------------------------------------------------
 
 export REPO_TASKS=$(sed 's/,[[:space:]]*\(\]\)/\1/g' <<< "
