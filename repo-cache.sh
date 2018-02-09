@@ -47,7 +47,10 @@ export CREATEREPO='createrepo_c
 
 export ROUTE='10.0.0.$([ $(expr $RANDOM % 15) -lt 10 ] && echo 12 || echo 11)'
 
-export TASKS=''
+export REPO_TASKS=$(jq -n '
+    {
+        "repo_tasks": []
+    }')
 
 mkdir -p /var/www/repos
 cd $_
@@ -141,11 +144,11 @@ for i in base updates extras centosplus; do
 for j in =$(uname -i) -source=Source $([ $i = base ] && echo -debuginfo=debug/$(uname -i)); do
     export lhs=$(sed 's/=.*//' <<< $j)
     export rhs=$(sed 's/.*=//' <<< $j)
-    export REPO_TASKS="$REPO_TASKS
+    export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
     {
-        \"repo\": \"$i$lhs\",
-        \"path\": \"centos/7/$i/$rhs\"
-    },"
+        "repo": "'"$i$lhs"'",
+        "path": "'"centos/7/$i/$rhs"'"
+    }')
 done
 done
 
@@ -154,11 +157,11 @@ done
 for i in {=,-debuginfo=debug/}$(uname -i) -source=SRPMS; do
     export lhs=$(sed 's/=.*//' <<< $i)
     export rhs=$(sed 's/.*=//' <<< $i)
-    export REPO_TASKS="$REPO_TASKS
+    export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
     {
-        \"repo\": \"epel$lhs\",
-        \"path\": \"epel/7/$rhs\"
-    },"
+        "repo": "'"epel$lhs"'",
+        "path": "'"epel/7/$rhs"'"
+    }')
 done
 
 # ----------------------------------------------------------------
@@ -169,11 +172,11 @@ for i in sclo rh; do
 for j in =$(uname -i)/$i -testing=$(uname -i)/$i/testing -source=Source/$i -debuginfo=$(uname -i)/$i/debuginfo; do
     export lhs=$(sed 's/=.*//' <<< $j)
     export rhs=$(sed 's/.*=//' <<< $j)
-    export REPO_TASKS="$REPO_TASKS
+    export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
     {
-        \"repo\": \"centos-sclo-$i$lhs\",
-        \"path\": \"centos/7/sclo/$rhs\"
-    },"
+        "repo": "'"centos-sclo-$i$lhs"'",
+        "path": "'"centos/7/sclo/$rhs"'"
+    }')
 done
 done
 
@@ -182,11 +185,11 @@ done
 # ----------------------------------------------------------------
 
 for i in elrepo{,-testing,-kernel,-extras}; do
-    export REPO_TASKS="$REPO_TASKS
+    export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
     {
-        \"repo\": \"$i\",
-        \"path\": \"$(sed 's/-/\//' <<< $i)/el7\"
-    },"
+        "repo": "'"$i"'",
+        "path": "'"$(sed 's/-/\//' <<< $i)/el7"'"
+    }')
 done
 
 # ----------------------------------------------------------------
@@ -202,11 +205,11 @@ done
     $DRY || rpm --import 7fa2af80.pub
 )
 
-export REPO_TASKS="$REPO_TASKS
+export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
 {
-    \"repo\": \"cuda\",
-    \"path\": \"cuda/rhel7/$(uname -i)\"
-},"
+    "repo": "'"cuda"'",
+    "path": "'"cuda/rhel7/$(uname -i)"'"
+}')
 
 # ----------------------------------------------------------------
 # Docker Repository Mirroring Task
@@ -225,11 +228,11 @@ for i in stable edge test; do :
 for j in {=,-debuginfo=debug-}$(uname -i) -source=source; do
     export lhs=$(sed 's/=.*//' <<< $j)
     export rhs=$(sed 's/.*=//' <<< $j)
-    export REPO_TASKS="$REPO_TASKS
+    export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
     {
-        \"repo\": \"docker-ce-$i$lhs\",
-        \"path\": \"docker/linux/centos/7/$rhs/$i\"
-    },"
+        "repo": "'"docker-ce-$i$lhs"'",
+        "path": "'"docker/linux/centos/7/$rhs/$i"'"
+    }')
 done
 done
 
@@ -240,12 +243,12 @@ done
 for i in =$(uname -i) -source=SRPMS; do
     export lhs=$(sed 's/=.*//' <<< $i)
     export rhs=$(sed 's/.*=//' <<< $i)
-    export REPO_TASKS="$REPO_TASKS
+    export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
     {
-        \"repo\": \"gitlab_gitlab-ce$lhs\",
-        \"path\": \"gitlab/gitlab-ce/el/7/$rhs\",
-        \"sync_args\": \"--newest-only\"
-    },"
+        "repo": "'"gitlab_gitlab-ce$lhs"'",
+        "path": "'"gitlab/gitlab-ce/el/7/$rhs"'",
+        "sync_args": "--newest-only"
+    }')
 done
 
 # ----------------------------------------------------------------
@@ -255,26 +258,21 @@ done
 for j in =$(uname -i) -source=SRPMS; do
     export lhs=$(sed 's/=.*//' <<< $i)
     export rhs=$(sed 's/.*=//' <<< $i)
-    export REPO_TASKS="$REPO_TASKS
+    export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
     {
-        \"repo\": \"runner_gitlab-ci-multi-runner$lhs\",
-        \"path\": \"gitlab/gitlab-ci-multi-runner/el/7/$rhs\",
-        \"sync_args\": \"--newest-only\"
-    },"
+        "repo": "'"runner_gitlab-ci-multi-runner$lhs"'",
+        "path": "'"gitlab/gitlab-ci-multi-runner/el/7/$rhs"'",
+        "sync_args": "--newest-only"
+    }')
 done
 
 # ----------------------------------------------------------------
 # Task Execution
 # ----------------------------------------------------------------
 
-export REPO_TASKS=$(sed 's/,[[:space:]]*\(\]\)/\1/g' <<< "
-{
-    \"repo_tasks\": [ $REPO_TASKS ]
-}")
-
 parallel -j0 --line-buffer --bar 'bash -c '"'"'
-    export JSON_OBJ=$(jq ".repo_tasks | .[{}]" <<< "$REPO_TASKS")
-    echo "Execute task $JSON_OBJ"
+    export JSON_OBJ=$(jq <<< "$REPO_TASKS" ".repo_tasks | .[{}]")
+    printf "Execute task\n%s\n" "$JSON_OBJ"
 
     export repo=$(jq -r ".repo" <<< "$JSON_OBJ")
     export path=$(jq -r ".path" <<< "$JSON_OBJ")
@@ -283,12 +281,12 @@ parallel -j0 --line-buffer --bar 'bash -c '"'"'
     mkdir -p $path
     cd $_
     for attempt in $(seq $MAX_ATTEMPT); do
-        eval $REPOSYNC $repo $sync_args && break
-        echo "Retry \"$repo\""
+        $DRY || eval $REPOSYNC $repo $sync_args && break
+        $DRY || echo "Retry \"$repo\""
     done
-    eval $CREATEREPO
+    $DRY || eval $CREATEREPO
 '"'" :::    \
-    $(seq 0 $(expr $(jq '.repo_tasks | length' <<< "$REPO_TASKS") - 1)) \
+    $(seq 0 $(expr $(jq <<< "$REPO_TASKS" '.repo_tasks | length') - 1)) \
 &
 
 # ----------------------------------------------------------------
