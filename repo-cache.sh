@@ -67,7 +67,7 @@ fi
 
     export INTEL_URL="http://registrationcenter-download.intel.com/akdlm/irc_nas/tec"
 
-    parallel --line-buffer --bar 'bash -c '"'"'
+    parallel -j0 --line-buffer --bar 'bash -c '"'"'
         $DRY || wget $DRY_WGET -cq --bind-address='$ROUTE' $INTEL_URL/{}
     '"'" :::   \
         12414/l_daal_2018.1.163.tgz     \
@@ -94,7 +94,7 @@ fi
 
     export CUDNN_URL="https://developer.download.nvidia.com/compute/redist/cudnn"
 
-    parallel --line-buffer --bar 'bash -c '"'"'
+    parallel -j0 --line-buffer --bar 'bash -c '"'"'
         export lhs=$(sed "s/=.*//" <<< "{}")
         export rhs=$(sed "s/.*=//" <<< "{}")
         mkdir -p nvidia/cudnn/$lhs
@@ -241,7 +241,7 @@ export REPO_TASKS=$(sed 's/,[[:space:]]*\(\]\)/\1/g' <<< "
     \"repo_tasks\": [ $REPO_TASKS ]
 }")
 
-parallel --line-buffer --bar 'bash -c '"'"'
+parallel -j0 --line-buffer --bar 'bash -c '"'"'
     export JSON_OBJ=$(jq ".repo_tasks | .[{}]" <<< "$REPO_TASKS")
     echo "Execute task $JSON_OBJ"
 
