@@ -50,7 +50,7 @@ for i in pkg-{skip,all}; do
                 {bc,sed,man,pv,time,which}{,-*}
                 {parallel,jq}{,-*}
                 {tree,whereami,mlocate,lsof}{,-*}
-                {telnet,tftp,rsh}{,-debuginfo}
+                {ftp{,lib},telnet,tftp,rsh}{,-debuginfo}
                 {f,h,if,io,latency,power,tip}top{,-*}
                 procps-ng{,-*}
                 glances{,-*}
