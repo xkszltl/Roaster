@@ -75,7 +75,7 @@
     rm -rf $SCRATCH/caffe2
     wait
 
-    parallel -j0 --bar --line-buffer 'bash -c '"'"'
+    $ISCONTAINER || parallel -j0 --bar --line-buffer 'bash -c '"'"'
         echo N | python -m caffe2.python.models.download -i {}
     '"'" :::                    \
         bvlc_{alexnet,googlenet,reference_{caffenet,rcnn_ilsvrc13}} \
