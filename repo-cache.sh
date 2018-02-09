@@ -13,7 +13,7 @@ trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
 export DRY=false
 export REPO_UPDATE=false
-export MAX_ATTEMPT=3
+export DEF_RETRIES=2
 export USE_PROXY=false
 
 # ----------------------------------------------------------------
@@ -147,7 +147,8 @@ for j in =$(uname -i) -source=Source $([ $i = base ] && echo -debuginfo=debug/$(
     export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
     {
         "repo": "'"$i$lhs"'",
-        "path": "'"centos/7/$i/$rhs"'"
+        "path": "'"centos/7/$i/$rhs"'",
+        "retries": '$DEF_RETRIES'
     }')
 done
 done
@@ -160,7 +161,8 @@ for i in {=,-debuginfo=debug/}$(uname -i) -source=SRPMS; do
     export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
     {
         "repo": "'"epel$lhs"'",
-        "path": "'"epel/7/$rhs"'"
+        "path": "'"epel/7/$rhs"'",
+        "retries": '$DEF_RETRIES'
     }')
 done
 
@@ -175,7 +177,8 @@ for j in =$(uname -i)/$i -testing=$(uname -i)/$i/testing -source=Source/$i -debu
     export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
     {
         "repo": "'"centos-sclo-$i$lhs"'",
-        "path": "'"centos/7/sclo/$rhs"'"
+        "path": "'"centos/7/sclo/$rhs"'",
+        "retries": '$DEF_RETRIES'
     }')
 done
 done
@@ -188,7 +191,8 @@ for i in elrepo{,-testing,-kernel,-extras}; do
     export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
     {
         "repo": "'"$i"'",
-        "path": "'"$(sed 's/-/\//' <<< $i)/el7"'"
+        "path": "'"$(sed 's/-/\//' <<< $i)/el7"'",
+        "retries": '$DEF_RETRIES'
     }')
 done
 
@@ -208,7 +212,8 @@ done
 export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
 {
     "repo": "'"cuda"'",
-    "path": "'"cuda/rhel7/$(uname -i)"'"
+    "path": "'"cuda/rhel7/$(uname -i)"'",
+    "retries": 10
 }')
 
 # ----------------------------------------------------------------
@@ -231,7 +236,8 @@ for j in {=,-debuginfo=debug-}$(uname -i) -source=source; do
     export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
     {
         "repo": "'"docker-ce-$i$lhs"'",
-        "path": "'"docker/linux/centos/7/$rhs/$i"'"
+        "path": "'"docker/linux/centos/7/$rhs/$i"'",
+        "retries": 10
     }')
 done
 done
@@ -247,6 +253,7 @@ for i in =$(uname -i) -source=SRPMS; do
     {
         "repo": "'"gitlab_gitlab-ce$lhs"'",
         "path": "'"gitlab/gitlab-ce/el/7/$rhs"'",
+        "retries": 10,
         "sync_args": "--newest-only"
     }')
 done
@@ -262,6 +269,7 @@ for j in =$(uname -i) -source=SRPMS; do
     {
         "repo": "'"runner_gitlab-ci-multi-runner$lhs"'",
         "path": "'"gitlab/gitlab-ci-multi-runner/el/7/$rhs"'",
+        "retries": 10,
         "sync_args": "--newest-only"
     }')
 done
@@ -277,10 +285,12 @@ parallel -j0 --line-buffer --bar 'bash -c '"'"'
     export repo=$(jq -r ".repo" <<< "$JSON_OBJ")
     export path=$(jq -r ".path" <<< "$JSON_OBJ")
     jq -e ".sync_args" <<< "$JSON_OBJ" > /dev/null && export sync_args=$(jq -r ".sync_args" <<< "$JSON_OBJ")
+    export retries = 1
+    jq -e ".retries" <<< "$JSON_OBJ" > /dev/null && export retries=$(jq -r ".retries" <<< "$JSON_OBJ")
 
     mkdir -p $path
     cd $_
-    for attempt in $(seq $MAX_ATTEMPT); do
+    for attempt in $(seq $retries); do
         $DRY || eval $REPOSYNC $repo $sync_args && break
         $DRY || echo "Retry \"$repo\""
     done
