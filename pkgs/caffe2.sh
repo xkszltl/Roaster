@@ -76,12 +76,16 @@
     wait
 
     parallel -j0 --bar --line-buffer 'bash -c '"'"'
-        python -m caffe2.python.models.download -f -i {}
-    '"'" :::                                        \
-        bvlc_{alexnet,googlenet,reference_caffenet} \
-        finetune_flickr_style                       \
-        shufflenet                                  \
-        squeezenet
+        echo N | python -m caffe2.python.models.download -i {}
+    '"'" :::                    \
+        bvlc_{alexnet,googlenet,reference_{caffenet,rcnn_ilsvrc13}} \
+        densenet121             \
+        finetune_flickr_style   \
+        inception_v{1,2}        \
+        resnet50                \
+        shufflenet              \
+        squeezenet              \
+        vgg{16,19}
 )
 rm -rvf $STAGE/caffe2
 sync || true
