@@ -75,9 +75,12 @@
     rm -rf $SCRATCH/caffe2
     wait
 
-    parallel -j0 --bar --line-buffer python -m caffe2.python.models.download -f -i {} :::   \
-        bvlc_{alexnet,googlenet,reference_caffenet}                                         \
-        finetune_flickr_style                                                               \
+    parallel -j0 --bar --line-buffer 'bash -c '"'"'
+        python -m caffe2.python.models.download -f -i {}
+    '"'" :::                                        \
+        bvlc_{alexnet,googlenet,reference_caffenet} \
+        finetune_flickr_style                       \
+        shufflenet                                  \
         squeezenet
 )
 rm -rvf $STAGE/caffe2
