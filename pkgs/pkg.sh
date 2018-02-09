@@ -137,6 +137,8 @@ for i in pkg-{skip,all}; do
                 ruby{,-*}
                 lua{,-*}
                 qt5{,-*}
+
+                *-fonts{,-*}
             " | xargs -n5 echo "$RPM_INSTALL $([ $i = pkg-skip ] && echo --skip-broken)" | bash && break
             echo "Retrying... $attempt chance(s) left."
             [ $attempt -gt 0 ] || exit 1
