@@ -74,51 +74,46 @@ fi
 # Intel Repository Mirroring
 # ----------------------------------------------------------------
 
-(
-    set -e
+parallel -j0 --line-buffer --bar 'bash -c '"'"'
+    export INTEL_URL="http://registrationcenter-download.intel.com/akdlm/irc_nas/tec"
+
     mkdir -p intel
     cd $_
 
-    export INTEL_URL="http://registrationcenter-download.intel.com/akdlm/irc_nas/tec"
-
-    parallel -j0 --line-buffer --bar 'bash -c '"'"'
-        $DRY || wget $DRY_WGET -cq --bind-address='$ROUTE' $INTEL_URL/{}
-    '"'" :::   \
-        12414/l_daal_2018.1.163.tgz     \
-        12414/l_mkl_2018.1.163.tgz      \
-        12414/l_ipp_2018.1.163.tgz      \
-        12414/l_tbb_2018.1.163.tgz      \
-        12414/l_mpi_2018.1.163.tgz      \
-        12409/m_daal_2018.1.126.dmg     \
-        12334/m_ipp_2018.1.126.dmg      \
-        12335/m_mkl_2018.1.126.dmg      \
-        12415/m_tbb_2018.1.126.dmg      \
-        12396/w_daal_2018.1.156.exe     \
-        12394/w_mkl_2018.1.156.exe      \
-        12395/w_ipp_2018.1.156.exe      \
-        12418/w_tbb_2018.1.156.exe      \
-        12443/w_mpi_p_2018.1.156.exe    \
-    &
-)
+    $DRY || wget $DRY_WGET -cq --bind-address='$ROUTE' $INTEL_URL/{}
+'"'" :::   \
+    12414/l_daal_2018.1.163.tgz     \
+    12414/l_mkl_2018.1.163.tgz      \
+    12414/l_ipp_2018.1.163.tgz      \
+    12414/l_tbb_2018.1.163.tgz      \
+    12414/l_mpi_2018.1.163.tgz      \
+    12409/m_daal_2018.1.126.dmg     \
+    12334/m_ipp_2018.1.126.dmg      \
+    12335/m_mkl_2018.1.126.dmg      \
+    12415/m_tbb_2018.1.126.dmg      \
+    12396/w_daal_2018.1.156.exe     \
+    12394/w_mkl_2018.1.156.exe      \
+    12395/w_ipp_2018.1.156.exe      \
+    12418/w_tbb_2018.1.156.exe      \
+    12443/w_mpi_p_2018.1.156.exe    \
+&
 
 # ----------------------------------------------------------------
 # NVIDIA Repository Mirroring
 # ----------------------------------------------------------------
 
-(
-    set -e
-
+parallel -j0 --line-buffer --bar 'bash -c '"'"'
     export CUDNN_URL="https://developer.download.nvidia.com/compute/redist/cudnn"
+    export lhs=$(sed "s/=.*//" <<< "{}")
+    export rhs=$(sed "s/.*=//" <<< "{}")
 
-    parallel -j0 --line-buffer --bar 'bash -c '"'"'
-        export lhs=$(sed "s/=.*//" <<< "{}")
-        export rhs=$(sed "s/.*=//" <<< "{}")
-        mkdir -p nvidia/cudnn/$lhs
-        $DRY || wget $DRY_WGET -cq --bind-address='$ROUTE' $CUDNN_URL/$(basename $lhs)/cudnn-$(printf $rhs x64-$(basename $lhs | cut -f1 -d.)) -P $_
-    '"'" :::    \
-        v7.0.{4,5}=9.{0,1,2,3,4,5,6,7,8,9}-{{linux,osx}-%s.tgz,windows10-%s.zip}    \
-    &
-)
+    mkdir -p nvidia/cudnn/$lhs
+    cd $_
+
+    $DRY || wget $DRY_WGET -cq --bind-address='$ROUTE' $CUDNN_URL/$(basename $lhs)/cudnn-$(printf $rhs x64-$(basename $lhs | cut -f1 -d.))
+'"'" :::    \
+    v7.0.{4,5}=9.{0,1,2,3,4,5,6,7,8,9}-{{linux,osx}-%s.tgz,windows10-%s.zip}    \
+&
 
 # ----------------------------------------------------------------
 # NVIDIA Repository Mirroring
