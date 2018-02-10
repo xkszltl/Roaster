@@ -4,7 +4,7 @@
 
 [ -e $STAGE/jemalloc ] && ( set -e
     cd $SCRATCH
-    until git clone --depth 1 --no-single-branch $GIT_MIRROR/jemalloc/jemalloc.git; do echo 'Retrying'; done
+    until git clone --depth 1 --no-checkout --no-single-branch $GIT_MIRROR/jemalloc/jemalloc.git; do echo 'Retrying'; done
     cd jemalloc
     git checkout $(git tag | sed -n '/^[0-9\.]*$/p' | sort -V | tail -n1)
 

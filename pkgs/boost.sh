@@ -18,7 +18,7 @@
 
     . scl_source enable devtoolset-7 || true
     ./bootstrap.sh
-    ./b2 -aj`nproc` install
+    ./b2 -aj$(nproc) install
 
     # ------------------------------------------------------------
 

@@ -5,9 +5,9 @@
 [ -e $STAGE/opencv ] && ( set -e
     cd $SCRATCH
 
-    until git clone --depth 1 --no-single-branch $GIT_MIRROR/opencv/opencv.git; do echo 'Retrying'; done
+    until git clone --depth 1 --no-checkout --no-single-branch $GIT_MIRROR/opencv/opencv.git; do echo 'Retrying'; done
     cd opencv
-    # git checkout $(git tag | sed -n '/^[0-9\.]*$/p' | sort -V | tail -n1)
+    git checkout $(git tag | sed -n '/^[0-9\.]*$/p' | sort -V | tail -n1)
 
     . scl_source enable devtoolset-6 || true
 

@@ -5,7 +5,7 @@
 [ -e $STAGE/openblas ] && ( set -e
     cd $SCRATCH
 
-    until git clone --depth 1 --no-single-branch $GIT_MIRROR/xianyi/OpenBLAS.git; do echo 'Retrying'; done
+    until git clone --depth 1 --no-checkout --no-single-branch $GIT_MIRROR/xianyi/OpenBLAS.git; do echo 'Retrying'; done
     cd OpenBLAS
     git checkout $(git tag | sed -n '/^v[0-9\.]*$/p' | sort -V | tail -n1)
 

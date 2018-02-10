@@ -5,7 +5,7 @@
 [ -e $STAGE/slurm ] && ( set -e
     cd $SCRATCH
 
-    git clone --depth 1 --no-single-branch $GIT_MIRROR/SchedMD/slurm.git
+    git clone --depth 1 --no-checkout --no-single-branch $GIT_MIRROR/SchedMD/slurm.git
     cd slurm
     git checkout $(git tag | sed -n '/^slurm-[0-9\-]*$/p' | sort -V | tail -n1)
 
