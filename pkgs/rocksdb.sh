@@ -17,7 +17,8 @@
 #     cd $_
 #     cmake                                   \
 #         -G"Ninja"                           \
-#         -DCMAKE_C{,XX}_FLAGS="-O3 -g"       \
+#         -DCMAKE_BUILD_TYPE=Release          \
+#         -DCMAKE_C{,XX}_FLAGS="-g"           \
 #         -DCMAKE_VERBOSE_MAKEFILE=ON         \
 #         -DWITH_BZ2=ON                       \
 #         -DWITH_JEMALLOC=ON                  \
@@ -28,13 +29,21 @@
 #         -DWITH_ZSTD=ON                      \
 #         ..
 #
-#     time cmake  --build . --target install
+#     time cmake --build . --target install
 
-    time make -j$(nproc) static_lib
-    time make -j$(nproc) shared_lib
-    # time make -j install
-    # time make -j install-shared
-    time make -j package
+    (
+        set -e
+
+        export DISABLE_WARNING_AS_ERROR=ON
+        export C{,XX}FLAGS="-g"
+
+        time make -j$(nproc) static_lib
+        time make -j$(nproc) shared_lib
+        # time make -j$(nproc) check
+        # time make -j install
+        # time make -j install-shared
+        time make -j package
+    )
 
     yum install -y package/rocksdb-*.rpm || yum update -y package/rocksdb-*.rpm
 
