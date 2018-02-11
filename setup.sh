@@ -112,7 +112,7 @@ rm -rvf $SCRATCH &
 
 if $IS_CONTAINER; then
     which ccache 2>/dev/null >/dev/null && ccache -C &
-    yum clean all && rm -rf /var/cache/yum &
+    yum autoremove -y && yum clean all && rm -rf /var/cache/yum &
 fi
 
 wait

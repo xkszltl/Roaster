@@ -56,7 +56,7 @@
             ..
 
         time cmake --build .
-        nvidia-smi && time cmake --build . --target test || true
+        $IS_CONTAINER || time cmake --build . --target test || true
         time cmake --build . --target install
 
         rm -rf /usr/bin/ninja
