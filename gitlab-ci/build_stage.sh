@@ -14,7 +14,7 @@ if [ $GITLAB_CI ]; then
 	else
 		grep -v '"/etc/codingcafe/scripts"' stage/$CI_JOB_STAGE
 	fi > Dockerfile
-	docker build                                        \
+	time docker build                                   \
         --cpu-shares 128                                \
         --no-cache                                      \
         --pull                                          \
@@ -22,5 +22,6 @@ if [ $GITLAB_CI ]; then
         --tag $CI_REGISTRY_IMAGE:stage-$CI_JOB_STAGE    \
         .
 
-	docker push $CI_REGISTRY_IMAGE:stage-$CI_JOB_STAGE
+	# time docker-squash -v $CI_REGISTRY_IMAGE:stage-$CI_JOB_STAGE -t stage-$CI_JOB_STAGE
+	time docker push $CI_REGISTRY_IMAGE:stage-$CI_JOB_STAGE
 fi
