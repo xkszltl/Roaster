@@ -49,6 +49,8 @@ for i in pkg-{skip,all}; do
                 torsocks{,-*}
                 {bridge-,core,crypto-,elf,find,ib,ip,yum-}utils{,-*}
                 moreutils{,-debuginfo}
+                rpmdevtools
+                rpm-build
                 cyrus-imapd{,-*}
                 GeoIP{,-*}
                 {device-mapper,lvm2}{,-*}
@@ -60,7 +62,6 @@ for i in pkg-{skip,all}; do
                 {docker-ce,container-selinux}{,-*}
                 createrepo{,_c}{,-*}
                 environment-modules{,-*}
-                fpm2{,-*}
                 munge{,-*}
 
                 scl-utils{,-*}
@@ -156,6 +157,23 @@ for i in pkg-{skip,all}; do
 
         $IS_CONTAINER || package-cleanup --oldkernels --count=2
         yum autoremove -y
+
+        # ------------------------------------------------------------
+        # Ruby gem Packages
+        # ------------------------------------------------------------
+
+        gem install fpm
+
+        # ------------------------------------------------------------
+        # Python pip Packages
+        # ------------------------------------------------------------
+
+        pip install -U docker-squash
+
+        # TODO: Remove downgrade once the compatibility issue between docker 3.0.1 and docker-squash is solved.
+        pip install -U docker=3.0.0
+
+        # ------------------------------------------------------------
 
         updatedb
     )

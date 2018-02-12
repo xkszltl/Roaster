@@ -45,7 +45,7 @@
         cmake                                                   \
             -GNinja                                             \
             -DCMAKE_BUILD_TYPE=Release                          \
-            -DCMAKE_C{,XX}_FLAGS="-g -O3"                       \
+            -DCMAKE_C{,XX}_FLAGS="-g"                           \
             -DCMAKE_VERBOSE_MAKEFILE=ON                         \
             -DBENCHMARK_ENABLE_LTO=ON                           \
             -DBENCHMARK_USE_LIBCXX=OFF                          \
