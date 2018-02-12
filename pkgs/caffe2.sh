@@ -39,16 +39,18 @@
 
         export MPI_HOME=/usr/local/openmpi
 
-        # Some platform may need -DCUDA_ARCH_NAME=Pascal
+        # Some platform (i.e. macOS) may need -DCUDA_ARCH_NAME=Pascal
+        #
+        # TODO: ATen support currently result in 100+GB binaries in total.
         cmake                                                   \
             -GNinja                                             \
             -DCMAKE_BUILD_TYPE=Release                          \
-            -DCMAKE_C{,XX}_FLAGS="-g"                           \
+            -DCMAKE_C{,XX}_FLAGS="-g -O3"                       \
             -DCMAKE_VERBOSE_MAKEFILE=ON                         \
             -DBENCHMARK_ENABLE_LTO=ON                           \
             -DBENCHMARK_USE_LIBCXX=OFF                          \
             -DBLAS=MKL                                          \
-            -DUSE_ATEN=ON                                       \
+            -DUSE_ATEN=OFF                                      \
             -DUSE_NATIVE_ARCH=ON                                \
             -DUSE_OPENMP=ON                                     \
             -DUSE_ZMQ=ON                                        \
@@ -56,15 +58,16 @@
             ..
 
         time cmake --build .
-        $IS_CONTAINER || time cmake --build . --target test || true
+        nvidia-smi && time cmake --build . --target test || true
         time cmake --build . --target install
 
         rm -rf /usr/bin/ninja
     )
 
+    # Do not move the "/usr/" outside of "{}" because glob "*" relies on it.
     for i in /usr/lib/python*/site-packages; do
     for j in caffe{,2}; do
-        ln -sf /usr/local/$j $i/$j &
+        ln -sf {$i,/usr/local}/$j &
     done
     done
 
