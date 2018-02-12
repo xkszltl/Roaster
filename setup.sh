@@ -1,6 +1,8 @@
 #!/bin/bash
 
-set -e
+set -xe
+export SHELLOPTS
+
 trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
 # ================================================================
