@@ -171,5 +171,5 @@ squash:
     - branches
   script:
     - docker login --password-stdin --username $CI_REGISTRY_USER $CI_REGISTRY <<< "$CI_REGISTRY_PASSWORD"
-    - time docker-squash -v $CI_REGISTRY_IMAGE -t latest
+    - DOCKER_TIMEOUT=3600 time docker-squash -v $CI_REGISTRY_IMAGE -t latest
     - time docker push $CI_REGISTRY_IMAGE:latest
