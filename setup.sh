@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -xe
+set -e
 
 trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
@@ -117,6 +117,8 @@ if $IS_CONTAINER; then
 fi
 
 wait
+
+# ----------------------------------------------------------------
 
 echo
 echo
