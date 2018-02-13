@@ -3,6 +3,6 @@ FROM docker.codingcafe.org/sandbox/centos:stage-dl
 RUN yum update -y --skip-broken --nogpgcheck    \
 && yum clean all                                \
 && rm -rf /var/cache/yum                        \
-&& pip install docker-2.7.0                     \
+&& pip install 'docker<3'                       \
 && truncate -s0 ~/.bash_history
 
