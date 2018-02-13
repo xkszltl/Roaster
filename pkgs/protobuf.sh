@@ -2,7 +2,7 @@
 # Compile Protobuf
 # ================================================================
 
-[ -e $STAGE/protobuf ] && ( set -e
+[ -e $STAGE/protobuf ] && ( set -xe
     cd $SCRATCH
 
     until git clone --depth 1 --no-checkout --no-single-branch $GIT_MIRROR/google/protobuf.git; do echo 'Retrying'; done

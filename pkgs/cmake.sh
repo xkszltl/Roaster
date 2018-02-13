@@ -2,7 +2,7 @@
 # Install CMake
 # ================================================================
 
-[ -e $STAGE/cmake ] && ( set -e
+[ -e $STAGE/cmake ] && ( set -xe
     cd $SCRATCH
 
     until git clone --depth 1 --branch release $GIT_MIRROR/Kitware/CMake.git; do echo 'Retrying'; done

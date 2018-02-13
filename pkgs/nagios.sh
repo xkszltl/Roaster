@@ -2,7 +2,7 @@
 # Nagios
 # ================================================================
 
-[ -e $STAGE/nagios ] && ( set -e
+[ -e $STAGE/nagios ] && ( set -xe
     setsebool -P daemons_enable_cluster_mode 1 || $IS_CONTAINER
 
     mkdir -p $SCRATCH/nagios-selinux

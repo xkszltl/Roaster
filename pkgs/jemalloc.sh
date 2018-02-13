@@ -2,7 +2,7 @@
 # Compile Jemalloc
 # ================================================================
 
-[ -e $STAGE/jemalloc ] && ( set -e
+[ -e $STAGE/jemalloc ] && ( set -xe
     cd $SCRATCH
     until git clone --depth 1 --no-checkout --no-single-branch $GIT_MIRROR/jemalloc/jemalloc.git; do echo 'Retrying'; done
     cd jemalloc

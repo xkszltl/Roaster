@@ -3,7 +3,7 @@
 # ================================================================
 
 for i in pkg-{skip,all}; do
-    [ -e $STAGE/$i ] && ( set -e
+    [ -e $STAGE/$i ] && ( set -xe
         for skip in true false; do
         for attempt in $(seq $RPM_MAX_ATTEMPT -1 0); do
             $RPM_UPDATE $($skip && echo --skip-broken) && break

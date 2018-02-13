@@ -2,7 +2,7 @@
 # SLURM
 # ================================================================
 
-[ -e $STAGE/slurm ] && ( set -e
+[ -e $STAGE/slurm ] && ( set -xe
     cd $SCRATCH
 
     git clone --depth 1 --no-checkout --no-single-branch $GIT_MIRROR/SchedMD/slurm.git

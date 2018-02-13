@@ -2,7 +2,7 @@
 # Compile Gflags
 # ================================================================
 
-[ -e $STAGE/gflags ] && ( set -e
+[ -e $STAGE/gflags ] && ( set -xe
     cd $SCRATCH
 
     until git clone --depth 1 --no-checkout --no-single-branch $GIT_MIRROR/gflags/gflags.git; do echo 'Retrying'; done

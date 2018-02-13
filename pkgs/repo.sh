@@ -2,7 +2,7 @@
 # YUM Configuration
 # ================================================================
 
-[ -e $STAGE/repo ] && ( set -e
+[ -e $STAGE/repo ] && ( set -xe
     until yum install -y sed yum-utils; do echo 'Retrying'; done
 
     yum-config-manager --setopt=tsflags= --save

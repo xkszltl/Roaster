@@ -2,7 +2,7 @@
 # Account Configuration
 # ================================================================
 
-[ -e $STAGE/auth ] && ( set -e
+[ -e $STAGE/auth ] && ( set -xe
     cd
     mkdir -p .ssh
     cd .ssh

@@ -3,13 +3,13 @@
 # ================================================================
 
 for i in llvm-{gcc,clang}; do
-    [ -e $STAGE/$i ] && ( set -e
+    [ -e $STAGE/$i ] && ( set -xe
         export LLVM_MIRROR=$GIT_MIRROR/llvm-mirror
         export LLVM_GIT_TAG=release_60
 
         cd $SCRATCH
 
-        ( set -e
+        ( set -xe
             echo "Retriving LLVM "$LLVM_GIT_TAG"..."
             until git clone --depth 1 --branch $LLVM_GIT_TAG $LLVM_MIRROR/llvm.git; do echo 'Retrying'; done
             cd llvm

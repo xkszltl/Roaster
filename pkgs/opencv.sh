@@ -2,7 +2,7 @@
 # Compile OpenCV
 # ================================================================
 
-[ -e $STAGE/opencv ] && ( set -e
+[ -e $STAGE/opencv ] && ( set -xe
     cd $SCRATCH
 
     until git clone --depth 1 --no-checkout --no-single-branch $GIT_MIRROR/opencv/opencv.git; do echo 'Retrying'; done

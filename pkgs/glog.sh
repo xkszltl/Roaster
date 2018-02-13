@@ -2,7 +2,7 @@
 # Compile Glog
 # ================================================================
 
-[ -e $STAGE/glog ] && ( set -e
+[ -e $STAGE/glog ] && ( set -xe
     cd $SCRATCH
 
     until git clone --depth 1 --no-checkout --no-single-branch $GIT_MIRROR/google/glog.git; do echo 'Retrying'; done

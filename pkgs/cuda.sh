@@ -2,7 +2,7 @@
 # Install Extra CUDA Packages
 # ================================================================
 
-[ -e $STAGE/cuda ] && ( set -e
+[ -e $STAGE/cuda ] && ( set -xe
     cd $SCRATCH
 
     export CUDNN_REPO=cudnn/v7.0.5

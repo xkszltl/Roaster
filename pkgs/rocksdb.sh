@@ -2,7 +2,7 @@
 # Compile RocksDB
 # ================================================================
 
-[ -e $STAGE/rocksdb ] && ( set -e
+[ -e $STAGE/rocksdb ] && ( set -xe
     cd $SCRATCH
 
     pip install -U git+$GIT_MIRROR/Maratyszcza/{confu,PeachPy}.git
@@ -32,7 +32,7 @@
 #     time cmake --build . --target install
 
     (
-        set -e
+        set -xe
 
         export C{,XX}FLAGS="-g"
         export DEBUG_LEVEL=0

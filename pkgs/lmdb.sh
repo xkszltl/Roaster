@@ -2,7 +2,7 @@
 # Compile LMDB
 # ================================================================
 
-[ -e $STAGE/lmdb ] && ( set -e
+[ -e $STAGE/lmdb ] && ( set -xe
     cd $SCRATCH
 
     until git clone --depth 1 --no-checkout --no-single-branch $GIT_MIRROR/LMDB/lmdb.git; do echo 'Retrying'; done

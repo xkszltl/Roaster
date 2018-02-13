@@ -2,7 +2,7 @@
 # Compile Caffe
 # ================================================================
 
-[ -e $STAGE/caffe ] && ( set -e
+[ -e $STAGE/caffe ] && ( set -xe
     cd $SCRATCH
 
     until git clone --depth 1 $GIT_MIRROR/BVLC/caffe.git; do echo 'Retrying'; done
@@ -12,7 +12,7 @@
 
     mkdir -p build
     cd $_
-    ( set -e
+    ( set -xe
         . scl_source enable devtoolset-6 || true
 
         # CUDA 9.x has removed Fermi (2.x) support.

@@ -1,7 +1,6 @@
 #!/bin/bash
 
 set -xe
-export SHELLOPTS
 
 trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
@@ -61,7 +60,7 @@ cd $SCRATCH
 # Initialize Setup Stage
 # ================================================================
 
-[ -d $STAGE ] && [ $# -eq 0 ] || ( set -e
+[ -d $STAGE ] && [ $# -eq 0 ] || ( set -xe
     rm -rvf $STAGE
     mkdir -p $(dirname $STAGE)/.$(basename $STAGE)
     cd $_

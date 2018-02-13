@@ -2,7 +2,7 @@
 # Shadowsocks
 # ================================================================
 
-[ -e $STAGE/ss ] && ( set -e
+[ -e $STAGE/ss ] && ( set -xe
     pip install $GIT_MIRROR/shadowsocks/shadowsocks/$([ $GIT_MIRROR == $GIT_MIRROR_CODINGCAFE ] && echo 'repository/archive.zip?ref=master' || echo 'archive/master.zip')
 
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

@@ -2,14 +2,14 @@
 # Install Intel Libraries
 # ================================================================
 
-[ -e $STAGE/intel ] && ( set -e
+[ -e $STAGE/intel ] && ( set -xe
     cd $SCRATCH
     mkdir -p intel
     cd $_
 
     export INTEL_REPO=https://repo.codingcafe.org/intel
 
-    for i in daal ipp mkl mpi tbb; do ( set -e
+    for i in daal ipp mkl mpi tbb; do ( set -xe
         wget -q $INTEL_REPO/$(curl -sSL $INTEL_REPO | sed -n 's/.*href="\(.*l_'$i'.*\)".*/\1/p' | sort -V | tail -n1)
         mkdir -p $i
         tar -xvf l_$i* -C $i --strip-components=1

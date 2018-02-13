@@ -2,7 +2,7 @@
 # Compile Caffe2
 # ================================================================
 
-[ -e $STAGE/caffe2 ] && ( set -e
+[ -e $STAGE/caffe2 ] && ( set -xe
     cd $SCRATCH
 
     # ------------------------------------------------------------
@@ -29,7 +29,7 @@
     mkdir -p build
     cd $_
 
-    ( set -e
+    ( set -xe
         # Currently caffe2 can only be built with gcc-5.
         # CUDA 9.1 only support up to gcc-6.3.0 while devtoolset-6 contains gcc-6.3.1
         # TODO: Upgrade glog to use new compiler when possible.

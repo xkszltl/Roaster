@@ -2,7 +2,7 @@
 # OpenMPI
 # ================================================================
 
-[ -e $STAGE/ompi ] && ( set -e
+[ -e $STAGE/ompi ] && ( set -xe
     cd $SCRATCH
 
     until git clone --depth 1 --no-checkout --no-single-branch $GIT_MIRROR/open-mpi/ompi.git; do echo 'Retrying'; done

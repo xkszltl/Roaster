@@ -2,7 +2,7 @@
 # Compile Boost
 # ================================================================
 
-[ -e $STAGE/boost ] && ( set -e
+[ -e $STAGE/boost ] && ( set -xe
     cd $SCRATCH
 
     if [ $GIT_MIRROR == $GIT_MIRROR_CODINGCAFE ]; then
