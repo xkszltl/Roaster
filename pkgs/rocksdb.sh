@@ -11,7 +11,7 @@
     cd rocksdb
     git checkout $(git tag | sed -n '/^v[0-9\.]*$/p' | sort -V | tail -n1)
 
-    . scl_source enable devtoolset-7 || true
+    . scl_source enable devtoolset-6 || true
 
 #     mkdir -p build
 #     cd $_
@@ -36,9 +36,10 @@
 
         export C{,XX}FLAGS="-g"
         export DEBUG_LEVEL=0
-        export DISABLE_WARNING_AS_ERROR=ON
+        # export DISABLE_WARNING_AS_ERROR=ON
 
-        time make -j$(nproc) {static,shared}_lib package
+        time make -j$(nproc) {static,shared}_lib
+        time make -j$(nproc) package
         # time make -j$(nproc) check
         # time make -j install{,-shared}
     )
