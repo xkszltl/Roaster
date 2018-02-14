@@ -38,6 +38,10 @@
         export DEBUG_LEVEL=0
         export DISABLE_WARNING_AS_ERROR=ON
 
+        # On CentOS 7, "/usr/local/bin" is hardcoded in ssh/bash, but not sudo.
+        # Patch $PATH for fpm from rubygem.
+        which fpm || export PATH="/usr/local/bin:$PATH"
+
         time make -j$(nproc) {static,shared}_lib
         time make -j$(nproc) package
         # time make -j$(nproc) check
