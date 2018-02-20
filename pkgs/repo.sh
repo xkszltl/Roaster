@@ -6,6 +6,7 @@
     until yum install -y sed yum-utils; do echo 'Retrying'; done
 
     yum-config-manager --setopt=tsflags= --save
+    $IS_CONTAINER || yum-config-manager --setopt=installonly_limit=3 --save
 
     $ROOT_DIR/apply_cache.sh {base,updates,extras,centosplus}{,-source} base-debuginfo
 

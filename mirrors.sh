@@ -33,6 +33,7 @@ if [ ! $PATTERN ] || grep $PATTERN <<<$SRC_DIR; then
     git fetch --all
     git remote set-url origin $SRC
     git fetch --prune --all
+    git gc --auto
     git remote set-url origin $DST
     git push --mirror
 fi

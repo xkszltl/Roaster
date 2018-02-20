@@ -155,7 +155,7 @@ for i in pkg-{skip,all}; do
             [ $attempt -gt 0 ] || exit 1
         done
 
-        $IS_CONTAINER || package-cleanup --oldkernels --count=2
+        $IS_CONTAINER || package-cleanup --oldkernels --count=3
         yum autoremove -y
 
         # ------------------------------------------------------------
