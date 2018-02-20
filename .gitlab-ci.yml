@@ -160,7 +160,7 @@ finish:
     - docker tag $CI_REGISTRY_IMAGE:stage-edit $CI_REGISTRY_IMAGE:latest
     - time docker push $CI_REGISTRY_IMAGE:latest
 
-squash:
+.squash:
   stage: squash
   tags:
     - docker
