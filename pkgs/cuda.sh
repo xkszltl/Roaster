@@ -10,11 +10,6 @@
     if [ $GIT_MIRROR == $GIT_MIRROR_CODINGCAFE ]; then
         curl -sSL https://repo.codingcafe.org/nvidia/$CUDNN_REPO/$(curl -sSL https://repo.codingcafe.org/nvidia/cudnn | sed -n 's/.*href="\(.*linux-x64.*\)".*/\1/p' | sort -V | tail -n1)
     else
-        export HTTP_PROXY=proxy.codingcafe.org:8118
-        [ $HTTP_PROXY ] && export HTTPS_PROXY=$HTTP_PROXY
-        [ $HTTP_PROXY ] && export http_proxy=$HTTP_PROXY
-        [ $HTTPS_PROXY ] && export https_proxy=$HTTPS_PROXY
-
         curl -sSL https://developer.download.nvidia.com/compute/redist/$CUDNN_REPO/cudnn-9.1-linux-x64-v7.tgz
     fi | tar -zxvf - -C /usr/local/ --no-overwrite-dir
 
