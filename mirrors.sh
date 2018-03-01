@@ -61,6 +61,7 @@ opencv/opencv,\
 pybind/pybind11,\
 pytorch/pytorch,\
 RLovelett/eigen,\
+RMerl/{am-toolchains,asuswrt-merlin.ng},
 SchedMD/slurm,\
 shadowsocks/{ShadowsocksX-NG,libQtShadowsocks,shadowsocks{,-go,-libev,-manager,-windows}},\
 tensorflow/tensorflow,\
