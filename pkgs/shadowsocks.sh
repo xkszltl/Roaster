@@ -3,7 +3,10 @@
 # ================================================================
 
 [ -e $STAGE/ss ] && ( set -xe
-    pip install $GIT_MIRROR/shadowsocks/shadowsocks/$([ $GIT_MIRROR == $GIT_MIRROR_CODINGCAFE ] && echo 'repository/archive.zip?ref=master' || echo 'archive/master.zip')
+    firewall-cmd --permanent --add-port=8388/tcp
+    firewall-cmd --reload
+
+    pip install -U $GIT_MIRROR/shadowsocks/shadowsocks/$([ $GIT_MIRROR == $GIT_MIRROR_CODINGCAFE ] && echo 'repository/archive.zip?ref=master' || echo 'archive/master.zip')
 
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     cat << EOF > /usr/lib/systemd/system/shadowsocks.service
@@ -45,10 +48,11 @@ EOF
 
     # ------------------------------------------------------------
 
-    export SS_KMOD_CONF=/etc/modules-load.d/90-shadowsocks.conf
-    export SS_SYSCTL_CONF=/etc/sysctl.d/90-shadowsocks.conf
+    export SS_KMOD_CONF='/etc/modules-load.d/90-shadowsocks.conf'
+    export SS_SYSCTL_CONF='/etc/sysctl.d/90-shadowsocks.conf'
 
-    truncate -s0 $SS_KMOD_CONF
+    truncate -s0 $SS_KMOD_CONF $SS_SYSCTL_CONF
+
     for i in tcp_{htcp,hybla}; do
         modprobe -a $i || echo $i >> $SS_KMOD_CONF
     done
@@ -71,8 +75,12 @@ net.ipv4.tcp_mtu_probing = 1
 EOF
     # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-    for i in tcp_{htcp,hybla}; do
-        modprobe -a $i && echo "net.ipv4.tcp_congestion_control = $i" >> $SS_SYSCTL_CONF && break
+    for i in htcp hybla; do
+        if modprobe -a tcp_$i; then
+            echo "net.ipv4.tcp_allowed_congestion_control = $(sysctl -n net.ipv4.tcp_allowed_congestion_control) $i" >> $SS_SYSCTL_CONF
+            echo "net.ipv4.tcp_congestion_control = $i"
+            break
+        fi
     done
 
     sysctl --system || $IS_CONTAINER
