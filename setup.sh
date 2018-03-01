@@ -71,9 +71,9 @@ cd $SCRATCH
 )
 
 for i in $(echo "
+    env-mirror
     repo
     env-pkg
-    env-mirror
     font
     pkg
     cmake
