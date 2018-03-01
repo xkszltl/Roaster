@@ -7,6 +7,11 @@ export GIT_MIRROR_CODINGCAFE=https://git.codingcafe.org/Mirrors
 
 # ----------------------------------------------------------------
 
+which bc > /dev/null 2> /dev/null || yum install --skip-broken -y bc
+which sed > /dev/null 2> /dev/null || yum install --skip-broken -y sed
+which paste > /dev/null 2> /dev/null || yum install --skip-broken -y coreutils
+which xargs > /dev/null 2> /dev/null || yum install --skip-broken -y findutils
+
 ping -nfc 10 localhost > /dev/null                                          \
 && echo '----------------------------------------------------------------'  \
 && echo '               Measure link quality to git mirrors              '  \
