@@ -289,7 +289,7 @@ parallel -j0 --line-buffer --bar 'bash -c '"'"'
     export repo=$(jq -r ".repo" <<< "$JSON_OBJ")
     export path=$(jq -r ".path" <<< "$JSON_OBJ")
     jq -e ".sync_args" <<< "$JSON_OBJ" > /dev/null && export sync_args=$(jq -r ".sync_args" <<< "$JSON_OBJ")
-    export retries = 1
+    export retries=1
     jq -e ".retries" <<< "$JSON_OBJ" > /dev/null && export retries=$(jq -r ".retries" <<< "$JSON_OBJ")
 
     mkdir -p $path
