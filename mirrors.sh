@@ -56,6 +56,7 @@ NervanaSystems/{neon,nervanagpu},\
 ninja-build/ninja,\
 NVIDIA/{DIGITS,cnmem,libglvnd,nccl,nvidia-docker},\
 NVLabs/{cub,xmp},\
+onnx/{models,onnx{,mltools},tutorials},\
 open-mpi/ompi,\
 opencv/opencv,\
 pybind/pybind11,\
