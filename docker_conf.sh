@@ -21,4 +21,7 @@ cat 'daemon.json.bak'                                                           
 | jq '.storage-opts[.storage-opts | length] |= . + "dm.use_deferred_removal=true"'                  \
 | jq '.storage-opts[.storage-opts | length] |= . + "dm.use_deferred_deletion=true"'                 \
 | tee 'daemon.json' | jq '.'                                                                        \
-|| { cat 'daemon.json.bak' > 'daemon.json' && false }
+|| ( set -e
+    cat 'daemon.json.bak' > 'daemon.json'
+    false
+)
