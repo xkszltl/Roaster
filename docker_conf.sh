@@ -2,7 +2,7 @@
 
 set -e
 
-pushd /etc/docker
+cd /etc/docker
 
 echo '========================================'
 echo '| Before'
