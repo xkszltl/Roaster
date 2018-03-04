@@ -15,9 +15,9 @@ echo '| After'
 echo '========================================'
 
 cat 'daemon.json.bak'                                                                               \
-| jq '. |= . + {"storage_driver":"devicemapper"}'                                                   \
-| jq '. |= . + {"storage_opts":[]}'                                                                 \
-| jq '.storage_opts[.storage_opts | length] |= . + "dm.thinpooldev=/dev/mapper/Mocha-docker--pool"' \
-| jq '.storage_opts[.storage_opts | length] |= . + "dm.use_deferred_removal=true"'                  \
-| jq '.storage_opts[.storage_opts | length] |= . + "dm.use_deferred_deletion=true"'                 \
+| jq '. |= . + {"storage-driver":"devicemapper"}'                                                   \
+| jq '. |= . + {"storage-opts":[]}'                                                                 \
+| jq '.storage-opts[.storage_opts | length] |= . + "dm.thinpooldev=/dev/mapper/Mocha-docker--pool"' \
+| jq '.storage-opts[.storage_opts | length] |= . + "dm.use_deferred_removal=true"'                  \
+| jq '.storage-opts[.storage_opts | length] |= . + "dm.use_deferred_deletion=true"'                 \
 | tee 'daemon.json' | jq '.'
