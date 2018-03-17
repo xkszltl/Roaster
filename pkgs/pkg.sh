@@ -69,7 +69,7 @@ for i in pkg-{skip,all}; do
                 ncurses{,-*}
                 hwloc{,-*}
                 icu{,-*}
-                {glibc{,-devel},libgcc}{,.i686}
+                {glibc{,-devel},libgcc}
                 {gmp,mpfr,libmpc}{,-*}
                 gperftools{,-*}
                 lib{asan{,3},tsan,ubsan}{,-*}
