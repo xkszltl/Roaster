@@ -13,6 +13,7 @@ export RPM_BLACKLIST=$(echo "
     *-debuginfo
     gcc-x86_64-linux-gnu
     libasan2
+    python-lexicon
     python-qpid-common
     python2-paramiko
 " | sed -n 's/^[[:space:]]*\([^[:space:]][^[:space:]]*\).*/--exclude \1/p' | paste -s - | xargs)
