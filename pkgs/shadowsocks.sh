@@ -3,8 +3,10 @@
 # ================================================================
 
 [ -e $STAGE/ss ] && ( set -xe
-    firewall-cmd --permanent --add-port=8388/tcp
-    firewall-cmd --reload
+    if ! $IS_CONTAINER; then
+        firewall-cmd --permanent --add-port=8388/tcp
+        firewall-cmd --reload
+    fi
 
     pip install -U $GIT_MIRROR/shadowsocks/shadowsocks/$([ $GIT_MIRROR == $GIT_MIRROR_CODINGCAFE ] && echo 'repository/archive.zip?ref=master' || echo 'archive/master.zip')
 
