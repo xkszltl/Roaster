@@ -166,7 +166,7 @@ for i in {=,-debuginfo=debug/}$(uname -i) -source=SRPMS; do
         "repo":         "'"epel$lhs"'",
         "path":         "'"epel/7/$rhs"'",
         "retries":      '$DEF_RETRIES',
-        "sync_args":    "--delete '"$([ $lhs = -debuginfo ] && echo --newest-only)"'"
+        "sync_args":    "--delete '"$([ epel$lhs = epel-debuginfo ] && echo --newest-only)"'"
     }')
 done
 
