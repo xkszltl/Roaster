@@ -3,10 +3,10 @@
 set -e
 
 if [ $# -le 0 ]; then
-    $0 																							\
-    	{updates,extras,centosplus,runner_gitlab-ci-multi-runner,gitlab_gitlab-ce}{,-source}	\
-    	{base,epel,centos-sclo-{sclo,rh},docker-ce-stable}{,-source,-debuginfo}					\
-    	cuda
+    $0                                                                              \
+        {updates,extras,centosplus,runner_gitlab-runner,gitlab_gitlab-ce}{,-source} \
+        {base,epel,centos-sclo-{sclo,rh},docker-ce-stable}{,-source,-debuginfo}     \
+        cuda
     exit $?
 fi
 
