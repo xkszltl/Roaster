@@ -271,8 +271,8 @@ for j in =$(uname -i) -source=SRPMS; do
     export rhs=$(sed 's/.*=//' <<< $i)
     export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
     {
-        "repo":         "'"runner_gitlab-ci-multi-runner$lhs"'",
-        "path":         "'"gitlab/gitlab-ci-multi-runner/el/7/$rhs"'",
+        "repo":         "'"runner_gitlab-runner$lhs"'",
+        "path":         "'"gitlab/gitlab-runner/el/7/$rhs"'",
         "retries":      10,
         "sync_args":    "--newest-only"
     }')
