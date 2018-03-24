@@ -266,7 +266,7 @@ done
 # GitLab CI Runner Repository Mirroring Task
 # ----------------------------------------------------------------
 
-for j in =$(uname -i) -source=SRPMS; do
+for i in =$(uname -i) -source=SRPMS; do
     export lhs=$(sed 's/=.*//' <<< $i)
     export rhs=$(sed 's/.*=//' <<< $i)
     export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
