@@ -110,7 +110,7 @@ for i in pkg-{skip,all}; do
                 {,pam_}krb5{,-*}
                 {sudo,nss,sssd,authconfig}{,-*}
 
-                gitlab-ci-multi-runner
+                gitlab-runner
 
                 youtube-dl
 
