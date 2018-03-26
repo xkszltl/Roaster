@@ -39,6 +39,7 @@ if [ ! $PATTERN ] || grep $PATTERN <<<$SRC_DIR; then
 fi
 '"'" ::: {\
 https://github.com/\ {\
+ARM-software/{arm-trusted-firmware,ComputeLibrary,lisa},\
 aws/aws-{cli,sdk-{cpp,go,java,js,net,php,ruby}},\
 BVLC/caffe,\
 caffe2/{caffe2,models},\
