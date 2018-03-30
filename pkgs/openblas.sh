@@ -11,28 +11,45 @@
 
     . scl_source enable devtoolset-7 || true
 
-    # mkdir -p build
-    # cd $_
+    . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
-    # cmake                                   \
-    #     -DCMAKE_BUILD_TYPE=Release          \
-    #     -DCMAKE_C_COMPILER=gcc              \
-    #     -DCMAKE_CXX_COMPILER=g++            \
-    #     -DCMAKE_INSTALL_PREFIX=/usr/local   \
-    #     -DCMAKE_VERBOSE_MAKEFILE=ON         \
+    # mkdir -p build
+    # pushd $_
+
+    # cmake                                     \
+    #     -DCMAKE_BUILD_TYPE=Release            \
+    #     -DCMAKE_C_COMPILER=gcc                \
+    #     -DCMAKE_CXX_COMPILER=g++              \
+    #     -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS" \
+    #     -DCMAKE_VERBOSE_MAKEFILE=ON           \
     #     ..
 
     # time cmake --build . -- -j$(nproc)
     # time cmake --build . --target test
     # time cmake --build . --target install
 
-    make PREFIX=/usr/local -j$(nproc)
-    make PREFIX=/usr/local lapack-test -j$(nproc)
-    make PREFIX=/usr/local blas-test -j$(nproc)
-    make PREFIX=/usr/local install
+    # popd
 
-    ldconfig &
-    $IS_CONTAINER && ccache -C &
+    make PREFIX="$INSTALL_ABS" -j$(nproc)
+    make PREFIX="$INSTALL_ABS" lapack-test -j$(nproc)
+    make PREFIX="$INSTALL_ABS" blas-test -j$(nproc)
+    make PREFIX="$INSTALL_ABS" install
+
+    . "$ROOT_DIR/pkgs/utils/fpm/post_build.sh"
+
+    fpm                                                             \
+        --after-install "$ROOT_DIR/pkgs/utils/fpm/post_install.sh"  \
+        --after-remove "$ROOT_DIR/pkgs/utils/fpm/post_install.sh"   \
+        --chdir "$INSTALL_ROOT"                                     \
+        --input-type dir                                            \
+        --name "codingcafe-$(basename $(pwd))"                      \
+        --output-type rpm                                           \
+        --rpm-compression xz                                        \
+        --rpm-digest sha512                                         \
+        --version "1.66.0"
+
+    . "$ROOT_DIR/pkgs/utils/fpm/install.sh"
+
     cd
     rm -rf $SCRATCH/OpenBLAS
     wait

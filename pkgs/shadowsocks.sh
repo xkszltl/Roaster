@@ -44,8 +44,8 @@ EOF
 
     systemctl daemon-reload || $IS_CONTAINER
     for i in shadowsocks{,-client}; do :
-        systemctl enable $i
-        systemctl start $i || $IS_CONTAINER
+        sudo systemctl enable $i
+        sudo systemctl start $i || $IS_CONTAINER
     done
 
     # ------------------------------------------------------------

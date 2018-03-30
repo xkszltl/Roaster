@@ -12,20 +12,35 @@
 
     . scl_source enable devtoolset-7 || true
 
+    . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
+
     ./autogen.sh                    \
         --enable-{prof,xmalloc}     \
-        --prefix="/usr/local/"      \
+        --prefix="$INSTALL_ABS"     \
         --with-jemalloc-prefix=""
 
     time make -j$(nproc) dist
     time make -j$(nproc)
     time make -j$(nproc) install
 
+    . "$ROOT_DIR/pkgs/utils/fpm/post_build.sh"
+
+    fpm                                                             \
+        --after-install "$ROOT_DIR/pkgs/utils/fpm/post_install.sh"  \
+        --after-remove "$ROOT_DIR/pkgs/utils/fpm/post_install.sh"   \
+        --chdir "$INSTALL_ABS"                                      \
+        --input-type dir                                            \
+        --iteration "$(git log -n1 --format="%h")"                  \
+        --name "codingcafe-$(basename $(pwd))"                      \
+        --output-type rpm                                           \
+        --rpm-compression xz                                        \
+        --rpm-digest sha512                                         \
+        --version "$(git describe --tags)"
+
+    . "$ROOT_DIR/pkgs/utils/fpm/install.sh"
+
     # ------------------------------------------------------------
 
-    echo '/usr/local/lib' > /etc/ld.so.conf.d/jemalloc.conf
-    ldconfig &
-    $IS_CONTAINER && ccache -C &
     cd
     rm -rf $SCRATCH/jemalloc
     wait
