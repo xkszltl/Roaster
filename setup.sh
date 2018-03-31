@@ -79,13 +79,13 @@ cd $SCRATCH
 # ================================================================
 
 [ -d $STAGE ] && [ $# -eq 0 ] || ( set -xe
-    rm -rvf $STAGE
-    mkdir -p $(dirname $STAGE)/.$(basename $STAGE)
+    sudo rm -rvf $STAGE
+    sudo mkdir -p $(dirname $STAGE)/.$(basename $STAGE)
     cd $_
-    [ $# -gt 0 ] && touch $@ || touch repo font pkg-{skip,all} intel auth ompi cuda slurm nagios ss tex cmake llvm-{gcc,clang} boost jemalloc openblas opencv gflags glog protobuf leveldb rocksdb lmdb caffe caffe2
+    [ $# -gt 0 ] && sudo touch $@ || sudo touch repo font pkg-{skip,all} intel auth ompi cuda slurm nagios ss tex cmake llvm-{gcc,clang} boost jemalloc openblas opencv gflags glog protobuf leveldb rocksdb lmdb caffe caffe2
     sync || true
     cd $SCRATCH
-    mv -vf $(dirname $STAGE)/.$(basename $STAGE) $STAGE
+    sudo mv -vf $(dirname $STAGE)/.$(basename $STAGE) $STAGE
 )
 
 for i in $(echo "
