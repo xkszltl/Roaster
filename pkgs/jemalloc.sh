@@ -10,18 +10,20 @@
 
     # ------------------------------------------------------------
 
-    . scl_source enable devtoolset-7 || true
-
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
-    ./autogen.sh                    \
-        --enable-{prof,xmalloc}     \
-        --prefix="$INSTALL_ABS"     \
-        --with-jemalloc-prefix=""
+    (
+        . scl_source enable devtoolset-7
+        set -e
+        ./autogen.sh                    \
+            --enable-{prof,xmalloc}     \
+            --prefix="$INSTALL_ABS"     \
+            --with-jemalloc-prefix=""
 
-    time make -j$(nproc) dist
-    time make -j$(nproc)
-    time make -j$(nproc) install
+        time make -j$(nproc) dist
+        time make -j$(nproc)
+        time make -j$(nproc) install
+    )
 
     . "$ROOT_DIR/pkgs/utils/fpm/post_build.sh"
 

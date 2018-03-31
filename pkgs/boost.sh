@@ -16,12 +16,14 @@
     cd $_
     curl -sSL https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.bz2 | tar -jxvf - --strip-components=1
 
-    . scl_source enable devtoolset-7 || true
-
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
-    ./bootstrap.sh --prefix="$INSTALL_ABS"
-    ./b2 -aj$(nproc) install
+    (
+        . scl_source enable devtoolset-7
+        set -e
+        ./bootstrap.sh --prefix="$INSTALL_ABS"
+        ./b2 -aj$(nproc) install
+    )
 
     . "$ROOT_DIR/pkgs/utils/fpm/post_build.sh"
 

@@ -9,31 +9,34 @@
     cd OpenBLAS
     git checkout $(git tag | sed -n '/^v[0-9\.]*$/p' | sort -V | tail -n1)
 
-    . scl_source enable devtoolset-7 || true
-
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
-    # mkdir -p build
-    # pushd $_
+    (
+        . scl_source enable devtoolset-7
+        set -e
 
-    # cmake                                     \
-    #     -DCMAKE_BUILD_TYPE=Release            \
-    #     -DCMAKE_C_COMPILER=gcc                \
-    #     -DCMAKE_CXX_COMPILER=g++              \
-    #     -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS" \
-    #     -DCMAKE_VERBOSE_MAKEFILE=ON           \
-    #     ..
+        # mkdir -p build
+        # pushd $_
 
-    # time cmake --build . -- -j$(nproc)
-    # time cmake --build . --target test
-    # time cmake --build . --target install
+        # cmake                                     \
+        #     -DCMAKE_BUILD_TYPE=Release            \
+        #     -DCMAKE_C_COMPILER=gcc                \
+        #     -DCMAKE_CXX_COMPILER=g++              \
+        #     -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS" \
+        #     -DCMAKE_VERBOSE_MAKEFILE=ON           \
+        #     ..
 
-    # popd
+        # time cmake --build . -- -j$(nproc)
+        # time cmake --build . --target test
+        # time cmake --build . --target install
 
-    make PREFIX="$INSTALL_ABS" -j$(nproc)
-    make PREFIX="$INSTALL_ABS" lapack-test -j$(nproc)
-    make PREFIX="$INSTALL_ABS" blas-test -j$(nproc)
-    make PREFIX="$INSTALL_ABS" install
+        # popd
+
+        make PREFIX="$INSTALL_ABS" -j$(nproc)
+        make PREFIX="$INSTALL_ABS" lapack-test -j$(nproc)
+        make PREFIX="$INSTALL_ABS" blas-test -j$(nproc)
+        make PREFIX="$INSTALL_ABS" install
+    )
 
     . "$ROOT_DIR/pkgs/utils/fpm/post_build.sh"
 
