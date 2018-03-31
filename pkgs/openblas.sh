@@ -43,13 +43,14 @@
     fpm                                                             \
         --after-install "$ROOT_DIR/pkgs/utils/fpm/post_install.sh"  \
         --after-remove "$ROOT_DIR/pkgs/utils/fpm/post_install.sh"   \
-        --chdir "$INSTALL_ROOT"                                     \
+        --chdir "$INSTALL_ABS"                                      \
         --input-type dir                                            \
+        --iteration "$(git log -n1 --format="%h")"                  \
         --name "codingcafe-$(basename $(pwd))"                      \
         --output-type rpm                                           \
         --rpm-compression xz                                        \
         --rpm-digest sha512                                         \
-        --version "1.66.0"
+        --version "$(git describe --tags | sed 's/[^0-9\.]//g')"
 
     . "$ROOT_DIR/pkgs/utils/fpm/install.sh"
 
