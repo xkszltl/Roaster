@@ -30,7 +30,7 @@
     fpm                                                             \
         --after-install "$ROOT_DIR/pkgs/utils/fpm/post_install.sh"  \
         --after-remove "$ROOT_DIR/pkgs/utils/fpm/post_install.sh"   \
-        --chdir "$INSTALL_ABS"                                      \
+        --chdir "$INSTALL_ROOT"                                     \
         --input-type dir                                            \
         --name "codingcafe-$(basename $(pwd))"                      \
         --output-type rpm                                           \
