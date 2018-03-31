@@ -41,11 +41,29 @@ echo -n '| Platform | '
 uname -m
 echo    '| GPU      | '
 which nvidia-smi 2>/dev/null >/dev/null && nvidia-smi -L | sed 's/^/|    ******| /'
+echo -n '| User     | '
+whoami
+echo -n '|          | '
+id
 echo '----------------------------------------------------------------'
 df -h --sync --output=target,fstype,size,used,avail,pcent,source | sed 's/^/| /'
 echo '================================================================'
 echo
 echo
+
+# ================================================================
+# Cache sudo Credentials
+# ================================================================
+
+if ! rpm -q sudo; then
+    if [ "$(whoami)" == 'root' ]; then
+        yum install -y sudo
+    else
+        echo 'Insufficient permission to bootstrap. Please install sudo manually or provide root access.'
+    fi
+fi
+
+sudo -ll
 
 # ================================================================
 # Configure Scratch Directory
@@ -108,12 +126,14 @@ done
 
 cd
 
-ldconfig &
 rm -rvf $SCRATCH &
+sudo ldconfig
 
 if $IS_CONTAINER; then
     which ccache 2>/dev/null >/dev/null && ccache -C &
-    yum autoremove -y && yum clean all && rm -rf /var/cache/yum &
+    sudo yum autoremove -y
+    sudo yum clean all
+    sudo rm -rf /var/cache/yum
 fi
 
 wait
@@ -137,6 +157,10 @@ echo -n '| Platform | '
 uname -m
 echo    '| GPU      | '
 which nvidia-smi 2>/dev/null >/dev/null && nvidia-smi -L | sed 's/^/|    ******| /'
+echo -n '| User     | '
+whoami
+echo -n '|          | '
+id
 echo '----------------------------------------------------------------'
 df -h --sync --output=target,fstype,size,used,avail,pcent,source | sed 's/^/| /'
 echo '================================================================'
