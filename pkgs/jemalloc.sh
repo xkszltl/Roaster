@@ -37,6 +37,7 @@
         --output-type rpm                                           \
         --rpm-compression xz                                        \
         --rpm-digest sha512                                         \
+        --vendor "CodingCafe"                                       \
         --version "$(git describe --tags)"
 
     . "$ROOT_DIR/pkgs/utils/fpm/install.sh"

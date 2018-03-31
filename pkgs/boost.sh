@@ -36,6 +36,7 @@
         --output-type rpm                                           \
         --rpm-compression xz                                        \
         --rpm-digest sha512                                         \
+        --vendor "CodingCafe"                                       \
         --version "1.66.0"
 
     . "$ROOT_DIR/pkgs/utils/fpm/install.sh"
