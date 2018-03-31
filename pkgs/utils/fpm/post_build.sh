@@ -7,4 +7,4 @@ find "./$INSTALL_PREFIX" -maxdepth 1 -type d -name 'lib*' | sed 's/\.//' | sed '
 
 popd
 
-[ "$FPM_EXCLUDE" ] || ! rpm -q filesystem || export FPM_EXCLUDE="$(repoquery -l filesystem)"
+wait
