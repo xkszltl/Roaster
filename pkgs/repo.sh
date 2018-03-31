@@ -3,27 +3,27 @@
 # ================================================================
 
 [ -e $STAGE/repo ] && ( set -xe
-    until yum install -y sed yum-utils; do echo 'Retrying'; done
+    until sudo yum install -y sed yum-utils; do echo 'Retrying'; done
 
-    yum-config-manager --setopt=tsflags= --save
-    $IS_CONTAINER || yum-config-manager --setopt=installonly_limit=3 --save
+    sudo yum-config-manager --setopt=tsflags= --save
+    $IS_CONTAINER || sudo yum-config-manager --setopt=installonly_limit=3 --save
 
     [ $GIT_MIRROR ] && [ $GIT_MIRROR_CODINGCAFE ] && $ROOT_DIR/apply_cache.sh {base,updates,extras,centosplus}{,-source} base-debuginfo
 
-    until yum install -y yum-plugin-{priorities,fastestmirror} bc {core,find,ip}utils curl kernel-headers; do echo 'Retrying'; done
+    until sudo yum install -y yum-plugin-{priorities,fastestmirror} bc {core,find,ip}utils curl kernel-headers; do echo 'Retrying'; done
 
-    until yum install -y epel-release; do echo 'Retrying'; done
+    until sudo yum install -y epel-release; do echo 'Retrying'; done
     [ $GIT_MIRROR ] && [ $GIT_MIRROR_CODINGCAFE ] && $ROOT_DIR/apply_cache.sh epel{,-source,-debuginfo}
 
-    until yum install -y yum-axelget; do echo 'Retrying'; done
+    until sudo yum install -y yum-axelget; do echo 'Retrying'; done
 
-    until yum install -y centos-release-scl{,-rh}; do echo 'Retrying'; done
+    until sudo yum install -y centos-release-scl{,-rh}; do echo 'Retrying'; done
     [ $GIT_MIRROR ] && [ $GIT_MIRROR_CODINGCAFE ] && $ROOT_DIR/apply_cache.sh centos-sclo-{sclo,rh}{,-source,-debuginfo}
 
-    until yum update -y --skip-broken; do echo 'Retrying'; done
-    yum update -y || true
+    until sudo yum update -y --skip-broken; do echo 'Retrying'; done
+    sudo yum update -y || true
 
-    rpm -i $(
+    sudo rpm -i $(
         curl -s https://developer.nvidia.com/cuda-downloads                     \
         | grep 'Linux/x86_64/CentOS/7/rpm (network)'                            \
         | head -n1                                                              \
@@ -31,20 +31,20 @@
     ) || true
     [ $GIT_MIRROR ] && [ $GIT_MIRROR_CODINGCAFE ] && $ROOT_DIR/apply_cache.sh cuda
 
-    yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+    sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
     [ $GIT_MIRROR ] && [ $GIT_MIRROR_CODINGCAFE ] && $ROOT_DIR/apply_cache.sh docker-ce-stable{,-source,-debuginfo}
 
     curl -sSL https://packages.gitlab.com/install/repositories/runner/gitlab-ci-multi-runner/script.rpm.sh | bash
     [ $GIT_MIRROR ] && [ $GIT_MIRROR_CODINGCAFE ] && $ROOT_DIR/apply_cache.sh runner_gitlab-ci-multi-runner{,-source}
 
-    rm -rvf /etc/yum.repos.d/gitlab_gitlab-ce.repo
+    sudo rm -rvf /etc/yum.repos.d/gitlab_gitlab-ce.repo
     curl -sSL https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh | bash
     [ $GIT_MIRROR ] && [ $GIT_MIRROR_CODINGCAFE ] && $ROOT_DIR/apply_cache.sh gitlab_gitlab-ce{,-source}
 
-    until yum install -y bc ping pv which; do echo 'Retrying'; done
+    until sudo yum install -y bc ping pv which; do echo 'Retrying'; done
 
-    until yum update -y --skip-broken; do echo 'Retrying'; done
-    yum update -y || true
+    until sudo yum update -y --skip-broken; do echo 'Retrying'; done
+    sudo yum update -y || true
 )
-rm -rvf $STAGE/repo
+sudo rm -rvf $STAGE/repo
 sync || true

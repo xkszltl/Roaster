@@ -15,11 +15,11 @@ export ROOT_DIR=$(cd $(dirname $0) && pwd)
 [ $RPM_CACHE_REPO ] || export RPM_CACHE_REPO=/etc/yum.repos.d/cache.repo
 
 for i in $(ls $ROOT_DIR/repos/*.repo); do
-    [ -f /etc/yum.repos.d/$(basename $i) ] || yum-config-manager --add-repo $i
+    [ -f /etc/yum.repos.d/$(basename $i) ] || sudo yum-config-manager --add-repo $i
 done
 
-xargs -n1 <<<$@ | sed "s/^/--disable $([ -f $RPM_CACHE_REPO ] || echo cache-)/" | xargs yum-config-manager
-xargs -n1 <<<$@ | sed "s/^/--enable  $([ -f $RPM_CACHE_REPO ] && echo cache-)/" | xargs yum-config-manager
+xargs -n1 <<<$@ | sed "s/^/--disable $([ -f $RPM_CACHE_REPO ] || echo cache-)/" | xargs sudo yum-config-manager
+xargs -n1 <<<$@ | sed "s/^/--enable  $([ -f $RPM_CACHE_REPO ] && echo cache-)/" | xargs sudo yum-config-manager
 sync
 
-yum repolist
+sudo yum repolist
