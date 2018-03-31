@@ -13,7 +13,7 @@
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
     (
-        . scl_source enable devtoolset-7
+        . scl_source enable devtoolset-7 || true
         set -e
         ./autogen.sh                    \
             --enable-{prof,xmalloc}     \
