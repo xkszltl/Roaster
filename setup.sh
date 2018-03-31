@@ -55,7 +55,7 @@ echo
 # Cache sudo Credentials
 # ================================================================
 
-if ! rpm -q sudo; then
+if ! rpm -q sudo > /dev/null; then
     if [ "$(whoami)" == 'root' ]; then
         yum install -y sudo
     else

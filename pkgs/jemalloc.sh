@@ -31,6 +31,7 @@
         --after-install "$ROOT_DIR/pkgs/utils/fpm/post_install.sh"  \
         --after-remove "$ROOT_DIR/pkgs/utils/fpm/post_install.sh"   \
         --chdir "$INSTALL_ROOT"                                     \
+        --exclude-file <(printf "$FPM_EXCLUDE")                     \
         --input-type dir                                            \
         --iteration "$(git log -n1 --format="%h")"                  \
         --name "codingcafe-$(basename $(pwd))"                      \
