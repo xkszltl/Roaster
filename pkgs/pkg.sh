@@ -145,7 +145,7 @@ for i in pkg-{skip,all}; do
             [ $attempt -gt 0 ] || exit 1
         done
 
-        which parallel 2>/dev/null && parallel --will-cite < /dev/null
+        which parallel 2>/dev/null && sudo parallel --will-cite < /dev/null
 
         # ------------------------------------------------------------
 
@@ -155,28 +155,28 @@ for i in pkg-{skip,all}; do
             [ $attempt -gt 0 ] || exit 1
         done
 
-        $IS_CONTAINER || package-cleanup --oldkernels --count=3
-        yum autoremove -y
+        $IS_CONTAINER || sudo package-cleanup --oldkernels --count=3
+        sudo yum autoremove -y
 
         # ------------------------------------------------------------
         # Ruby gem Packages
         # ------------------------------------------------------------
 
-        gem install fpm
+        sudo gem install fpm
 
         # ------------------------------------------------------------
         # Python pip Packages
         # ------------------------------------------------------------
 
-        pip install -U docker-squash
+        sudo pip install -U docker-squash
 
         # TODO: Remove downgrade once the compatibility issue between docker 3.0.1 and docker-squash is solved.
-        pip install 'docker<3'
+        sudo pip install 'docker<3'
 
         # ------------------------------------------------------------
 
-        updatedb
+        sudo updatedb
     )
-    rm -rvf $STAGE/$i
+    sudo rm -rvf $STAGE/$i
     sync || true
 done
