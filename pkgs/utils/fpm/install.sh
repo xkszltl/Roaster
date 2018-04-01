@@ -18,7 +18,7 @@ rm -rf "$INSTALL_ABS" &
 
 [ "$PKG_NAME" ] || export PKG_NAME="codingcafe-$(basename $(pwd))"
 
-export PKG_PATH="$(find . -maxdepth 1 -type f "$PKG_NAME-*.rpm" | xargs readlink -e)"
+export PKG_PATH="$(find . -maxdepth 1 -type f -name "$PKG_NAME-*.rpm" | xargs readlink -e)"
 
 if [ ! "$PKG_PATH" ]; then
     echo "No package file found for \"$PKG_NAME\"."
