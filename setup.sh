@@ -65,10 +65,10 @@ fi
 
 sudo -llp "
 ----------------------------------------------------------------
-We would like to pre-activate a sudo session.
-Please provide your password.
-Session may still timeout, depending on system configuration.
-You will be asked for password again at that time.
+ We would like to pre-activate a sudo session.
+ Please provide your password.
+ Session may still timeout, depending on system configuration.
+ You will be asked for password again at that time.
 ----------------------------------------------------------------
 [sudo] password for $(whoami): "
 
