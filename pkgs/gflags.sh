@@ -9,26 +9,49 @@
     cd gflags
     git checkout $(git tag | sed -n '/^v[0-9\.]*$/p' | sort -V | tail -n1)
 
-    . scl_source enable devtoolset-7 || true
+    . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
-    mkdir -p build
-    cd $_
+    (
+        . scl_source enable devtoolset-7 || true
 
-    cmake                                               \
-        -G"Ninja"                                       \
-        -DBUILD_PACKAGING=OFF                           \
-        -DBUILD_SHARED_LIBS=ON                          \
-        -DBUILD_TESTING=ON                              \
-        -DCMAKE_BUILD_TYPE=RelWithDebInfo               \
-        -DCMAKE_INSTALL_PREFIX=/usr/local               \
-        ..
+        set -e
 
-    time cmake --build .
-    time cmake --build . --target test
-    time cmake --build . --target install
+        mkdir -p build
+        cd $_
 
-    ldconfig &
-    $IS_CONTAINER && ccache -C &
+        cmake                                               \
+            -G"Ninja"                                       \
+            -DBUILD_PACKAGING=OFF                           \
+            -DBUILD_SHARED_LIBS=ON                          \
+            -DBUILD_TESTING=ON                              \
+            -DCMAKE_BUILD_TYPE=RelWithDebInfo               \
+            -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"           \
+            ..
+
+        time cmake --build .
+        time cmake --build . --target test
+        time cmake --build . --target install
+    )
+
+    . "$ROOT_DIR/pkgs/utils/fpm/post_build.sh"
+
+    fpm                                                             \
+        --after-install "$ROOT_DIR/pkgs/utils/fpm/post_install.sh"  \
+        --after-remove "$ROOT_DIR/pkgs/utils/fpm/post_install.sh"   \
+        --chdir "$INSTALL_ROOT"                                     \
+        --exclude-file "$INSTALL_ROOT/../exclude.conf"              \
+        --input-type dir                                            \
+        --iteration "$(git log -n1 --format="%h")"                  \
+        --name "codingcafe-$(basename $(pwd))"                      \
+        --output-type rpm                                           \
+        --package "$INSTALL_ROOT/.."                                \
+        --rpm-compression xz                                        \
+        --rpm-digest sha512                                         \
+        --vendor "CodingCafe"                                       \
+        --version "$(git describe --tags | sed 's/[^0-9\.]//g')"
+
+    "$ROOT_DIR/pkgs/utils/fpm/install.sh"
+
     cd
     rm -rf $SCRATCH/gflags
     wait
