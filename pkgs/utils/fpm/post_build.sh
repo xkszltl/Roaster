@@ -18,7 +18,7 @@ find "./$INSTALL_PREFIX" -maxdepth 1 -type d -name 'lib*' | sed 's/\.//' | sed '
 popd
 
 # ----------------------------------------------------------------
-# Warm-up cache for exclude-file
+# Wait for exclude-file generation in pre-build
 # ----------------------------------------------------------------
 
-[ "$FPM_EXCLUDE" ] || ! rpm -q filesystem || export FPM_EXCLUDE="$(rpm -ql filesystem)"
+wait

@@ -31,10 +31,11 @@
         --after-install "$ROOT_DIR/pkgs/utils/fpm/post_install.sh"  \
         --after-remove "$ROOT_DIR/pkgs/utils/fpm/post_install.sh"   \
         --chdir "$INSTALL_ROOT"                                     \
-        --exclude-file <(printf "$FPM_EXCLUDE")                     \
+        --exclude-file "$INSTALL_ROOT/../exclude.conf"              \
         --input-type dir                                            \
         --name "codingcafe-$(basename $(pwd))"                      \
         --output-type rpm                                           \
+        --package "$INSTALL_ROOT/.."                                \
         --rpm-compression xz                                        \
         --rpm-digest sha512                                         \
         --vendor "CodingCafe"                                       \
