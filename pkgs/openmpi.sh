@@ -12,9 +12,9 @@
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
     (
+        set +x
         . scl_source enable devtoolset-6 || true
-
-        set -e
+        set -xe
 
         ./autogen.pl
         ./configure                             \

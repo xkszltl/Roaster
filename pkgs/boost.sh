@@ -19,8 +19,9 @@
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
     (
+        set +x
         . scl_source enable devtoolset-7 || true
-        set -e
+        set -xe
         ./bootstrap.sh --prefix="$INSTALL_ABS"
         ./b2 -aj$(nproc) install
     )

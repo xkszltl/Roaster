@@ -12,8 +12,9 @@
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
     (
+        set +x
         . scl_source enable devtoolset-7 || true
-        set -e
+        set -xe
 
         # mkdir -p build
         # pushd $_
