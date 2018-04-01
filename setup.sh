@@ -63,6 +63,10 @@ if ! rpm -q sudo > /dev/null; then
     fi
 fi
 
+echo 'We would like to pre-activate a sudo session.'
+echo 'Please provide us the password.'
+echo 'Note that the session may still timeout during this process, depending on your system configuration.'
+echo 'You will be asked for password again at that time.'
 sudo -ll
 
 # ================================================================
