@@ -22,3 +22,4 @@ export RPM_CACHE_ARGS=$([ -f $RPM_CACHE_REPO ] && echo "--disableplugin=axelget,
 
 export RPM_INSTALL="sudo yum install -y $RPM_CACHE_ARGS --nogpgcheck $RPM_BLACKLIST"
 export RPM_UPDATE="sudo yum update -y $RPM_CACHE_ARGS --nogpgcheck $RPM_BLACKLIST"
+export RPM_REINSTALL="sudo yum reinstall -y $RPM_CACHE_ARGS --nogpgcheck $RPM_BLACKLIST"

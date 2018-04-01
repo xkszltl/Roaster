@@ -41,7 +41,7 @@
         --vendor "CodingCafe"                                       \
         --version "$(git describe --tags)"
 
-    . "$ROOT_DIR/pkgs/utils/fpm/install.sh"
+    "$ROOT_DIR/pkgs/utils/fpm/install.sh"
 
     # ------------------------------------------------------------
 

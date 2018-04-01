@@ -40,7 +40,7 @@
         --vendor "CodingCafe"                                       \
         --version "1.66.0"
 
-    . "$ROOT_DIR/pkgs/utils/fpm/install.sh"
+    "$ROOT_DIR/pkgs/utils/fpm/install.sh"
 
     # ------------------------------------------------------------
 
