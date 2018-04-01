@@ -28,9 +28,9 @@
 
     # ------------------------------------------------------------
 
-    fc-cache -fv
+    sudo fc-cache -fv
 
-    yum autoremove -y
+    sudo yum autoremove -y
 )
-rm -rvf $STAGE/font
+sudo rm -vf $STAGE/font
 sync || true
