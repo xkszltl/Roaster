@@ -36,7 +36,7 @@ fi
 # ----------------------------------------------------------------
 
 if rpm -q "$PKG_NAME"; then
-    sudo yum reinstall -y "$PKG_PATH"
+    sudo yum update -y "$PKG_PATH" || sudo yum reinstall -y "$PKG_PATH"
 else
     sudo yum install -y "$PKG_PATH"
 fi
