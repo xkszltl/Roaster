@@ -19,4 +19,4 @@ export INSTALL_ABS=$(readlink -e "$INSTALL_REL")
 # List file to exclude
 # ----------------------------------------------------------------
 
-rpm -q filesystem > /dev/null && rpm -ql filesystem | sed 's/^/\.\//' > "$INSTALL_ROOT/../exclude.conf" &
+rpm -q filesystem > /dev/null && rpm -ql filesystem | sed 's/^\///' > "$INSTALL_ROOT/../exclude.conf" &
