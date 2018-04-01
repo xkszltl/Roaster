@@ -28,5 +28,5 @@
     rm -rf $SCRATCH/intel
     wait
 )
-rm -rvf $STAGE/intel
+sudo rm -vf $STAGE/intel
 sync || true

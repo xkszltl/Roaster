@@ -49,5 +49,5 @@
     rm -rf $SCRATCH/boost
     wait
 )
-sudo rm -rvf $STAGE/boost
+sudo rm -vf $STAGE/boost
 sync || true

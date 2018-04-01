@@ -9,26 +9,30 @@
     cd ompi
     git checkout $(git tag | sed -n '/^v[0-9\.]*$/p' | sort -V | tail -n1)
 
-    . scl_source enable devtoolset-6 || true
+    (
+        . scl_source enable devtoolset-6 || true
 
-    ./autogen.pl
-    ./configure                             \
-        --enable-mpi-cxx                    \
-        --enable-mpi-ext                    \
-        --enable-mpi-java                   \
-        --enable-mpirun-prefix-by-default   \
-        --enable-sparse-groups              \
-        --enable-static                     \
-        --prefix=/usr/local/openmpi         \
-        --with-cuda                         \
-        --with-sge                          \
-        --with-slurm
+        set -e
 
-    make -j$(nproc)
-    make -j install
+        ./autogen.pl
+        ./configure                             \
+            --enable-mpi-cxx                    \
+            --enable-mpi-ext                    \
+            --enable-mpi-java                   \
+            --enable-mpirun-prefix-by-default   \
+            --enable-sparse-groups              \
+            --enable-static                     \
+            --prefix=/usr/local/openmpi         \
+            --with-cuda                         \
+            --with-sge                          \
+            --with-slurm
+
+        make -j$(nproc)
+        make -j install
+    )
 
     cd
     rm -rf $SCRATCH/ompi
 )
-rm -rvf $STAGE/ompi
+sudo rm -vf $STAGE/ompi
 sync || true

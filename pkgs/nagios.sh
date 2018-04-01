@@ -33,5 +33,5 @@ EOF
     cd
     rm -rvf $SCRATCH/nagios-selinux
 )
-rm -rvf $STAGE/nagios
+sudo rm -vf $STAGE/nagios
 sync || true

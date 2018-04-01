@@ -36,6 +36,6 @@
     yum install $HOME/rpmbuild/RPMS/$(uname -i)/slurm{,-*}.rpm
     rm -rf $HOME/rpmbuild
 )
-rm -rvf $STAGE/slurm
+sudo rm -vf $STAGE/slurm
 sync || true
 

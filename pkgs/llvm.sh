@@ -107,6 +107,6 @@ for i in llvm-{gcc,clang}; do
         rm -rf $SCRATCH/llvm
         wait
     )
-    rm -rvf $STAGE/$i
+    sudo rm -vf $STAGE/$i
     sync || true
 done

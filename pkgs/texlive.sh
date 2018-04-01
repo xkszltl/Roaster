@@ -28,5 +28,5 @@ EOF
     cd
     rm -rf $SCRATCH/install-tl-*
 )
-rm -rvf $STAGE/tex
+sudo rm -vf $STAGE/tex
 sync || true

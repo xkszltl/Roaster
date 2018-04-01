@@ -18,5 +18,5 @@
     cd
     rm -rf $SCRATCH/CMake
 )
-rm -rvf $STAGE/cmake
+sudo rm -vf $STAGE/cmake
 sync || true

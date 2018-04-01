@@ -44,5 +44,5 @@
     rm -rf $SCRATCH/protobuf
     wait
 )
-rm -rvf $STAGE/protobuf
+sudo rm -vf $STAGE/protobuf
 sync || true

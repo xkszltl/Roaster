@@ -58,5 +58,5 @@
     rm -rf $SCRATCH/glog
     wait
 )
-rm -rvf $STAGE/glog
+sudo rm -vf $STAGE/glog
 sync || true

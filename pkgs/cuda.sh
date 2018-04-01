@@ -29,5 +29,5 @@
     export MPI_HOME=/usr/local/openmpi
     VERBOSE=1 time make -j$(nproc)
 )
-rm -rvf $STAGE/cuda
+sudo rm -vf $STAGE/cuda
 sync || true

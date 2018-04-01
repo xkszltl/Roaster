@@ -56,5 +56,5 @@
     rm -rf $SCRATCH/gflags
     wait
 )
-rm -rvf $STAGE/gflags
+sudo rm -vf $STAGE/gflags
 sync || true

@@ -39,5 +39,5 @@
     rm -rf $SCRATCH/caffe
     wait
 )
-rm -rvf $STAGE/caffe
+sudo rm -vf $STAGE/caffe
 sync || true

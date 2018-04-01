@@ -90,5 +90,5 @@
         squeezenet              \
         vgg{16,19}
 )
-rm -rvf $STAGE/caffe2
+sudo rm -vf $STAGE/caffe2
 sync || true

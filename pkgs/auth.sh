@@ -59,5 +59,5 @@
     git config --global push.default    'matching'
     git config --global core.editor     'vim'
 )
-rm -rvf $STAGE/auth
+sudo rm -vf $STAGE/auth
 sync || true

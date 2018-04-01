@@ -65,5 +65,5 @@
     rm -rf $SCRATCH/opencv
     wait
 )
-rm -rvf $STAGE/opencv
+sudo rm -vf $STAGE/opencv
 sync || true

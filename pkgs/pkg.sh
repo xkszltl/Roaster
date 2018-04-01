@@ -177,6 +177,6 @@ for i in pkg-{skip,all}; do
 
         sudo updatedb
     )
-    sudo rm -rvf $STAGE/$i
+    sudo rm -vf $STAGE/$i
     sync || true
 done

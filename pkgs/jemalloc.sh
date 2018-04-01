@@ -50,5 +50,5 @@
     rm -rf $SCRATCH/jemalloc
     wait
 )
-sudo rm -rvf $STAGE/jemalloc
+sudo rm -vf $STAGE/jemalloc
 sync || true

@@ -61,5 +61,5 @@
     rm -rf $SCRATCH/OpenBLAS
     wait
 )
-sudo rm -rvf $STAGE/openblas
+sudo rm -vf $STAGE/openblas
 sync || true
