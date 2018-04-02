@@ -27,7 +27,7 @@
 
     mkdir -p boost
     cd $_
-    curl -sSL "$BOOST_SITE/$BOOST_VERSION/source/boost_$(sed 's/[^0-9]/_/g' <<<"BOOST_VERSION").tar.bz2" | tar -jxvf - --strip-components=1
+    curl -sSL "$BOOST_SITE/$BOOST_VERSION/source/boost_$(sed 's/[^0-9]/_/g' <<<"$BOOST_VERSION").tar.bz2" | tar -jxvf - --strip-components=1
 
     # ------------------------------------------------------------
     # Create local git repo for installation script
