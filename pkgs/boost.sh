@@ -39,7 +39,7 @@
         --author='CodingCafe Build <build@codigcafe.org>'   \
         --message='CodingCafe'                              \
         --quiet
-    git tag '1.66.0'
+    git tag "$BOOST_VERSION"
 
     # ------------------------------------------------------------
 
