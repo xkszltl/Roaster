@@ -22,7 +22,14 @@
         mkdir -p "$INSTALL_ABS/include/leveldb/"
         install include/leveldb/*.h $_
         mkdir -p "$INSTALL_ABS/lib"
-        install out-*/libleveldb.* $_
+        install out-*/lib*.* $_
+
+        # Replace duplicated lib with symlink
+        pushd $_
+        for i in $(ls lib*.so.*); do
+            ln -sf "$i" "$(sed 's/\.[^\.]*$//' <<<"$i")"
+        done
+        popd
     )
 
     . "$ROOT_DIR/pkgs/utils/fpm/post_build.sh"
