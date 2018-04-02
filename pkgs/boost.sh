@@ -16,9 +16,18 @@
         [ $HTTPS_PROXY ] && export https_proxy=$HTTPS_PROXY
     fi
 
+    export BOOST_SITE='https://dl.bintray.com/boostorg/release'
+    export BOOST_VERSION="$(
+        curl -sSL $BOOST_SITE                                                   \
+        | sed -n 's/.*href[[:space:]]*=[[:space:]]*"\([0-9\.]*\)\/*".*/\1/p'    \
+        | sort -V                                                               \
+        | tail -n1
+    )"
+    [ "$BOOST_VERSION" ]
+
     mkdir -p boost
     cd $_
-    curl -sSL https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.bz2 | tar -jxvf - --strip-components=1
+    curl -sSL "$BOOST_SITE/$BOOST_VERSION/source/boost_$(sed 's/[^0-9]/_/g' <<<"BOOST_VERSION").tar.bz2" | tar -jxvf - --strip-components=1
 
     # ------------------------------------------------------------
     # Create local git repo for installation script
@@ -28,7 +37,8 @@
     git add -A
     git commit                                              \
         --author='CodingCafe Build <build@codigcafe.org>'   \
-        --message='CodingCafe'
+        --message='CodingCafe'                              \
+        --quiet
     git tag '1.66.0'
 
     # ------------------------------------------------------------
