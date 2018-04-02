@@ -5,6 +5,10 @@
 [ -e $STAGE/boost ] && ( set -xe
     cd $SCRATCH
 
+    # ------------------------------------------------------------
+    # Download source code
+    # ------------------------------------------------------------
+
     if [ $GIT_MIRROR == $GIT_MIRROR_CODINGCAFE ]; then
         # export HTTP_PROXY=proxy.codingcafe.org:8118
         [ $HTTP_PROXY ] && export HTTPS_PROXY=$HTTP_PROXY
@@ -16,6 +20,19 @@
     cd $_
     curl -sSL https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.bz2 | tar -jxvf - --strip-components=1
 
+    # ------------------------------------------------------------
+    # Create local git repo for installation script
+    # ------------------------------------------------------------
+
+    git init
+    git add -A
+    git commit                                              \
+        --author='CodingCafe Build <build@codigcafe.org>'   \
+        --message='CodingCafe'
+    git tag '1.66.0'
+
+    # ------------------------------------------------------------
+
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
     (
@@ -26,29 +43,12 @@
         ./b2 -aj$(nproc) install
     )
 
-    . "$ROOT_DIR/pkgs/utils/fpm/post_build.sh"
-
-    fpm                                                             \
-        --after-install "$ROOT_DIR/pkgs/utils/fpm/post_install.sh"  \
-        --after-remove "$ROOT_DIR/pkgs/utils/fpm/post_install.sh"   \
-        --chdir "$INSTALL_ROOT"                                     \
-        --exclude-file "$INSTALL_ROOT/../exclude.conf"              \
-        --input-type dir                                            \
-        --name "codingcafe-$(basename $(pwd))"                      \
-        --output-type rpm                                           \
-        --package "$INSTALL_ROOT/.."                                \
-        --rpm-compression xz                                        \
-        --rpm-digest sha512                                         \
-        --vendor "CodingCafe"                                       \
-        --version "1.66.0"
-
-    "$ROOT_DIR/pkgs/utils/fpm/install.sh"
+    "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
 
     # ------------------------------------------------------------
 
     cd
     rm -rf $SCRATCH/boost
-    wait
 )
 sudo rm -vf $STAGE/boost
 sync || true
