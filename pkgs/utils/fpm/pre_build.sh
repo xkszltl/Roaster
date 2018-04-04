@@ -21,4 +21,8 @@ export INSTALL_ABS=$(readlink -e "$INSTALL_REL")
 
 rpm -q filesystem > /dev/null && rpm -ql filesystem | sed 's/^\///' | sed 's/$/\//' > "$INSTALL_ROOT/../exclude.conf" &
 
+# ----------------------------------------------------------------
+
+# Backup sudo path before changed by SCL
+alias sudo="$(which sudo)"
 sudo -v
