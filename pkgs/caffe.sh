@@ -39,7 +39,10 @@
         time cmake --build . --target runtest || ! nvidia-smi
         time cmake --build . --target install
 
-        # Tag with version.
+        # --------------------------------------------------------
+        # Tag with version detected from cmake cache
+        # --------------------------------------------------------
+
         cmake -LA -N . | sed -n 's/^CAFFE_TARGET_VERSION:.*=//p' | xargs git tag -f
     )
 
