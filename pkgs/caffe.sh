@@ -9,10 +9,10 @@
     cd caffe
 
     # ------------------------------------------------------------
-    # Dummy version assignment
+    # Version assignment
     # ------------------------------------------------------------
 
-    git tag '0.0.0'
+    git tag '1.0.0'
 
     # ------------------------------------------------------------
 
@@ -34,7 +34,7 @@
             -DCMAKE_C{,XX}_FLAGS="-g"               \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
             -DCMAKE_VERBOSE_MAKEFILE=ON             \
-            -DCUDA_ARCH_NAME=Pascal                 \
+            -DCUDA_ARCH_NAME=Auto                   \
             -DBLAS=MKL                              \
             -DUSE_NCCL=ON                           \
             ..
