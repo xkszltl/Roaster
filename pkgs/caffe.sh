@@ -35,8 +35,14 @@
             -DUSE_NCCL=ON                           \
             ..
 
+        sudo -v
+
         time cmake --build .
+
+        sudo -v
+
         time cmake --build . --target runtest || ! nvidia-smi
+
         time cmake --build . --target install
 
         # --------------------------------------------------------

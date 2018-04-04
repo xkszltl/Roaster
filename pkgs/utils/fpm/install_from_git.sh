@@ -8,6 +8,8 @@ set -xe
 
 . "$ROOT_DIR/pkgs/utils/fpm/post_build.sh"
 
+sudo -v
+
 time fpm                                                        \
     --after-install "$ROOT_DIR/pkgs/utils/fpm/post_install.sh"  \
     --after-remove "$ROOT_DIR/pkgs/utils/fpm/post_install.sh"   \

@@ -26,14 +26,18 @@
 
     # ------------------------------------------------------------
 
-    mkdir -p build
-    cd $_
+    . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
-    ( set -xe
+    (
+        set +x
         # Currently caffe2 can only be built with gcc-5.
         # CUDA 9.1 only support up to gcc-6.3.0 while devtoolset-6 contains gcc-6.3.1
         # TODO: Upgrade glog to use new compiler when possible.
         . scl_source enable devtoolset-4 || true
+        set -xe
+
+        mkdir -p build
+        cd $_
 
         ln -sf $(which ninja-build) /usr/bin/ninja
 
@@ -58,25 +62,40 @@
             ..
 
         time cmake --build .
-        nvidia-smi && time cmake --build . --target test || true
+        time cmake --build . --target test || ! nvidia-smi || true
         time cmake --build . --target install
 
         rm -rf /usr/bin/ninja
+
+        # --------------------------------------------------------
+        # Tag with version detected from cmake cache
+        # --------------------------------------------------------
+
+        make -LA -N . | sed -n 's/^CAFFE2_VERSION:.*=//p' | xargs git tag -f
+
+        # --------------------------------------------------------
+        # Expose site-packages
+        # --------------------------------------------------------
+
+        pushd "$INSTALL_ROOT"
+        # Do not move the "usr/" outside of "{}" because glob "*" relies on it.
+        for i in "usr/lib/python"*"/site-packages"; do
+        for j in caffe{,2}; do
+            ln -sf {$i,usr/local}/$j &
+        done
+        done
+        popd
+        wait
     )
 
-    # Do not move the "/usr/" outside of "{}" because glob "*" relies on it.
-    for i in /usr/lib/python*/site-packages; do
-    for j in caffe{,2}; do
-        ln -sf {$i,/usr/local}/$j &
-    done
-    done
+    "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
+    
+    # ------------------------------------------------------------
 
-    echo '/usr/local/lib' > /etc/ld.so.conf.d/caffe2.conf
-    ldconfig &
-    $IS_CONTAINER && ccache -C &
     cd
     rm -rf $SCRATCH/caffe2
-    wait
+
+    # ------------------------------------------------------------
 
     $ISCONTAINER || parallel -j0 --bar --line-buffer 'bash -c '"'"'
         echo N | python -m caffe2.python.models.download -i {}
