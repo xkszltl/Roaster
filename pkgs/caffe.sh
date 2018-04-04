@@ -15,8 +15,6 @@
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
     (
-        # Backup sudo path before changed by SCL
-        alias sudo="$(which sudo)"
         set +x
         . scl_source enable devtoolset-6 || true
         set -xe
@@ -37,14 +35,8 @@
             -DUSE_NCCL=ON                           \
             ..
 
-        sudo -v
-
         time cmake --build .
-
-        sudo -v
-
         time cmake --build . --target runtest || ! nvidia-smi
-
         time cmake --build . --target install
 
         # --------------------------------------------------------

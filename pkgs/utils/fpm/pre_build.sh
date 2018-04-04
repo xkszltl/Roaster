@@ -20,5 +20,3 @@ export INSTALL_ABS=$(readlink -e "$INSTALL_REL")
 # ----------------------------------------------------------------
 
 rpm -q filesystem > /dev/null && rpm -ql filesystem | sed 's/^\///' | sed 's/$/\//' > "$INSTALL_ROOT/../exclude.conf" &
-
-sudo -v
