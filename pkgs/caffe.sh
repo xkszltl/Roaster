@@ -12,10 +12,6 @@
     # Version assignment
     # ------------------------------------------------------------
 
-    git tag '1.0.0'
-
-    # ------------------------------------------------------------
-
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
     (
@@ -42,6 +38,9 @@
         time cmake --build .
         time cmake --build . --target runtest || ! nvidia-smi
         time cmake --build . --target install
+
+        # Tag with version.
+        cmake -LA -N . | sed -n 's/^CAFFE_TARGET_VERSION:.*=//p' | xargs git tag -f
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
