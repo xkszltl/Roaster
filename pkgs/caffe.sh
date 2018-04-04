@@ -15,6 +15,8 @@
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
     (
+        # Backup sudo path before changed by SCL
+        alias sudo="$(which sudo)"
         set +x
         . scl_source enable devtoolset-6 || true
         set -xe
