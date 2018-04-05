@@ -19,6 +19,8 @@
         . scl_source enable devtoolset-6 || true
         set -xe
 
+        . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
+
         mkdir -p build
         cd $_
 
@@ -26,12 +28,14 @@
         # Use CUDA_ARCH_NAME to fix compile error "Unsupported gpu architecture 'compute_20'".
         cmake                                       \
             -G"Ninja"                               \
+            -DBLAS=MKL                              \
             -DCMAKE_BUILD_TYPE=Release              \
             -DCMAKE_C{,XX}_FLAGS="-g"               \
+            -DCMAKE_C_COMPILER="$TOOLCHAIN/cc"      \
+            -DCMAKE_CXX_COMPILER="$TOOLCHAIN/c++"   \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
             -DCMAKE_VERBOSE_MAKEFILE=ON             \
             -DCUDA_ARCH_NAME=Auto                   \
-            -DBLAS=MKL                              \
             -DUSE_NCCL=ON                           \
             ..
 

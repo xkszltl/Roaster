@@ -14,6 +14,7 @@ mkdir -p "$INSTALL_ROOT"
 export INSTALL_REL="$INSTALL_ROOT/$INSTALL_PREFIX"
 mkdir -p "$INSTALL_REL"
 export INSTALL_ABS=$(readlink -e "$INSTALL_REL")
+export INSTALL_ROOT="$(readlink -e "$INSTALL_ROOT")"
 
 # ----------------------------------------------------------------
 # List file to exclude
