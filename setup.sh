@@ -137,7 +137,7 @@ rm -rvf $SCRATCH &
 sudo ldconfig
 
 if $IS_CONTAINER; then
-    which ccache 2>/dev/null >/dev/null && ccache -C &
+    which ccache 2>/dev/null >/dev/null && ccache -Cz &
     sudo yum autoremove -y
     sudo yum clean all
     sudo rm -rf /var/cache/yum
