@@ -33,39 +33,46 @@
         # Currently caffe2 can only be built with gcc-5.
         # CUDA 9.1 only support up to gcc-6.3.0 while devtoolset-6 contains gcc-6.3.1
         # TODO: Upgrade glog to use new compiler when possible.
-        . scl_source enable devtoolset-4 || true
+        . scl_source enable devtoolset-6 || true
         set -xe
+
+        . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
 
         mkdir -p build
         cd $_
 
-        ln -sf $(which ninja-build) /usr/bin/ninja
+        # ln -sf $(which ninja-build) /usr/bin/ninja
 
         export MPI_HOME=/usr/local/openmpi
 
         # Some platform (i.e. macOS) may need -DCUDA_ARCH_NAME=Pascal
         #
         # TODO: ATen support currently result in 100+GB binaries in total.
-        cmake                                                   \
-            -GNinja                                             \
-            -DCMAKE_BUILD_TYPE=Release                          \
-            -DCMAKE_C{,XX}_FLAGS="-g"                           \
-            -DCMAKE_VERBOSE_MAKEFILE=ON                         \
-            -DBENCHMARK_ENABLE_LTO=ON                           \
-            -DBENCHMARK_USE_LIBCXX=OFF                          \
-            -DBLAS=MKL                                          \
-            -DUSE_ATEN=OFF                                      \
-            -DUSE_NATIVE_ARCH=ON                                \
-            -DUSE_OPENMP=ON                                     \
-            -DUSE_ZMQ=ON                                        \
-            -DUSE_ZSTD=OFF                                      \
+        cmake                                       \
+            -DBENCHMARK_ENABLE_LTO=ON               \
+            -DBENCHMARK_USE_LIBCXX=OFF              \
+            -DBLAS=MKL                              \
+            -DCMAKE_BUILD_TYPE=Release              \
+            -DCMAKE_C_COMPILER="$TOOLCHAIN/cc"      \
+            -DCMAKE_C{,XX}_FLAGS="-g"               \
+            -DCMAKE_CXX_COMPILER="$TOOLCHAIN/c++"   \
+            -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
+            -DCMAKE_VERBOSE_MAKEFILE=ON             \
+            -DCPUINFO_BUILD_TOOLS=ON                \
+            -DUSE_ATEN=OFF                          \
+            -DUSE_NATIVE_ARCH=ON                    \
+            -DUSE_OPENMP=ON                         \
+            -DUSE_ROCKSDB=ON                        \
+            -DUSE_ZMQ=ON                            \
+            -DUSE_ZSTD=OFF                          \
+            -G"Ninja"                               \
             ..
 
         time cmake --build .
         time cmake --build . --target test || ! nvidia-smi || true
         time cmake --build . --target install
 
-        rm -rf /usr/bin/ninja
+        # rm -rf /usr/bin/ninja
 
         # --------------------------------------------------------
         # Tag with version detected from cmake cache
