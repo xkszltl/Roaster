@@ -78,7 +78,7 @@
         # Tag with version detected from cmake cache
         # --------------------------------------------------------
 
-        make -LA -N . | sed -n 's/^CAFFE2_VERSION:.*=//p' | xargs git tag -f
+        cmake -LA -N . | sed -n 's/^CAFFE2_VERSION:.*=//p' | xargs git tag -f
 
         # --------------------------------------------------------
         # Expose site-packages
