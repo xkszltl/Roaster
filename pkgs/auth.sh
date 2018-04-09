@@ -7,9 +7,9 @@
     mkdir -p .ssh
     cd .ssh
     rm -rvf id_{ecdsa,rsa}{,.pub}
-    ssh-keygen -N '' -f id_ecdsa -qt ecdsa -b 521 &
-    ssh-keygen -N '' -f id_rsa -qt rsa -b 8192 &
-    wait
+    # ssh-keygen -N '' -f id_rsa -qt rsa -b 8192 &
+    ssh-keygen -N '' -f id_ecdsa -qt ecdsa -b 521
+    # wait
     cd $SCRATCH
 
     # ------------------------------------------------------------
