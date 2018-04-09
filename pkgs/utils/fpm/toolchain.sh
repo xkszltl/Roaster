@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export TOOLCHAIN="$INSTALL_ROOT/../toolchain"
+export TOOLCHAIN="$(readlink -f "$INSTALL_ROOT/../toolchain")"
 mkdir -p "$TOOLCHAIN"
 
 for i in c{c,++} g{cc,++} clang{,++} ld{,.lld}; do
