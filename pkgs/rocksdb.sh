@@ -20,30 +20,33 @@
 
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
 
-        mkdir -p build
-        cd $_
-        cmake                                       \
-            -G"Ninja"                               \
-            -DCMAKE_BUILD_TYPE=Release              \
-            -DCMAKE_C_COMPILER="$TOOLCHAIN/cc"      \
-            -DCMAKE_C{,XX}_FLAGS="-g"               \
-            -DCMAKE_CXX_COMPILER="$TOOLCHAIN/c++"   \
-            -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
-            -DCMAKE_VERBOSE_MAKEFILE=ON             \
-            -DWITH_BZ2=ON                           \
-            -DWITH_JEMALLOC=ON                      \
-            -DWITH_LIBRADOS=ON                      \
-            -DWITH_LZ4=ON                           \
-            -DWITH_SNAPPY=ON                        \
-            -DWITH_ZLIB=ON                          \
-            -DWITH_ZSTD=ON                          \
-            ..
-        time cmake --build . --target install
+        # mkdir -p build
+        # cd $_
+        # cmake                                       \
+        #     -G"Ninja"                               \
+        #     -DCMAKE_BUILD_TYPE=Release              \
+        #     -DCMAKE_C_COMPILER="$TOOLCHAIN/cc"      \
+        #     -DCMAKE_C{,XX}_FLAGS="-g"               \
+        #     -DCMAKE_CXX_COMPILER="$TOOLCHAIN/c++"   \
+        #     -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
+        #     -DCMAKE_VERBOSE_MAKEFILE=ON             \
+        #     -DWITH_BZ2=ON                           \
+        #     -DWITH_JEMALLOC=ON                      \
+        #     -DWITH_LIBRADOS=ON                      \
+        #     -DWITH_LZ4=ON                           \
+        #     -DWITH_SNAPPY=ON                        \
+        #     -DWITH_ZLIB=ON                          \
+        #     -DWITH_ZSTD=ON                          \
+        #     ..
+        # time cmake --build . --target install
 
-        # time make -j$(nproc) {static,shared}_lib
+        export CC="$TOOLCHAIN/cc"
+        export CXX="$TOOLCHAIN/c++"
+        export LD="$TOOLCHAIN/ld"
+        time make PREFIX="$INSTALL_ABS" -j$(nproc) {static,shared}_lib
         # time make -j$(nproc) package
         # time make -j$(nproc) check
-        # time make -j install{,-shared}
+        time make PREFIX="$INSTALL_ABS" -j install{,-shared}
     )
 
     # sudo yum install -y package/rocksdb-*.rpm || sudo yum update -y package/rocksdb-*.rpm
