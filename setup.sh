@@ -72,6 +72,8 @@ sudo -llp "
 ----------------------------------------------------------------
 [sudo] password for $(whoami): "
 
+"$ROOT_DIR/pkgs/utils/sudo_ping_daemon.sh" &
+
 # ================================================================
 # Configure Scratch Directory
 # ================================================================
@@ -133,17 +135,15 @@ done
 
 cd
 
-rm -rvf $SCRATCH &
+rm -rvf $SCRATCH
 sudo ldconfig
 
 if $IS_CONTAINER; then
-    which ccache 2>/dev/null >/dev/null && ccache -Cz &
+    which ccache 2>/dev/null >/dev/null && ccache -Cz
     sudo yum autoremove -y
     sudo yum clean all
     sudo rm -rf /var/cache/yum
 fi
-
-wait
 
 # ----------------------------------------------------------------
 
