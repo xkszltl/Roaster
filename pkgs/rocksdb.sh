@@ -5,7 +5,7 @@
 [ -e $STAGE/rocksdb ] && ( set -xe
     cd $SCRATCH
 
-    pip install -U git+$GIT_MIRROR/Maratyszcza/{confu,PeachPy}.git
+    sudo pip install -U git+$GIT_MIRROR/Maratyszcza/{confu,PeachPy}.git
 
     until git clone --depth 1 --no-checkout --no-single-branch $GIT_MIRROR/facebook/rocksdb.git; do echo 'Retrying'; done
     cd rocksdb
