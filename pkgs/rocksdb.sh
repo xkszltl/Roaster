@@ -25,7 +25,9 @@
         cmake                                       \
             -G"Ninja"                               \
             -DCMAKE_BUILD_TYPE=Release              \
+            -DCMAKE_C_COMPILER="$TOOLCHAIN/cc"      \
             -DCMAKE_C{,XX}_FLAGS="-g"               \
+            -DCMAKE_CXX_COMPILER="$TOOLCHAIN/c++"   \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
             -DCMAKE_VERBOSE_MAKEFILE=ON             \
             -DWITH_BZ2=ON                           \
