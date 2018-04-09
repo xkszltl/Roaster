@@ -43,10 +43,10 @@
         export CC="$TOOLCHAIN/cc"
         export CXX="$TOOLCHAIN/c++"
         export LD="$TOOLCHAIN/ld"
-        time make PREFIX="$INSTALL_ABS" -j$(nproc) {static,shared}_lib
+        time make -j$(nproc) {static,shared}_lib
         # time make -j$(nproc) package
         # time make -j$(nproc) check
-        time make PREFIX="$INSTALL_ABS" -j install{,-shared}
+        time make INSTALL_PATH="$INSTALL_ABS" -j install{,-shared}
     )
 
     # sudo yum install -y package/rocksdb-*.rpm || sudo yum update -y package/rocksdb-*.rpm
