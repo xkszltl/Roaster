@@ -20,9 +20,15 @@
 
         cd libraries/liblmdb
 
+        cat Makefile                                                                                \
+        | sed "s/^\(CC[[:space:]]*=[[:space:]]*\).*/\1$(sed 's/\//\\\//g' <<< "$TOOLCHAIN/cc")/"    \
+        | sed "s/^\(prefix[[:space:]]*=[[:space:]]*\).*/\1$(sed 's/\//\\\//g' <<< "$INSTALL_ABS")/" \
+        > .Makefile
+        mv -f {.,}Makefile
+
         make -j$(nproc)
         make test
-        make PREFIX="$INSTALL_ABS" install -j
+        make "$INSTALL_ABS" install -j
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
@@ -30,5 +36,5 @@
     cd
     rm -rf $SCRATCH/lmdb
 )
-rm -rvf $STAGE/lmdb
+sudo rm -vf $STAGE/lmdb
 sync || true
