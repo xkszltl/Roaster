@@ -9,24 +9,23 @@
 
     export INTEL_REPO=https://repo.codingcafe.org/intel
 
-    for i in daal ipp mkl mpi tbb; do ( set -xe
-        wget -q $INTEL_REPO/$(curl -sSL $INTEL_REPO | sed -n 's/.*href="\(.*l_'$i'.*\)".*/\1/p' | sort -V | tail -n1)
+    parallel -j0 --line-buffer --bar 'bash -c '"'"'
+        set -xe
+        wget -q $INTEL_REPO/$(curl -sSL $INTEL_REPO | sed -n '"'"'s/.*href="\(.*l_{}.*\)".*/\1/p'"'"' | sort -V | tail -n1)
         mkdir -p $i
         tar -xvf l_$i* -C $i --strip-components=1
         rm -rf l_$i*
-    ) & done
-    wait
+    '"'" ::: daal ipp mkl mpi tbb
 
     for i in $(ls -d */ | sed 's/\///'); do
         echo "Installing Intel $(tr [a-z] [A-Z] <<< $i)..."
-        $i/install.sh --silent <(sed 's/^\([^#]*ACCEPT_EULA=\).*/\1accept/' $i/silent.cfg)
+        sudo $i/install.sh --silent <(sed 's/^\([^#]*ACCEPT_EULA=\).*/\1accept/' $i/silent.cfg)
     done
     
-    ldconfig &
+    sudo ldconfig
 
     cd
     rm -rf $SCRATCH/intel
-    wait
 )
 sudo rm -vf $STAGE/intel
 sync || true
