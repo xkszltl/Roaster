@@ -88,11 +88,10 @@
         # Do not move the "usr/" outside of "{}" because glob "*" relies on it.
         for i in "usr/lib/python"*"/site-packages"; do
         for j in caffe{,2}; do
-            ln -sf {$i,usr/local}/$j &
+            ln -sf {$i,usr/local}/$j
         done
         done
         popd
-        wait
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
