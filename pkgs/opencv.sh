@@ -34,6 +34,8 @@
             -DBUILD_opencv_dnn=OFF                          \
             -DBUILD_opencv_world=OFF                        \
             -DCMAKE_BUILD_TYPE=Release                      \
+            -DCMAKE_C_COMPILER="$TOOLCHAIN/cc"              \
+            -DCMAKE_CXX_COMPILER="$TOOLCHAIN/c++"           \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"           \
             -DCMAKE_VERBOSE_MAKEFILE=ON                     \
             -DCPACK_BINARY_DEB=OFF                          \
