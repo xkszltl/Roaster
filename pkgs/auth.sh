@@ -7,9 +7,12 @@
     mkdir -p .ssh
     cd .ssh
     rm -rvf id_{ecdsa,rsa}{,.pub}
-    # ssh-keygen -N '' -f id_rsa -qt rsa -b 8192 &
-    ssh-keygen -N '' -f id_ecdsa -qt ecdsa -b 521
-    # wait
+    parallel -j0 --line-buffer --bar 'bash -c '"'"'
+        set -e
+        export ALGO="$(sed '"'"'s/,.*//'"'"' <<< '"'"'{}'"'"')"
+        export BITS="$(sed '"'"'s/.*,//'"'"' <<< '"'"'{}'"'"')"
+        ssh-keygen -qN "" -f "id_$ALGO" -t "$ALGO" -b "$BITS"
+    '"'" ::: 'ecdsa,521' 'rsa,8192'
     cd $SCRATCH
 
     # ------------------------------------------------------------
