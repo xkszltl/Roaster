@@ -11,6 +11,8 @@
     cd rocksdb
     git checkout $(git tag | sed -n '/^v[0-9\.]*$/p' | sort -V | tail -n1)
 
+    # ------------------------------------------------------------
+
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
     (
