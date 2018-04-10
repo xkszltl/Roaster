@@ -15,12 +15,14 @@ if [ $PPID -le 1 ]; then
 	exit 1
 fi
 
+PID="$("$SHELL" -c 'echo $PPID' | xargs ps -o ppid= -p)"
+
 # ----------------------------------------------------------------
 
-while [ $("$SHELL" -c 'echo $PPID' | xargs ps -o ppid= -p) -eq $PPID ]; do
+while [ $(ps -o ppid= -p "$PID") -eq $PPID ]; do
     DDL="$(expr "$(date +%s)" + "$SUDO_PING_HEARTBEAT_SEC" - "$SUDO_PING_SLA_SEC")"
     sudo -v
-    while [ $("$SHELL" -c 'echo $PPID' | xargs ps -o ppid= -p) -eq $PPID ] && [ "$(date +%s)" -lt "$DDL" ]; do
+    while [ $(ps -o ppid= -p "$PID") -eq $PPID ] && [ "$(date +%s)" -lt "$DDL" ]; do
     	sleep "$SUDO_PING_SLA_SEC"
     done
 done
