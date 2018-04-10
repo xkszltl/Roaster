@@ -5,8 +5,6 @@
 #   - Quit after disowned within weakly guranteed SLA.
 # ================================================================
 
-set -e
-
 export SUDO_PING_HEARTBEAT_SEC=5
 export SUDO_PING_SLA_SEC=1
 
@@ -15,14 +13,14 @@ if [ $PPID -le 1 ]; then
 	exit 1
 fi
 
-PID="$("$SHELL" -c 'echo $PPID' | xargs ps -o ppid= -p)"
+SUDO_PING_PID="$("$SHELL" -c 'echo $PPID' | xargs ps -o ppid= -p)"
 
 # ----------------------------------------------------------------
 
-while [ $(ps -o ppid= -p "$PID") -eq $PPID ]; do
-    DDL="$(expr "$(date +%s)" + "$SUDO_PING_HEARTBEAT_SEC" - "$SUDO_PING_SLA_SEC")"
+while [ $(ps -o ppid= -p "$SUDO_PING_PID") -eq $PPID ]; do
+    SUDO_PING_DDL="$(expr "$(date +%s)" + "$SUDO_PING_HEARTBEAT_SEC" - "$SUDO_PING_SLA_SEC")"
     sudo -v
-    while [ $(ps -o ppid= -p "$PID") -eq $PPID ] && [ "$(date +%s)" -lt "$DDL" ]; do
+    while [ $(ps -o ppid= -p "$SUDO_PING_PID") -eq $PPID ] && [ "$(date +%s)" -lt "$SUDO_PING_DDL" ]; do
     	sleep "$SUDO_PING_SLA_SEC"
     done
-done
+done &

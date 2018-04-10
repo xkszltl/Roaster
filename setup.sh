@@ -2,6 +2,12 @@
 
 set -e
 
+if [ $PPID -le 1 ]; then
+    echo "Started from process $PPID. Re-entry for protection."
+    $0 $@
+    exit $!
+fi
+
 trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
 # ================================================================
@@ -63,7 +69,7 @@ if ! rpm -q sudo > /dev/null; then
     fi
 fi
 
-"$ROOT_DIR/pkgs/utils/sudo_ping_daemon.sh" &
+. "$ROOT_DIR/pkgs/utils/sudo_ping_daemon.sh"
 
 sudo -llp "
 ----------------------------------------------------------------
