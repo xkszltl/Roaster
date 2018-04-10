@@ -13,7 +13,7 @@ export SUDO_PING_SLA_SEC=1
 # Store PID of biological parent for suicide as orphan.
 export PPID_BIO="$PPID"
 
-if [ ! "PPID_BIO" ]; then
+if [ ! "$PPID_BIO" ]; then
 	echo "Failed to retrieve \$PPID."
 	echo "    Check your shell configuration."
 	echo "    Using \"$SHELL\" currently"
@@ -38,10 +38,10 @@ sudo -llp "
 
 # ----------------------------------------------------------------
 
-while [ "$PPID" = "$PPID_BIO" ]; do
+while [ "$(eval 'echo $PPID')" -eq "$PPID_BIO" ]; do
     DDL="$(expr "$(date +%s)" + "$SUDO_PING_HEARTBEAT_SEC" - "$SUDO_PING_SLA_SEC")"
     sudo -v
-    while [ "$PPID" = "$PPID_BIO" ] && [ "$(date +%s)" -lt "$DDL" ]; do
+    while [ "$(eval 'echo $PPID')" -eq "$PPID_BIO" ] && [ "$(date +%s)" -lt "$DDL" ]; do
     	sleep "$SUDO_PING_SLA_SEC"
     done
 done
