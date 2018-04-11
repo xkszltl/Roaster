@@ -22,25 +22,24 @@
 
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
 
-        mkdir -p build
-        cd $_
-        cmake                                       \
-            -G"Ninja"                               \
-            -DCMAKE_BUILD_TYPE=Release              \
-            -DCMAKE_C{,XX}_FLAGS="-g"               \
-            -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
-            -DCMAKE_VERBOSE_MAKEFILE=ON             \
-            -DWITH_BZ2=ON                           \
-            -DWITH_JEMALLOC=ON                      \
-            -DWITH_LIBRADOS=ON                      \
-            -DWITH_LZ4=ON                           \
-            -DWITH_SNAPPY=ON                        \
-            -DWITH_ZLIB=ON                          \
-            -DWITH_ZSTD=ON                          \
-            ..
-        time cmake --build .
-        time cmake --build . --target install
-        false
+        # mkdir -p build
+        # cd $_
+        # cmake                                       \
+        #     -G"Ninja"                               \
+        #     -DCMAKE_BUILD_TYPE=Release              \
+        #     -DCMAKE_C{,XX}_FLAGS="-g"               \
+        #     -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
+        #     -DCMAKE_VERBOSE_MAKEFILE=ON             \
+        #     -DWITH_BZ2=ON                           \
+        #     -DWITH_JEMALLOC=ON                      \
+        #     -DWITH_LIBRADOS=ON                      \
+        #     -DWITH_LZ4=ON                           \
+        #     -DWITH_SNAPPY=ON                        \
+        #     -DWITH_ZLIB=ON                          \
+        #     -DWITH_ZSTD=ON                          \
+        #     ..
+        # time cmake --build .
+        # time cmake --build . --target install
 
         export CC="$TOOLCHAIN/cc"
         export CXX="$TOOLCHAIN/c++"
