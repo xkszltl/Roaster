@@ -19,7 +19,7 @@ SUDO_PING_PID="$("$SHELL" -c 'echo $PPID' | xargs ps -o ppid= -p)"
 
 while [ $(ps -o ppid= -p "$SUDO_PING_PID") -eq $PPID ]; do
     SUDO_PING_DDL="$(expr "$(date +%s)" + "$SUDO_PING_HEARTBEAT_SEC" - "$SUDO_PING_SLA_SEC")"
-    sudo -v
+    sudo -n true
     while [ $(ps -o ppid= -p "$SUDO_PING_PID") -eq $PPID ] && [ "$(date +%s)" -lt "$SUDO_PING_DDL" ]; do
     	sleep "$SUDO_PING_SLA_SEC"
     done
