@@ -10,10 +10,10 @@ for i in llvm-{gcc,clang}; do
         cd $SCRATCH
 
         (
-            set -e
+            set -xe
             echo "Retriving LLVM $LLVM_GIT_TAG..."
             # until git clone --depth 1 --branch "$LLVM_GIT_TAG" "$LLVM_MIRROR/llvm.git"; do echo "Retrying"; done
-            until git clone --depth 1 "$LLVM_MIRROR/llvm.git"; do echo "Retrying"; done
+            until git clone --depth 1 "$LLVM_MIRROR/llvm.git"; do sleep 1; echo "Retrying"; done
             cd llvm
             git checkout $(git tag | sed -n '/^release_[0-9\.]*$/p' | sort -V | tail -n1)
             export LLVM_GIT_TAG="$(git describe --tags)"
@@ -21,9 +21,9 @@ for i in llvm-{gcc,clang}; do
                 set -e
                 export PROJ="$(basename "{}")"
                 [ "$PROJ" ]
-                until git clone --depth 1 --branch $LLVM_GIT_TAG "$LLVM_MIRROR/$PROJ.git" {}; do echo "Retrying"; done
+                until git clone --depth 1 --branch $LLVM_GIT_TAG "'"$LLVM_MIRROR"'/$PROJ.git" {}; do sleep 1; echo "Retrying"; done
                 if [ "$PROJ" = "clang" ]; then
-                    until git clone --depth 1 --branch $LLVM_GIT_TAG $LLVM_MIRROR/$PROJ-tools-extra.git "{}/tools/extra"; do echo "Retrying"; done
+                    until git clone --depth 1 --branch $LLVM_GIT_TAG "'"$LLVM_MIRROR"'/$PROJ-tools-extra.git" "{}/tools/extra"; do sleep 1; echo "Retrying"; done
                 fi
             '"'" ::: projects/{compiler-rt,lib{cxx{,abi},unwind},openmp} tools/{clang,lldb,lld,polly}
         )
