@@ -4,32 +4,30 @@
 
 for i in llvm-{gcc,clang}; do
     [ -e $STAGE/$i ] && ( set -xe
-        export LLVM_MIRROR=$GIT_MIRROR/llvm-mirror
+        export LLVM_MIRROR="$GIT_MIRROR/llvm-mirror"
         export LLVM_GIT_TAG=release_60
 
         cd $SCRATCH
 
         (
-            set -xe
+            set -e
             echo "Retriving LLVM $LLVM_GIT_TAG..."
-            # until git clone --depth 1 --branch "$LLVM_GIT_TAG" "$LLVM_MIRROR/llvm.git"; do echo "Retrying"; done
+            # until git clone --depth 1 --branch "$LLVM_GIT_TAG" "$LLVM_MIRROR/llvm.git"; do sleep 1; echo "Retrying"; done
             until git clone --depth 1 "$LLVM_MIRROR/llvm.git"; do sleep 1; echo "Retrying"; done
             cd llvm
             git checkout $(git tag | sed -n '/^release_[0-9\.]*$/p' | sort -V | tail -n1)
-            export LLVM_GIT_TAG="$(git describe --tags)"
             parallel -j0 --bar --line-buffer 'bash -c '"'"'
                 set -e
                 export PROJ="$(basename "{}")"
                 [ "$PROJ" ]
-                until git clone --depth 1 --branch $LLVM_GIT_TAG "'"$LLVM_MIRROR"'/$PROJ.git" {}; do sleep 1; echo "Retrying"; done
+                until git clone --depth 1 --branch "$(git describe --tags)" "'"$LLVM_MIRROR"'/$PROJ.git" {}; do sleep 1; echo "Retrying"; done
                 if [ "$PROJ" = "clang" ]; then
-                    until git clone --depth 1 --branch $LLVM_GIT_TAG "'"$LLVM_MIRROR"'/$PROJ-tools-extra.git" "{}/tools/extra"; do sleep 1; echo "Retrying"; done
+                    until git clone --depth 1 --branch "$(git describe --tags)" "'"$LLVM_MIRROR"'/$PROJ-tools-extra.git" "{}/tools/extra"; do sleep 1; echo "Retrying"; done
                 fi
             '"'" ::: projects/{compiler-rt,lib{cxx{,abi},unwind},openmp} tools/{clang,lldb,lld,polly}
         )
 
         cd llvm
-        git tag -f '6.0.0'
 
         # ------------------------------------------------------------
 
@@ -110,7 +108,7 @@ for i in llvm-{gcc,clang}; do
             time cmake --build . --target install
         )
 
-        git tag -f "$(sed 's/[^0-9]//g' <<< "$LLVM_GIT_TAG" | sed 's/\([0-9]\)/\1\./g' | sed 's/\.$//')"
+        git tag -f "$(git describe --tags | sed 's/[^0-9]//g' | sed 's/\([0-9]\)/\1\./g' | sed 's/\.$//')"
         "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
 
         cd
