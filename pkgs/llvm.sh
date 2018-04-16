@@ -15,7 +15,7 @@ for i in llvm-{gcc,clang}; do
             # until git clone --depth 1 --branch "$LLVM_GIT_TAG" "$LLVM_MIRROR/llvm.git"; do sleep 1; echo "Retrying"; done
             until git clone --depth 1 "$LLVM_MIRROR/llvm.git"; do sleep 1; echo "Retrying"; done
             cd llvm
-            git checkout $(git branch -r | sed -n '/^release_[0-9\.]*$/p' | sort -V | tail -n1)
+            git checkout $(git branch -r | sed -n 's/.*\/\(release_[0-9\.]*\)[[:space:]]*$/\1/p' | sort -V | tail -n1)
             git tag -f $_
             parallel -j0 --bar --line-buffer 'bash -c '"'"'
                 set -e
