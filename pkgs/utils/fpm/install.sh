@@ -38,7 +38,12 @@ rpm -qlp "$PKG_PATH"
 # ----------------------------------------------------------------
 
 if rpm -q "$PKG_NAME"; then
-    sudo yum reinstall -y "$PKG_PATH" || sudo yum update -y "$PKG_PATH" || sudo yum downgrade -y "$PKG_PATH"
+    export PKG_YUM_SEQ="update reinstall downgrade"
 else
-    sudo yum install -y "$PKG_PATH"
+    export PKG_YUM_SEQ="install"
 fi
+
+for i in $PKG_YUM_SEQ _; do
+    [ "$i" != '_' ]
+    sudo yum "$i" -y "$PKG_PATH" && break
+done
