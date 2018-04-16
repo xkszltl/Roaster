@@ -14,9 +14,9 @@ for i in llvm-{gcc,clang}; do
             echo "Retriving LLVM $LLVM_GIT_TAG..."
             # until git clone --depth 1 --branch "$LLVM_GIT_TAG" "$LLVM_MIRROR/llvm.git"; do echo "Retrying"; done
             until git clone --depth 1 "$LLVM_MIRROR/llvm.git"; do echo "Retrying"; done
+            cd llvm
             git checkout $(git tag | sed -n '/^release_[0-9\.]*$/p' | sort -V | tail -n1)
             export LLVM_GIT_TAG="$(git describe --tags)"
-            cd llvm
             parallel -j0 --bar --line-buffer 'bash -c '"'"'
                 set -e
                 export PROJ="$(basename "{}")"
