@@ -7,7 +7,7 @@
     
     # ------------------------------------------------------------
 
-    until git clone --depth 1 --no-checkout --no-single-branch $GIT_MIRROR/gflags/gflags.git; do echo 'Retrying'; done
+    until git clone --depth 1 --no-checkout --no-single-branch --recursive $GIT_MIRROR/gflags/gflags.git; do echo 'Retrying'; done
     cd gflags
     git checkout $(git tag | sed -n '/^v[0-9\.]*$/p' | sort -V | tail -n1)
 
@@ -26,12 +26,12 @@
         cd $_
 
         cmake                                               \
-            -G"Ninja"                                       \
             -DBUILD_PACKAGING=OFF                           \
             -DBUILD_SHARED_LIBS=ON                          \
             -DBUILD_TESTING=ON                              \
             -DCMAKE_BUILD_TYPE=RelWithDebInfo               \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"           \
+            -G"Ninja"                                       \
             ..
 
         time cmake --build .

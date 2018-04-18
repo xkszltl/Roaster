@@ -27,11 +27,11 @@
         cd $_
 
         cmake                                               \
-            -G"Ninja"                                       \
             -DCMAKE_BUILD_TYPE=RelWithDebInfo               \
             -DCMAKE_C_COMPILER=gcc                          \
             -DCMAKE_CXX_COMPILER=g++                        \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"           \
+            -G"Ninja"                                       \
             ..
 
         time cmake --build .
