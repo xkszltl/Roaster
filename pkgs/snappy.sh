@@ -25,12 +25,15 @@
         cd $_
 
         # TODO: Enable test once the gtest linking issue is fixed (already in PR)
-        cmake                                               \
-            -G"Ninja"                                       \
-            -DBUILD_SHARED_LIBS=ON                          \
-            -DCMAKE_BUILD_TYPE=RelWithDebInfo               \
-            -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"           \
-            -DSNAPPY_BUILD_TESTS=OFF                        \
+        cmake                                       \
+            -DBUILD_SHARED_LIBS=ON                  \
+            -DCMAKE_BUILD_TYPE=Release              \
+            -DCMAKE_C_COMPILER_LAUNCHER=ccache      \
+            -DCMAKE_C{,XX}_FLAGS="-g"               \
+            -DCMAKE_CXX_COMPILER_LAUNCHER=ccache    \
+            -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
+            -DSNAPPY_BUILD_TESTS=OFF                \
+            -G"Ninja"                               \
             ..
 
         time cmake --build .

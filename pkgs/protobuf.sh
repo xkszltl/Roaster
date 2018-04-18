@@ -35,7 +35,10 @@
         cd $_
 
         cmake                                       \
-            -DCMAKE_BUILD_TYPE=RelWithDebInfo       \
+            -DCMAKE_BUILD_TYPE=Release              \
+            -DCMAKE_C_COMPILER_LAUNCHER=ccache      \
+            -DCMAKE_C{,XX}_FLAGS="-g"               \
+            -DCMAKE_CXX_COMPILER_LAUNCHER=ccache    \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
             -Dprotobuf_BUILD_EXAMPLES=ON            \
             -Dprotobuf_BUILD_SHARED_LIBS=ON         \
