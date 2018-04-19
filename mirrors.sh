@@ -57,7 +57,7 @@ LMDB/lmdb,\
 Maratyszcza/{confu,cpuinfo,FP16,FXdiv,NNPACK,PeachPy,psimd,pthreadpool},\
 NervanaSystems/{neon,nervanagpu},\
 ninja-build/ninja,\
-numpy/numpy,\
+numpy/numpy{,doc},\
 NVIDIA/{DIGITS,cnmem,libglvnd,nccl,nvidia-docker},\
 NVLabs/{cub,xmp},\
 onnx/{models,onnx{,mltools},tutorials},\
@@ -69,6 +69,7 @@ pytorch/pytorch,\
 RLovelett/eigen,\
 RMerl/{am-toolchains,asuswrt-merlin.ng},\
 SchedMD/slurm,\
+scipy/scipy{,-mathjax,-sphinx-theme},\
 shadowsocks/{ShadowsocksX-NG,libQtShadowsocks,shadowsocks{,-go,-libev,-manager,-windows}},\
 tensorflow/tensorflow,\
 xianyi/OpenBLAS,\
