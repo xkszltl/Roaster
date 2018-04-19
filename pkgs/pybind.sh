@@ -5,7 +5,7 @@
 [ -e $STAGE/pybind ] && ( set -xe
     cd $SCRATCH
 
-    sudo pip install -U git+$GIT_MIRROR/pytest-dev/pytest.git
+    sudo pip3 install -U git+$GIT_MIRROR/{numpy/numpy,pytest-dev/pytest}.git
 
     # ------------------------------------------------------------
 
@@ -34,7 +34,7 @@
             ..
 
         time cmake --build .
-        time cmake --build . --target test || true
+        time cmake --build . --target pytest
         time cmake --build . --target install
     )
 
