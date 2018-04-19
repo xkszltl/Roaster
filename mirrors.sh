@@ -38,15 +38,13 @@ if [ ! $PATTERN ] || grep $PATTERN <<<$SRC_DIR; then
     git push --mirror
 fi
 '"'" ::: {\
-https://bitbucket.org/\ {\
-eigen/eigen,\
-},\
 https://github.com/\ {\
 ARM-software/{arm-trusted-firmware,ComputeLibrary,lisa},\
 aws/aws-{cli,sdk-{cpp,go,java,js,net,php,ruby}},\
 BVLC/caffe,\
 caffe2/{caffe2,models},\
 ccache/ccache,\
+eigenteam/eigen-git-mirror,\
 facebook/{rocksdb,zstd},\
 facebookincubator/gloo,\
 gflags/gflags,\
