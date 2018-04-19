@@ -61,6 +61,7 @@ onnx/{models,onnx{,mltools},tutorials},\
 open-mpi/ompi,\
 opencv/opencv,\
 pybind/pybind11,\
+pytest-dev/{py,pytest},\
 pytorch/pytorch,\
 RLovelett/eigen,\
 RMerl/{am-toolchains,asuswrt-merlin.ng},\
