@@ -97,7 +97,7 @@ cd $SCRATCH
     sudo rm -rvf $STAGE
     sudo mkdir -p $(dirname $STAGE)/.$(basename $STAGE)
     cd $_
-    [ $# -gt 0 ] && sudo touch $@ || sudo touch repo font pkg-{skip,all} intel auth ompi cuda slurm nagios ss tex cmake llvm-{gcc,clang} boost jemalloc openblas opencv gtest gflags glog snappy protobuf leveldb rocksdb lmdb caffe caffe2
+    [ $# -gt 0 ] && sudo touch $@ || sudo touch repo font pkg-{skip,all} intel auth ompi cuda slurm nagios ss tex cmake llvm-{gcc,clang} boost jemalloc openblas opencv gtest gflags glog pybind snappy protobuf leveldb rocksdb lmdb caffe caffe2
     sync || true
     cd $SCRATCH
     sudo mv -vf $(dirname $STAGE)/.$(basename $STAGE) $STAGE
@@ -126,6 +126,7 @@ for i in $(echo "
     gtest
     gflags
     glog
+    pybind
     snappy
     protobuf
     leveldb
