@@ -57,6 +57,7 @@ LMDB/lmdb,\
 Maratyszcza/{confu,cpuinfo,FP16,FXdiv,NNPACK,PeachPy,psimd,pthreadpool},\
 NervanaSystems/{neon,nervanagpu},\
 ninja-build/ninja,\
+numpy/numpy,\
 NVIDIA/{DIGITS,cnmem,libglvnd,nccl,nvidia-docker},\
 NVLabs/{cub,xmp},\
 onnx/{models,onnx{,mltools},tutorials},\
