@@ -7,9 +7,10 @@
 
     sudo pip install -U git+$GIT_MIRROR/Maratyszcza/{confu,PeachPy}.git
 
-    until git clone --depth 1 --no-checkout --no-single-branch $GIT_MIRROR/facebook/rocksdb.git; do echo 'Retrying'; done
+    # ------------------------------------------------------------
+
+    until git clone --depth 1 --single-branch -b "$(git ls-remote --tags "$GIT_MIRROR/facebook/rocksdb.git" | sed -n 's/.*[[:space:]]refs\/tags\/\(v[0-9\.]*\)[[:space:]]*$/\1/p' | sort -V | tail -n1)" "$GIT_MIRROR/facebook/rocksdb.git"; do echo 'Retrying'; done
     cd rocksdb
-    git checkout $(git tag | sed -n '/^v[0-9\.]*$/p' | sort -V | tail -n1)
 
     # ------------------------------------------------------------
 
