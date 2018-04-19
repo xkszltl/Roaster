@@ -41,6 +41,7 @@ fi
 https://github.com/\ {\
 ARM-software/{arm-trusted-firmware,ComputeLibrary,lisa},\
 aws/aws-{cli,sdk-{cpp,go,java,js,net,php,ruby}},\
+boostorg/boost,\
 BVLC/caffe,\
 caffe2/{caffe2,models},\
 ccache/ccache,\
