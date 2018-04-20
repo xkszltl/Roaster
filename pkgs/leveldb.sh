@@ -19,9 +19,10 @@
 
     (
         set +x
-        . scl_source enable devtoolset-7 || true
+        . scl_source enable devtoolset-4 || true
         set -xe
 
+        # CMake script it not ready for dynamic lib.
         if [ -e CMakeLists.txt ]; then
             mkdir -p build
             cd $_
