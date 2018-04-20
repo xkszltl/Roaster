@@ -5,7 +5,7 @@
 [ -e $STAGE/cuda ] && ( set -xe
     cd $SCRATCH
 
-    export CUDNN_REPO=cudnn/v7.0.5
+    export CUDNN_REPO=cudnn/v7.1.3
 
     if [ $GIT_MIRROR == $GIT_MIRROR_CODINGCAFE ]; then
         curl -sSL https://repo.codingcafe.org/nvidia/$CUDNN_REPO/$(curl -sSL https://repo.codingcafe.org/nvidia/cudnn | sed -n 's/.*href="\(.*linux-x64.*\)".*/\1/p' | sort -V | tail -n1)
