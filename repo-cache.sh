@@ -47,7 +47,7 @@ export CREATEREPO='createrepo_c
     $(pwd)
 '
 
-export ROUTE='10.0.0.$([ $(expr $RANDOM % 15) -lt 10 ] && echo 12 || echo 11)'
+export ROUTE='10.0.0.$([ $(expr $RANDOM % 13) -lt 9 ] && echo 12 || echo 11)'
 
 export REPO_TASKS=$(jq -n '
     {
@@ -107,18 +107,20 @@ parallel -j0 --line-buffer --bar 'bash -c '"'"'
 # NVIDIA Repository Mirroring
 # ----------------------------------------------------------------
 
-parallel -j0 --line-buffer --bar 'bash -c '"'"'
+parallel -j10 --line-buffer --bar 'bash -c '"'"'
     export CUDNN_URL="https://developer.download.nvidia.com/compute/redist/cudnn"
-    export lhs=$(sed "s/=.*//" <<< "{}")
-    export rhs=$(sed "s/.*=//" <<< "{}")
+    export lhs=$(sed "s/@.*//" <<< "{}")
+    export rhs=$(sed "s/.*@//" <<< "{}")
 
-    mkdir -p nvidia/cudnn/$lhs
+    mkdir -p "nvidia/cudnn/$lhs"
     cd $_
 
-    $DRY || wget $DRY_WGET -cq --bind-address='$ROUTE' $CUDNN_URL/$(basename $lhs)/cudnn-$(printf $rhs x64-$(basename $lhs | cut -f1 -d.))
-'"'" :::    \
-    v7.0.{4,5}=9.{0,1,2,3,4,5,6,7,8,9}-{{linux,osx}-%s.tgz,windows10-%s.zip}    \
-&
+    '"$DRY"' || wget '"$DRY_WGET"' -cq --bind-address='"$ROUTE"' "$CUDNN_URL/$lhs/cudnn-$(printf "$rhs" "x64-$(cut -d. -f1,2 <<< "$lhs" | sed "s/\.0$//")")"
+    [ $(ls | wc -l) -le 0 ] && cd .. && rm -rf "$lhs"
+'"'" ::: v7.{1,2}.{0,1,2,3,4,5,6,7,8,9}@9.{0,1,2,3}-{{linux,osx}-%s.tgz,windows10-%s.zip} &
+
+wait
+exit
 
 # ----------------------------------------------------------------
 # NVIDIA Repository Mirroring
