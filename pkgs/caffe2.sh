@@ -7,8 +7,8 @@
 
     # ------------------------------------------------------------
 
-    until git clone --depth 1 $GIT_MIRROR/caffe2/caffe2.git; do echo 'Retrying'; done
-    cd caffe2
+    until git clone --depth 1 $GIT_MIRROR/pytorch/pytorch.git; do echo 'Retrying'; done
+    cd pytorch
 
     if [ $GIT_MIRROR == $GIT_MIRROR_CODINGCAFE ]; then
         export HTTP_PROXY=proxy.codingcafe.org:8118
@@ -23,6 +23,14 @@
 
     git submodule init
     until git config --file .gitmodules --get-regexp path | cut -d' ' -f2 | parallel -j0 --ungroup --bar 'git submodule update --recursive {}'; do echo 'Retrying'; done
+
+    pushd modules/rocksdb
+    if [ $(sed -n '/#include[[:space:]][[:space:]]*["<]caffe2\/core\/module\.h[">][[:space:]]*$/p' rocksdb.cc | wc -l) -le 0 ]; then
+        echo '#include "caffe2/core/module.h"' > .rocksdb.cc
+        cat rocksdb.cc >> .rocksdb.cc
+        mv -f {.,}rocksdb.cc
+    fi
+    popd
 
     # ------------------------------------------------------------
 
@@ -99,7 +107,7 @@
     # ------------------------------------------------------------
 
     cd
-    rm -rf $SCRATCH/caffe2
+    rm -rf $SCRATCH/pytorch
 
     # ------------------------------------------------------------
 
