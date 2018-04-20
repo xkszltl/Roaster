@@ -5,8 +5,11 @@
 [ -e $STAGE/eigen ] && ( set -xe
     cd $SCRATCH
 
-    until git clone --depth 1 --single-branch -b "$(git ls-remote --tags "$GIT_MIRROR/eigenteam/eigen-git-mirror.git" | sed -n 's/.*[[:space:]]refs\/tags\/\([0-9\.]*\)[[:space:]]*$/\1/p' | sort -V | tail -n1)" "$GIT_MIRROR/eigenteam/eigen-git-mirror.git" "eigen"; do echo 'Retrying'; done
+    # until git clone --depth 1 --single-branch -b "$(git ls-remote --tags "$GIT_MIRROR/eigenteam/eigen-git-mirror.git" | sed -n 's/.*[[:space:]]refs\/tags\/\([0-9\.]*\)[[:space:]]*$/\1/p' | sort -V | tail -n1)" "$GIT_MIRROR/eigenteam/eigen-git-mirror.git" "eigen"; do echo 'Retrying'; done
+    # Release 3.3.4 is not compatible with CUDA 9.1.
+    until git clone --depth 1 --single-branch -b "master" "$GIT_MIRROR/eigenteam/eigen-git-mirror.git" "eigen"; do echo 'Retrying'; done
     cd eigen
+    git tag "$(git ls-remote --tags "$GIT_MIRROR/eigenteam/eigen-git-mirror.git" | sed -n 's/.*[[:space:]]refs\/tags\/\([0-9\.]*\)[[:space:]]*$/\1/p' | sort -V | tail -n1).1"
 
     # ------------------------------------------------------------
 
