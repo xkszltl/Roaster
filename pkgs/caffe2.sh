@@ -61,6 +61,7 @@
             -DCPUINFO_BUILD_TOOLS=ON                \
             -DUSE_ATEN=OFF                          \
             -DUSE_NATIVE_ARCH=ON                    \
+            -DUSE_OBSERVERS=ON                      \
             -DUSE_OPENMP=ON                         \
             -DUSE_ROCKSDB=ON                        \
             -DUSE_ZMQ=ON                            \
