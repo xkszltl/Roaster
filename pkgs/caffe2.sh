@@ -24,14 +24,6 @@
     git submodule init
     until git config --file .gitmodules --get-regexp path | cut -d' ' -f2 | parallel -j0 --ungroup --bar 'git submodule update --recursive {}'; do echo 'Retrying'; done
 
-    pushd modules/rocksdb
-    if [ $(sed -n '/#include[[:space:]][[:space:]]*["<]caffe2\/core\/module\.h[">][[:space:]]*$/p' rocksdb.cc | wc -l) -le 0 ]; then
-        echo '#include "caffe2/core/module.h"' > .rocksdb.cc
-        cat rocksdb.cc >> .rocksdb.cc
-        mv -f {.,}rocksdb.cc
-    fi
-    popd
-
     # ------------------------------------------------------------
 
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
@@ -39,9 +31,9 @@
     (
         set +x
         # Currently caffe2 can only be built with gcc-5.
-        # CUDA 9.1 only support up to gcc-6.3.0 while devtoolset-6 contains gcc-6.3.1
+        # CUDA 9.1 has compiler bug with gcc-6.3.1 which is shown as compile error in <tuple>.
         # TODO: Upgrade glog to use new compiler when possible.
-        . scl_source enable devtoolset-6 || true
+        . scl_source enable devtoolset-4 || true
         set -xe
 
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
