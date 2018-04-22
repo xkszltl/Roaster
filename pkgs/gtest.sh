@@ -18,7 +18,7 @@
 
     (
         set +x
-        . scl_source enable devtoolset-7 || true
+        . scl_source enable devtoolset-5 || true
         set -xe
 
         mkdir -p build
