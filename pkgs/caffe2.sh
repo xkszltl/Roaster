@@ -52,6 +52,7 @@
             -DBENCHMARK_ENABLE_LTO=ON               \
             -DBENCHMARK_USE_LIBCXX=OFF              \
             -DBLAS=MKL                              \
+            -DBUILD_CUSTOM_PROTOBUF=OFF             \
             -DCMAKE_BUILD_TYPE=Release              \
             -DCMAKE_C_COMPILER="$TOOLCHAIN/cc"      \
             -DCMAKE_C{,XX}_FLAGS="-g"               \
@@ -59,6 +60,8 @@
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
             -DCMAKE_VERBOSE_MAKEFILE=ON             \
             -DCPUINFO_BUILD_TOOLS=ON                \
+            -DINSTALL_GMOCK=OFF                     \
+            -DINSTALL_GTEST=OFF                     \
             -DUSE_ATEN=OFF                          \
             -DUSE_NATIVE_ARCH=ON                    \
             -DUSE_OBSERVERS=ON                      \
@@ -79,10 +82,10 @@
         # Tag with version detected from cmake cache
         # --------------------------------------------------------
 
-        cmake -LA -N . | sed -n 's/^CAFFE2_VERSION:.*=//p' | xargs git tag -f
+        sed -n 's/^set[[:space:]]*([[:space:]]*CAFFE2_VERSION_.....[[:space:]][[:space:]]*\([0-9]*\)[[:space:]]*).*/\1/p' ../CMakeLists.txt | paste -sd. | xargs git tag -f
 
         # --------------------------------------------------------
-        # Expose site-packages
+        # Expose site-packages and avoid caffe conflicts
         # --------------------------------------------------------
 
         pushd "$INSTALL_ROOT"
@@ -92,6 +95,7 @@
             ln -sf {$i,usr/local}/$j
         done
         done
+        rm -f usr/local/include/caffe/proto/caffe.pb.h
         popd
     )
 
