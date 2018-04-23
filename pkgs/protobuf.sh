@@ -7,7 +7,7 @@
 
     # ------------------------------------------------------------
 
-    until git clone --depth 1 --single-branch -b "$(git ls-remote --tags "$GIT_MIRROR/google/protobuf.git" | sed -n 's/.*[[:space:]]refs\/tags\/\(v[0-9\.]*\)/\1/p' | sort -V | tail -n1)" "$GIT_MIRROR/google/protobuf.git"; do echo 'Retrying'; done
+    until git clone --depth 1 --single-branch -b "$(git ls-remote --tags "$GIT_MIRROR/google/protobuf.git" | sed -n 's/.*[[:space:]]refs\/tags\/\(v[0-9\.]*\)$/\1/p' | sort -V | tail -n1)" "$GIT_MIRROR/google/protobuf.git"; do echo 'Retrying'; done
     cd protobuf
     until git clone --depth 1 --single-branch --recursive -b "$(git ls-remote --tags "$GIT_MIRROR/google/googletest.git" | sed -n 's/.*[[:space:]]refs\/tags\/\(release-[0-9\.]*\)$/\1/p' | sort -V | tail -n1)" "$GIT_MIRROR/google/googletest.git"; do echo 'Retrying'; done
     rm -rf gmock

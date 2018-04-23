@@ -74,6 +74,7 @@ shadowsocks/{ShadowsocksX-NG,libQtShadowsocks,shadowsocks{,-go,-libev,-manager,-
 tensorflow/tensorflow,\
 xianyi/OpenBLAS,\
 zdevito/ATen,\
+zeromq/{cppzmq,libzmq,pyzmq},\
 },\
 https://gitlab.com/\ {\
 NVIDIA/cuda,\
