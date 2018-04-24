@@ -13,11 +13,10 @@
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
     (
-        set +x
-        . scl_source enable devtoolset-6 || true
+        set +xe
+        . scl_source enable devtoolset-6
+        . /opt/intel/tbb/bin/tbbvars.sh intel64
         set -xe
-
-        . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
 
         mkdir -p build
         cd $_
@@ -28,14 +27,13 @@
             [ $HTTP_PROXY ] && export http_proxy=$HTTP_PROXY
             [ $HTTPS_PROXY ] && export https_proxy=$HTTPS_PROXY
         fi
+        # Separable CUDA causes symbol redefinition.
         cmake                                               \
             -G"Ninja"                                       \
-            -DBUILD_opencv_dnn=OFF                          \
-            -DBUILD_opencv_world=OFF                        \
+            -DBUILD_WITH_DEBUG_INFO=ON                      \
+            -DBUILD_opencv_world=ON                         \
+            -DBUILD_opencv_dnn=ON                           \
             -DCMAKE_BUILD_TYPE=Release                      \
-            -DCMAKE_C_COMPILER_LAUNCHER=ccache              \
-            -DCMAKE_C{,XX}_FLAGS="-g"                       \
-            -DCMAKE_CXX_COMPILER_LAUNCHER=ccache            \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"           \
             -DCMAKE_VERBOSE_MAKEFILE=ON                     \
             -DCPACK_BINARY_DEB=OFF                          \
@@ -53,10 +51,15 @@
             -DCPACK_SOURCE_TXZ=OFF                          \
             -DCPACK_SOURCE_ZIP=OFF                          \
             -DCUDA_NVCC_FLAGS='--expt-relaxed-constexpr'    \
+            -DCUDA_SEPARABLE_COMPILATION=OFF                \
+            -DENABLE_CCACHE=ON                              \
             -DENABLE_CXX11=ON                               \
+            -DENABLE_LTO=OFF                                \
             -DINSTALL_CREATE_DISTRIB=ON                     \
+            -DMKL_WITH_TBB=ON                               \
             -DOPENCV_ENABLE_NONFREE=ON                      \
             -DOpenGL_GL_PREFERENCE=GLVND                    \
+            -DPROTOBUF_UPDATE_FILES=ON                      \
             -DWITH_LIBV4L=ON                                \
             -DWITH_NVCUVID=ON                               \
             -DWITH_OPENGL=ON                                \
