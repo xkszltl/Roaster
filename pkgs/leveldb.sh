@@ -18,8 +18,8 @@
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
     (
-        set +x
-        . scl_source enable devtoolset-4 || true
+        set +xe
+        . scl_source enable devtoolset-4
         set -xe
 
         # CMake script it not ready for dynamic lib.

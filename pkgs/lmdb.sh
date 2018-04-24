@@ -12,8 +12,8 @@
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
     (
-        set +x
-        . scl_source enable devtoolset-7 || true
+        set +xe
+        . scl_source enable devtoolset-7
         set -xe
 
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"

@@ -14,13 +14,10 @@
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
     (
-        set +x
-
-        # . scl_source enable devtoolset-7 || true
-
+        set +xe
+        # . scl_source enable devtoolset-7
         # Downgrade to gcc-5 to solve "unrecognized relocation" error in caffe2.
-        . scl_source enable devtoolset-4 || true
-
+        . scl_source enable devtoolset-4
         set -xe
 
         mkdir -p build

@@ -29,11 +29,11 @@
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
     (
-        set +x
+        set +xe
         # Currently caffe2 can only be built with gcc-5.
         # CUDA 9.1 has compiler bug with gcc-6.3.1 which is shown as compile error in <tuple>.
         # TODO: Upgrade glog to use new compiler when possible.
-        . scl_source enable devtoolset-4 || true
+        . scl_source enable devtoolset-4
         set -xe
 
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
