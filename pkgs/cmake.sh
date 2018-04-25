@@ -7,9 +7,8 @@
     
     # ------------------------------------------------------------
 
-    until git clone --depth 1 --branch release $GIT_MIRROR/Kitware/CMake.git; do echo 'Retrying'; done
+    until git clone --depth 1 --single-branch -b "$(git ls-remote --tags "$GIT_MIRROR/Kitware/CMake.git" | sed -n 's/.*[[:space:]]refs\/tags\/\([0-9\.]*\)$/\1/p' | sort -V | tail -n1)" "$GIT_MIRROR/Kitware/CMake.git"; do echo 'Retrying'; done
     cd CMake
-    git checkout $(git tag | sed -n '/^[0-9\.]*$/p' | sort -V | tail -n1)
 
     # ------------------------------------------------------------
 
