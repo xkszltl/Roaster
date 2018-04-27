@@ -5,6 +5,7 @@ stages:
   - pkg-skip
   - ss
   - tex
+  - infra
   - llvm-gcc
   - llvm-clang
   - misc
@@ -86,6 +87,18 @@ tex:
   script:
     - gitlab-ci/build_stage.sh
 
+infra:
+  stage: infra
+  tags:
+    - docker
+    - gpu
+  only:
+    - /^build-(init|repo|font|pkg-skip|pkg-all|ss|tex|infra)$/
+  except:
+    - branches
+  script:
+    - gitlab-ci/build_stage.sh
+
 llvm-gcc:
   stage: llvm-gcc
   tags:
@@ -104,7 +117,7 @@ llvm-clang:
     - docker
     - gpu
   only:
-    - /^build-(init|repo|font|pkg-skip|pkg-all|ss|tex|llvm-gcc|llvm-clang)$/
+    - /^build-(init|repo|font|pkg-skip|pkg-all|ss|tex|infra|llvm-gcc|llvm-clang)$/
   except:
     - branches
   script:
@@ -116,7 +129,7 @@ misc:
     - docker
     - gpu
   only:
-    - /^build-(init|repo|font|pkg-skip|pkg-all|ss|tex|llvm-gcc|llvm-clang|misc)$/
+    - /^build-(init|repo|font|pkg-skip|pkg-all|ss|tex|infra|llvm-gcc|llvm-clang|misc)$/
   except:
     - branches
   script:
@@ -128,7 +141,7 @@ dl:
     - docker
     - gpu
   only:
-    - /^build-(init|repo|font|pkg-skip|pkg-all|ss|tex|llvm-gcc|llvm-clang|misc|dl)$/
+    - /^build-(init|repo|font|pkg-skip|pkg-all|ss|tex|infra|llvm-gcc|llvm-clang|misc|dl)$/
   except:
     - branches
   script:
@@ -140,7 +153,7 @@ edit:
     - docker
     - gpu
   only:
-    - /^build-(init|repo|font|pkg-skip|pkg-all|ss|tex|llvm-gcc|llvm-clang|misc|dl|edit)$/
+    - /^build-(init|repo|font|pkg-skip|pkg-all|ss|tex|infra|llvm-gcc|llvm-clang|misc|dl|edit)$/
   except:
     - branches
   script:
@@ -152,7 +165,7 @@ finish:
     - docker
     - gpu
   only:
-    - /^build-(init|repo|font|pkg-skip|pkg-all|ss|tex|llvm-gcc|llvm-clang|misc|dl|edit|finish)$/
+    - /^build-(init|repo|font|pkg-skip|pkg-all|ss|tex|infra|llvm-gcc|llvm-clang|misc|dl|edit|finish)$/
   except:
     - branches
   script:

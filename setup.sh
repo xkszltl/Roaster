@@ -97,7 +97,7 @@ cd $SCRATCH
     sudo rm -rvf $STAGE
     sudo mkdir -p $(dirname $STAGE)/.$(basename $STAGE)
     cd $_
-    [ $# -gt 0 ] && sudo touch $@ || sudo touch repo font pkg-{skip,all} intel auth ompi cuda slurm nagios ss tex cmake llvm-{gcc,clang} boost jemalloc eigen openblas mkl-dnn opencv gtest gflags glog pybind snappy protobuf leveldb rocksdb lmdb caffe caffe2
+    [ $# -gt 0 ] && sudo touch $@ || sudo touch repo font pkg-{skip,all} auth slurm nagios ss tex cmake intel ompi cuda llvm-{gcc,clang} boost jemalloc eigen openblas mkl-dnn opencv gtest gflags glog pybind snappy protobuf leveldb rocksdb lmdb caffe caffe2
     sync || true
     cd $SCRATCH
     sudo mv -vf $(dirname $STAGE)/.$(basename $STAGE) $STAGE
@@ -109,15 +109,15 @@ for i in $(echo "
     env-pkg
     font
     pkg
-    cmake
-    intel
-    openmpi
-    cuda
     auth
     slurm
     nagios
     shadowsocks
     texlive
+    cmake
+    intel
+    openmpi
+    cuda
     llvm
     boost
     jemalloc
