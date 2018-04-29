@@ -45,6 +45,7 @@ boostorg/boost,\
 BVLC/caffe,\
 caffe2/{caffe2,models},\
 ccache/ccache,\
+cython/cython,\
 eigenteam/eigen-git-mirror,\
 facebook/{rocksdb,zstd},\
 facebookincubator/gloo,\
