@@ -61,19 +61,21 @@ cd $_
 # CTAN Repository Mirroring
 # ----------------------------------------------------------------
 
-if false; then :
-elif ping -nfc 10 mirrors.tuna.tsinghua.edu.cn -I 10.0.0.11; then
-    $DRY || rsync $DRY_RSYNC -avPz --delete --address 10.0.0.11 rsync://mirrors.tuna.tsinghua.edu.cn/CTAN/ CTAN &
-elif ping -nfc 10 rsync.mirrors.ustc.edu.cn -I 10.0.0.12; then
-    $DRY || rsync $DRY_RSYNC -avPz --delete --address 10.0.0.12 rsync://rsync.mirrors.ustc.edu.cn/CTAN/ CTAN &
-elif ping -nfc 10 mirrors.tuna.tsinghua.edu.cn -I 10.0.0.12; then
-    $DRY || rsync $DRY_RSYNC -avPz --delete --address 10.0.0.12 rsync://mirrors.tuna.tsinghua.edu.cn/CTAN/ CTAN &
-elif ping -nfc 10 rsync.mirrors.ustc.edu.cn -I 10.0.0.11; then
-    $DRY || rsync $DRY_RSYNC -avPz --delete --address 10.0.0.11 rsync://rsync.mirrors.ustc.edu.cn/CTAN/ CTAN &
-else
-    echo "No mirror to try for CTAN"
-    exit 1
-fi
+parallel -j0 --line-buffer --bar 'bash -c '"'"'
+    if false; then :
+    elif ping -nfc 10 mirrors.tuna.tsinghua.edu.cn -I 10.0.0.12; then
+        '"$DRY"' || rsync '"$DRY_RSYNC"' -aHSvPz --delete --address 10.0.0.12 "rsync://mirrors.tuna.tsinghua.edu.cn/{}/" "{}"
+    elif ping -nfc 10 rsync.mirrors.ustc.edu.cn -I 10.0.0.12; then
+        '"$DRY"' || rsync '"$DRY_RSYNC"' -aHSvPz --delete --address 10.0.0.12 "rsync://rsync.mirrors.ustc.edu.cn/{}/" "{}"
+    elif ping -nfc 10 mirrors.tuna.tsinghua.edu.cn -I 10.0.0.11; then
+        '"$DRY"' || rsync '"$DRY_RSYNC"' -aHSvPz --delete --address 10.0.0.11 "rsync://mirrors.tuna.tsinghua.edu.cn/{}/" "{}"
+    elif ping -nfc 10 rsync.mirrors.ustc.edu.cn -I 10.0.0.11; then
+        '"$DRY"' || rsync '"$DRY_RSYNC"' -aHSvPz --delete --address 10.0.0.11 "rsync://rsync.mirrors.ustc.edu.cn/{}/" "$u"
+    else
+       echo "No mirror to try for $i"
+       exit 1
+    fi
+'"'" ::: CTAN gnu
 
 # ----------------------------------------------------------------
 # Intel Repository Mirroring
