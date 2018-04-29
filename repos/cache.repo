@@ -235,7 +235,7 @@ enabled=0
 
 [cache-docker-ce-stable]
 name=[Cache] Docker CE Stable - $basearch
-baseurl=https://repo.codingcafe.org/docker/linux/centos/7/$basearch/stable
+baseurl=https://repo.codingcafe.org/docker/linux/centos/$releasever/$basearch/stable
 gpgcheck=1
 gpgkey=https://repo.codingcafe.org/docker/linux/centos/gpg
 priority=2
@@ -243,7 +243,7 @@ enabled=0
 
 [cache-docker-ce-stable-debuginfo]
 name=[Cache] Docker CE Stable - Debuginfo $basearch
-baseurl=https://repo.codingcafe.org/docker/linux/centos/7/debug-$basearch/stable
+baseurl=https://repo.codingcafe.org/docker/linux/centos/$releasever/debug-$basearch/stable
 gpgcheck=1
 gpgkey=https://download.docker.com/linux/centos/gpg
 priority=2
@@ -251,7 +251,7 @@ enabled=0
 
 [cache-docker-ce-stable-source]
 name=[Cache] Docker CE Stable - Sources
-baseurl=https://repo.codingcafe.org/docker/linux/centos/7/source/stable
+baseurl=https://repo.codingcafe.org/docker/linux/centos/$releasever/source/stable
 gpgcheck=1
 gpgkey=https://download.docker.com/linux/centos/gpg
 priority=2
@@ -259,7 +259,7 @@ enabled=0
 
 [cache-docker-ce-edge]
 name=[Cache] Docker CE Edge - $basearch
-baseurl=https://repo.codingcafe.org/docker/linux/centos/7/$basearch/edge
+baseurl=https://repo.codingcafe.org/docker/linux/centos/$releasever/$basearch/edge
 gpgcheck=1
 gpgkey=https://download.docker.com/linux/centos/gpg
 priority=2
@@ -267,7 +267,7 @@ enabled=0
 
 [cache-docker-ce-edge-debuginfo]
 name=[Cache] Docker CE Edge - Debuginfo $basearch
-baseurl=https://repo.codingcafe.org/docker/linux/centos/7/debug-$basearch/edge
+baseurl=https://repo.codingcafe.org/docker/linux/centos/$releasever/debug-$basearch/edge
 gpgcheck=1
 gpgkey=https://download.docker.com/linux/centos/gpg
 priority=2
@@ -275,7 +275,7 @@ enabled=0
 
 [cache-docker-ce-edge-source]
 name=[Cache] Docker CE Edge - Sources
-baseurl=https://repo.codingcafe.org/docker/linux/centos/7/source/edge
+baseurl=https://repo.codingcafe.org/docker/linux/centos/$releasever/source/edge
 gpgcheck=1
 gpgkey=https://download.docker.com/linux/centos/gpg
 priority=2
@@ -283,7 +283,7 @@ enabled=0
 
 [cache-docker-ce-test]
 name=[Cache] Docker CE Test - $basearch
-baseurl=https://repo.codingcafe.org/docker/linux/centos/7/$basearch/test
+baseurl=https://repo.codingcafe.org/docker/linux/centos/$releasever/$basearch/test
 gpgcheck=1
 gpgkey=https://download.docker.com/linux/centos/gpg
 priority=2
@@ -291,7 +291,7 @@ enabled=0
 
 [cache-docker-ce-test-debuginfo]
 name=[Cache] Docker CE Test - Debuginfo $basearch
-baseurl=https://repo.codingcafe.org/docker/linux/centos/7/debug-$basearch/test
+baseurl=https://repo.codingcafe.org/docker/linux/centos/$releasever/debug-$basearch/test
 gpgcheck=1
 gpgkey=https://download.docker.com/linux/centos/gpg
 priority=2
@@ -299,7 +299,7 @@ enabled=0
 
 [cache-docker-ce-test-source]
 name=[Cache] Docker CE Test - Sources
-baseurl=https://repo.codingcafe.org/docker/linux/centos/7/source/test
+baseurl=https://repo.codingcafe.org/docker/linux/centos/$releasever/source/test
 gpgcheck=1
 gpgkey=https://download.docker.com/linux/centos/gpg
 priority=2

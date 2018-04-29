@@ -1,0 +1,5 @@
+FROM docker.codingcafe.org/sandbox/centos:stage-llvm-clang
+
+COPY [".", "/etc/codingcafe/scripts"]
+
+RUN cp -f /etc/hosts /tmp && echo 10.0.0.10 {git,proxy,repo}.codingcafe.org > /etc/hosts && /etc/codingcafe/scripts/setup.sh boost jemalloc eigen openblas mkl-dnn gtest gflags glog snappy protobuf && cat /tmp/hosts > /etc/hosts && rm -f /tmp/hosts
