@@ -61,7 +61,7 @@ time parallel -j"$conn" --line-buffer --bar 'bash -c '"'"'
     done
     mkdir -p "$(dirname "'"$dst"'/{}")"
     cd $_
-    wget -cq --bind-address='$ROUTE' --limit-rate=(bc <<< "($bandwidth - $load) * 2") "'"$src"'{}"
+    wget -cq --bind-address='$ROUTE' --limit-rate=(bc <<< "($bandwidth - $load) * 262144") "'"$src"'{}"
 '"'" :::: "$meta/files.txt"
 
 rm -rf "$meta"
