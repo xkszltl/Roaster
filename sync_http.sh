@@ -40,7 +40,7 @@ rm -rf "$meta/"{children,dirs,files}".d" "$meta/"{children,dirs}".txt"
 echo "File list is ready in \"$meta/files.txt\"."
 
 export ROUTE='10.0.0.$([ $(expr $RANDOM % 11) -lt 7 ] && echo 12 || echo 11)'
-parallel -j"$conn" --line-buffer --bar 'bash -c '"'"'
+time parallel -j"$conn" --line-buffer --bar 'bash -c '"'"'
     mkdir -p "'"$dst"'/{}"
     cd $_
     wget -cq --bind-address='$ROUTE' "'"$src"'{}"
