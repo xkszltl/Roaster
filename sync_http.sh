@@ -22,7 +22,7 @@ while [ $(cat "$meta/dirs.txt" | wc -l) -gt 0 ]; do
         set -e
         meta="'"$meta"'"
         esc="$(sed "s/\([\/\.]\)/\\\\\1/g" <<< "{}")"
-        curl -sSL "'"$src"'{}" | sed -n "s/.*[[:space:]]href[[:space:]]*=[[:space:]]*\"\([^\.\"][^\"]*\).*/\1/p" | sed "s/^/$esc/" >> "$meta/children.d/{%}.txt"
+        curl -sSL --interface '$ROUTE' "'"$src"'{}" | sed -n "s/.*[[:space:]]href[[:space:]]*=[[:space:]]*\"\([^\.\"][^\"]*\).*/\1/p" | sed "s/^/$esc/" >> "$meta/children.d/{%}.txt"
     '"'" :::: "$meta/dirs.txt"
 
     parallel -j"$(nproc)" --line-buffer --bar 'bash -c '"'"'
