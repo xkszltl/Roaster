@@ -45,7 +45,7 @@ done
 rm -rf "$meta/"{children,dirs,files}".d" "$meta/"{children,dirs}".txt"
 echo "File list is ready in \"$meta/files.txt\"."
 
-time parallel -j"$conn" --line-buffer --bar 'bash -c '"'"'
+time parallel -j"$conn" --line-buffer --bar --shuf 'bash -c '"'"'
     set -e
     conn="'"$conn"'"
     bandwidth="'"$bandwidth"'"
