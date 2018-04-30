@@ -17,6 +17,7 @@
     (
         set +xe
         . scl_source enable devtoolset-6
+        . /opt/intel/tbb/bin/tbbvars.sh intel64
         set -xe
 
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"

@@ -8,11 +8,6 @@
     until git clone --depth 1 --single-branch -b "$(git ls-remote --tags "$GIT_MIRROR/opencv/opencv.git" | sed -n 's/.*[[:space:]]refs\/tags\/\([0-9\.]*\)$/\1/p' | sort -V | tail -n1)" "$GIT_MIRROR/opencv/opencv.git"; do echo 'Retrying'; done
     cd opencv
 
-    # - Temporary patch.
-    #   Add env loaded by tbbvars.sh to MKL_WITH_TBB search list.
-    sed 's/\(set[[:space:]]*([[:space:]]*mkl_lib_find_paths\)/\1 $ENV{LIBRARY_PATH}/' cmake/OpenCVFindMKL.cmake > cmake/.OpenCVFindMKL.cmake
-    mv -f cmake/{.,}OpenCVFindMKL.cmake
-
     # ------------------------------------------------------------
 
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
