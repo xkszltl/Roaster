@@ -49,9 +49,20 @@
         set +xe
         . scl_source enable devtoolset-7
         set -xe
+
         ./bootstrap.sh --prefix="$INSTALL_ABS"
         ./b2 -aj$(nproc) install
+
+        # Boost 1.67.0 cannot find the correct include path with suffix ("python3.4m")
+        ./bootstrap.sh --prefix="$INSTALL_ABS" --with-python=python3
+        ./b2 -aj$(nproc) install include="$(python3 -c 'import distutils.sysconfig as c; print(c.get_python_inc())')"
     )
+
+    # Temporary patch util cmake can detect Boost.Python with suffix.
+    pushd "$INSTALL_ABS/lib"
+    ln -sf libboost_python34.so libboost_python.so
+    ln -sf libboost_python34.a libboost_python.a
+    popd
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
 
