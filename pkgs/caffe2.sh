@@ -34,6 +34,7 @@
         # CUDA 9.1 has compiler bug with gcc-6.3.1 which is shown as compile error in <tuple>.
         # TODO: Upgrade glog to use new compiler when possible.
         . scl_source enable devtoolset-4
+        . /opt/intel/tbb/bin/tbbvars.sh intel64
         set -xe
 
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
@@ -63,6 +64,7 @@
             -DINSTALL_GMOCK=OFF                     \
             -DINSTALL_GTEST=OFF                     \
             -DUSE_ATEN=OFF                          \
+            -DUSE_IDEEP=OFF                         \
             -DUSE_MKLML=ON                          \
             -DUSE_NATIVE_ARCH=ON                    \
             -DUSE_OBSERVERS=ON                      \
@@ -74,7 +76,7 @@
             ..
 
         time cmake --build .
-        time cmake --build . --target test || ! nvidia-smi || true
+        time cmake --build . --target test || ! nvidia-smi
         time cmake --build . --target install
 
         # rm -rf /usr/bin/ninja
@@ -86,18 +88,10 @@
         sed -n 's/^set[[:space:]]*([[:space:]]*CAFFE2_VERSION_.....[[:space:]][[:space:]]*\([0-9]*\)[[:space:]]*).*/\1/p' ../CMakeLists.txt | paste -sd. | xargs git tag -f
 
         # --------------------------------------------------------
-        # Expose site-packages and avoid caffe conflicts
+        # Avoid caffe conflicts
         # --------------------------------------------------------
 
-        pushd "$INSTALL_ROOT"
-        # Do not move the "usr/" outside of "{}" because glob "*" relies on it.
-        for i in "usr/lib/python"*"/site-packages"; do
-        for j in caffe{,2}; do
-            ln -sf {$i,usr/local}/$j
-        done
-        done
-        rm -f usr/local/include/caffe/proto/caffe.pb.h
-        popd
+        rm -rf "$INSTALL_ROOT/usr/local/include/caffe/proto"
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
