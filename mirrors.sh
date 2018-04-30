@@ -50,6 +50,7 @@ cython/cython,\
 eigenteam/eigen-git-mirror,\
 facebook/{rocksdb,zstd},\
 facebookincubator/gloo,\
+facebookresearch/{Detectron,fastText},\
 gflags/gflags,\
 google/{benchmark,snappy,glog,googletest,leveldb,protobuf},\
 intel/{ideep,mkl-dnn},\
@@ -68,7 +69,7 @@ open-mpi/ompi,\
 opencv/opencv,\
 pybind/pybind11,\
 pytest-dev/{py,pytest},\
-pytorch/pytorch,\
+pytorch/{examples,pytorch,tutorials},\
 RLovelett/eigen,\
 RMerl/{am-toolchains,asuswrt-merlin.ng},\
 SchedMD/slurm,\
