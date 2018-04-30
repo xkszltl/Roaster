@@ -5,6 +5,7 @@ set -e
 export src="https://cdn.gea.esac.esa.int/Gaia"
 export dst="/media/Matrix/Data/ESA/Gaia"
 export conn=150
+export bandwidth=100
 
 export ROUTE='10.0.0.$([ $(expr $RANDOM % 12) -lt 8 ] && echo 12 || echo 11)'
 
@@ -46,6 +47,14 @@ echo "File list is ready in \"$meta/files.txt\"."
 
 time parallel -j"$conn" --line-buffer --bar 'bash -c '"'"'
     set -e
+    load="$bandwidth"
+    while [ $(bc <<< "$load >= $bandwidth") -ne 0 ]; do
+        delay="$(bc -l <<< "$(expr $RANDOM % 900) / 1000 + 0.1")"
+        beg=$(cat /proc/net/dev | grep enp | sed "s/[[:space:]][[:space:]]*/ /g" | cut -f2 -d" " | paste -sd+ | bc)
+        sleep "$delay"
+        end=$(cat /proc/net/dev | grep enp | sed "s/[[:space:]][[:space:]]*/ /g" | cut -f2 -d" " | paste -sd+ | bc)
+        load=$(bc -l <<< "($end - $beg) / $delay / 131072")
+    done
     mkdir -p "$(dirname "'"$dst"'/{}")"
     cd $_
     wget -cq --bind-address='$ROUTE' "'"$src"'{}"
