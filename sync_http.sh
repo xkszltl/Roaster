@@ -2,8 +2,8 @@
 
 set -e
 
-export src="https://cdn.gea.esac.esa.int/Gaia/gdr1/tgas_source"
-export dst="/media/Matrix/Data/ESA/Gaia/gdr1/tgas_source"
+export src="https://cdn.gea.esac.esa.int/Gaia/gdr1"
+export dst="/media/Matrix/Data/ESA/Gaia/gdr1"
 export conn=128
 
 export ROUTE='10.0.0.$([ $(expr $RANDOM % 12) -lt 8 ] && echo 12 || echo 11)'
