@@ -55,9 +55,11 @@
             -DBLAS=MKL                              \
             -DBUILD_CUSTOM_PROTOBUF=OFF             \
             -DCMAKE_BUILD_TYPE=Release              \
-            -DCMAKE_C_COMPILER="$TOOLCHAIN/cc"      \
+            -DCMAKE_C_COMPILER=gcc                  \
+            -DCMAKE_C_COMPILER_LAUNCHER=ccache      \
             -DCMAKE_C{,XX}_FLAGS="-g"               \
-            -DCMAKE_CXX_COMPILER="$TOOLCHAIN/c++"   \
+            -DCMAKE_CXX_COMPILER=g++                \
+            -DCMAKE_CXX_COMPILER_LAUNCHER=ccache    \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
             -DCMAKE_VERBOSE_MAKEFILE=ON             \
             -DCPUINFO_BUILD_TOOLS=ON                \
