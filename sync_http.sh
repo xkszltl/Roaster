@@ -3,7 +3,7 @@
 set -e
 
 export src="https://cdn.gea.esac.esa.int/Gaia/gdr1/tgas_source"
-export dst="/media/Matrix/Data/test/Gaia/gdr1/tgas_source"
+export dst="/media/Matrix/Data/ESA/Gaia/gdr1/tgas_source"
 export conn=128
 
 export meta=$(mktemp -d)
@@ -45,3 +45,5 @@ parallel -j"$conn" --line-buffer --bar 'bash -c '"'"'
     cd $_
     wget -cq --bind-address='$ROUTE' "'"$src"'{}"
 '"'" ::: "$meta/files.txt"
+
+rm -rf "$meta"
