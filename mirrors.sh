@@ -44,6 +44,7 @@ aws/aws-{cli,sdk-{cpp,go,java,js,net,php,ruby}},\
 boostorg/boost,\
 BVLC/caffe,\
 caffe2/{caffe2,models},\
+catchorg/{Catch2,Clara},\
 ccache/ccache,\
 cython/cython,\
 eigenteam/eigen-git-mirror,\
