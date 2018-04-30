@@ -44,6 +44,6 @@ parallel -j"$conn" --line-buffer --bar 'bash -c '"'"'
     mkdir -p "'"$dst"'/{}"
     cd $_
     wget -cq --bind-address='$ROUTE' "'"$src"'{}"
-'"'" ::: "$meta/files.txt"
+'"'" :::: "$meta/files.txt"
 
 rm -rf "$meta"
