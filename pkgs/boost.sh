@@ -60,8 +60,9 @@
 
     # Temporary patch util cmake can detect Boost.Python with suffix.
     pushd "$INSTALL_ABS/lib"
-    ln -sf libboost_python34.so libboost_python.so
-    ln -sf libboost_python34.a libboost_python.a
+    for i in $(ls libboost_python3?.*); do
+        ln -sf "$i" "$(sed 's/^\([^\.0-9]*\)[0-9]*/\1/' <<< "$i")"
+    done
     popd
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
