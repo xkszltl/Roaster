@@ -4,7 +4,7 @@ set -e
 
 export src="https://cdn.gea.esac.esa.int/Gaia"
 export dst="/media/Matrix/Data/ESA/Gaia"
-export conn=150
+export conn=100
 export bandwidth=100
 
 export ROUTE='10.0.0.$([ $(expr $RANDOM % 12) -lt 8 ] && echo 12 || echo 11)'
@@ -47,17 +47,21 @@ echo "File list is ready in \"$meta/files.txt\"."
 
 time parallel -j"$conn" --line-buffer --bar 'bash -c '"'"'
     set -e
+    conn="'"$conn"'"
+    bandwidth="'"$bandwidth"'"
     load="$bandwidth"
-    while [ $(bc <<< "$load >= $bandwidth") -ne 0 ]; do
+    while :; do
         delay="$(bc -l <<< "$(expr $RANDOM % 900) / 1000 + 0.1")"
         beg=$(cat /proc/net/dev | grep enp | sed "s/[[:space:]][[:space:]]*/ /g" | cut -f2 -d" " | paste -sd+ | bc)
         sleep "$delay"
         end=$(cat /proc/net/dev | grep enp | sed "s/[[:space:]][[:space:]]*/ /g" | cut -f2 -d" " | paste -sd+ | bc)
         load=$(bc -l <<< "($end - $beg) / $delay / 131072")
+        [ $(bc <<< "$load >= $bandwidth * ($conn - 1) / $conn") -eq 0 ] && break
+        echo "Throttle (load: $load Mbps)"
     done
     mkdir -p "$(dirname "'"$dst"'/{}")"
     cd $_
-    wget -cq --bind-address='$ROUTE' "'"$src"'{}"
+    wget -cq --bind-address='$ROUTE' --limit-rate=(bc <<< "($bandwidth - $load) * 2") "'"$src"'{}"
 '"'" :::: "$meta/files.txt"
 
 rm -rf "$meta"
