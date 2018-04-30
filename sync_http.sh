@@ -6,6 +6,8 @@ export src="https://cdn.gea.esac.esa.int/Gaia/gdr1/tgas_source"
 export dst="/media/Matrix/Data/ESA/Gaia/gdr1/tgas_source"
 export conn=128
 
+export ROUTE='10.0.0.$([ $(expr $RANDOM % 12) -lt 8 ] && echo 12 || echo 11)'
+
 export meta=$(mktemp -d)
 echo "Use \"$meta\" for metadata."
 
@@ -39,7 +41,6 @@ done
 rm -rf "$meta/"{children,dirs,files}".d" "$meta/"{children,dirs}".txt"
 echo "File list is ready in \"$meta/files.txt\"."
 
-export ROUTE='10.0.0.$([ $(expr $RANDOM % 11) -lt 7 ] && echo 12 || echo 11)'
 time parallel -j"$conn" --line-buffer --bar 'bash -c '"'"'
     mkdir -p "'"$dst"'/{}"
     cd $_
