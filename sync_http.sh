@@ -57,7 +57,7 @@ time parallel -j"$conn" --line-buffer --bar --shuf 'bash -c '"'"'
         end=$(cat /proc/net/dev | grep enp | sed "s/[[:space:]][[:space:]]*/ /g" | cut -f2 -d" " | paste -sd+ | bc)
         load=$(bc -l <<< "($end - $beg) / $delay / 131072")
         [ $(bc <<< "$load >= $bandwidth * ($conn - 1) / $conn") -eq 0 ] && break
-        echo "Throttle (load: $load Mbps)"
+        echo "Throttle (load: $(sed "s/\..*//" <<< "$load") Mbps)"
     done
     mkdir -p "$(dirname "'"$dst"'/{}")"
     cd $_
