@@ -5,7 +5,7 @@ set -e
 export src="https://cdn.gea.esac.esa.int/Gaia"
 export dst="/media/Matrix/Data/ESA/Gaia"
 export conn=100
-export bandwidth=100
+export bandwidth=110
 
 export ROUTE='10.0.0.$([ $(expr $RANDOM % 12) -lt 8 ] && echo 12 || echo 11)'
 
