@@ -38,7 +38,7 @@ rpm -qlp "$PKG_PATH"
 # ----------------------------------------------------------------
 
 if rpm -q "$PKG_NAME"; then
-    export PKG_YUM_SEQ="install reinstall update downgrade"
+    export PKG_YUM_SEQ="install reinstall downgrade update"
 else
     export PKG_YUM_SEQ="install"
 fi

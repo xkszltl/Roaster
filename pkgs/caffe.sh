@@ -39,6 +39,7 @@
             -DCMAKE_VERBOSE_MAKEFILE=ON             \
             -DCUDA_ARCH_NAME=Auto                   \
             -DUSE_NCCL=ON                           \
+            -Dpython_version=3                      \
             ..
 
         time cmake --build .
