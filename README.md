@@ -25,14 +25,14 @@ So get a `Windows 10` please.
 Visual Studio
 ----------
 
-Latest version is prefered.
+Latest version is preferred.
 Currently it's Visual Studio 2017.
 Please also install the `v140` toolset and Visual Studio 2015 for CUDA compatibility.
 
 CUDA
 ----------
 
-Latest version is prefered, unless we encounter some important legacy code in the future.
+Latest version is preferred, unless we encounter some important legacy code in the future.
 Current support is CUDA 9.1.
 You don't need to get cuDNN your self, we'll have with that.
 
@@ -72,6 +72,16 @@ For certain libraries without proper release cycle, or has very important patche
 
 For `git` repo, we try to avoid statically bind to any specific version.
 Instead the latest release is detected by regex and only that commit is cloned to save network traffic.
+
+Patch
+----------
+
+PR to the official repo is always preferred.
+When PR process is too slow or impossible, to Google for example, try the following suggestions:
+
+1. Some bugs, especially DLL related issues, might be bypassed by turning the build arguments.
+2. When you really have to patch the source code, use regex for small dirty fixes. This may last longer than `git merge`.
+3. For big fixes or pending PR, use a fork repo to hold private commits and use `git pull <patch repo> <PR branch>` after `git clone` from the official one.
 
 Install
 ----------
