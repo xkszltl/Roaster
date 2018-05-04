@@ -24,12 +24,13 @@ if (Test-Path "$root")
     Exit 1
 }
 
-git clone --recursive -j20 "$repo"
+git clone --recursive -j100 "$repo"
 pushd "$root"
 git remote add patch https://github.com/xkszltl/pytorch.git
 git pull patch xkszltl
-git pull patch logging
 git pull patch gpu_dll
+git pull patch logging
+git pull patch rocksdb
 
 mkdir build
 pushd build
@@ -54,7 +55,6 @@ cmake                                                                           
     -DCUDA_ARCH_NAME="All"                                                      `
     -DCUDA_NVCC_FLAGS='--expt-relaxed-constexpr'                                `
     -DCUDA_SEPARABLE_COMPILATION=OFF                                            `
-    -DROCKSDB_ROOT_DIR="${Env:ProgramFiles}/rocksdb"                            `
     -DPROTOBUF_INCLUDE_DIRS="${Env:ProgramFiles}/protobuf/include"              `
     -DPROTOBUF_LIBRARIES="${Env:ProgramFiles}/protobuf/bin"                     `
     -DPROTOBUF_PROTOC_EXECUTABLE="${Env:ProgramFiles}/protobuf/bin/protoc.exe"  `
@@ -73,7 +73,7 @@ cmake                                                                           
     -DUSE_OBSERVERS=ON                                                          `
     -DUSE_OPENMP=ON                                                             `
     -DUSE_OPENCV=OFF                                                            `
-    -DUSE_ROCKSDB=OFF                                                           `
+    -DUSE_ROCKSDB=ON                                                            `
     -Dglog_DIR="${Env:ProgramFiles}/google-glog/lib/cmake/glog"                 `
     -Dgtest_force_shared_crt=ON                                                 `
     -Dprotobuf_BUILD_SHARED_LIBS=ON                                             `
