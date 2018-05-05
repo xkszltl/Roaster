@@ -31,6 +31,7 @@ git pull patch xkszltl
 git pull patch gpu_dll
 git pull patch logging
 git pull patch rocksdb
+git pull patch pybind
 
 mkdir build
 pushd build
@@ -58,7 +59,6 @@ cmake                                                                           
     -DPROTOBUF_INCLUDE_DIRS="${Env:ProgramFiles}/protobuf/include"              `
     -DPROTOBUF_LIBRARIES="${Env:ProgramFiles}/protobuf/bin"                     `
     -DPROTOBUF_PROTOC_EXECUTABLE="${Env:ProgramFiles}/protobuf/bin/protoc.exe"  `
-    -DPYTHON_EXECUTABLE="${Env:PYTHONHOME}/python.exe"                          `
     -DUSE_CUDA=ON                                                               `
     -DUSE_GLOO=OFF                                                              `
     -DUSE_IDEEP=OFF                                                             `
@@ -82,9 +82,17 @@ cmake                                                                           
     -T"v140,host=x64"                                                           `
     ..
 
-cmake --build . --config RelWithDebInfo -- -maxcpucount
-
 $ErrorActionPreference="SilentlyContinue"
+cmake --build . --config RelWithDebInfo -- -maxcpucount
+if (-Not $?)
+{
+    echo "Failed to build."
+    echo "Retry with single thread for logging."
+    echo "You may Ctrl-C this if you don't need the log file."
+    cmake --build . --config RelWithDebInfo 2>&1 | tee ${Env:TMP}/${proj}.log
+    exit 1
+}
+
 cmake --build . --config RelWithDebInfo --target run_tests -- -maxcpucount
 if (-Not $?)
 {
