@@ -11,8 +11,8 @@
     cd pytorch
 
     git remote add patch https://github.com/xkszltl/pytorch.git
-    git pull patch rocksdb
-    git pull patch pybind
+    git pull --commit patch rocksdb
+    git pull --commit patch pybind
 
     if [ $GIT_MIRROR == $GIT_MIRROR_CODINGCAFE ]; then
         export HTTP_PROXY=proxy.codingcafe.org:8118

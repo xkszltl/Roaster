@@ -64,7 +64,7 @@ ninja-build/ninja,\
 numpy/numpy{,doc},\
 NVIDIA/{DIGITS,cnmem,libglvnd,nccl,nvidia-docker},\
 NVLabs/{cub,xmp},\
-onnx/{models,onnx{,mltools},tutorials},\
+onnx/{models,onnx{,-tensorrt,mltools},tutorials},\
 open-mpi/ompi,\
 opencv/opencv,\
 pybind/pybind11,\
