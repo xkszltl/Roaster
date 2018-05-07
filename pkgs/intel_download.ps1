@@ -28,6 +28,4 @@ Invoke-WebRequest ${intel_url}/12745/w_mpi_2018.2.185.exe -OutFile mpi.exe
 Invoke-WebRequest ${intel_url}/12566/w_tbb_2018.2.185.exe -OutFile tbb.exe
 & ./tbb.exe
 
-Get-ChildItem "${Env:ProgramFiles(x86)}/IntelSWTools/compilers_and_libraries/windows/redist/intel64" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
-
 popd
