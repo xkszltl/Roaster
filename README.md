@@ -115,7 +115,7 @@ You can always reinstall/update packages by the same process.
 Order
 ----------
 
-* Intel libraries
+* Intel libraries [Download first, and link]
 * cuDNN
 * Boost
 * Eigen
@@ -126,7 +126,7 @@ Order
 * Snappy
 * Protobuf
 * PyBind
-* OpenCV
+* OpenCV [Skip this please, not ready yet, you can do it yourselves if you want.]
 * RocksDB
 * Caffe2
 
