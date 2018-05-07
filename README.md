@@ -117,7 +117,7 @@ Order
 
 * Intel libraries [Download first, and link]
 * cuDNN
-* Boost
+* Boost [Prebuild version from official site should also work]
 * Eigen
 * MKL-DNN
 * GFlags
