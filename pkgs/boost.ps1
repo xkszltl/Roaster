@@ -16,7 +16,7 @@ if (Test-Path "$root")
 }
 
 $latest_ver="boost-$($(git ls-remote --tags "$repo") -match '.*refs/tags/boost-[0-9\.]*$' -replace '.*refs/tags/boost-','' | sort {[Version]$_} | tail -n1)"
-git clone --depth 1 --recursive --single-branch -b "$latest_ver" -j100 "$repo"
+git clone --depth 1 --recursive --single-branch -b "$latest_ver" -j50 "$repo"
 pushd "$root"
 
 ./bootstrap
