@@ -21,10 +21,10 @@ pushd "$root"
 
 ./bootstrap
 
-./b2 --prefix="${Env:ProgramFiles}/boost" -j$Env:NUMBER_OF_PROCESSORS
+./b2 --prefix="${Env:ProgramFiles}/boost" -j"$Env:NUMBER_OF_PROCESSORS"
 
 rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${Env:ProgramFiles}/boost"
-./b2 --prefix="${Env:ProgramFiles}/boost" install -j$Env:NUMBER_OF_PROCESSORS
+./b2 --prefix="${Env:ProgramFiles}/boost" install -j"$Env:NUMBER_OF_PROCESSORS"
 Get-ChildItem "${Env:ProgramFiles}/boost" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 
 popd
