@@ -146,3 +146,14 @@ You can try to debug yourselves since, IMHO, the code is very easy to read.
 
 New issues can pop out as packages get updates.
 Please do report those thing so that we can keep the script up-to-date.
+
+Powershell Remove Error
+--------
+If you see something like:
+```
+rm : There is a mismatch between the tag specified in the request and the tag present in the reparse point+ rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction Silen ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [Remove-Item], Win32Exception
+    + FullyQualifiedErrorId : System.ComponentModel.Win32Exception,Microsoft.PowerShell.Commands.RemoveItemCommand
+```
+Delete that directory from explorer.
