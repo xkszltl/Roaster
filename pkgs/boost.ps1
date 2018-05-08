@@ -16,15 +16,15 @@ if (Test-Path "$root")
 }
 
 $latest_ver="boost-$($(git ls-remote --tags "$repo") -match '.*refs/tags/boost-[0-9\.]*$' -replace '.*refs/tags/boost-','' | sort {[Version]$_} | tail -n1)"
-git clone --depth 1 --recursive --single-branch -b "$latest_ver" -j8 "$repo"
+git clone --depth 1 --recursive --single-branch -b "$latest_ver" -j100 "$repo"
 pushd "$root"
 
 ./bootstrap
 
-./b2 --prefix="${Env:ProgramFiles}/boost"
+./b2 --prefix="${Env:ProgramFiles}/boost" -j$Env:NUMBER_OF_PROCESSORS
 
 rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${Env:ProgramFiles}/boost"
-./b2 --prefix="${Env:ProgramFiles}/boost" install
+./b2 --prefix="${Env:ProgramFiles}/boost" install -j$Env:NUMBER_OF_PROCESSORS
 Get-ChildItem "${Env:ProgramFiles}/boost" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 
 popd
