@@ -10,7 +10,7 @@
     if [ $GIT_MIRROR == $GIT_MIRROR_CODINGCAFE ]; then
         curl -sSL https://repo.codingcafe.org/nvidia/$CUDNN_REPO/$(curl -sSL https://repo.codingcafe.org/nvidia/$CUDNN_REPO | sed -n 's/.*href="\(.*linux-x64.*\)".*/\1/p' | sort -V | tail -n1)
     else
-        curl -sSL "https://developer.download.nvidia.com/compute/redist/$CUDNN_REPO/cudnn-9.1-linux-x64-$(basename "$CUDA_REPO" | cut -d. -f1,2 | sed 's/\.0$//').tgz"
+        curl -sSL "https://developer.download.nvidia.com/compute/redist/$CUDNN_REPO/cudnn-9.1-linux-x64-$(basename "$CUDNN_REPO" | cut -d. -f1,2 | sed 's/\.0$//').tgz"
     fi | sudo tar -zxvf - -C /usr/local/ --no-overwrite-dir
 
     wget -q https://repo.codingcafe.org/nvidia/nccl/$(curl -sSL https://repo.codingcafe.org/nvidia/nccl | sed -n 's/.*href="\(.*x86_64.*\)".*/\1/p' | sort -V | tail -n1)
