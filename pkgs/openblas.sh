@@ -41,6 +41,9 @@
         make PREFIX="$INSTALL_ABS" lapack-test -j$(nproc)
         make PREFIX="$INSTALL_ABS" blas-test -j$(nproc)
         make PREFIX="$INSTALL_ABS" install
+
+        # FPM does not exclude empty directory correctly.
+        rmdir "$INSTALL_ABS/bin" || true
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
