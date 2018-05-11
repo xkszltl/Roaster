@@ -11,8 +11,11 @@
     cd pytorch
 
     git remote add patch https://github.com/xkszltl/pytorch.git
-    git pull --commit patch rocksdb
-    git pull --commit patch pybind
+    git pull --no-edit patch xkszltl
+    git pull --no-edit patch gpu_dll
+    git pull --no-edit patch logging
+    git pull --no-edit patch rocksdb
+    git pull --no-edit patch pybind
 
     if [ $GIT_MIRROR == $GIT_MIRROR_CODINGCAFE ]; then
         export HTTP_PROXY=proxy.codingcafe.org:8118
@@ -26,7 +29,7 @@
     fi
 
     git submodule init
-    until git config --file .gitmodules --get-regexp path | cut -d' ' -f2 | parallel -j0 --ungroup --bar 'git submodule update --recursive {}'; do echo 'Retrying'; done
+    until git config --file .gitmodules --get-regexp path | cut -d' ' -f2 | parallel -j0 --ungroup --bar '[ ! -d "{}" ] || git submodule update --recursive "{}"'; do echo 'Retrying'; done
 
     # ------------------------------------------------------------
 
