@@ -7,7 +7,7 @@
 
     # ------------------------------------------------------------
 
-    until git clone --depth 1 $GIT_MIRROR/pytorch/pytorch.git; do echo 'Retrying'; done
+    until git clone $GIT_MIRROR/pytorch/pytorch.git; do echo 'Retrying'; done
     cd pytorch
 
     git remote add patch https://github.com/xkszltl/pytorch.git
