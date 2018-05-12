@@ -68,7 +68,7 @@
             -DBENCHMARK_ENABLE_LTO=ON               \
             -DBENCHMARK_USE_LIBCXX=OFF              \
             -DBLAS=MKL                              \
-            -DBUILD_CUSTOM_PROTOBUF=ON              \
+            -DBUILD_CUSTOM_PROTOBUF=OFF             \
             -DCMAKE_BUILD_TYPE=Release              \
             -DCMAKE_C_COMPILER=gcc                  \
             -DCMAKE_C_COMPILER_LAUNCHER=ccache      \
