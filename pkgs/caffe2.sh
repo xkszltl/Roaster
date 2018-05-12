@@ -11,6 +11,14 @@
     cd pytorch
 
     git remote add patch https://github.com/xkszltl/pytorch.git
+    git fetch patch
+
+    for i in xkszltl gpu_dll logging pybind rocksdb; do
+        git checkout "$i"
+        git rebase master
+    done
+    git checkout master
+
     git pull --no-edit patch xkszltl
     git pull --no-edit patch gpu_dll
     git pull --no-edit patch logging
