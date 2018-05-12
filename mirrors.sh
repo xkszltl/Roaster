@@ -55,6 +55,7 @@ gflags/gflags,\
 google/{benchmark,snappy,glog,googletest,leveldb,protobuf},\
 intel/{ideep,mkl-dnn},\
 jemalloc/jemalloc,\
+jordansissel/fpm,\
 Kitware/{CMake,VTK},\
 llvm-mirror/{ll{vm,d,db,go},clang{,-tools-extra},polly,compiler-rt,openmp,lib{unwind,cxx{,abi}},test-suite},\
 LMDB/lmdb,\
