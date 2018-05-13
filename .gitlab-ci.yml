@@ -114,7 +114,7 @@ llvm-gcc:
     - docker
     - gpu
   only:
-    - /^build-(init|repo|font|pkg-skip|pkg-all|ss|tex|llvm-gcc)$/
+    - /^build-(init|repo|font|pkg-skip|pkg-all|ss|tex|infra|llvm-gcc)$/
   except:
     - branches
   script:
