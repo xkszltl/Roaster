@@ -137,7 +137,6 @@ for i in pkg-{skip,all}; do
                 rh-python36{,-*}
                 ruby{,-*}
                 lua{,-*}
-                qt5{,-*}
 
                 *-fonts{,-*}
             " | xargs -n5 echo "$RPM_INSTALL $([ $i = pkg-skip ] && echo --skip-broken)" | bash && break
