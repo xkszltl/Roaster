@@ -39,7 +39,7 @@ for i in pkg-{skip,all}; do
                 {parallel,jq}{,-*}
                 {tree,whereami,mlocate,lsof}{,-*}
                 {ftp{,lib},telnet,tftp,rsh}{,-debuginfo}
-                {f,h,if,io,latency,power,tip}top{,-*}
+                {h,if,io,latency,power,tip}top{,-*}
                 procps-ng{,-*}
                 glances{,-*}
                 {wget,axel,curl,net-tools}{,-*}
