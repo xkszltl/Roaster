@@ -15,7 +15,10 @@ export RPM_BLACKLIST=$(echo "
     libasan2
     python-lexicon
     python-qpid-common
+    python2-azure-sdk
+    python2-boto3
     python2-paramiko
+    python2-s3transfer
 " | sed -n 's/^[[:space:]]*\([^[:space:]][^[:space:]]*\).*/--exclude \1/p' | paste -s - | xargs)
 
 export RPM_CACHE_ARGS=$([ -f $RPM_CACHE_REPO ] && echo "--disableplugin=axelget,fastestmirror")
