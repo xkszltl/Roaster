@@ -17,6 +17,7 @@ stages:
 
 init:
   stage: init
+  retry: 5
   tags:
     - docker
     - gpu
@@ -30,6 +31,7 @@ init:
 
 repo:
   stage: repo
+  retry: 5
   tags:
     - docker
     - gpu
@@ -42,6 +44,7 @@ repo:
 
 font:
   stage: font
+  retry: 5
   tags:
     - docker
     - gpu
@@ -54,6 +57,7 @@ font:
 
 pkg-skip:
   stage: pkg-skip
+  retry: 5
   tags:
     - docker
     - gpu
@@ -66,6 +70,7 @@ pkg-skip:
 
 ss:
   stage: ss
+  retry: 5
   tags:
     - docker
     - gpu
@@ -78,6 +83,7 @@ ss:
 
 tex:
   stage: tex
+  retry: 5
   tags:
     - docker
     - gpu
@@ -90,6 +96,7 @@ tex:
 
 infra:
   stage: infra
+  retry: 5
   tags:
     - docker
     - gpu
@@ -102,6 +109,7 @@ infra:
 
 llvm-gcc:
   stage: llvm-gcc
+  retry: 5
   tags:
     - docker
     - gpu
@@ -114,6 +122,7 @@ llvm-gcc:
 
 llvm-clang:
   stage: llvm-clang
+  retry: 5
   tags:
     - docker
     - gpu
@@ -126,6 +135,7 @@ llvm-clang:
 
 util:
   stage: util
+  retry: 5
   tags:
     - docker
     - gpu
@@ -138,6 +148,7 @@ util:
 
 misc:
   stage: misc
+  retry: 5
   tags:
     - docker
     - gpu
@@ -150,6 +161,7 @@ misc:
 
 dl:
   stage: dl
+  retry: 5
   tags:
     - docker
     - gpu
@@ -162,6 +174,7 @@ dl:
 
 edit:
   stage: edit
+  retry: 5
   tags:
     - docker
     - gpu
@@ -174,6 +187,7 @@ edit:
 
 finish:
   stage: finish
+  retry: 5
   tags:
     - docker
     - gpu
@@ -188,6 +202,7 @@ finish:
 
 .squash:
   stage: squash
+  retry: 5
   tags:
     - docker
     - gpu
