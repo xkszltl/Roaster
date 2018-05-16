@@ -78,6 +78,7 @@
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
             -DCMAKE_VERBOSE_MAKEFILE=ON             \
             -DCPUINFO_BUILD_TOOLS=ON                \
+            -DCUDA_ARCH_NAME=All                    \
             -DINSTALL_GMOCK=OFF                     \
             -DINSTALL_GTEST=OFF                     \
             -DUSE_ATEN=OFF                          \
