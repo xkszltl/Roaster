@@ -20,9 +20,8 @@ time fpm                                                        \
     --name "codingcafe-$(basename $(pwd))"                      \
     --output-type rpm                                           \
     --package "$INSTALL_ROOT/.."                                \
-    --rpm-compression xz                                        \
+    --rpm-compression xzmt                                      \
     --rpm-digest sha512                                         \
-    --rpm-rpmbuild-define "_binary_payload w9T.xzdio"           \
     --vendor "CodingCafe"                                       \
     --version "$(git describe --tags | sed 's/[^0-9\.]//g')"
 
