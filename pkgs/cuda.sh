@@ -5,15 +5,26 @@
 [ -e $STAGE/cuda ] && ( set -xe
     cd $SCRATCH
 
+    export CUDA_VER="$(nvcc --version | sed -n 's/.*[[:space:]]V\([0-9\.]*\).*/\1/p')"
+    export CUDA_VER_MAJOR="$(cut -d'.' -f1 <<< "$CUDA_VER")"
+    export CUDA_VER_MINOR="$(cut -d'.' -f2 <<< "$CUDA_VER")"
+    export CUDA_VER_BUILD="$(cut -d'.' -f3 <<< "$CUDA_VER")"
+
+    export CUDNN_PREFIX="cudnn-$CUDA_VER_MAJOR.$CUDA_VER_MINOR-linux-x64-"
     export CUDNN_REPO=cudnn/v7.1.4
 
     if [ $GIT_MIRROR == $GIT_MIRROR_CODINGCAFE ]; then
-        curl -sSL https://repo.codingcafe.org/nvidia/$CUDNN_REPO/$(curl -sSL https://repo.codingcafe.org/nvidia/$CUDNN_REPO | sed -n 's/.*href="\(.*linux-x64.*\)".*/\1/p' | sort -V | tail -n1)
+        CUDNN_DIR="https://repo.codingcafe.org/nvidia/$CUDNN_REPO"
+        CUDNN_NAME="$(curl -sSL "$CUDNN_DIR" | sed -n 's/.*href="\('"$CUDNN_PREFIX"'.*\)".*/\1/p' | sort -V | tail -n1)"
     else
-        curl -sSL "https://developer.download.nvidia.com/compute/redist/$CUDNN_REPO/cudnn-9.2-linux-x64-$(basename "$CUDNN_REPO" | cut -d. -f1,2 | sed 's/\.0$//').tgz"
-    fi | sudo tar -zxvf - -C /usr/local/ --no-overwrite-dir
+        CUDNN_DIR="https://developer.download.nvidia.com/compute/redist/$CUDNN_REPO"
+        CUDNN_NAME="$CUDNN_PREFIX$(basename "$CUDNN_REPO" | cut -d. -f1,2 | sed 's/\.0$//').tgz"
+    fi
+    curl -sSL "$CUDNN_DIR/$CUDNN_NAME" | sudo tar -zxvf - -C "/usr/local/" --no-overwrite-dir
 
-    wget -q https://repo.codingcafe.org/nvidia/nccl/$(curl -sSL https://repo.codingcafe.org/nvidia/nccl | sed -n 's/.*href="\(.*x86_64.*\)".*/\1/p' | sort -V | tail -n1)
+    NCCL_DIR="https://repo.codingcafe.org/nvidia/nccl"
+    NCCL_NAME="$(curl -sSL "$NCCL_DIR" | sed -n 's/.*href="\(.*cuda'"$CUDA_VER_MAJOR.$CUDA_VER_MINOR"'_x86_64.*\)".*/\1/p' | sort -V | tail -n1)"
+    wget -q "$NCCL_DIR/$NCCL_NAME"
 
     sudo [ -e /usr/local/cuda/lib ] || sudo ln -s /usr/local/cuda/lib{64,}
     sudo tar -xvf nccl* -C /usr/local/cuda --strip-components=1 --no-overwrite-dir --skip-old-files
