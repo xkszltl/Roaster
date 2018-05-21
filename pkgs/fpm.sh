@@ -13,8 +13,14 @@
 
     # ------------------------------------------------------------
 
-    gem build fpm.gemspec
-    sudo gem install ./fpm-*.gem
+    (
+        set +x
+        . scl_source enable rh-ruby25
+        set -xe
+
+        gem build fpm.gemspec
+        sudo gem install ./fpm-*.gem
+    )
 
     # ------------------------------------------------------------
 

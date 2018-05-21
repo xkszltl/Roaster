@@ -136,6 +136,7 @@ for i in pkg-{skip,all}; do
                 python2{,-*}
                 rh-python36{,-*}
                 ruby{,-*}
+                rh-ruby25{,-*}
                 lua{,-*}
 
                 *-fonts{,-*}
@@ -161,7 +162,7 @@ for i in pkg-{skip,all}; do
         # Ruby gem Packages
         # ------------------------------------------------------------
 
-        sudo gem install fpm
+        # sudo scl enable rh-ruby25 gem install fpm
 
         # ------------------------------------------------------------
         # Python pip Packages
