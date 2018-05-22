@@ -162,7 +162,7 @@ for i in pkg-{skip,all}; do
         # Ruby gem Packages
         # ------------------------------------------------------------
 
-        # sudo scl enable rh-ruby25 gem install fpm
+        # sudo scl enable rh-ruby25 "gem install fpm"
 
         # ------------------------------------------------------------
         # Python pip Packages
