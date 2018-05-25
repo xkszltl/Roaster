@@ -30,7 +30,7 @@
         [ $HTTP_PROXY ] && export HTTPS_PROXY=$HTTP_PROXY
         [ $HTTP_PROXY ] && export http_proxy=$HTTP_PROXY
         [ $HTTPS_PROXY ] && export https_proxy=$HTTPS_PROXY
-        for i in ARM-software catchorg eigenteam facebook{,incubator} google intel Maratyszcza NervanaSystems nvidia NVlabs onnx pybind RLovelett zdevito; do
+        for i in ARM-software catchorg eigenteam facebook{,incubator} google intel Maratyszcza NervanaSystems nvidia NVlabs onnx pybind zdevito; do
             sed -i "s/[^[:space:]]*:\/\/[^\/]*\(\/$i\/.*\)/$(sed 's/\//\\\//g' <<<$GIT_MIRROR )\1.git/" .gitmodules
             sed -i "s/\($(sed 's/\//\\\//g' <<<$GIT_MIRROR )\/$i\/.*\.git\)\.git[[:space:]]*$/\1/" .gitmodules
         done

@@ -71,7 +71,6 @@ opencv/opencv,\
 pybind/pybind11,\
 pytest-dev/{py,pytest},\
 pytorch/{examples,pytorch,tutorials},\
-RLovelett/eigen,\
 RMerl/{am-toolchains,asuswrt-merlin.ng},\
 SchedMD/slurm,\
 scipy/scipy{,-mathjax,-sphinx-theme},\
