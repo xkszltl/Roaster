@@ -13,7 +13,7 @@
     git remote add patch https://github.com/xkszltl/pytorch.git
     git fetch patch
 
-    for i in xkszltl gpu_dll logging pybind rocksdb; do
+    for i in xkszltl gpu_dll logging pybind rocksdb gcc7; do
         git checkout "$i"
         git rebase master
     done
@@ -24,6 +24,7 @@
     git pull --no-edit patch logging
     git pull --no-edit patch rocksdb
     git pull --no-edit patch pybind
+    git pull --no-edit patch gcc7
 
     if [ $GIT_MIRROR == $GIT_MIRROR_CODINGCAFE ]; then
         export HTTP_PROXY=proxy.codingcafe.org:8118
@@ -45,10 +46,7 @@
 
     (
         set +xe
-        # Currently caffe2 can only be built with gcc-5.
-        # CUDA 9.1 has compiler bug with gcc-6.3.1 which is shown as compile error in <tuple>.
-        # TODO: Upgrade glog to use new compiler when possible.
-        . scl_source enable devtoolset-4
+        . scl_source enable devtoolset-6
         . /opt/intel/tbb/bin/tbbvars.sh intel64
         set -xe
 

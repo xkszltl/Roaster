@@ -19,7 +19,7 @@
 
     (
         set +xe
-        . scl_source enable devtoolset-4
+        . scl_source enable devtoolset-7
         set -xe
 
         # CMake script it not ready for dynamic lib.

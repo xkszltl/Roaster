@@ -15,7 +15,7 @@
 
     (
         set +xe
-        . scl_source enable devtoolset-6
+        . scl_source enable devtoolset-7
         set -xe
 
         ./autogen.pl
