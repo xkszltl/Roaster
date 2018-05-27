@@ -25,8 +25,6 @@
         mkdir -p build
         cd $_
 
-        # CUDA 9.x has removed Fermi (2.x) support.
-        # Use CUDA_ARCH_NAME to fix compile error "Unsupported gpu architecture 'compute_20'".
         export CCACHE_SLOPPINESS='include_file_ctime,include_file_mtime'
         cmake                                       \
             -G"Ninja"                               \
@@ -37,7 +35,7 @@
             -DCMAKE_CXX_COMPILER_LAUNCHER=ccache    \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
             -DCMAKE_VERBOSE_MAKEFILE=ON             \
-            -DCUDA_ARCH_NAME=Auto                   \
+            -DCUDA_ARCH_NAME=All                    \
             -DUSE_NCCL=ON                           \
             -Dpython_version=3                      \
             ..
