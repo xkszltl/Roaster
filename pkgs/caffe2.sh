@@ -74,9 +74,7 @@
             -DCPUINFO_BUILD_TOOLS=ON                \
             -DCUDA_ARCH_NAME=All                    \
             -DUSE_ATEN=OFF                          \
-            -DUSE_IDEEP=OFF                         \
             -DUSE_MKLDNN=ON                         \
-            -DUSE_MKLML=ON                          \
             -DUSE_NATIVE_ARCH=ON                    \
             -DUSE_OBSERVERS=ON                      \
             -DUSE_OPENMP=ON                         \
