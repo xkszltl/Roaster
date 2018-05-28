@@ -13,18 +13,14 @@
     git remote add patch https://github.com/xkszltl/pytorch.git
     git fetch patch
 
-    for i in xkszltl gpu_dll logging pybind rocksdb gcc7; do
+    for i in xkszltl gpu_dll logging pybind rocksdb gcc7 cmake-public; do
         git checkout "$i"
         git rebase master
     done
     git checkout master
-
-    git pull --no-edit patch xkszltl
-    git pull --no-edit patch gpu_dll
-    git pull --no-edit patch logging
-    git pull --no-edit patch rocksdb
-    git pull --no-edit patch pybind
-    git pull --no-edit patch gcc7
+    for i in xkszltl gpu_dll logging pybind rocksdb gcc7 cmake-public; do
+        git pull --no-edit patch "$i"
+    done
 
     if [ $GIT_MIRROR == $GIT_MIRROR_CODINGCAFE ]; then
         export HTTP_PROXY=proxy.codingcafe.org:8118
@@ -77,15 +73,15 @@
             -DCMAKE_VERBOSE_MAKEFILE=ON             \
             -DCPUINFO_BUILD_TOOLS=ON                \
             -DCUDA_ARCH_NAME=All                    \
-            -DINSTALL_GMOCK=OFF                     \
-            -DINSTALL_GTEST=OFF                     \
             -DUSE_ATEN=OFF                          \
             -DUSE_IDEEP=OFF                         \
+            -DUSE_MKLDNN=ON                         \
             -DUSE_MKLML=ON                          \
             -DUSE_NATIVE_ARCH=ON                    \
             -DUSE_OBSERVERS=ON                      \
             -DUSE_OPENMP=ON                         \
             -DUSE_ROCKSDB=ON                        \
+            -DUSE_SYSTEM_NCCL=ON                    \
             -DUSE_ZMQ=ON                            \
             -DUSE_ZSTD=OFF                          \
             -G"Ninja"                               \
