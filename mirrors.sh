@@ -14,7 +14,7 @@ cd $_
 
 [ $# -ge 1 ] && export PATTERN=$1
 
-parallel -j 8 --line-buffer --bar 'bash -c '"'"'
+parallel -j 10 --line-buffer --bar 'bash -c '"'"'
 set -e
 [ $(xargs -n1 <<<{} | wc -l) -ne 2 ] && exit 0
 export SRC_SITE=$(xargs -n1 <<<{} 2>/dev/null | head -n1)
@@ -27,15 +27,16 @@ export LOCAL=$(pwd)/$DST_DIR.git
 if [ ! $PATTERN ] || grep $PATTERN <<<$SRC_DIR; then
     mkdir -p $(dirname $LOCAL)
     cd $(dirname $LOCAL)
-    [ -d $LOCAL ] || git clone --mirror $DST || git clone --mirror $SRC
+    [ -d $LOCAL ] || git lfs clone --mirror $SRC "$LOCAL" || git lfs clone --mirror "$SRC" "$LOCAL"
     cd $LOCAL
     git remote set-url origin $DST
-    git fetch --all
+    git lfs fetch --all || true
     git remote set-url origin $SRC
-    git fetch --prune --all
+    git lfs fetch --prune --all
     git gc --auto
     git remote set-url origin $DST
     git push --mirror
+    git lfs push --all origin
 fi
 '"'" ::: {\
 https://github.com/\ {\
