@@ -85,12 +85,7 @@
             -G"Ninja"                               \
             ..
 
-        # Patch for timing issue between ONNX and Protobuf.
-        for i in $(seq 5 -1 0); do
-            time cmake --build . && break
-            [ $i -gt 0 ]
-            echo "Build failed. Still have $i chance(s) remaining."
-        done
+        time cmake --build .
         time cmake --build . --target test || ! nvidia-smi
         time cmake --build . --target install
 
