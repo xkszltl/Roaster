@@ -13,12 +13,12 @@
     git remote add patch https://github.com/xkszltl/pytorch.git
     git fetch patch
 
-    for i in xkszltl gpu_dll logging pybind rocksdb gcc7 cmake-public; do
+    for i in xkszltl gpu_dll pybind rocksdb cmake-public; do
         git checkout "$i"
         git rebase master
     done
     git checkout master
-    for i in xkszltl gpu_dll logging pybind rocksdb gcc7 cmake-public; do
+    for i in xkszltl gpu_dll pybind rocksdb cmake-public; do
         git pull --no-edit patch "$i"
     done
 
