@@ -12,21 +12,38 @@
     )'/systems/texlive/tlnet'
 
     cd $SCRATCH
+    mkdir -p texlive
+    cd $_
+
     curl -sSL $TEXLIVE_MIRROR/install-tl-unx.tar.gz | tar -zxvf -
-    cd install-tl-*
+
+    git init
+    git add -A .
+    git commit -m "Install"
+
+    . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
+
+    pushd install-tl-*
     ./install-tl --version
 
-    ./install-tl --repository $TEXLIVE_MIRROR --profile <(
+    git tag "$(basename "$(pwd)" | sed 's/.*-\([0-9][0-9][0-9][0-9]\)\([0-9][0-9]\)\([0-9][0-9]\)$/\1.\2.\3/')"
+
+    export TEXLIVE_INSTALL_PREFIX="$INSTALL_ABS"
+
+    ./install-tl --repository $TEXLIVE_MIRROR --portable --profile <(
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     cat << EOF
 selected_scheme scheme-full
-instopt_adjustpath 1
 EOF
     # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     )
 
+    popd
+
+    "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
+
     cd
-    rm -rf $SCRATCH/install-tl-*
+    rm -rf $SCRATCH/texlive
 )
 sudo rm -vf $STAGE/tex
 sync || true
