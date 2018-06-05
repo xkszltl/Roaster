@@ -27,11 +27,10 @@ if (Test-Path "$root")
 git clone --recursive -j100 "$repo"
 pushd "$root"
 git remote add patch https://github.com/xkszltl/pytorch.git
-git pull patch xkszltl
 git pull patch gpu_dll
-git pull patch logging
 git pull patch rocksdb
 git pull patch pybind
+git pull patch cmake-public
 
 mkdir build
 pushd build
