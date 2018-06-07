@@ -89,7 +89,6 @@ scipy/scipy{,-mathjax,-sphinx-theme},\
 shadowsocks/{ShadowsocksX-NG,libQtShadowsocks,shadowsocks{,-go,-libev,-manager,-windows}},\
 tensorflow/tensorflow,\
 xianyi/OpenBLAS,\
-zdevito/ATen,\
 zeromq/{cppzmq,libzmq,pyzmq},\
 },\
 https://gitlab.com/\ {\
