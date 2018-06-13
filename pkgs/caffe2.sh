@@ -63,6 +63,7 @@
             -DBENCHMARK_USE_LIBCXX=OFF              \
             -DBLAS=MKL                              \
             -DBUILD_CUSTOM_PROTOBUF=OFF             \
+            -DBUILD_TEST=ON                         \
             -DCMAKE_BUILD_TYPE=Release              \
             -DCMAKE_C_COMPILER=gcc                  \
             -DCMAKE_C_COMPILER_LAUNCHER=ccache      \
