@@ -9,13 +9,30 @@
 
     until git clone --depth 1 --single-branch -b "$(git ls-remote --tags "$GIT_MIRROR/google/protobuf.git" | sed -n 's/.*[[:space:]]refs\/tags\/\(v[0-9\.]*\)$/\1/p' | sort -V | tail -n1)" "$GIT_MIRROR/google/protobuf.git"; do echo 'Retrying'; done
     cd protobuf
-    until git clone --depth 1 --single-branch --recursive -b "$(git ls-remote --tags "$GIT_MIRROR/google/googletest.git" | sed -n 's/.*[[:space:]]refs\/tags\/\(release-[0-9\.]*\)$/\1/p' | sort -V | tail -n1)" "$GIT_MIRROR/google/googletest.git"; do echo 'Retrying'; done
-    rm -rf gmock
-    mkdir -p $_
-    pushd $_
-    ln -sf ../googletest/googlemock/* .
-    ln -sf ../googletest/googletest gtest
-    popd
+
+    if [ $GIT_MIRROR == $GIT_MIRROR_CODINGCAFE ]; then
+        export HTTP_PROXY=proxy.codingcafe.org:8118
+        [ $HTTP_PROXY ] && export HTTPS_PROXY=$HTTP_PROXY
+        [ $HTTP_PROXY ] && export http_proxy=$HTTP_PROXY
+        [ $HTTPS_PROXY ] && export https_proxy=$HTTPS_PROXY
+        for i in google; do
+            sed -i "s/[^[:space:]]*:\/\/[^\/]*\(\/$i\/.*\)/$(sed 's/\//\\\//g' <<<$GIT_MIRROR )\1.git/" .gitmodules
+            sed -i "s/\($(sed 's/\//\\\//g' <<<$GIT_MIRROR )\/$i\/.*\.git\)\.git[[:space:]]*$/\1/" .gitmodules
+        done
+    fi
+
+    git submodule init
+    until git config --file .gitmodules --get-regexp path | cut -d' ' -f2 | parallel -j0 --ungroup --bar '[ ! -d "{}" ] || git submodule update --recursive "{}"'; do echo 'Retrying'; done
+
+    if false; then
+        until git clone --depth 1 --single-branch --recursive -b "$(git ls-remote --tags "$GIT_MIRROR/google/googletest.git" | sed -n 's/.*[[:space:]]refs\/tags\/\(release-[0-9\.]*\)$/\1/p' | sort -V | tail -n1)" "$GIT_MIRROR/google/googletest.git"; do echo 'Retrying'; done
+        rm -rf gmock
+        mkdir -p $_
+        pushd $_
+        ln -sf ../googletest/googlemock/* .
+        ln -sf ../googletest/googletest gtest
+        popd
+    fi
 
     # ------------------------------------------------------------
 
@@ -35,13 +52,13 @@
         cd $_
 
         cmake                                       \
+            -DBUILD_SHARED_LIBS=ON                  \
             -DCMAKE_BUILD_TYPE=Release              \
             -DCMAKE_C_COMPILER_LAUNCHER=ccache      \
             -DCMAKE_C{,XX}_FLAGS="-g"               \
             -DCMAKE_CXX_COMPILER_LAUNCHER=ccache    \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
             -Dprotobuf_BUILD_EXAMPLES=ON            \
-            -Dprotobuf_BUILD_SHARED_LIBS=ON         \
             -Dprotobuf_INSTALL_EXAMPLES=ON          \
             -G"Ninja"                               \
             ../cmake
