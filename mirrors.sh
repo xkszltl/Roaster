@@ -51,6 +51,7 @@ if [ ! '"$PATTERN"' ] || grep '"$PATTERN"' <<<$SRC_DIR; then
 fi
 '"'" ::: {\
 https://github.com/\ {\
+01org/{processor-trace,tbb},\
 ARM-software/{arm-trusted-firmware,ComputeLibrary,lisa},\
 aws/aws-{cli,sdk-{cpp,go,java,js,net,php,ruby}},\
 boostorg/boost,\
@@ -73,6 +74,7 @@ llvm-mirror/{ll{vm,d,db,go},clang{,-tools-extra},polly,compiler-rt,openmp,lib{un
 LMDB/lmdb,\
 Maratyszcza/{confu,cpuinfo,FP16,FXdiv,NNPACK,PeachPy,psimd,pthreadpool},\
 NervanaSystems/{neon,nervanagpu},\
+nanopb/nanopb,\
 ninja-build/ninja,\
 numpy/numpy{,doc},\
 NVIDIA/{DIGITS,cnmem,libglvnd,nccl,nvidia-docker},\
@@ -88,6 +90,7 @@ SchedMD/slurm,\
 scipy/scipy{,-mathjax,-sphinx-theme},\
 shadowsocks/{ShadowsocksX-NG,libQtShadowsocks,shadowsocks{,-go,-libev,-manager,-windows}},\
 tensorflow/tensorflow,\
+USCiLab/cereal,\
 xianyi/OpenBLAS,\
 zeromq/{cppzmq,libzmq,pyzmq},\
 },\
