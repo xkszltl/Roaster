@@ -40,25 +40,14 @@ mv -Force "$root/gmock/googletest" "$root/gmock/gtest"
 
 # ================================================================================
 # Dirty temporary patches:
-# - Fix DLL symbols on master.
-# - Fix CUDA 9.1 compatibility on 3.5.2.
+# - Fix DLL symbols of nested class.
 # ================================================================================
 pushd src/google/protobuf
-if ("${latest_ver}" -eq 'master')
-{
-    echo "Patch for `"${latest_ver}`" about DLL."
-    $(cat io/gzip_stream.h) -Replace '(struct )(Options)','${1}LIBPROTOBUF_EXPORT ${2}' > io/.gzip_stream.h
-    mv -Force io/.gzip_stream.h io/gzip_stream.h
-    popd
-}
-else
-{
-    echo "Patch for `"${latest_ver}`" about NVCC."
-    $(cat generated_message_table_driven.h) -Replace '(#if LANG_CXX11)$','${1} && !defined(__NVCC__)' > .generated_message_table_driven.h
-    mv -Force .generated_message_table_driven.h generated_message_table_driven.h
-}
-git diff
+echo "Patch for `"${latest_ver}`" about DLL."
+$(cat io/gzip_stream.h) -Replace '(struct )(Options)','${1}LIBPROTOBUF_EXPORT ${2}' > io/.gzip_stream.h
+mv -Force io/.gzip_stream.h io/gzip_stream.h
 popd
+git diff
 
 mkdir build-win
 pushd build-win
@@ -79,7 +68,7 @@ cmake                                   `
     -Dprotobuf_BUILD_EXAMPLES=ON        `
     -Dprotobuf_BUILD_SHARED_LIBS=ON     `
     -Dprotobuf_INSTALL_EXAMPLES=ON      `
-    -G"Visual Studio 14 2015 Win64"     `
+    -G"Visual Studio 15 2017 Win64"     `
     ../cmake
 
 # Multi-process build is not ready.
