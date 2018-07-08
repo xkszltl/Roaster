@@ -30,9 +30,8 @@
             # Use -fPIC since cmake script only creates static lib.
             cmake                                       \
                 -DCMAKE_BUILD_TYPE=Release              \
-                -DCMAKE_C_COMPILER_LAUNCHER=ccache      \
+                -DCMAKE_C{,XX}_COMPILER_LAUNCHER=ccache \
                 -DCMAKE_C{,XX}_FLAGS="-fPIC -g"         \
-                -DCMAKE_CXX_COMPILER_LAUNCHER=ccache    \
                 -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
                 -G"Ninja"                               \
                 ..

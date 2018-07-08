@@ -12,7 +12,6 @@ for i in llvm-{gcc,clang}; do
         (
             set -e
             echo "Retriving LLVM $LLVM_GIT_TAG..."
-            # until git clone --depth 1 --branch "$LLVM_GIT_TAG" "$LLVM_MIRROR/llvm.git"; do sleep 1; echo "Retrying"; done
             until git clone --depth 1 --branch "$LLVM_GIT_TAG" "$LLVM_MIRROR/llvm.git"; do sleep 1; echo "Retrying"; done
             cd llvm
             git tag -f "$LLVM_GIT_TAG"
