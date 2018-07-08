@@ -30,9 +30,10 @@
         # Separable CUDA causes symbol redefinition.
         cmake                                               \
             -G"Ninja"                                       \
+            -DBUILD_PROTOBUF=OFF                            \
             -DBUILD_WITH_DEBUG_INFO=ON                      \
             -DBUILD_opencv_world=ON                         \
-            -DBUILD_opencv_dnn=ON                           \
+            -DBUILD_opencv_dnn=OFF                          \
             -DCMAKE_BUILD_TYPE=Release                      \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"           \
             -DCMAKE_VERBOSE_MAKEFILE=ON                     \
@@ -56,10 +57,12 @@
             -DENABLE_CXX11=ON                               \
             -DENABLE_LTO=OFF                                \
             -DINSTALL_CREATE_DISTRIB=ON                     \
+            -DINSTALL_TESTS=ON                              \
             -DMKL_WITH_TBB=ON                               \
             -DOPENCV_ENABLE_NONFREE=ON                      \
             -DOpenGL_GL_PREFERENCE=GLVND                    \
             -DPROTOBUF_UPDATE_FILES=ON                      \
+            -DWITH_HALIDE=ON                                \
             -DWITH_LIBV4L=ON                                \
             -DWITH_MKL=ON                                   \
             -DWITH_NVCUVID=ON                               \
