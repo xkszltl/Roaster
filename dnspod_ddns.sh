@@ -21,7 +21,7 @@ Domain=codingcafe.org
 # ================================================================
 
 LastDir=$(mktemp -d)
-cd $LastDir
+cd "$LastDir"
 
 while true; do
     echo '========================================'
@@ -46,17 +46,17 @@ while true; do
             API="https://dnsapi.cn"
             Token="login_token=$TokenDnspodCN"
             mkdir -p "Dnspod/CN"
-            cd $_
-            DomainID=$(curl $API/Domain.List    \
+            cd "$_"
+            DomainID=$(curl "$API/Domain.List"  \
                     -sSLX POST                  \
                     -d "$Token"                 \
                     -d "format=json"            \
                 | jq -r '.domains[] | select(.name=="'"$Domain"'") | .id')
-            Records=$(curl $API/Record.List \
-                    -sSLX POST              \
-                    -d "$Token"             \
-                    -d "format=json"        \
-                    -d "domain=$Domain"     \
+            Records=$(curl "$API/Record.List"   \
+                    -sSLX POST                  \
+                    -d "$Token"                 \
+                    -d "format=json"            \
+                    -d "domain=$Domain"         \
                 | jq '.records[]')
             [ "$Records" ]
             RecID=$(jq -r 'select(.name=="'"$Rec"'") | .id' <<< "$Records")
@@ -76,7 +76,7 @@ while true; do
                     -d "domain=$Domain"         \
                     -d "format=json"            \
                     -d "record_id=$RecID"       \
-                    -d "record_line=默认"       \
+                    -d "record_line=默认"        \
                     -d "sub_domain=$Rec"        \
                     -d "value=$IP"              \
                 | jq '.'
@@ -91,17 +91,17 @@ while true; do
             API="https://api.dnspod.com"
             Token="user_token=$TokenDnspodIntl"
             mkdir -p "Dnspod/Intl"
-            cd $_
-            DomainID=$(curl $API/Domain.List    \
+            cd "$_"
+            DomainID=$(curl "$API/Domain.List"  \
                     -sSLX POST                  \
                     -d "$Token"                 \
                     -d "format=json"            \
                 | jq -r '.domains[] | select(.name=="'"$Domain"'") | .id')
-            Records=$(curl $API/Record.List \
-                    -sSLX POST              \
-                    -d "$Token"             \
-                    -d "format=json"        \
-                    -d "domain=$Domain"     \
+            Records=$(curl "$API/Record.List"   \
+                    -sSLX POST                  \
+                    -d "$Token"                 \
+                    -d "format=json"            \
+                    -d "domain=$Domain"         \
                 | jq '.records[]')
             [ "$Records" ]
             RecID=$(jq -r 'select(.name=="'"$Rec"'") | .id' <<< "$Records")
@@ -135,7 +135,7 @@ while true; do
             API="https://www.dns.com/api"
             Token="apiKey=$TokenDNSCOMKey"
             mkdir -p "DNS.com"
-            cd $_
+            cd "$_"
             # curl "$API/domain/list/"                            \
             #     -sSLX POST                                      \
             #     -H 'Content-type:text/html;charset=utf-8'       \
@@ -148,4 +148,4 @@ while true; do
 done
 
 cd
-rm -rf $LastDir
+rm -rf "$LastDir"
