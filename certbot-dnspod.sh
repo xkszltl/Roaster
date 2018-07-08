@@ -10,6 +10,9 @@ TokenDnspodCN='12345,1234567890abcdef0123456789abcdef'
 
 # ----------------------------------------------------------------
 
+MaxRetries=5
+Propagation=5
+
 Domain=codingcafe.org
 
 if [ "_$(sed 's/.*\.\([^\.]*\.[^\.]*\)$/\1/' <<< "$CERTBOT_DOMAIN")" != "_$Domain" ]; then
@@ -55,7 +58,7 @@ fi
             -d "value=$CERTBOT_VALIDATION"  \
         | jq '.'
 
-        MaxRetries=5
+        sleep "$Propagation"
         for remain in $(seq "$MaxRetries" -1 0); do
             dig -t TXT "$HOST.$Domain" +noall +answer | sed -n '/^[^;]/p' | grep 'TXT' && break
             echo "Waiting for the validation record...$remain retries remaining"
