@@ -66,6 +66,7 @@ facebookincubator/gloo,\
 facebookresearch/{Detectron,fastText},\
 gflags/gflags,\
 google/{benchmark,snappy,glog,googletest,leveldb,protobuf},\
+halide/Halide,\
 intel/{ideep,mkl-dnn},\
 jemalloc/jemalloc,\
 jordansissel/fpm,\
