@@ -65,6 +65,7 @@ facebook/{rocksdb,zstd},\
 facebookincubator/gloo,\
 facebookresearch/{Detectron,fastText},\
 gflags/gflags,\
+github/gitignore,\
 google/{benchmark,snappy,glog,googletest,leveldb,protobuf},\
 halide/Halide,\
 intel/{ideep,mkl-dnn},\
