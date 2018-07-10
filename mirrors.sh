@@ -54,6 +54,7 @@ https://github.com/\ {\
 01org/{processor-trace,tbb},\
 ARM-software/{arm-trusted-firmware,ComputeLibrary,lisa},\
 aws/aws-{cli,sdk-{cpp,go,java,js,net,php,ruby}},\
+benjaminp/six,\
 boostorg/boost,\
 BVLC/caffe,\
 caffe2/{caffe2,models},\
@@ -91,6 +92,7 @@ RMerl/{am-toolchains,asuswrt-merlin.ng},\
 SchedMD/slurm,\
 scipy/scipy{,-mathjax,-sphinx-theme},\
 shadowsocks/{ShadowsocksX-NG,libQtShadowsocks,shadowsocks{,-go,-libev,-manager,-windows}},\
+shibatch/sleef,\
 tensorflow/tensorflow,\
 USCiLab/cereal,\
 xianyi/OpenBLAS,\
