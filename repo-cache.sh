@@ -133,10 +133,10 @@ rm -rf $(find . -name .repodata -type d)
 # ----------------------------------------------------------------
 
 if $USE_PROXY; then
-    export HTTP_PROXY=proxy.codingcafe.org:8118
-    [ $HTTP_PROXY ] && export HTTPS_PROXY=$HTTP_PROXY
-    [ $HTTP_PROXY ] && export http_proxy=$HTTP_PROXY
-    [ $HTTPS_PROXY ] && export https_proxy=$HTTPS_PROXY
+    export HTTP_PROXY="proxy.codingcafe.org:8118"
+    [ "$HTTP_PROXY"  ] && export HTTPS_PROXY="$HTTP_PROXY"
+    [ "$HTTP_PROXY"  ] && export http_proxy="$HTTP_PROXY"
+    [ "$HTTPS_PROXY" ] && export https_proxy="$HTTPS_PROXY"
 fi
 
 # ----------------------------------------------------------------
@@ -216,9 +216,10 @@ done
 
 export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
 {
-    "repo":     "'"cuda"'",
-    "path":     "'"cuda/rhel7/$(uname -i)"'",
-    "retries":  10
+    "repo":         "'"cuda"'",
+    "path":         "'"cuda/rhel7/$(uname -i)"'",
+    "retries":      10,
+    "use_proxy":    "'"true"'"
 }')
 
 # ----------------------------------------------------------------
@@ -292,6 +293,15 @@ parallel -j0 --line-buffer --bar 'bash -c '"'"'
     jq -e ".sync_args" <<< "$JSON_OBJ" > /dev/null && export sync_args=$(jq -r ".sync_args" <<< "$JSON_OBJ")
     export retries=1
     jq -e ".retries" <<< "$JSON_OBJ" > /dev/null && export retries=$(jq -r ".retries" <<< "$JSON_OBJ")
+    export use_proxy="'"$USE_PROXY"'"
+    jq -e ".use_proxy" <<< "$JSON_OBJ" > /dev/null && export use_proxy=$(jq -r ".use_proxy" <<< "$JSON_OBJ")
+
+    if $use_proxy; then
+        export HTTP_PROXY="proxy.codingcafe.org:8118"
+        [ "$HTTP_PROXY"  ] && export HTTPS_PROXY="$HTTP_PROXY"
+        [ "$HTTP_PROXY"  ] && export http_proxy="$HTTP_PROXY"
+        [ "$HTTPS_PROXY" ] && export https_proxy="$HTTPS_PROXY"
+    fi
 
     mkdir -p $path
     cd $_
