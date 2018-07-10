@@ -309,13 +309,15 @@ parallel -j0 --line-buffer --bar 'bash -c '"'"'
         fi
         if ! "$DRY"; then
             eval $REPOSYNC $repo $sync_args && break
-            echo -n "Retry \"$repo\". "
-            if [ "$rest" -gt 0 ]; then
-                echo "$rest time(s) left."
-            elif [ "$use_proxy" ]; then
-                echo "Try once without proxy."
-            else
-                echo "Try once with proxy."
+            if [ "$rest" -ge 0 ]; then
+                echo -n "Retry \"$repo\". "
+                if [ "$rest" -gt 0 ]; then
+                    echo "$rest time(s) left."
+                elif [ "$use_proxy" ]; then
+                    echo "Try once without proxy."
+                else
+                    echo "Try once with proxy."
+                fi
             fi
         fi
     done
