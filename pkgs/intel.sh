@@ -7,16 +7,25 @@
     mkdir -p intel
     cd $_
 
-    export INTEL_REPO=https://repo.codingcafe.org/intel
+    export INTEL_REPO="https://repo.codingcafe.org/intel"
+    export INTEL_SITE="http://registrationcenter-download.intel.com/akdlm/irc_nas/tec"
 
     parallel -j0 --line-buffer --bar 'bash -c '"'"'
         set -xe
         if [ "{}" = "_" ]; then
-            sudo yum remove -y intel-*
+            if [ -d '/opt/intel' ] && rpm -qf '/opt/intel'; then
+                sudo yum remove -y $(rpm -qf '/opt/intel' | sed -n '/^intel-/p')
+                rm -rf '/opt/intel'
+            fi
         else
             mkdir -p "{}"
             pushd $_
-            curl -sSL '"$INTEL_REPO"'/$(curl -sSL '"$INTEL_REPO"'/ | sed -n "s/.*href=\"\([^\"]*l_{}[^\"]*\)\".*/\1/p" | sort -V | tail -n1) | tar --strip-components=1 -zxv
+            if [ '"$GIT_MIRROR"' == '"$GIT_MIRROR_CODINGCAFE"' ]; then
+                URL="'"$INTEL_REPO"'/$(curl -sSL '"$INTEL_REPO"'/ | sed -n "s/.*href=\"\([^\"]*l_{}[^\"]*\)\".*/\1/p" | sort -V | tail -n1)"
+            else
+                URL="'"$INTEL_SITE"'/$(sed -n "s/.*[[:space:]]\([0-9]*\/l_{}_[^[:space:]]*\).*/\1/p" "'"$ROOT_DIR/repo-cache.sh"'")"
+            fi
+            curl -sSL "$URL" | tar --strip-components=1 -zxv
             cat silent.cfg                                  \
             | sed "s/^\([^#]*ACCEPT_EULA=\).*/\1accept/"    \
             | sed "s/^\([^#]*PSET_MODE=\).*/\1install/"     \
@@ -31,7 +40,6 @@
 
     for i in $(ls -d */ | sed 's/\///'); do
         echo "Installing Intel $(tr [a-z] [A-Z] <<< $i)..."
-        # sudo $i/install.sh --silent $i/silent_uninstall.cfg || true
         sudo $i/install.sh --silent $i/silent_install.cfg
     done
     
