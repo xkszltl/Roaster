@@ -54,8 +54,8 @@ export REPO_TASKS=$(jq -n '
         "repo_tasks": []
     }')
 
-mkdir -p /var/www/repos
-cd $_
+mkdir -p '/var/www/repos'
+cd "$_"
 
 # ----------------------------------------------------------------
 # CTAN Repository Mirroring
@@ -85,7 +85,7 @@ parallel -j0 --line-buffer --bar 'bash -c '"'"'
     export INTEL_URL="http://registrationcenter-download.intel.com/akdlm/irc_nas/tec"
 
     mkdir -p intel
-    cd $_
+    cd "$_"
 
     $DRY || wget $DRY_WGET -cq --bind-address='$ROUTE' $INTEL_URL/{}
 '"'" :::   \
@@ -115,7 +115,7 @@ parallel -j10 --line-buffer --bar 'bash -c '"'"'
     export rhs=$(sed "s/.*@//" <<< "{}")
 
     mkdir -p "nvidia/cudnn/$lhs"
-    cd $_
+    cd "$_"
 
     '"$DRY"' || wget '"$DRY_WGET"' -cq --bind-address='"$ROUTE"' "$CUDNN_URL/$lhs/cudnn-$(printf "$rhs" "x64-$(cut -d. -f1,2 <<< "$lhs" | sed "s/\.0$//")")"
     [ $(ls | wc -l) -le 0 ] && cd .. && rm -rf "$lhs"
@@ -208,8 +208,8 @@ done
 (
     set -e
 
-    mkdir -p cuda/rhel7/$(uname -i)
-    cd $_
+    mkdir -p "cuda/rhel7/$(uname -i)"
+    cd "$_"
     $DRY || wget $DRY_WGET -cq https://developer.download.nvidia.com/compute/cuda/repos/rhel7/$(uname -i)/7fa2af80.pub
     $DRY || rpm --import 7fa2af80.pub
 )
@@ -229,8 +229,8 @@ export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= .
 (
     set -e
 
-    mkdir -p docker/linux/centos
-    cd $_
+    mkdir -p 'docker/linux/centos'
+    cd "$_"
     $DRY || wget $DRY_WGET -cq https://download.docker.com/linux/centos/gpg
     $DRY || rpm --import gpg
 )
@@ -296,18 +296,28 @@ parallel -j0 --line-buffer --bar 'bash -c '"'"'
     export use_proxy="'"$USE_PROXY"'"
     jq -e ".use_proxy" <<< "$JSON_OBJ" > /dev/null && export use_proxy=$(jq -r ".use_proxy" <<< "$JSON_OBJ")
 
-    if $use_proxy; then
-        export HTTP_PROXY="proxy.codingcafe.org:8118"
-        [ "$HTTP_PROXY"  ] && export HTTPS_PROXY="$HTTP_PROXY"
-        [ "$HTTP_PROXY"  ] && export http_proxy="$HTTP_PROXY"
-        [ "$HTTPS_PROXY" ] && export https_proxy="$HTTPS_PROXY"
-    fi
-
-    mkdir -p $path
-    cd $_
-    for attempt in $(seq $retries); do
-        $DRY || eval $REPOSYNC $repo $sync_args && break
-        $DRY || echo "Retry \"$repo\""
+    mkdir -p "$path"
+    cd "$_"
+    for rest in $(seq "$retries" -1 -1); do
+        if [ "$rest" -ge 0 ] && "$use_proxy" || [ "$rest" -ne 0 ] && ! "$use_proxy" ; then
+            export HTTP_PROXY="proxy.codingcafe.org:8118"
+            [ "$HTTP_PROXY"  ] && export HTTPS_PROXY="$HTTP_PROXY"
+            [ "$HTTP_PROXY"  ] && export http_proxy="$HTTP_PROXY"
+            [ "$HTTPS_PROXY" ] && export https_proxy="$HTTPS_PROXY"
+        else
+            unset HTTP_PROXY HTTPS_PROXY http_proxy https_proxy
+        fi
+        if ! "$DRY"; then
+            eval $REPOSYNC $repo $sync_args && break
+            echo -n "Retry \"$repo\". "
+            if [ "$rest" -gt 0 ]; then
+                echo "$rest time(s) left."
+            elif [ "$use_proxy" ]; then
+                echo "Try once without proxy."
+            else
+                echo "Try once with proxy."
+            fi
+        fi
     done
     $DRY || eval $CREATEREPO
 '"'" :::    \
