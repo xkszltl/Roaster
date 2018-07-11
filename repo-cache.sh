@@ -7,6 +7,8 @@
 set -e
 trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
+date
+
 # ----------------------------------------------------------------
 # Configuration
 # ----------------------------------------------------------------
@@ -329,4 +331,7 @@ parallel -j0 --line-buffer --bar 'bash -c '"'"'
 # ----------------------------------------------------------------
 
 wait
+
+date
+
 trap - SIGTERM SIGINT EXIT

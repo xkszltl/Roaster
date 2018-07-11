@@ -2,6 +2,8 @@
 
 set -e
 
+date
+
 export HTTP_PROXY=proxy.codingcafe.org:8118
 [ $HTTP_PROXY ] && export HTTPS_PROXY=$HTTP_PROXY
 [ $HTTP_PROXY ] && export http_proxy=$HTTP_PROXY
@@ -102,3 +104,5 @@ https://gitlab.com/\ {\
 NVIDIA/cuda,\
 },\
 }
+
+date
