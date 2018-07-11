@@ -8,16 +8,16 @@ $ErrorActionPreference="Stop"
 # Import VC env is only necessary for non-VS (such as ninja) build.
 # ================================================================================
 
-Invoke-Expression $($(cmd /C "`"${Env:ProgramFiles(x86)}/Microsoft Visual Studio/2017/Enterprise/VC/Auxiliary/Build/vcvarsall.bat`" x64 -vcvars_ver=14.11 & set") -Match '^.+=' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
+Invoke-Expression $($(cmd /c "`"${Env:ProgramFiles(x86)}/Microsoft Visual Studio/2017/Enterprise/VC/Auxiliary/Build/vcvarsall.bat`" x64 -vcvars_ver=14.14 & set") -Match '^.+=' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
 
 & "${Env:PYTHONHOME}/Scripts/pip.exe" install -U numpy
 
 pushd ${Env:TMP}
 $repo="${Env:GIT_MIRROR}/pytorch/pytorch.git"
 $proj="$($repo -replace '.*/','' -replace '.git$','')"
-$root="${Env:TMP}/$proj"
+$root= Join-Path "${Env:TMP}" "$proj"
 
-rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "$root"
+cmd /c rmdir /S /Q "$root"
 if (Test-Path "$root")
 {
     echo "Failed to remove `"$root`""
@@ -26,20 +26,23 @@ if (Test-Path "$root")
 
 git clone --recursive -j100 "$repo"
 pushd "$root"
+git checkout f35d7cce912dbc13a5db316b342509556398871d
 git remote add patch https://github.com/xkszltl/pytorch.git
-git pull patch gpu_dll
-git pull patch rocksdb
-git pull patch pybind
-git pull patch cmake-public
+git fetch patch
+git cherry-pick patch/pybind --strategy=recursive --strategy-option=theirs
+git cherry-pick patch/rocksdb --strategy=recursive --strategy-option=theirs
+git cherry-pick patch/cmake-public --strategy=recursive --strategy-option=theirs
+#TODO: cherry-pick patch/gpu_dll
+git checkout -- *
 
 mkdir build
 pushd build
 
 # Copy MKL's environment variables from ".bat" file to PowerShell.
-Invoke-Expression $($(cmd /C "`"${Env:ProgramFiles(x86)}/IntelSWTools/compilers_and_libraries/windows/mkl/bin/mklvars.bat`" intel64 vs2015 & env") -Match '^MKL(_|ROOT)' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
-Invoke-Expression $($(cmd /C "`"${Env:ProgramFiles(x86)}/IntelSWTools/compilers_and_libraries/windows/mkl/bin/mklvars.bat`" intel64 vs2015 & env") -Match '^LIB' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
-Invoke-Expression $($(cmd /C "`"${Env:ProgramFiles(x86)}/IntelSWTools/compilers_and_libraries/windows/mkl/bin/mklvars.bat`" intel64 vs2015 & env") -Match '^CPATH' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
-Invoke-Expression $($(cmd /C "`"${Env:ProgramFiles(x86)}/IntelSWTools/compilers_and_libraries/windows/mkl/bin/mklvars.bat`" intel64 vs2015 & env") -Match '^INCLUDE' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
+Invoke-Expression $($(cmd /C "`"${Env:ProgramFiles(x86)}/IntelSWTools/compilers_and_libraries/windows/mkl/bin/mklvars.bat`" intel64 vs2017 & env") -Match '^MKL(_|ROOT)' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
+Invoke-Expression $($(cmd /C "`"${Env:ProgramFiles(x86)}/IntelSWTools/compilers_and_libraries/windows/mkl/bin/mklvars.bat`" intel64 vs2017 & env") -Match '^LIB' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
+Invoke-Expression $($(cmd /C "`"${Env:ProgramFiles(x86)}/IntelSWTools/compilers_and_libraries/windows/mkl/bin/mklvars.bat`" intel64 vs2017 & env") -Match '^CPATH' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
+Invoke-Expression $($(cmd /C "`"${Env:ProgramFiles(x86)}/IntelSWTools/compilers_and_libraries/windows/mkl/bin/mklvars.bat`" intel64 vs2017 & env") -Match '^INCLUDE' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
 
 $gtest_silent_warning="/D_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS /D_SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING /w"
 $gflags_dll="/DGFLAGS_IS_A_DLL=1"
@@ -64,7 +67,7 @@ cmake                                                                           
     -DPROTOBUF_INCLUDE_DIRS="${Env:ProgramFiles}/protobuf/include"              `
     -DPROTOBUF_LIBRARIES="${Env:ProgramFiles}/protobuf/bin"                     `
     -DPROTOBUF_PROTOC_EXECUTABLE="${Env:ProgramFiles}/protobuf/bin/protoc.exe"  `
-    -DUSE_CUDA=ON                                                               `
+    -DUSE_CUDA=OFF                                                              `
     -DUSE_GLOO=OFF                                                              `
     -DUSE_IDEEP=OFF                                                             `
     -DUSE_LEVELDB=OFF                                                           `
@@ -84,7 +87,7 @@ cmake                                                                           
     -Dprotobuf_BUILD_SHARED_LIBS=ON                                             `
     -Dpybind11_INCLUDE_DIR="${Env:ProgramFiles}/pybind11/include"               `
     -G"Visual Studio 15 2017 Win64"                                             `
-    -T"v140,host=x64"                                                           `
+    -T"host=x64"                                                                `
     ..
 
 $ErrorActionPreference="SilentlyContinue"
@@ -105,7 +108,7 @@ if (-Not $?)
 }
 $ErrorActionPreference="Stop"
 
-rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${Env:ProgramFiles}/Caffe2"
+cmd /c rmdir /S /Q "${Env:ProgramFiles}/Caffe2"
 cmake --build . --config RelWithDebInfo --target install -- -maxcpucount
 Get-ChildItem "${Env:ProgramFiles}/Caffe2" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 

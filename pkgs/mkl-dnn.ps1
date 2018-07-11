@@ -16,13 +16,13 @@ if (Test-Path "$root")
     Exit 1
 }
 
-$latest_ver="v$($(git ls-remote --tags "$repo") -match '.*refs/tags/v[0-9\.]*$' -replace '.*refs/tags/v','' | sort {[Version]$_} | tail -n1)"
+$latest_ver="v$($(git ls-remote --tags "$repo") -match '.*refs/tags/v[0-9\.]*$' -replace '.*refs/tags/v','' | sort {[Version]$_})[-1]"
 # Windows support is not ready in v0.13.
 $latest_ver="master"
 git clone --depth 1 --recursive --single-branch -b "$latest_ver" "$repo"
 pushd "$root"
 
-Invoke-Expression $($(cmd /C "`"${Env:ProgramFiles(x86)}/IntelSWTools/compilers_and_libraries/windows/mkl/bin/mklvars.bat`" intel64 vs2015 & env") -Match '^MKLROOT' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
+Invoke-Expression $($(cmd /C "`"${Env:ProgramFiles(x86)}/IntelSWTools/compilers_and_libraries/windows/mkl/bin/mklvars.bat`" intel64 vs2017 & set") -Match '^MKLROOT' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
 
 mkdir build
 pushd build

@@ -21,7 +21,7 @@ if (Test-Path "$root")
 # - Master has ambiguity issue about __hadd in CUDA 9.1, patched.
 #   >> [ __hadd(int, int) for int avg ] vs. [ __hadd(__half, __half) for fp16 ].
 # ================================================================================
-$latest_ver="$($(git ls-remote --tags "$repo") -match '.*refs/tags/[0-9\.]*$' -replace '.*refs/tags/','' | sort {[Version]$_} | tail -n1)"
+$latest_ver="$($(git ls-remote --tags "$repo") -match '.*refs/tags/[0-9\.]*$' -replace '.*refs/tags/','' | sort {[Version]$_})[-1]"
 # Compatibility issues between CUDA 9.1 and Eigen 3.3.4
 $latest_ver="master"
 git clone --depth 1 --single-branch -b "$latest_ver" "$repo"

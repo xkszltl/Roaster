@@ -27,25 +27,22 @@ Visual Studio
 
 Latest version is preferred.
 Currently it's Visual Studio 2017.
-Please also install the `v140` toolset and Visual Studio 2015 for CUDA compatibility.
 
 CUDA
 ----------
 
 Latest version is preferred, unless we encounter some important legacy code in the future.
-Current support is CUDA 9.1.
 You don't need to get cuDNN your self, we'll have with that.
 
 Python
 ----------
 
-Python with `pip` is required.
-You can get Python 3 from Visual Studio Installation.
+Python with `pip` is required. It'll be automatically installed if a python installation isn't detected.
 
 Git
 ----------
 
-Install it manually or get it from Visual Studio Installation.
+Install it manually or get it from Visual Studio Installation. Please ensure to opt in for updating the environment path variable as we leverage several of the tools that are installed along w/git.
 
 CMake
 ----------
@@ -90,16 +87,22 @@ We try to put all installed things in there default place if they have one.
 Usually it's a directory under `C:/Program Files`.
 Then all the `.dll` files will be symlinked to `System32` for convenience.
 
-This approach is less messy comparing to alternating `PATH`, and provides version uniqueness too avoid hidden multi-version bugs.
+This approach is less messy comparing to alternating `PATH`, and provides version uniqueness to avoid hidden multi-version bugs.
 
 Uninstall
 ----------
 Since `.dll` in `System32` are symlinks, it's very easy to distinguish them from stock system files.
-You can either pick them out manually, or simply deleted the original directory to break the link.
+You can either pick them out manually, or simply delete the original directory to break the link.
 
 Usage
 ================
 
+Method 1
+--------
+Run install.ps1 from a Powershell command prompt w/administrative rights.
+
+Method 2
+--------
 Open a PowerShell (`Run as Administrator` required) and call script for the package you want.
 
 Here's an example:
@@ -107,28 +110,10 @@ Here's an example:
 & ${ROASTER_ROOT}/pkgs/caffe2
 ```
 
-No implicit dependency analysis available.
-Please call them in certain order.
+No implicit dependency analysis available. Please call the scripts in the same order as specified
+in the installation script "install.ps1"
 
 You can always reinstall/update packages by the same process.
-
-Order
-----------
-
-* Intel libraries [Download first, and link]
-* cuDNN
-* Boost [Prebuild version from official site should also work]
-* Eigen
-* MKL-DNN
-* GFlags
-* GLog
-* GTest
-* Snappy
-* Protobuf
-* PyBind
-* OpenCV [Skip this please, not ready yet, you can do it yourselves if you want.]
-* RocksDB
-* Caffe2
 
 Environment
 ----------

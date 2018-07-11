@@ -15,7 +15,7 @@ if (Test-Path "$root")
     Exit 1
 }
 
-$latest_ver="release-$($(git ls-remote --tags "$repo") -match '.*refs/tags/release-[0-9\.]*$' -replace '.*refs/tags/release-','' | sort {[Version]$_} | tail -n1)"
+$latest_ver='release-' + $($(git ls-remote --tags "$repo") -match '.*refs/tags/release-[0-9\.]*$' -replace '.*refs/tags/release-','' | sort {[Version]$_})[-1]
 git clone --depth 1 --single-branch -b "$latest_ver" "$repo"
 pushd "$root"
 mkdir build
