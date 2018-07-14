@@ -15,7 +15,6 @@
     (
         set +xe
         . scl_source enable devtoolset-7
-        . /opt/intel/tbb/bin/tbbvars.sh intel64
         set -xe
 
         mkdir -p build
@@ -58,7 +57,6 @@
             -DENABLE_LTO=OFF                                \
             -DINSTALL_CREATE_DISTRIB=ON                     \
             -DINSTALL_TESTS=ON                              \
-            -DMKL_WITH_TBB=ON                               \
             -DOPENCV_ENABLE_NONFREE=ON                      \
             -DOpenGL_GL_PREFERENCE=GLVND                    \
             -DPROTOBUF_UPDATE_FILES=ON                      \
@@ -69,7 +67,6 @@
             -DWITH_OPENGL=ON                                \
             -DWITH_OPENMP=ON                                \
             -DWITH_QT=ON                                    \
-            -DWITH_TBB=ON                                   \
             -DWITH_UNICAP=ON                                \
             ..
 
