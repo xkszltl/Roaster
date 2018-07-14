@@ -7,9 +7,8 @@
     
     # ------------------------------------------------------------
 
-    until git clone --depth 1 --no-checkout --no-single-branch --recursive $GIT_MIRROR/gflags/gflags.git; do echo 'Retrying'; done
+    until git clone --depth 1 --single-branch -b "$(git ls-remote --tags "$GIT_MIRROR/gflags/gflags.git" | sed -n 's/.*[[:space:]]refs\/tags\/\(v[0-9\.]*\)[[:space:]]*$/\1/p' | sort -V | tail -n1)" "$GIT_MIRROR/gflags/gflags.git"; do echo 'Retrying'; done
     cd gflags
-    git checkout $(git tag | sed -n '/^v[0-9\.]*$/p' | sort -V | tail -n1)
 
     # ------------------------------------------------------------
 

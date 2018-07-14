@@ -5,7 +5,7 @@
 [ -e $STAGE/opencv ] && ( set -xe
     cd $SCRATCH
 
-    until git clone --depth 1 --single-branch -b "$(git ls-remote --tags "$GIT_MIRROR/opencv/opencv.git" | sed -n 's/.*[[:space:]]refs\/tags\/\([0-9\.]*\)$/\1/p' | sort -V | tail -n1)" "$GIT_MIRROR/opencv/opencv.git"; do echo 'Retrying'; done
+    until git clone --depth 1 --single-branch -b "$(git ls-remote --tags "$GIT_MIRROR/opencv/opencv.git" | sed -n 's/.*[[:space:]]refs\/tags\/\([0-9\.]*\)[[:space:]]*$/\1/p' | sort -V | tail -n1)" "$GIT_MIRROR/opencv/opencv.git"; do echo 'Retrying'; done
     cd opencv
 
     # ------------------------------------------------------------

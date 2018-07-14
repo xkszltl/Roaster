@@ -5,6 +5,7 @@
 [ -e $STAGE/slurm ] && ( set -xe
     cd $SCRATCH
 
+    until git clone --depth 1 --single-branch -b "$(git ls-remote --tags "$GIT_MIRROR/SchedMD/slurm.git" | sed -n 's/.*[[:space:]]refs\/tags\/\(slurm-[0-9\.]*\)[[:space:]]*$/\1/p' | sort -V | tail -n1)" "$GIT_MIRROR/SchedMD/slurm.git"; do echo 'Retrying'; done
     git clone --depth 1 --no-checkout --no-single-branch $GIT_MIRROR/SchedMD/slurm.git
     cd slurm
     git checkout $(git tag | sed -n '/^slurm-[0-9\-]*$/p' | sort -V | tail -n1)

@@ -7,7 +7,7 @@
 
     # ------------------------------------------------------------
 
-    until git clone --depth 1 --single-branch -b "$(git ls-remote --tags "$GIT_MIRROR/halide/Halide.git" | sed -n 's/.*[[:space:]]refs\/tags\/\(release[0-9\._]*\)$/\1/p' | sort -V | tail -n1)" "$GIT_MIRROR/halide/Halide.git"; do echo 'Retrying'; done
+    until git clone --depth 1 --single-branch -b "$(git ls-remote --tags "$GIT_MIRROR/halide/Halide.git" | sed -n 's/.*[[:space:]]refs\/tags\/\(release[0-9\._]*\)[[:space:]]*$/\1/p' | sort -V | tail -n1)" "$GIT_MIRROR/halide/Halide.git"; do echo 'Retrying'; done
     cd Halide
 
     if ! ldconfig -p | grep libcblas && ldconfig -p | grep libtatlas; then
