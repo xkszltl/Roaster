@@ -56,6 +56,7 @@ https://github.com/\ {\
 01org/{processor-trace,tbb},\
 ARM-software/{arm-trusted-firmware,ComputeLibrary,lisa},\
 aws/aws-{cli,sdk-{cpp,go,java,js,net,php,ruby}},\
+axel-download-accelerator/axel,\
 benjaminp/six,\
 boostorg/boost,\
 BVLC/caffe,\
