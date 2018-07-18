@@ -16,6 +16,11 @@ trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
 export IS_CONTAINER=$([ -e /proc/1/cgroup ] && [ $(sed -n 's/^[^:]*:[^:]*:\(..\)/\1/p' /proc/1/cgroup | wc -l) -gt 0 ] && echo true || echo false)
 
+if ! "$IS_CONTAINER" && [ "$(whoami)" = 'root' ]; then
+    echo "Please use a non-root user with sudo permission."
+    exit 1
+fi
+
 # ----------------------------------------------------------------
 
 export ROOT_DIR=$(cd $(dirname $0) && pwd)
