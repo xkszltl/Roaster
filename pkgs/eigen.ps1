@@ -27,7 +27,7 @@ $latest_ver="master"
 git clone --depth 1 --single-branch -b "$latest_ver" "$repo"
 pushd "$root"
 
-pushd "Eigen/src/Core/arch/CUDA"
+pushd "Eigen/src/Core/arch/GPU"
 echo "Patch for `"${latest_ver}`" about __hadd."
 $(cat Half.h) -Replace '(\s__hadd\(\s*)(\w*)(,\s*)(\w*)(\s*\))','${1}static_cast<__half>(${2})${3}static_cast<__half>(${4})${5}' > .Half.h
 mv -Force .Half.h Half.h

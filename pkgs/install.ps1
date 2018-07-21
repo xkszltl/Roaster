@@ -2,11 +2,14 @@
 $prefix = pwd
 Write-Host Root script execution path: $prefix
 cd $prefix
+Write-Host 'Invoking cuda.ps1'
+.\cuda.ps1
+cd $prefix
 Write-Host 'Invoking intel_download.ps1'
-#.\intel_download.ps1
+.\intel_download.ps1
 cd $prefix
 Write-Host 'Invoking intel_link.ps1'
-#.\intel_link.ps1
+.\intel_link.ps1
 cd $prefix
 Write-Host 'Invoking cudnn.ps1'
 .\cudnn.ps1

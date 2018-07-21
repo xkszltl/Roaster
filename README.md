@@ -28,20 +28,8 @@ Visual Studio
 Latest version is preferred.
 Currently it's Visual Studio 2017.
 
-CUDA
-----------
-
-Latest version is preferred, unless we encounter some important legacy code in the future.
-You don't need to get cuDNN your self, we'll have with that.
-
-Python
-----------
-
-Python with `pip` is required. It'll be automatically installed if a python installation isn't detected.
-
 Git
 ----------
-
 Install it manually or get it from Visual Studio Installation. Please ensure to opt in for updating the environment path variable as we leverage several of the tools that are installed along w/git.
 
 CMake
