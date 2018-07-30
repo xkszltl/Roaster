@@ -1,7 +1,7 @@
 #Requires -RunAsAdministrator
 
 $ErrorActionPreference="Stop"
-& "$(Split-Path -Path $MyInvocation.MyCommand.Path -Parent)/env/mirror.ps1"
+& "$(Split-Path -Path $MyInvocation.MyCommand.Path -Parent)/env/mirror.ps1" | Out-Null
 
 pushd ${Env:TMP}
 $repo="${Env:GIT_MIRROR}/eigenteam/eigen-git-mirror.git"

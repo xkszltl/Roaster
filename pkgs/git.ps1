@@ -23,4 +23,6 @@ if (-not $(Test-Path "$DownloadDir/$exe"))
 }
 
 Write-Host "Installing Git..."
-& $(Join-Path $DownloadDir $exe) /SUPRESSMSGBOXES /LOG /CLOSEAPPLICATIONS /SAVEINF=$DownloadDir/GitInstallationSettings.inf /SILENT /Type=full
+& $(Join-Path $DownloadDir $exe) /SUPRESSMSGBOXES /LOG /CLOSEAPPLICATIONS /SAVEINF=$DownloadDir/GitInstallationSettings.inf /SILENT /Type=full | Out-Null
+
+$Env:Path += ";$Env:ProgramFiles\Git\cmd" + ";${Env:ProgramFiles(x86)}\Git\cmd"

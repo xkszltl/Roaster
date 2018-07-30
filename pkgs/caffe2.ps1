@@ -1,8 +1,8 @@
 #Requires -RunAsAdministrator
 
 $ErrorActionPreference="Stop"
-& "$(Split-Path -Path $MyInvocation.MyCommand.Path -Parent)/env/mirror.ps1"
-& "$(Split-Path -Path $MyInvocation.MyCommand.Path -Parent)/env/toolchain.ps1"
+& "$(Split-Path -Path $MyInvocation.MyCommand.Path -Parent)/env/mirror.ps1" | Out-Null
+& "$(Split-Path -Path $MyInvocation.MyCommand.Path -Parent)/env/toolchain.ps1" | Out-Null
 
 # ================================================================================
 # Import VC env is only necessary for non-VS (such as ninja) build.
@@ -10,7 +10,7 @@ $ErrorActionPreference="Stop"
 
 Invoke-Expression $($(cmd /c "`"${Env:ProgramFiles(x86)}/Microsoft Visual Studio/2017/Enterprise/VC/Auxiliary/Build/vcvarsall.bat`" x64 -vcvars_ver=14.14 & set") -Match '^.+=' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
 
-& "${Env:PYTHONHOME}/Scripts/pip.exe" install -U numpy
+& "${Env:PYTHONHOME}/Scripts/pip.exe" install -U numpy | Out-Null
 
 pushd ${Env:TMP}
 $repo="${Env:GIT_MIRROR}/pytorch/pytorch.git"

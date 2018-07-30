@@ -35,9 +35,9 @@ foreach ($i in 0..($components.Length - 1))
     }
     Write-Host "Invoking $f to generate $($f.substring(0, $f.IndexOf(".exe"))) installation package"
     $InstallationDir = "$DownloadDir/$($f.substring(0, $f.IndexOf(".exe")))"
-    & $DownloadDir/$f --silent --log "$DownloadDir/$f_installation_log.txt" --x --f $InstallationDir
+    & $DownloadDir/$f --silent --log "$DownloadDir/$f_installation_log.txt" --x --f $InstallationDir | Out-Null
     $setup = Join-Path $f.substring(0, $f.IndexOf(".exe")) setup.exe
     Write-Host "Invoking $setup"
-    Sleep -Seconds  7 # delay to avoid race condition w/async file system updates
-    & $DownloadDir/$setup install --output="$DownloadDir/$f_output_log.txt" --eula=accept
+    dir $InstallationDir
+    & $(Join-Path $DownloadDir $setup) install --output="$DownloadDir/$f_output_log.txt" --eula=accept | Out-Null
 }

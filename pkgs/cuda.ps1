@@ -17,4 +17,4 @@ if (-not $(Test-Path "${DownloadDir}/$exe"))
 }
 
 Write-Host "Installing CUDA..."
-& $(Join-Path $DownloadDir $exe) -s
+& $(Join-Path $DownloadDir $exe) -s | Out-Null
