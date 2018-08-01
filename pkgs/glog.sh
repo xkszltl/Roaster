@@ -21,6 +21,7 @@
         cd $_
 
         cmake                                               \
+            -DBUILD_SHARED_LIBS=ON                          \
             -DCMAKE_BUILD_TYPE=RelWithDebInfo               \
             -DCMAKE_C_COMPILER=gcc                          \
             -DCMAKE_CXX_COMPILER=g++                        \
