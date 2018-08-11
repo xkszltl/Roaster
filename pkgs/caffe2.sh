@@ -74,6 +74,7 @@
             -DCMAKE_VERBOSE_MAKEFILE=ON             \
             -DCPUINFO_BUILD_TOOLS=ON                \
             -DCUDA_ARCH_NAME=All                    \
+            -DINSTALL_TEST=ON                       \
             -DUSE_ATEN=OFF                          \
             -DUSE_MKLDNN=ON                         \
             -DUSE_NATIVE_ARCH=ON                    \
