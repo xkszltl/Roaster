@@ -22,7 +22,7 @@
     (
         set +xe
         . scl_source enable devtoolset-7
-        . /opt/intel/tbb/bin/tbbvars.sh intel64
+        # . /opt/intel/tbb/bin/tbbvars.sh intel64
         set -xe
 
         if false; then
@@ -42,7 +42,7 @@
                 -DWITH_LIBRADOS=ON                      \
                 -DWITH_LZ4=ON                           \
                 -DWITH_SNAPPY=ON                        \
-                -DWITH_TBB=ON                           \
+                -DWITH_TBB=OFF                          \
                 -DWITH_ZLIB=ON                          \
                 -DWITH_ZSTD=ON                          \
                 -G"Ninja"                               \
