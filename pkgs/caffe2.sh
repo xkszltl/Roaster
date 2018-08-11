@@ -58,9 +58,6 @@
 
         export MPI_HOME=/usr/local/openmpi
 
-        # Some platform (i.e. macOS) may need -DCUDA_ARCH_NAME=Pascal
-        #
-        # TODO: ATen support currently result in 100+GB binaries in total.
         cmake                                       \
             -DBENCHMARK_ENABLE_LTO=ON               \
             -DBENCHMARK_USE_LIBCXX=OFF              \
@@ -77,7 +74,7 @@
             -DCMAKE_VERBOSE_MAKEFILE=ON             \
             -DCPUINFO_BUILD_TOOLS=ON                \
             -DCUDA_ARCH_NAME=All                    \
-            -DUSE_ATEN=ON                           \
+            -DUSE_ATEN=OFF                          \
             -DUSE_MKLDNN=ON                         \
             -DUSE_NATIVE_ARCH=ON                    \
             -DUSE_OBSERVERS=ON                      \
