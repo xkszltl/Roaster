@@ -13,12 +13,15 @@
     git remote add patch https://github.com/xkszltl/pytorch.git
     git fetch patch
 
-    for i in gpu_dll pybind rocksdb cmake-public; do
+    PATCHES="keyword pybind rocksdb macro"
+    # PATCHES="$PATCHES gpu_dll"
+
+    for i in $PATCHES; do
         git checkout "$i"
         git rebase master
     done
     git checkout master
-    for i in gpu_dll pybind rocksdb cmake-public; do
+    for i in $PATCHES; do
         git pull --no-edit patch "$i"
     done
 
@@ -43,7 +46,7 @@
     (
         set +xe
         . scl_source enable devtoolset-6
-        . /opt/intel/tbb/bin/tbbvars.sh intel64
+        # . /opt/intel/tbb/bin/tbbvars.sh intel64
         set -xe
 
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
@@ -63,6 +66,7 @@
             -DBENCHMARK_USE_LIBCXX=OFF              \
             -DBLAS=MKL                              \
             -DBUILD_CUSTOM_PROTOBUF=OFF             \
+            -DBUILD_SHARED_LIBS=ON                  \
             -DBUILD_TEST=ON                         \
             -DCMAKE_BUILD_TYPE=Release              \
             -DCMAKE_C_COMPILER=gcc                  \
@@ -73,7 +77,7 @@
             -DCMAKE_VERBOSE_MAKEFILE=ON             \
             -DCPUINFO_BUILD_TOOLS=ON                \
             -DCUDA_ARCH_NAME=All                    \
-            -DUSE_ATEN=OFF                          \
+            -DUSE_ATEN=ON                           \
             -DUSE_MKLDNN=ON                         \
             -DUSE_NATIVE_ARCH=ON                    \
             -DUSE_OBSERVERS=ON                      \
