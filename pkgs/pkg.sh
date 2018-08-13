@@ -170,10 +170,7 @@ for i in pkg-{skip,all}; do
         # Python pip Packages
         # ------------------------------------------------------------
 
-        sudo pip install -U docker-squash
-
-        # TODO: Remove downgrade once the compatibility issue between docker 3.0.1 and docker-squash is solved.
-        sudo pip install 'docker<3'
+        "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" docker-squash,master
 
         # ------------------------------------------------------------
 

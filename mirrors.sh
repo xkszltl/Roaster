@@ -66,6 +66,7 @@ facebookincubator/gloo,\
 facebookresearch/{Detectron,fastText},\
 gflags/gflags,\
 github/{git-lfs,gitignore},\
+goldmann/docker-squash,\
 google/{benchmark,snappy,glog,googletest,leveldb,protobuf},\
 halide/Halide,\
 intel/{ideep,mkl-dnn},\
@@ -86,6 +87,7 @@ onnx/{models,onnx{,-tensorrt,mltools},tutorials},\
 open-mpi/ompi,\
 opencv/opencv,\
 pybind/pybind11,\
+pypa/{pip,pipenv,setuptools,virtualenv,warehouse,wheel},\
 pytest-dev/{py,pytest},\
 pytorch/{examples,pytorch,tutorials},\
 RMerl/{am-toolchains,asuswrt-merlin.ng},\

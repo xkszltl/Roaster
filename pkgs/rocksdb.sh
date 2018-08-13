@@ -5,7 +5,7 @@
 [ -e $STAGE/rocksdb ] && ( set -xe
     cd $SCRATCH
 
-    sudo pip install -U git+$GIT_MIRROR/Maratyszcza/{confu,PeachPy}.git
+    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" Maratyszcza/{confu,PeachPy},master
 
     # ------------------------------------------------------------
 

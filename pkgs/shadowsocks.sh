@@ -8,7 +8,7 @@
         firewall-cmd --reload
     fi
 
-    pip install -U $GIT_MIRROR/shadowsocks/shadowsocks/$([ $GIT_MIRROR == $GIT_MIRROR_CODINGCAFE ] && echo 'repository/archive.zip?ref=master' || echo 'archive/master.zip')
+    pip install -U "git+$GIT_MIRROR/shadowsocks/shadowsocks.git"
 
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     cat << EOF > /usr/lib/systemd/system/shadowsocks.service

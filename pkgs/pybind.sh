@@ -5,7 +5,7 @@
 [ -e $STAGE/pybind ] && ( set -xe
     cd $SCRATCH
 
-    sudo pip3 install -U git+$GIT_MIRROR/{cython/cython,numpy/numpy,pytest-dev/pytest,scipy/scipy}.git
+    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" cython/cython, numpy/numpy,v pytest-dev/pytest, numpy/numpy,v
 
     # ------------------------------------------------------------
 
