@@ -30,9 +30,13 @@ git checkout f35d7cce912dbc13a5db316b342509556398871d
 git remote add patch https://github.com/xkszltl/pytorch.git
 git fetch patch
 git cherry-pick patch/pybind --strategy=recursive --strategy-option=theirs
+#TODO: cherry-pick patch/gpu_dll
+
+# The following branches have been merged to master.
+# Please remove them once ready.
 git cherry-pick patch/rocksdb --strategy=recursive --strategy-option=theirs
 git cherry-pick patch/cmake-public --strategy=recursive --strategy-option=theirs
-#TODO: cherry-pick patch/gpu_dll
+
 git checkout -- *
 
 mkdir build
