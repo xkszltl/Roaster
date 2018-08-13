@@ -69,6 +69,7 @@ github/{git-lfs,gitignore},\
 google/{benchmark,snappy,glog,googletest,leveldb,protobuf},\
 halide/Halide,\
 intel/{ideep,mkl-dnn},\
+intelxed/xed,\
 jemalloc/jemalloc,\
 jordansissel/fpm,\
 Kitware/{CMake,VTK},\

@@ -28,6 +28,7 @@ for i in pkg-{skip,all}; do
                 {git,subversion,mercurial}{,-*}
                 valgrind{,-*}
                 doxygen{,-*}
+                pandoc{,-*}
                 swig{,-*}
                 sphinx{,-*}
 
@@ -94,6 +95,7 @@ for i in pkg-{skip,all}; do
                 {redis,hiredis}{,-*}
                 zeromq{,-*}
                 ImageMagick{,-*}
+                yasm{,-*}
                 docbook{,5,2X}{,-*}
                 nagios{,-selinux,-devel,-debuginfo,-plugins-all}
                 {nrpe,nsca}
