@@ -8,7 +8,7 @@ $ErrorActionPreference="Stop"
 # Import VC env is only necessary for non-VS (such as ninja) build.
 # ================================================================================
 
-Invoke-Expression $($(cmd /c "`"${Env:ProgramFiles(x86)}/Microsoft Visual Studio/2017/Enterprise/VC/Auxiliary/Build/vcvarsall.bat`" x64 -vcvars_ver=14.14 & set") -Match '^.+=' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
+Invoke-Expression $($(cmd /c "`"${Env:ProgramFiles(x86)}/Microsoft Visual Studio/2017/Enterprise/VC/Auxiliary/Build/vcvarsall.bat`" x64 & set") -Match '^.+=' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
 
 & "${Env:PYTHONHOME}/Scripts/pip.exe" install -U numpy | Out-Null
 
@@ -26,17 +26,13 @@ if (Test-Path "$root")
 
 git clone --recursive -j100 "$repo"
 pushd "$root"
-git checkout f35d7cce912dbc13a5db316b342509556398871d
 git remote add patch https://github.com/xkszltl/pytorch.git
 git fetch patch
-git cherry-pick patch/pybind --strategy=recursive --strategy-option=theirs
+git pull patch pybind
+git pull patch redef
+git pull patch observer
+git pull patch typeid
 #TODO: cherry-pick patch/gpu_dll
-
-# The following branches have been merged to master.
-# Please remove them once ready.
-git cherry-pick patch/rocksdb --strategy=recursive --strategy-option=theirs
-git cherry-pick patch/cmake-public --strategy=recursive --strategy-option=theirs
-
 git checkout -- *
 
 mkdir build
@@ -60,10 +56,10 @@ cmake                                                                           
     -DBUILD_SHARED_LIBS=ON                                                      `
     -DBUILD_TEST=ON                                                             `
     -DCMAKE_BUILD_TYPE=RelWithDebInfo                                           `
-    -DCMAKE_C_FLAGS="${dep_dll}"                                                `
-    -DCMAKE_CXX_FLAGS="/EHsc ${dep_dll} ${gtest_silent_warning}"                `
+    -DCMAKE_C_FLAGS="/MP ${dep_dll}"                                            `
+    -DCMAKE_CXX_FLAGS="/EHsc /MP ${dep_dll} ${gtest_silent_warning}"            `
     -DCMAKE_VERBOSE_MAKEFILE=ON                                                 `
-    -DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=OFF                                      `
+    -DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=ON                                       `
     -DCPUINFO_BUILD_TOOLS=ON                                                    `
     -DCUDA_ARCH_NAME="All"                                                      `
     -DCUDA_NVCC_FLAGS='--expt-relaxed-constexpr'                                `
