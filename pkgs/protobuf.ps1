@@ -17,7 +17,7 @@ if (Test-Path "$root")
 
 # ================================================================================
 # Known issues:
-# - Release 3.5.2 has compatibility issue with CUDA 9.1, patched.
+# - Release 3.6.1 has compatibility issue with CUDA 9.1, patched.
 # - Master has the same issue but it's harder to patch.
 # ================================================================================
 $latest_ver='v' + $($(git ls-remote --tags "$repo") -match '.*refs/tags/v[0-9\.]*$' -replace '.*refs/tags/v','' | sort {[Version]$_})[-1]
