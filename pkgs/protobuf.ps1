@@ -17,10 +17,13 @@ if (Test-Path "$root")
 
 # ================================================================================
 # Known issues:
-# - Release 3.6.1 has compatibility issue with CUDA 9.1, patched.
-# - Master has the same issue but it's harder to patch.
+# - Release 3.5.2 has compatibility issue with CUDA 9.2, patched.
+# - Release 3.6.1 has the same and one more harder-to-patch issue about:
+#     Initialize "static constexpr" variable in-place.
+# - Master only has the second issue.
 # ================================================================================
 $latest_ver='v' + $($(git ls-remote --tags "$repo") -match '.*refs/tags/v[0-9\.]*$' -replace '.*refs/tags/v','' | sort {[Version]$_})[-1]
+$latest_ver='v' + $($(git ls-remote --tags "$repo") -match '.*refs/tags/v3.5[0-9\.]*$' -replace '.*refs/tags/v','' | sort {[Version]$_})[-1]
 # $latest_ver="master"
 git clone --depth 1 --recursive --single-branch -b "$latest_ver" -j8 "$repo"
 pushd "$root"
