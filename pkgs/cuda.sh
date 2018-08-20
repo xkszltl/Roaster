@@ -5,7 +5,8 @@
 [ -e $STAGE/cuda ] && ( set -xe
     cd $SCRATCH
 
-    export CUDA_VER="$(nvcc --version | sed -n 's/.*[[:space:]]V\([0-9\.]*\).*/\1/p')"
+    [ -x '/usr/local/cuda/bin/nvcc' ]
+    export CUDA_VER="$(/usr/local/cuda/bin/nvcc --version | sed -n 's/.*[[:space:]]V\([0-9\.]*\).*/\1/p')"
     export CUDA_VER_MAJOR="$(cut -d'.' -f1 <<< "$CUDA_VER")"
     export CUDA_VER_MINOR="$(cut -d'.' -f2 <<< "$CUDA_VER")"
     export CUDA_VER_BUILD="$(cut -d'.' -f3 <<< "$CUDA_VER")"
