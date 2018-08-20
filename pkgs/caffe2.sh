@@ -13,7 +13,7 @@
     git remote add patch https://github.com/xkszltl/pytorch.git
     git fetch patch
 
-    PATCHES="pybind redef observer"
+    PATCHES="pybind redef observer typeid gcc7"
     # PATCHES="$PATCHES gpu_dll"
 
     for i in $PATCHES; do
@@ -45,7 +45,7 @@
 
     (
         set +xe
-        . scl_source enable devtoolset-6
+        . scl_source enable devtoolset-7
         # . /opt/intel/tbb/bin/tbbvars.sh intel64
         set -xe
 
