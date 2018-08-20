@@ -87,23 +87,41 @@
             -G"Ninja"                               \
             ..
 
-        time cmake --build .
-        time cmake --build . --target test || ! nvidia-smi
+        # Currently there is a bug causing the second run of cmake to fail when finding python.
+        # Probably because PYTHON_* variables are partially cached.
+        # This may be a cmake bug.
+
         time cmake --build . --target install
+        time cmake --build . --target test || ! nvidia-smi
 
         # rm -rf /usr/bin/ninja
+
+        # --------------------------------------------------------
+        # Install python files
+        # --------------------------------------------------------
+        # for ver in 2.7 3.4; do
+        #     parallel --group -j0 'bash -c '"'"'
+        #         set -e
+        #         install -D {,"'"$INSTALL_ROOT/usr/local/lib/python$ver/"'"}"{}"
+        #     '"'" ::: $(find caffe2/python -name '*.py')
+        # done
 
         # --------------------------------------------------------
         # Tag with version detected from cmake cache
         # --------------------------------------------------------
 
-        sed -n 's/^set[[:space:]]*([[:space:]]*CAFFE2_VERSION_.....[[:space:]][[:space:]]*\([0-9]*\)[[:space:]]*).*/\1/p' ../CMakeLists.txt | paste -sd. | xargs git tag -f
+        VER_FILE='../caffe2/VERSION_NUMBER'
+        if [ -e "$VER_FILE" ] && [ "$(sed -n '/^[[:space:]]*[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*/p' "$VER_FILE")" ]; then
+            sed -n 's/^[[:space:]]*\([0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\).*/\1/p' "$VER_FILE" | head -n1
+        else
+            sed -n 's/^set[[:space:]]*([[:space:]]*CAFFE2_VERSION_.....[[:space:]][[:space:]]*\([0-9]*\)[[:space:]]*).*/\1/p' ../CMakeLists.txt | paste -sd.
+        fi | xargs git tag -f
 
         # --------------------------------------------------------
-        # Avoid caffe conflicts
+        # Avoid caffe/gtest conflicts
         # --------------------------------------------------------
 
-        rm -rf "$INSTALL_ROOT/usr/local/include/caffe/proto"
+        rm -rf "$INSTALL_ROOT/usr/local/include/"{caffe/proto,gmock,gtest}
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
