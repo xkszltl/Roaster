@@ -31,6 +31,7 @@ git fetch patch
 git pull patch pybind
 git pull patch redef
 git pull patch observer
+git pull patch typeid
 #TODO: cherry-pick patch/gpu_dll
 git checkout -- *
 
