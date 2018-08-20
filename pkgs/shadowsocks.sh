@@ -8,7 +8,8 @@
         firewall-cmd --reload
     fi
 
-    pip install -U "git+$GIT_MIRROR/shadowsocks/shadowsocks.git"
+    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" shadowsocks/shadowsocks,master
+
 
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     cat << EOF > /usr/lib/systemd/system/shadowsocks.service
