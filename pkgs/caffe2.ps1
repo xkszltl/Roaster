@@ -58,6 +58,9 @@ cmake                                                                           
     -DCMAKE_BUILD_TYPE=RelWithDebInfo                                           `
     -DCMAKE_C_FLAGS="/MP ${dep_dll}"                                            `
     -DCMAKE_CXX_FLAGS="/EHsc /MP ${dep_dll} ${gtest_silent_warning}"            `
+    -DCMAKE_EXE_LINKER_FLAGS="/LTCG"                                            `
+    -DCMAKE_SHARED_LINKER_FLAGS="/LTCG"                                         `
+    -DCMAKE_STATIC_LINKER_FLAGS="/LTCG"                                         `
     -DCMAKE_VERBOSE_MAKEFILE=ON                                                 `
     -DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=ON                                       `
     -DCPUINFO_BUILD_TOOLS=ON                                                    `
