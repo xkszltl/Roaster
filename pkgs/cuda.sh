@@ -36,7 +36,7 @@
 
     sudo ldconfig
 
-    cd $(dirname $(which nvcc))/../samples
+    cd /usr/local/cuda/samples
     . scl_source enable devtoolset-7 || true
     export MPI_HOME=/usr/local/openmpi
     sudo make -j clean
