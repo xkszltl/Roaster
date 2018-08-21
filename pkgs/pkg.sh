@@ -170,7 +170,7 @@ for i in pkg-{skip,all}; do
         # Python pip Packages
         # ------------------------------------------------------------
 
-        "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" goldmann/docker-squash,master
+        # "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" goldmann/docker-squash,master
 
         # ------------------------------------------------------------
 
