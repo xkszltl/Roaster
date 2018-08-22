@@ -13,7 +13,7 @@
     git remote add patch https://github.com/xkszltl/pytorch.git
     git fetch patch
 
-    PATCHES="pybind redef observer typeid gcc7"
+    PATCHES="pybind redef typeid gcc7 template_api"
     # PATCHES="$PATCHES gpu_dll"
 
     for i in $PATCHES; do
