@@ -17,6 +17,7 @@ export RPM_MAX_ATTEMPT=10
 #           python2-azure-sdk conflict with python-azure-sdk
 #           python2-boto3 conflict with python-boto3
 #           python2-s3transfer conflict with python-s3transfer
+#
 export RPM_BLACKLIST=$(echo "
     *-debuginfo
     gcc-x86_64-linux-gnu

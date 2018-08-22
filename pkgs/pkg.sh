@@ -151,6 +151,11 @@ for i in pkg-{skip,all}; do
 
         # ------------------------------------------------------------
 
+        # Remove suspicious python modules that can cause pip>=10 to crash.
+        find /usr/lib{,64}/python*/site-packages -name '*.dist-info' -type f | xargs rpm -qf | xargs yum remove -y
+
+        # ------------------------------------------------------------
+
         for attempt in $(seq $RPM_MAX_ATTEMPT -1 0); do
             $RPM_UPDATE --skip-broken && break
             echo "Retrying... $attempt chance(s) left."
