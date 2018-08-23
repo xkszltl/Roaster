@@ -10,7 +10,7 @@ export RPM_MAX_ATTEMPT=10
 #
 #       libasan2 seems to contain libasan.so.3.0.0 and causing a conflict with libasan3
 #
-#       python-lexicon conflict with python2-lexicon
+#       python-lexicon conflict with python2-dns-lexicon
 #       file /usr/lib/python2.7/site-packages/test/__init__.pyc conflicts between attempted installs of python2-ansible-runner-1.0.1-1.el7.noarch and python2-neomodel-3.2.8-1.el7.noarch
 #       
 #       Python issues from CentOS 7.5:
