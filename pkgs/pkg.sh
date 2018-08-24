@@ -48,15 +48,16 @@ for i in pkg-{skip,all}; do
                 hping3{,-*}
                 {traceroute,mtr,rsync,tcpdump,whois,net-snmp}{,-*}
                 torsocks{,-*}
-                {bridge-,core,crypto-,elf,find,ib,ip,yum-}utils{,-*}
+                {bridge-,core,crypto-,elf,find,ib,ip,pci,usb,yum-}utils{,-*}
                 moreutils{,-debuginfo}
+                papi{,-*}
                 rpmdevtools
                 rpm-build
                 cyrus-imapd{,-*}
                 GeoIP{,-*}
                 {device-mapper,lvm2}{,-*}
                 {d,sys}stat{,-*}
-                {lm_sensors,hddtemp,smartmontools}{,-*}
+                {lm_sensors,hddtemp,smartmontools,lsscsi}{,-*}
                 {{e2fs,btrfs-,xfs,ntfs}progs,xfsdump,nfs-utils}{,-*}
                 fuse{,-devel,-libs}
                 dd{,_}rescue{,-*}
