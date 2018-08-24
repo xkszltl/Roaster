@@ -152,7 +152,8 @@ for i in pkg-{skip,all}; do
         # ------------------------------------------------------------
 
         # Remove suspicious python modules that can cause pip>=10 to crash.
-        find /usr/lib{,64}/python*/site-packages -name '*.dist-info' -type f | xargs rpm -qf | xargs yum remove -y
+
+        find /usr/lib{,64}/python*/site-packages -name '*.dist-info' -type f -print0 | xargs -0r rpm -qf | grep -v ' ' | tr '\n' '\0' | xargs -0r yum remove -y
 
         # ------------------------------------------------------------
 
