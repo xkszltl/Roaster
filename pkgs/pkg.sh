@@ -56,7 +56,7 @@ for i in pkg-{skip,all}; do
                 GeoIP{,-*}
                 {device-mapper,lvm2}{,-*}
                 {d,sys}stat{,-*}
-                {lm_sensors,hddtemp}{,-*}
+                {lm_sensors,hddtemp,smartmontools}{,-*}
                 {{e2fs,btrfs-,xfs,ntfs}progs,xfsdump,nfs-utils}{,-*}
                 fuse{,-devel,-libs}
                 dd{,_}rescue{,-*}
