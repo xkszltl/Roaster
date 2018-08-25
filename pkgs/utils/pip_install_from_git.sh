@@ -11,10 +11,13 @@ if [ ! "$ROOT_DIR" ]; then
     echo 'Set $ROOT_DIR to "'"$ROOT_DIR"'".'
 fi
 
-for i in pypa/{setuptools,pip,wheel} $@; do
+for i in pypa/setuptools,v pypa/{pip,wheel} $@; do
     . "$ROOT_DIR/pkgs/utils/git/version.sh" "$i"
     URL="git+$GIT_REPO@$GIT_TAG"
-    [ "_$i" = '_pypa/setuptools' ] && URL=setuptools
+    if grep 'pypa/setuptools' <<< "$i" > /dev/null; then
+        echo "Cannot build setuptools from source. Install it from wheel instead."
+        URL=setuptools
+    fi
     for py in python{,3}; do
         sudo "$py" -m pip install -U "$URL" || sudo "$py" -m pip install -U --ignore-installed "$URL"
     done
