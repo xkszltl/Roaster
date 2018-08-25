@@ -1,12 +1,20 @@
 #!/bin/bash
 
-set -ex
+set -e
 
-for i in pypa/{setuptools,pip,wheel}, $@; do
-    REPO="$(cut -d, -f1 <<< "$i")"
-    TAG="$(cut -d, -f2 <<< "$i")"
-    URL="git+$GIT_MIRROR/$REPO.git@$(git ls-remote --tags "$GIT_MIRROR/$REPO.git" | sed -n 's/.*[[:space:]]refs\/tags\/\('"$TAG"'[0-9\.]*\)[[:space:]]*$/\1/p' | sort -V | tail -n1)"
-    [ "_$REPO" = '_pypa/setuptools' ] && URL=setuptools
+if [ ! "$ROOT_DIR" ]; then
+    echo '$ROOT_DIR is not defined.'
+    echo 'Running in standalone mode.'
+    export ROOT_DIR="$(readlink -e "$(dirname "$0")")"
+    until [ -x "$ROOT_DIR/setup.sh" ] && [ -d "$ROOT_DIR/pkgs" ]; do export ROOT_DIR=$(readlink -e "$ROOT_DIR/.."); done
+    [ "_$ROOT_DIR" != "_$(readlink -f "$ROOT_DIR/..")" ]
+    echo 'Set $ROOT_DIR to "'"$ROOT_DIR"'".'
+fi
+
+for i in pypa/{setuptools,pip,wheel} $@; do
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" "$i"
+    URL="git+$GIT_REPO@$GIT_TAG"
+    [ "_$i" = '_pypa/setuptools' ] && URL=setuptools
     for py in python{,3}; do
         sudo "$py" -m pip install -U "$URL" || sudo "$py" -m pip install -U --ignore-installed "$URL"
     done
