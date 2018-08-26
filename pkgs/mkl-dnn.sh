@@ -5,9 +5,9 @@
 [ -e $STAGE/mkl-dnn ] && ( set -xe
     cd $SCRATCH
 
-    until git clone --depth 1 --no-checkout --no-single-branch $GIT_MIRROR/intel/mkl-dnn.git; do echo 'Retrying'; done
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" intel/mkl-dnn,v
+    until git clone --depth 1 --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd mkl-dnn
-    git checkout $(git tag | sed -n '/^v[0-9\.]*$/p' | sort -V | tail -n1)
     
     # ------------------------------------------------------------
 

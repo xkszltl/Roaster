@@ -7,7 +7,8 @@
     
     # ------------------------------------------------------------
 
-    until git clone --depth 1 --single-branch -b "$(git ls-remote --tags "$GIT_MIRROR/gflags/gflags.git" | sed -n 's/.*[[:space:]]refs\/tags\/\(v[0-9\.]*\)[[:space:]]*$/\1/p' | sort -V | tail -n1)" "$GIT_MIRROR/gflags/gflags.git"; do echo 'Retrying'; done
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" gflags/gflags,v
+    until git clone --depth 1 --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd gflags
 
     # ------------------------------------------------------------

@@ -5,7 +5,8 @@
 [ -e $STAGE/ompi ] && ( set -xe
     cd $SCRATCH
 
-    until git clone --depth 1 --single-branch -b "$(git ls-remote --tags "$GIT_MIRROR/open-mpi/ompi.git" | sed -n 's/.*[[:space:]]refs\/tags\/\(v[0-9\.]*\)[[:space:]]*$/\1/p' | sort -V | tail -n1)" "$GIT_MIRROR/open-mpi/ompi.git"; do echo 'Retrying'; done
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" open-mpi/ompi,v
+    until git clone --depth 1 --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd ompi
 
     # ------------------------------------------------------------

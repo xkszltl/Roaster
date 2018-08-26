@@ -7,10 +7,9 @@
 
     # ------------------------------------------------------------
 
-    until git clone --depth 1 --single-branch -b "$(git ls-remote --tags "$GIT_MIRROR/google/googletest.git" | sed -n 's/.*[[:space:]]refs\/tags\/\(release-[0-9\.]*\)[[:space:]]*$/\1/p' | sort -V | tail -n1)" "$GIT_MIRROR/google/googletest.git" gtest; do echo 'Retrying'; done
-    # until git clone --depth 1 --single-branch "$GIT_MIRROR/google/googletest.git" gtest; do echo 'Retrying'; done
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" google/googletest,release-
+    until git clone --depth 1 --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd gtest
-    # git tag "$(git ls-remote --tags "$GIT_MIRROR/google/googletest.git" | sed -n 's/.*[[:space:]]refs\/tags\/\(release-[0-9\.]*\)[[:space:]]*$/\1/p' | sort -V | tail -n1).1"
 
     # ------------------------------------------------------------
 

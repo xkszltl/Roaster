@@ -5,7 +5,8 @@
 [ -e $STAGE/caffe ] && ( set -xe
     cd $SCRATCH
 
-    until git clone --depth 1 $GIT_MIRROR/BVLC/caffe.git; do echo 'Retrying'; done
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" BVLC/caffe,master
+    until git clone --depth 1 --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd caffe
 
     # ------------------------------------------------------------

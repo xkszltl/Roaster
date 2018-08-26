@@ -7,9 +7,9 @@
     
     # ------------------------------------------------------------
 
-    until git clone $GIT_MIRROR/jordansissel/fpm.git; do echo 'Retrying'; done
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" jordansissel/fpm,v
+    until git clone --depth 1 --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd fpm
-    # git checkout $(git tag | sed -n '/^v[0-9\.]*$/p' | sort -V | tail -n1)
 
     # ------------------------------------------------------------
 
