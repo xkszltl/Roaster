@@ -12,13 +12,19 @@ if [ ! "$ROOT_DIR" ]; then
 fi
 
 for i in pypa/setuptools,v pypa/{pip,wheel} $@; do
+    PKG="$(basename "$(cut -d, -f1 <<< "$i,")")"
     . "$ROOT_DIR/pkgs/utils/git/version.sh" "$i"
     URL="git+$GIT_REPO@$GIT_TAG"
     if grep 'pypa/setuptools' <<< "$i" > /dev/null; then
         echo "Cannot build setuptools from source. Install it from wheel instead."
-        URL=setuptools
+        URL="$PKG"
     fi
-    for py in python{,3}; do
-        sudo "$py" -m pip install -U "$URL" || sudo "$py" -m pip install -U --ignore-installed "$URL"
+    for py in $(which python{,3}); do
+        # Not exactly correct since the actual package name is defined by "setup.py".
+        if [ "_$("$py" -m pip freeze --all | tr '[:upper:]' '[:lower:]' | sed -n "s/^$(tr '[:upper:]' '[:lower:]' <<< "$PKG")==//p")" = "_$GIT_TAG_VER" ]; then
+            echo "Package \"$PKG\" for \"$py\" is already up-to-date ($GIT_TAG_VER). Skip."
+            continue
+        fi
+        sudo "$py" -m pip install -U "$URL" || sudo "$py" -m pip install -IU "$URL"
     done
 done

@@ -14,11 +14,13 @@ fi
 if [ "$1" ]; then
     export GIT_REPO="$GIT_MIRROR/$(cut -d, -f1 <<< "$1,").git"
     export GIT_PREFIX="$(cut -d, -f2 <<< "$1,")"
-    export GIT_TAG="$(git ls-remote --heads --tags "$GIT_REPO" | sed -n 's/.*[[:space:]]refs\/[A-Za-z]*\/\('"$GIT_PREFIX"'[0-9\.]*\)[[:space:]]*$/\1/p' | sort -V | tail -n1)"
+    export GIT_PREFIX_ESC="$(sed 's/\([\&\\\/\.\-]\)/\\\1/g' <<< "$GIT_PREFIX")"
+    export GIT_TAG="$(git ls-remote --heads --tags "$GIT_REPO" | sed -n 's/.*[[:space:]]refs\/[A-Za-z]*\/\('"$GIT_PREFIX_ESC"'[0-9\.]*\)[[:space:]]*$/\1/p' | sort -V | tail -n1)"
     if [ "$GIT_TAG" ]; then
         echo "Found git version tag \"$GIT_TAG\" in \"$GIT_REPO\"."
     else
-        echo "Cannot find any git version tag in \"$GIT_REPO\" with prefix \"$GIT_PREFIX\"."
+        echo "Cannot find any git version tag in \"$GIT_REPO\" with prefix \"$GIT_PREFIX_ESC\"."
         exit 1
     fi
+    export GIT_TAG_VER="$(sed "s/^$GIT_PREFIX//" <<< "$GIT_TAG")"
 fi
