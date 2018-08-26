@@ -5,7 +5,7 @@
 [ -e $STAGE/eigen ] && ( set -xe
     cd $SCRATCH
 
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" ,eigenteam/eigen-git-mirror,
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" eigenteam/eigen-git-mirror,
     until git clone --depth 1 --single-branch -b "$GIT_TAG" "$GIT_REPO" eigen; do echo 'Retrying'; done
     cd eigen
 
