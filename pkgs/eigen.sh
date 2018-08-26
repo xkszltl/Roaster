@@ -28,6 +28,7 @@
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
             -DEIGEN_TEST_CUDA=ON                    \
             -DEIGEN_TEST_CXX11=ON                   \
+            -DOpenGL_GL_PREFERENCE=GLVND            \
             -G"Ninja"                               \
             ..
 
