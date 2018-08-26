@@ -135,6 +135,7 @@ for i in pkg-{skip,all}; do
                 perl{,-*}
                 python{,34}{,-devel,-debug{,info}}
                 {python27,rh-python36}{,-python-{devel,debug{,info}}}
+                {python{2,34},{python27,rh-python36}-python}-pip
                 ruby{,-*}
                 rh-ruby25{,-*}
                 lua{,-*}
