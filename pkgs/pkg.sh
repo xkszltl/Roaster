@@ -140,7 +140,7 @@ for i in pkg-{skip,all}; do
                 lua{,-*}
 
                 *-fonts{,-*}
-            " | xargs -n5 echo "$RPM_INSTALL $([ $i = pkg-skip ] && echo --skip-broken)" | bash && break
+            " | xargs -n10 echo "$RPM_INSTALL $([ $i = pkg-skip ] && echo --skip-broken)" | bash && break
             echo "Retrying... $attempt chance(s) left."
             [ $attempt -gt 0 ] || exit 1
         done
