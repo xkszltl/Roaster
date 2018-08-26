@@ -133,11 +133,8 @@ for i in pkg-{skip,all}; do
                 anaconda{,-*}
                 libreoffice{,-*}
                 perl{,-*}
-                python{,-*}
-                python3{,-*}
-                python34{,-*}
-                python2{,-*}
-                rh-python36{,-*}
+                python{,34}{,-devel,-debug{,info}}
+                {python27,rh-python36}{,-python-{devel,debug{,info}}}
                 ruby{,-*}
                 rh-ruby25{,-*}
                 lua{,-*}
