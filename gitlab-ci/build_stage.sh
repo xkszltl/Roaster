@@ -30,18 +30,19 @@ if [ $GITLAB_CI ]; then
 		grep -v '"/etc/codingcafe/scripts"' "stage/$CI_JOB_STAGE" > 'Dockerfile'
 	fi
 
-	time docker build                                           \
-        --cpu-shares 128                                        \
-        --no-cache                                              \
-        "$([ "_$stage" = "_$CI_JOB_STAGE" ] && echo '--pull')"  \
-        --squash                                                \
-        --tag "$CI_REGISTRY_IMAGE:stage-$CI_JOB_STAGE"          \
+	time docker build                                   \
+        --cpu-shares 128                                \
+        --no-cache                                      \
+        --pull                                          \
+        --squash                                        \
+        --tag "$CI_REGISTRY_IMAGE:stage-$CI_JOB_STAGE"  \
         .
 
-    if [ "$?" -ne 0 ]; then
+    if [ "$?" -eq 0 ]; then
+        time docker push "$CI_REGISTRY_IMAGE:stage-$CI_JOB_STAGE"
+    else
         echo 'Docker build failed. Save breakpoint snapshot.'
         time docker commit "$(docker ps -alq)" "$CI_REGISTRY_IMAGE:breakpoint"
+        time docker push "$CI_REGISTRY_IMAGE:breakpoint"
     fi
-
-    # time docker push $CI_REGISTRY_IMAGE:stage-$CI_JOB_STAGE
 fi
