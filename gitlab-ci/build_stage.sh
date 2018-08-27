@@ -18,7 +18,7 @@ if [ $GITLAB_CI ]; then
         --cpu-shares 128                                \
         --no-cache                                      \
         --pull                                          \
-        --rm                                            \
+        --squash                                        \
         --tag $CI_REGISTRY_IMAGE:stage-$CI_JOB_STAGE    \
         .
 

@@ -15,6 +15,7 @@ echo '| After'
 echo '========================================'
 
 cat 'daemon.json.bak'                                                                                       \
+| jq -e '. |= . + {"experimental":true}'                                                        \
 | jq -e '. |= . + {"storage-driver":"devicemapper"}'                                                        \
 | jq -e '. |= . + {"storage-opts":[]}'                                                                      \
 | jq -e '."storage-opts"[."storage-opts" | length] |= . + "dm.thinpooldev=/dev/mapper/Mocha-docker--pool"'  \
