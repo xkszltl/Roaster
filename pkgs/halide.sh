@@ -17,7 +17,7 @@
         sed 's/cblas/tatlas/' CMakeLists.txt >> .CMakeLists.txt
         mv {.,}CMakeLists.txt
         popd
-        git diff
+        git --no-pager diff
     fi
 
     # ------------------------------------------------------------
