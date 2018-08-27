@@ -1,0 +1,5 @@
+FROM docker.codingcafe.org/sandbox/centos:breakpoint
+
+COPY [".", "/etc/codingcafe/scripts"]
+
+RUN /etc/codingcafe/scripts/setup.sh && cat /tmp/hosts > /etc/hosts && rm -f /tmp/hosts
