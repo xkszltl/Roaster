@@ -22,6 +22,5 @@ if [ $GITLAB_CI ]; then
         --tag $CI_REGISTRY_IMAGE:stage-$CI_JOB_STAGE    \
         .
 
-	# time docker-squash -v $CI_REGISTRY_IMAGE:stage-$CI_JOB_STAGE -t stage-$CI_JOB_STAGE
-	time docker push $CI_REGISTRY_IMAGE:stage-$CI_JOB_STAGE
+    # time docker push $CI_REGISTRY_IMAGE:stage-$CI_JOB_STAGE
 fi

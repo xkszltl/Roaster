@@ -166,18 +166,6 @@ for i in pkg-{skip,all}; do
         sudo yum autoremove -y
 
         # ------------------------------------------------------------
-        # Ruby gem Packages
-        # ------------------------------------------------------------
-
-        # sudo scl enable rh-ruby25 "gem install fpm"
-
-        # ------------------------------------------------------------
-        # Python pip Packages
-        # ------------------------------------------------------------
-
-        # "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" goldmann/docker-squash,master
-
-        # ------------------------------------------------------------
 
         sudo updatedb
     )
