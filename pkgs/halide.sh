@@ -53,7 +53,7 @@
     # ------------------------------------------------------------
 
     cd
-    rm -rf $SCRATCH/halide
+    rm -rf $SCRATCH/Halide
 )
 sudo rm -vf $STAGE/halide
 sync || true

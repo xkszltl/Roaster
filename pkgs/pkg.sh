@@ -96,6 +96,7 @@ for i in pkg-{skip,all}; do
                 {redis,hiredis}{,-*}
                 zeromq{,-*}
                 ImageMagick{,-*}
+                qt5-*
                 yasm{,-*}
                 docbook{,5,2X}{,-*}
                 nagios{,-selinux,-devel,-debuginfo,-plugins-all}
