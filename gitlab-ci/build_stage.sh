@@ -39,6 +39,6 @@ if [ $GITLAB_CI ]; then
     else
         echo 'Docker build failed. Save breakpoint snapshot.'
         time docker commit "$(docker ps -alq)" "$CI_REGISTRY_IMAGE:breakpoint"
-        time docker push "$CI_REGISTRY_IMAGE:breakpoint"
+        time docker push "$_"
     fi
 fi
