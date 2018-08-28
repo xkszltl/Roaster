@@ -28,15 +28,13 @@ if [ $GITLAB_CI ]; then
 		grep -v '"/etc/codingcafe/scripts"' "stage/$CI_JOB_STAGE" > 'Dockerfile'
 	fi
 
-	time docker build                                   \
+	if time docker build                                \
         --cpu-shares 128                                \
         --no-cache                                      \
         --pull                                          \
         --squash                                        \
         --tag "$CI_REGISTRY_IMAGE:stage-$CI_JOB_STAGE"  \
-        .
-
-    if [ "$?" -eq 0 ]; then
+        .; then
         time docker push "$CI_REGISTRY_IMAGE:stage-$CI_JOB_STAGE"
     else
         echo 'Docker build failed. Save breakpoint snapshot.'
