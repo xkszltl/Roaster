@@ -5,6 +5,9 @@
 [ -e $STAGE/caffe2 ] && ( set -xe
     cd $SCRATCH
 
+    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" python/typing cython/cython numpy/numpy,v benjaminp/six yaml/pyyaml
+    "$ROOT_DIR/pkgs/utils/pip_install_from_wheel.sh" future
+
     # ------------------------------------------------------------
 
     . "$ROOT_DIR/pkgs/utils/git/version.sh" pytorch/pytorch,master

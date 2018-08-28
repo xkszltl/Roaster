@@ -87,8 +87,10 @@ onnx/{models,onnx{,-tensorrt,mltools},tutorials},\
 open-mpi/ompi,\
 opencv/opencv,\
 pybind/pybind11,\
+PythonCharmers/python-future,\
 pypa/{pip,pipenv,setuptools,virtualenv,warehouse,wheel},\
 pytest-dev/{py,pytest},\
+python/typing,\
 pytorch/{examples,pytorch,tutorials},\
 RMerl/{am-toolchains,asuswrt-merlin.ng},\
 SchedMD/slurm,\
@@ -98,6 +100,7 @@ shibatch/sleef,\
 tensorflow/tensorflow,\
 USCiLab/cereal,\
 xianyi/OpenBLAS,\
+yaml/pyyaml,\
 zeromq/{cppzmq,libzmq,pyzmq},\
 },\
 https://gitlab.com/\ {\

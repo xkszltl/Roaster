@@ -12,14 +12,12 @@ if [ $GITLAB_CI ]; then
     cmd="$(sed 's/-.*//' <<< "$CI_COMMIT_REF_NAME")";
     stage="$(sed 's/^[^\-]*-//' <<< "$CI_COMMIT_REF_NAME")";
 
-	if [ "_$cmd" = "_build" ]; then
-        echo "Build stage \"$CI_JOB_STAGE\"."
-		cat stage/$CI_JOB_STAGE > 'Dockerfile'
-    elif [ "_$cmd" = "_resume" ]; then
+    if [ "_$cmd" = "_resume" ] && [ "_$stage" != "_$CI_JOB_STAGE" ]; then
         echo "Resume stage \"$CI_JOB_STAGE\"."
         cat stage/resume > 'Dockerfile'
     else
-        echo "Unknown command \"$cmd\"."
+        echo "Build stage \"$CI_JOB_STAGE\"."
+		cat stage/$CI_JOB_STAGE > 'Dockerfile'
 	fi
 
     cat 'Dockerfile' > "stage/$CI_JOB_STAGE"
