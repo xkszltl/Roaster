@@ -23,6 +23,6 @@ time fpm                                                                \
     --rpm-compression "$(false && echo xzmt || echo none)"              \
     --rpm-digest sha512                                                 \
     --vendor "CodingCafe"                                               \
-    --version "$((git describe --tags || echo 0.0) | sed 's/[_\-]/\./g' | sed 's/[^0-9\.]//g')"
+    --version "$((git describe --tags || echo 0.0) | sed 's/[_\-]/\./g' | sed 's/[^0-9\.]//g' | sed 's/^[^0-9]*//')"
 
 "$ROOT_DIR/pkgs/utils/fpm/install.sh"

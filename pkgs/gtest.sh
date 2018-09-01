@@ -24,14 +24,12 @@
         cd $_
 
         cmake                                       \
-            -DBUILD_GMOCK=ON                        \
-            -DBUILD_GTEST=ON                        \
             -DBUILD_SHARED_LIBS=ON                  \
             -DCMAKE_BUILD_TYPE=Release              \
             -DCMAKE_C{,XX}_COMPILER_LAUNCHER=ccache \
             -DCMAKE_C{,XX}_FLAGS="-g"               \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
-            -Dgmock_build_tests=ON                  \
+            -Dgmock_build_tests=OFF                 \
             -Dgtest_build_samples=ON                \
             -Dgtest_build_tests=ON                  \
             -G"Ninja"                               \
