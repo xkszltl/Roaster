@@ -63,6 +63,7 @@
         export MPI_HOME=/usr/local/openmpi
 
         cmake                                       \
+            -DATEN_NO_TEST=ON                       \
             -DBLAS=MKL                              \
             -DBUILD_CUSTOM_PROTOBUF=OFF             \
             -DBUILD_SHARED_LIBS=ON                  \
@@ -123,6 +124,7 @@
         # --------------------------------------------------------
 
         rm -rf "$INSTALL_ROOT/usr/local/include/"{caffe/proto,gmock,gtest}
+        rm -rf "$INSTALL_ROOT/usr/local/lib64/"{pkgconfig/,lib}{gmock,gtest}{,_*}.*
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
