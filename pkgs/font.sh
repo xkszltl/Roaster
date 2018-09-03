@@ -17,6 +17,16 @@
 
     echo "Found $MSFONTS_VER"
 
+    # Install fc-cache before bypassing it.
+
+    for attempt in $(seq $RPM_MAX_ATTEMPT -1 0); do
+        $RPM_INSTALL --skip-broken      \
+            fontconfig{,-*}             \
+            && break
+        echo "Retrying... $attempt chance(s) left."
+        [ $attempt -gt 0 ] || exit 1
+    done
+
     mv -f /usr/bin/fc-cache{,.bak}
     ln -sf /usr/bin/{true,fc-cache}
 
