@@ -3,8 +3,8 @@ stages:
   - repo
   - font
   - pkg-skip
-  - ss
   - tex
+  - ss
   - infra
   - llvm-gcc
   - llvm-clang
@@ -67,19 +67,6 @@ pkg-skip:
   script:
     - gitlab-ci/build_stage.sh
 
-ss:
-  stage: ss
-  retry: 2
-  tags:
-    - docker
-    - gpu
-  only:
-    - /^(build|resume)-(init|repo|font|pkg-skip|pkg-all|ss)$/
-  except:
-    - branches
-  script:
-    - gitlab-ci/build_stage.sh
-
 tex:
   stage: tex
   retry: 2
@@ -87,7 +74,20 @@ tex:
     - docker
     - gpu
   only:
-    - /^(build|resume)-(init|repo|font|pkg-skip|pkg-all|ss|tex)$/
+    - /^(build|resume)-(init|repo|font|pkg-(skip|all)|tex)$/
+  except:
+    - branches
+  script:
+    - gitlab-ci/build_stage.sh
+
+ss:
+  stage: ss
+  retry: 2
+  tags:
+    - docker
+    - gpu
+  only:
+    - /^(build|resume)-(init|repo|font|pkg-(skip|all)|tex|ss)$/
   except:
     - branches
   script:
@@ -100,7 +100,7 @@ infra:
     - docker
     - gpu
   only:
-    - /^(build|resume)-(init|repo|font|pkg-skip|pkg-all|ss|tex|infra)$/
+    - /^(build|resume)-(init|repo|font|pkg-(skip|all)|ss|tex|infra)$/
   except:
     - branches
   script:
@@ -113,7 +113,7 @@ llvm-gcc:
     - docker
     - gpu
   only:
-    - /^(build|resume)-(init|repo|font|pkg-skip|pkg-all|ss|tex|infra|llvm-gcc)$/
+    - /^(build|resume)-(init|repo|font|pkg-(skip|all)|ss|tex|infra|llvm-gcc)$/
   except:
     - branches
   script:
@@ -126,7 +126,7 @@ llvm-clang:
     - docker
     - gpu
   only:
-    - /^(build|resume)-(init|repo|font|pkg-skip|pkg-all|ss|tex|infra|llvm-gcc|llvm-clang)$/
+    - /^(build|resume)-(init|repo|font|pkg-(skip|all)|ss|tex|infra|llvm-(gcc|clang))$/
   except:
     - branches
   script:
@@ -139,7 +139,7 @@ util:
     - docker
     - gpu
   only:
-    - /^(build|resume)-(init|repo|font|pkg-skip|pkg-all|ss|tex|infra|llvm-gcc|llvm-clang|util)$/
+    - /^(build|resume)-(init|repo|font|pkg-(skip|all)|ss|tex|infra|llvm-(gcc|clang)|util)$/
   except:
     - branches
   script:
@@ -152,7 +152,7 @@ misc:
     - docker
     - gpu
   only:
-    - /^(build|resume)-(init|repo|font|pkg-skip|pkg-all|ss|tex|infra|llvm-gcc|llvm-clang|util|misc)$/
+    - /^(build|resume)-(init|repo|font|pkg-(skip|all)|ss|tex|infra|llvm-(gcc|clang)|util|misc)$/
   except:
     - branches
   script:
@@ -165,7 +165,7 @@ dl:
     - docker
     - gpu
   only:
-    - /^(build|resume)-(init|repo|font|pkg-skip|pkg-all|ss|tex|infra|llvm-gcc|llvm-clang|util|misc|dl)$/
+    - /^(build|resume)-(init|repo|font|pkg-(skip|all)|ss|tex|infra|llvm-(gcc|clang)|util|misc|dl)$/
   except:
     - branches
   script:
@@ -178,7 +178,7 @@ dl:
     - docker
     - gpu
   only:
-    - /^(build|resume)-(init|repo|font|pkg-skip|pkg-all|ss|tex|infra|llvm-gcc|llvm-clang|util|misc|dl|edit)$/
+    - /^(build|resume)-(init|repo|font|pkg-(skip|all)|ss|tex|infra|llvm-(gcc|clang)|util|misc|dl|edit)$/
   except:
     - branches
   script:
@@ -191,7 +191,7 @@ finish:
     - docker
     - gpu
   only:
-    - /^(build|resume)-(init|repo|font|pkg-skip|pkg-all|ss|tex|infra|llvm-gcc|llvm-clang|util|misc|dl|edit|finish)$/
+    - /^(build|resume)-(init|repo|font|pkg-(skip|all)|ss|tex|infra|llvm-(gcc|clang)|util|misc|dl|edit|finish)$/
   except:
     - branches
   script:
