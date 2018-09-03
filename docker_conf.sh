@@ -15,7 +15,10 @@ echo '| After'
 echo '========================================'
 
 cat 'daemon.json.bak'                                                                                       \
-| jq -e '. |= . + {"experimental":true}'                                                        \
+| jq -e '. |= . + {"default-runtime":"nvidia"}'                                                             \
+| jq -e '. |= . + {"experimental":true}'                                                                    \
+| jq -e '. |= . + {"max-concurrent-downloads":1024}'                                                        \
+| jq -e '. |= . + {"max-concurrent-uploads":1024}'                                                          \
 | jq -e '. |= . + {"storage-driver":"devicemapper"}'                                                        \
 | jq -e '. |= . + {"storage-opts":[]}'                                                                      \
 | jq -e '."storage-opts"[."storage-opts" | length] |= . + "dm.thinpooldev=/dev/mapper/Mocha-docker--pool"'  \
