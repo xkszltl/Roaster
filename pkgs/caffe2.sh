@@ -17,7 +17,7 @@
     git remote add patch https://github.com/xkszltl/pytorch.git
     git fetch patch
 
-    PATCHES="pybind redef nomnigraph_dll"
+    PATCHES="pybind redef inputsize"
     # PATCHES="$PATCHES gpu_dll"
 
     for i in $PATCHES; do
@@ -63,8 +63,6 @@
         export MPI_HOME=/usr/local/openmpi
 
         cmake                                       \
-            -DBENCHMARK_ENABLE_LTO=ON               \
-            -DBENCHMARK_USE_LIBCXX=OFF              \
             -DBLAS=MKL                              \
             -DBUILD_CUSTOM_PROTOBUF=OFF             \
             -DBUILD_SHARED_LIBS=ON                  \
