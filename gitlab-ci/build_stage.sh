@@ -32,7 +32,6 @@ if [ $GITLAB_CI ]; then
         --cpu-shares 128                                \
         --no-cache                                      \
         --pull                                          \
-        --squash                                        \
         --tag "$CI_REGISTRY_IMAGE:stage-$CI_JOB_STAGE"  \
         .; then
         time docker push "$CI_REGISTRY_IMAGE:stage-$CI_JOB_STAGE"
