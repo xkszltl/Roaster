@@ -99,6 +99,7 @@ for i in pkg-{skip,all}; do
                 qt5-*
                 yasm{,-*}
                 docbook{,5,2X}{,-*}
+                txt2man
                 nagios{,-selinux,-devel,-debuginfo,-plugins-all}
                 {nrpe,nsca}
                 {collectd,rrdtool,pnp4nagios}{,-*}
