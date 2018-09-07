@@ -49,6 +49,7 @@ for i in pkg-{skip,all}; do
                 {traceroute,mtr,rsync,tcpdump,whois,net-snmp}{,-*}
                 torsocks{,-*}
                 {bridge-,core,crypto-,elf,find,ib,ip,pci,usb,yum-}utils{,-*}
+                util-linux{,-*}
                 moreutils{,-debuginfo}
                 papi{,-*}
                 rpmdevtools
