@@ -25,7 +25,7 @@ init:
   except:
     - branches
   script:
-    - until docker pull centos/systemd; do echo "Retry docker pull..."; done
+    - until docker pull centos; do echo "Retry docker pull..."; done
     - gitlab-ci/build_stage.sh
 
 repo:
