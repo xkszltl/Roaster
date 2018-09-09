@@ -6,8 +6,7 @@ stages:
   - tex
   - ss
   - infra
-  - llvm-gcc
-  - llvm-clang
+  - llvm
   - util
   - misc
   - dl
@@ -106,27 +105,14 @@ infra:
   script:
     - gitlab-ci/build_stage.sh
 
-llvm-gcc:
-  stage: llvm-gcc
-  retry: 2
-  tags:
-    - docker
-    - gpu
-  only:
-    - /^(build|resume)-(init|repo|font|pkg-(skip|all)|ss|tex|infra|llvm-gcc)$/
-  except:
-    - branches
-  script:
-    - gitlab-ci/build_stage.sh
-
-llvm-clang:
+llvm:
   stage: llvm-clang
   retry: 2
   tags:
     - docker
     - gpu
   only:
-    - /^(build|resume)-(init|repo|font|pkg-(skip|all)|ss|tex|infra|llvm-(gcc|clang))$/
+    - /^(build|resume)-(init|repo|font|pkg-(skip|all)|ss|tex|infra|llvm)$/
   except:
     - branches
   script:
@@ -139,7 +125,7 @@ util:
     - docker
     - gpu
   only:
-    - /^(build|resume)-(init|repo|font|pkg-(skip|all)|ss|tex|infra|llvm-(gcc|clang)|util)$/
+    - /^(build|resume)-(init|repo|font|pkg-(skip|all)|ss|tex|infra|llvm|util)$/
   except:
     - branches
   script:
@@ -152,7 +138,7 @@ misc:
     - docker
     - gpu
   only:
-    - /^(build|resume)-(init|repo|font|pkg-(skip|all)|ss|tex|infra|llvm-(gcc|clang)|util|misc)$/
+    - /^(build|resume)-(init|repo|font|pkg-(skip|all)|ss|tex|infra|llvm|util|misc)$/
   except:
     - branches
   script:
@@ -165,7 +151,7 @@ dl:
     - docker
     - gpu
   only:
-    - /^(build|resume)-(init|repo|font|pkg-(skip|all)|ss|tex|infra|llvm-(gcc|clang)|util|misc|dl)$/
+    - /^(build|resume)-(init|repo|font|pkg-(skip|all)|ss|tex|infra|llvm|util|misc|dl)$/
   except:
     - branches
   script:
@@ -178,7 +164,7 @@ dl:
     - docker
     - gpu
   only:
-    - /^(build|resume)-(init|repo|font|pkg-(skip|all)|ss|tex|infra|llvm-(gcc|clang)|util|misc|dl|edit)$/
+    - /^(build|resume)-(init|repo|font|pkg-(skip|all)|ss|tex|infra|llvm|util|misc|dl|edit)$/
   except:
     - branches
   script:
@@ -191,7 +177,7 @@ finish:
     - docker
     - gpu
   only:
-    - /^(build|resume)-(init|repo|font|pkg-(skip|all)|ss|tex|infra|llvm-(gcc|clang)|util|misc|dl|edit|finish)$/
+    - /^(build|resume)-(init|repo|font|pkg-(skip|all)|ss|tex|infra|llvm|util|misc|dl|edit|finish)$/
   except:
     - branches
   script:
