@@ -17,7 +17,7 @@
     git remote add patch https://github.com/xkszltl/pytorch.git
     git fetch patch
 
-    PATCHES="pybind redef inputsize"
+    PATCHES="redef inputsize"
     # PATCHES="$PATCHES gpu_dll"
 
     for i in $PATCHES; do
