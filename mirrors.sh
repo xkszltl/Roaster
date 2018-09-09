@@ -33,7 +33,7 @@ echo "[\"$DST_DIR\"]"
 if [ ! "'"$PATTERN"'" ] || grep "'"$PATTERN"'" <<< "$SRC_DIR"; then
     mkdir -p "$(dirname "$LOCAL")"
     cd "$(dirname "$LOCAL")"
-    [ -d "$LOCAL" ] || git clone --mirror "$SRC" "$LOCAL" 2>&1 || git clone --mirror "$SRC" "$LOCAL" 2>&1
+    [ -d "$LOCAL" ] || git clone --mirror "$DST" "$LOCAL" 2>&1 || git clone --mirror "$SRC" "$LOCAL" 2>&1
     cd "$LOCAL"
     git remote set-url origin "$DST" 2>&1
     git fetch --all 2>&1 || true
@@ -60,6 +60,7 @@ caffe2/{caffe2,models},\
 catchorg/{Catch2,Clara},\
 ccache/ccache,\
 cython/cython,\
+dotnet/{cli,core{,-setup,clr,fx},standard},\
 eigenteam/eigen-git-mirror,\
 facebook/{rocksdb,zstd},\
 facebookincubator/gloo,\
@@ -77,6 +78,7 @@ Kitware/{CMake,VTK},\
 llvm-mirror/{ll{vm,d,db,go},clang{,-tools-extra},polly,compiler-rt,openmp,lib{unwind,cxx{,abi}},test-suite},\
 LMDB/lmdb,\
 Maratyszcza/{confu,cpuinfo,FP16,FXdiv,NNPACK,PeachPy,psimd,pthreadpool},\
+Microsoft/{dotnet,TypeScript,vcpkg,vscode},\
 NervanaSystems/{neon,nervanagpu},\
 nanopb/nanopb,\
 ninja-build/ninja,\
