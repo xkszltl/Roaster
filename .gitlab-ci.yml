@@ -106,7 +106,7 @@ infra:
     - gitlab-ci/build_stage.sh
 
 llvm:
-  stage: llvm-clang
+  stage: llvm
   retry: 2
   tags:
     - docker
