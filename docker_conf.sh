@@ -24,6 +24,8 @@ cat 'daemon.json.bak'                                                           
 | jq -e '."storage-opts"[."storage-opts" | length] |= . + "dm.thinpooldev=/dev/mapper/Mocha-docker--pool"'  \
 | jq -e '."storage-opts"[."storage-opts" | length] |= . + "dm.use_deferred_removal=true"'                   \
 | jq -e '."storage-opts"[."storage-opts" | length] |= . + "dm.use_deferred_deletion=true"'                  \
+| jq -e '. |= . + {"storage-driver":"overlay2"}'                                                            \
+| jq -e '. |= . + {"storage-opts":[]}'                                                                      \
 | tee 'daemon.json' | jq -e '.'                                                                             \
 || ( set -e
     cat 'daemon.json.bak' > 'daemon.json'
