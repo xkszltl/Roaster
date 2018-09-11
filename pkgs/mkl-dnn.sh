@@ -22,6 +22,8 @@
         mkdir -p build
         cd $_
 
+        export MKLDNN_VERBOSE=1
+
         cmake                                       \
             -DCMAKE_BUILD_TYPE=Release              \
             -DCMAKE_C{,XX}_COMPILER_LAUNCHER=ccache \
