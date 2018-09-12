@@ -17,6 +17,9 @@ cd $prefix
 Write-Host 'Invoking boost.ps1'
 .\boost.ps1
 cd $prefix
+Write-Host 'Invoking jsoncpp.ps1'
+.\protobuf.ps1
+cd $prefix
 Write-Host 'Invoking eigen.ps1'
 .\eigen.ps1
 cd $prefix
