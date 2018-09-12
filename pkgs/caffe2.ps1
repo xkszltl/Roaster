@@ -28,10 +28,8 @@ git clone --recursive -j100 "$repo"
 pushd "$root"
 git remote add patch https://github.com/xkszltl/pytorch.git
 git fetch patch
-git pull patch pybind
 git pull patch redef
-git pull patch observer
-git pull patch typeid
+git pull patch inputsize
 #TODO: cherry-pick patch/gpu_dll
 git checkout -- *
 
