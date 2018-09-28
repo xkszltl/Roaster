@@ -88,6 +88,7 @@ NVLabs/{cub,xmp},\
 onnx/{models,onnx{,-tensorrt,mltools},tutorials},\
 open-mpi/ompi,\
 opencv/opencv,\
+protocolbuffers/protobuf,\
 pybind/pybind11,\
 PythonCharmers/python-future,\
 pypa/{pip,pipenv,setuptools,virtualenv,warehouse,wheel},\
