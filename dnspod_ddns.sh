@@ -32,9 +32,9 @@ while true; do
             grep -q '\.cucc$' <<< "$Rec" && Interface='Dialer20'
             IP=$(snmpwalk -v3 -u monitor -x AES -m IP-MIB 10.0.0.1 ipAdEntIfIndex | sed -n 's/.*\.\([0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\).*[[:space:]]'"$(snmpwalk -v3 -u monitor -x AES -m IF-MIB 10.0.0.1 ifName | sed -n 's/.*\.\([0-9]*\).*[[:space:]]'$Interface'$/\1/p')"'$/\1/p') || echo 'ERROR: Failed to retrieve SNMP data for "'"$Rec"'"'
         elif grep -q '^ifcfg\.' <<< "$Rec"; then
-            IP=$(curl -sSL https://ifcfg.me/ --interface "$(sed 's/^......//' <<<$Rec)") || echo 'ERROR: Failed to retrieve IP for "'"$Rec"'"'
+            IP=$(curl -sSL https://ifcfg.net/ --interface "$(sed 's/^......//' <<<$Rec)") || echo 'ERROR: Failed to retrieve IP for "'"$Rec"'"'
         else
-            IP=$(curl -sSL https://ifcfg.me/) || echo 'ERROR: Failed to retrieve IP for "'"$Rec"'"'
+            IP=$(curl -sSL https://ifcfg.net/) || echo 'ERROR: Failed to retrieve IP for "'"$Rec"'"'
         fi;
 
         IP=$(xargs <<< "$IP" | sed -n 's/^[[:space:]]*\([^[:space:]]*\).*$/\1/p' | head -n 1);
