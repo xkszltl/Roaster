@@ -77,6 +77,7 @@ jordansissel/fpm,\
 Kitware/{CMake,VTK},\
 llvm-mirror/{ll{vm,d,db,go},clang{,-tools-extra},polly,compiler-rt,openmp,lib{unwind,cxx{,abi}},test-suite},\
 LMDB/lmdb,\
+madler/zlib,\
 Maratyszcza/{confu,cpuinfo,FP16,FXdiv,NNPACK,PeachPy,psimd,pthreadpool},\
 Microsoft/{dotnet,TypeScript,vcpkg,vscode},\
 NervanaSystems/{neon,nervanagpu},\
@@ -88,6 +89,7 @@ NVLabs/{cub,xmp},\
 onnx/{models,onnx{,-tensorrt,mltools},tutorials},\
 open-mpi/ompi,\
 opencv/opencv,\
+openssl/openssl,\
 protocolbuffers/protobuf,\
 pybind/pybind11,\
 PythonCharmers/python-future,\
@@ -96,6 +98,7 @@ pytest-dev/{py,pytest},\
 python/typing,\
 pytorch/{examples,pytorch,tutorials},\
 RMerl/{am-toolchains,asuswrt-merlin.ng},\
+ROCm-Developer-Tools/HIP,\
 SchedMD/slurm,\
 scipy/scipy{,-mathjax,-sphinx-theme},\
 shadowsocks/{ShadowsocksX-NG,libQtShadowsocks,shadowsocks{,-go,-libev,-manager,-windows}},\
