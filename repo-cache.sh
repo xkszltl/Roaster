@@ -112,16 +112,18 @@ parallel -j0 --line-buffer --bar 'bash -c '"'"'
 # ----------------------------------------------------------------
 
 parallel -j10 --line-buffer --bar 'bash -c '"'"'
+    set -e
+
     export CUDNN_URL="https://developer.download.nvidia.com/compute/redist/cudnn"
     export lhs=$(sed "s/@.*//" <<< "{}")
     export rhs=$(sed "s/.*@//" <<< "{}")
 
-    mkdir -p "nvidia/cudnn/$lhs"
+    mkdir -p "nvidia/cudnn/$(cut -d. -f1-3 <<< "$lhs")"
     cd "$_"
 
-    '"$DRY"' || wget '"$DRY_WGET"' -cq --bind-address='"$ROUTE"' "$CUDNN_URL/$lhs/cudnn-$(printf "$rhs" "x64-$(cut -d. -f1,2 <<< "$lhs" | sed "s/\.0$//")")"
-    [ $(ls | wc -l) -le 0 ] && cd .. && rm -rf "$lhs"
-'"'" ::: v7.{1,2}.{0,1,2,3,4,5,6,7,8,9}@9.{0,1,2,3}-{{linux,osx}-%s.tgz,windows10-%s.zip} &
+    '"$DRY"' || wget '"$DRY_WGET"' -cq --bind-address='"$ROUTE"' "$CUDNN_URL/$(cut -d. -f1-3 <<< "$lhs")/cudnn-$(printf "$rhs" "x64-$lhs")" || true
+    [ ! "$(ls)" ] && cd .. && rm -rf "$(cut -d. -f1-3 <<< "$lhs")"
+'"'" ::: v7.3.0.29@{9,10}.0-{{linux,osx}-%s.tgz,windows10-%s.zip} &
 
 # ----------------------------------------------------------------
 # NVIDIA Repository Mirroring

@@ -12,14 +12,14 @@
     export CUDA_VER_BUILD="$(cut -d'.' -f3 <<< "$CUDA_VER")"
 
     export CUDNN_PREFIX="cudnn-$CUDA_VER_MAJOR.$CUDA_VER_MINOR-linux-x64-"
-    export CUDNN_REPO=cudnn/v7.1.4
+    export CUDNN_REPO=cudnn/v7.3.0.29
 
     if [ $GIT_MIRROR == $GIT_MIRROR_CODINGCAFE ]; then
-        CUDNN_DIR="https://repo.codingcafe.org/nvidia/$CUDNN_REPO"
+        CUDNN_DIR="https://repo.codingcafe.org/nvidia/$(cut -d. -f1-3 <<< "$CUDNN_REPO")"
         CUDNN_NAME="$(curl -sSL "$CUDNN_DIR" | sed -n 's/.*href="\('"$CUDNN_PREFIX"'.*\)".*/\1/p' | sort -V | tail -n1)"
     else
-        CUDNN_DIR="https://developer.download.nvidia.com/compute/redist/$CUDNN_REPO"
-        CUDNN_NAME="$CUDNN_PREFIX$(basename "$CUDNN_REPO" | cut -d. -f1,2 | sed 's/\.0$//').tgz"
+        CUDNN_DIR="https://developer.download.nvidia.com/compute/redist/$(cut -d. -f1-3 <<< "$CUDNN_REPO")"
+        CUDNN_NAME="$CUDNN_PREFIX$(basename "$CUDNN_REPO").tgz"
     fi
     curl -sSL "$CUDNN_DIR/$CUDNN_NAME" | sudo tar -zxvf - -C "/usr/local/" --no-overwrite-dir
 
