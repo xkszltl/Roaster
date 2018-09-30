@@ -35,7 +35,7 @@
             -DCMAKE_C{,XX}_FLAGS="-g"               \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
             -DCMAKE_VERBOSE_MAKEFILE=ON             \
-            -DCUDA_ARCH_NAME=All                    \
+            -DCUDA_ARCH_NAME=Auto                   \
             -DUSE_NCCL=ON                           \
             -Dpython_version=3                      \
             ..
