@@ -1,4 +1,4 @@
-FROM docker.codingcafe.org/sandbox/centos:stage-llvm-gcc
+FROM docker.codingcafe.org/sandbox/centos:stage-infra
 
 COPY [".", "/etc/codingcafe/scripts"]
 
