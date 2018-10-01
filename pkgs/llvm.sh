@@ -42,7 +42,6 @@ for i in llvm-{gcc,clang}; do
 
             # TODO: Enable OpenMP for fortran when ninja supports it.
             export LLVM_COMMON_ARGS="
-                -DCLANG_ANALYZER_BUILD_Z3=OFF
                 -DCLANG_DEFAULT_CXX_STDLIB=libc++
                 -DCLANG_ENABLE_PROTO_FUZZER=OFF
                 -DCMAKE_BUILD_TYPE=Release
@@ -87,6 +86,7 @@ for i in llvm-{gcc,clang}; do
                     -DCMAKE_RANLIB=$(which gcc-ranlib)  \
                     $LLVM_COMMON_ARGS
             else
+                # -DLIBOMPTARGET_NVPTX_ENABLE_BCLIB=ON
                 LDFLAGS='-fuse-ld=lld'                  \
                 cmake                                   \
                     -DCMAKE_C_COMPILER=clang            \
@@ -96,7 +96,6 @@ for i in llvm-{gcc,clang}; do
                     -DLIBCXXABI_USE_COMPILER_RT=ON      \
                     -DLIBCXXABI_USE_LLVM_UNWINDER=ON    \
                     -DLIBOMP_ENABLE_SHARED=OFF          \
-                    -DLIBOMPTARGET_NVPTX_ENABLE_BCLIB=ON\
                     -DLIBUNWIND_USE_COMPILER_RT=ON      \
                     -DLLVM_ENABLE_LIBCXX=ON             \
                     -DLLVM_ENABLE_LLD=ON                \
