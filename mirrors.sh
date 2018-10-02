@@ -65,6 +65,7 @@ eigenteam/eigen-git-mirror,\
 facebook/{rocksdb,zstd},\
 facebookincubator/gloo,\
 facebookresearch/{Detectron,fastText},\
+frerich/clcache,\
 gflags/gflags,\
 github/{git-lfs,gitignore},\
 goldmann/docker-squash,\
@@ -97,6 +98,7 @@ pypa/{pip,pipenv,setuptools,virtualenv,warehouse,wheel},\
 pytest-dev/{py,pytest},\
 python/typing,\
 pytorch/{examples,pytorch,tutorials},\
+RadeonOpenCompute/{hcc,ROCm-Device-Libs,ROCR-Runtime},\
 RMerl/{am-toolchains,asuswrt-merlin.ng},\
 ROCm-Developer-Tools/HIP,\
 SchedMD/slurm,\
