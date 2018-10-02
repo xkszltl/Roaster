@@ -41,7 +41,14 @@
     fi
 
     git submodule init
-    until git config --file .gitmodules --get-regexp path | cut -d' ' -f2 | parallel -j0 --ungroup --bar '[ ! -d "{}" ] || git submodule update --recursive "{}"'; do echo 'Retrying'; done
+    git config --file .gitmodules --get-regexp path | cut -d' ' -f2 | parallel -j0 --ungroup --bar 'bash -c '"'"'
+        set -e
+        for i in $(seq 10 -1 0); do
+            git submodule update --recursive "{}" && exit 0
+            echo "Retrying \"{}\"... $i time(s) left."
+        done
+        exit 1
+    '"'"
 
     # ------------------------------------------------------------
 
@@ -62,31 +69,31 @@
 
         export MPI_HOME=/usr/local/openmpi
 
-        cmake                                       \
-            -DATEN_NO_TEST=ON                       \
-            -DBLAS=MKL                              \
-            -DBUILD_CUSTOM_PROTOBUF=OFF             \
-            -DBUILD_SHARED_LIBS=ON                  \
-            -DBUILD_TEST=ON                         \
-            -DCMAKE_BUILD_TYPE=Release              \
-            -DCMAKE_C_COMPILER=gcc                  \
-            -DCMAKE_C{,XX}_COMPILER_LAUNCHER=ccache \
-            -DCMAKE_C{,XX}_FLAGS="-g"               \
-            -DCMAKE_CXX_COMPILER=g++                \
-            -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
-            -DCMAKE_VERBOSE_MAKEFILE=ON             \
-            -DCPUINFO_BUILD_TOOLS=ON                \
-            -DCUDA_ARCH_NAME=All                    \
-            -DINSTALL_TEST=ON                       \
-            -DUSE_MKLDNN=ON                         \
-            -DUSE_NATIVE_ARCH=ON                    \
-            -DUSE_OBSERVERS=ON                      \
-            -DUSE_OPENMP=ON                         \
-            -DUSE_ROCKSDB=ON                        \
-            -DUSE_SYSTEM_NCCL=ON                    \
-            -DUSE_ZMQ=ON                            \
-            -DUSE_ZSTD=OFF                          \
-            -G"Ninja"                               \
+        cmake                                               \
+            -DATEN_NO_TEST=ON                               \
+            -DBLAS=MKL                                      \
+            -DBUILD_CUSTOM_PROTOBUF=OFF                     \
+            -DBUILD_SHARED_LIBS=ON                          \
+            -DBUILD_TEST=ON                                 \
+            -DCMAKE_BUILD_TYPE=Release                      \
+            -DCMAKE_C_COMPILER=gcc                          \
+            -DCMAKE_{C,CXX,CUDA}_COMPILER_LAUNCHER=ccache   \
+            -DCMAKE_C{,XX}_FLAGS="-g"                       \
+            -DCMAKE_CXX_COMPILER=g++                        \
+            -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"           \
+            -DCMAKE_VERBOSE_MAKEFILE=ON                     \
+            -DCPUINFO_BUILD_TOOLS=ON                        \
+            -DCUDA_ARCH_NAME=All                            \
+            -DINSTALL_TEST=ON                               \
+            -DUSE_MKLDNN=ON                                 \
+            -DUSE_NATIVE_ARCH=ON                            \
+            -DUSE_OBSERVERS=ON                              \
+            -DUSE_OPENMP=ON                                 \
+            -DUSE_ROCKSDB=ON                                \
+            -DUSE_SYSTEM_NCCL=ON                            \
+            -DUSE_ZMQ=ON                                    \
+            -DUSE_ZSTD=OFF                                  \
+            -G"Ninja"                                       \
             ..
 
         # Currently there is a bug causing the second run of cmake to fail when finding python.
