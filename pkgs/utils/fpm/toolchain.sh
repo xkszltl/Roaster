@@ -1,5 +1,10 @@
 #!/bin/bash
 
+export CCACHE_BASEDIR="$(pwd)"
+export CCACHE_COMPRESS=true
+export CCACHE_MAXSIZE=32G
+export CCACHE_NOHASHDIR=true
+
 export TOOLCHAIN="$(readlink -f "$INSTALL_ROOT/../toolchain")"
 mkdir -p "$TOOLCHAIN"
 
