@@ -85,7 +85,7 @@ NervanaSystems/{neon,nervanagpu},\
 nanopb/nanopb,\
 ninja-build/ninja,\
 numpy/numpy{,doc},\
-NVIDIA/{DIGITS,cnmem,libglvnd,nccl,nvidia-docker},\
+NVIDIA/{DIGITS,cnmem,libglvnd,nccl,nvidia-container-runtime,nvidia-docker},\
 NVLabs/{cub,xmp},\
 onnx/{models,onnx{,-tensorrt,mltools},tutorials},\
 open-mpi/ompi,\
