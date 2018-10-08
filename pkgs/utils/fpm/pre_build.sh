@@ -21,3 +21,12 @@ export INSTALL_ROOT="$(readlink -e "$INSTALL_ROOT")"
 # ----------------------------------------------------------------
 
 rpm -q filesystem > /dev/null && rpm -ql filesystem | sed 's/^\///' | sed 's/$/\//' > "$INSTALL_ROOT/../exclude.conf" &
+
+# ----------------------------------------------------------------
+# Copy source code
+# ----------------------------------------------------------------
+
+mkdir -p "$INSTALL_ABS/src/$(basename "$(pwd)")"
+
+ls -A -I".git" -I"$(basename "$(dirname "$INSTALL_ROOT")")" \
+| xargs cp --reflink=auto -aft "$INSTALL_ABS/src/$(basename "$(pwd)")/"

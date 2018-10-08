@@ -20,6 +20,8 @@
         . scl_source enable devtoolset-7
         set -xe
 
+        . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
+
         ./autogen.sh                    \
             --enable-{prof,xmalloc}     \
             --prefix="$INSTALL_ABS"     \

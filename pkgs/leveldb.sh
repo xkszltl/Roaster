@@ -22,6 +22,8 @@
         . scl_source enable devtoolset-7
         set -xe
 
+        . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
+
         # CMake script it not ready for dynamic lib.
         if [ -e CMakeLists.txt ]; then
             mkdir -p build
@@ -30,8 +32,10 @@
             # Use -fPIC since cmake script only creates static lib.
             cmake                                       \
                 -DCMAKE_BUILD_TYPE=Release              \
+                -DCMAKE_C_COMPILER=gcc                  \
+                -DCMAKE_CXX_COMPILER=g++                \
                 -DCMAKE_C{,XX}_COMPILER_LAUNCHER=ccache \
-                -DCMAKE_C{,XX}_FLAGS="-fPIC -g"         \
+                -DCMAKE_C{,XX}_FLAGS="-fPIC -fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g" \
                 -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
                 -G"Ninja"                               \
                 ..

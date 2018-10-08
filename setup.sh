@@ -51,7 +51,9 @@ uname -sr
 echo -n '| Platform | '
 uname -m
 echo    '| GPU      | '
-which nvidia-smi 2>/dev/null >/dev/null && nvidia-smi -L | sed 's/^/|    ******| /'
+which nvidia-smi >/dev/null 2>/dev/null && nvidia-smi -L | sed 's/^/|    ******| /'
+echo    '| Sensor   | '
+which sensors >/dev/null 2>/dev/null && sensors | sed 's/^/|    ******| /'
 echo -n '| User     | '
 whoami
 echo -n '|          | '
@@ -108,6 +110,8 @@ cd $SCRATCH
     sudo mv -vf $(dirname $STAGE)/.$(basename $STAGE) $STAGE
 )
 
+which ccache 2>/dev/null >/dev/null && ccache -z
+
 for i in $(echo "
     env-mirror
     repo
@@ -160,8 +164,9 @@ cd
 rm -rvf $SCRATCH
 sudo ldconfig
 
+which ccache 2>/dev/null >/dev/null && ccache -s
+
 if $IS_CONTAINER; then
-    which ccache 2>/dev/null >/dev/null && ccache -Cz
     sudo yum autoremove -y
     sudo yum clean all
     sudo rm -rf /var/cache/yum
@@ -185,12 +190,19 @@ uname -sr
 echo -n '| Platform | '
 uname -m
 echo    '| GPU      | '
-which nvidia-smi 2>/dev/null >/dev/null && nvidia-smi -L | sed 's/^/|    ******| /'
+which nvidia-smi >/dev/null 2>/dev/null && nvidia-smi -L | sed 's/^/|    ******| /'
+echo    '| Sensor   | '
+which sensors >/dev/null 2>/dev/null && sensors | sed 's/^/|    ******| /'
 echo -n '| User     | '
 whoami
 echo -n '|          | '
 id
 echo '----------------------------------------------------------------'
+if which ccache >/dev/null 2>/dev/null; then
+    ccache -s | sed 's/^/| /'
+    $IS_CONTAINER && ccache -Cz >/dev/null 2>/dev/null
+    echo '----------------------------------------------------------------'
+fi
 df -h --sync --output=target,fstype,size,used,avail,pcent,source | sed 's/^/| /'
 echo '================================================================'
 

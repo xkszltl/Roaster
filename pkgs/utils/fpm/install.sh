@@ -52,6 +52,10 @@ fi
 for i in $PKG_YUM_SEQ _; do
     [ "$i" != '_' ]
     echo "[INFO] Trying with \"yum $i\"."
-    sudo yum "$i" -y "$PKG_PATH" && break
+    if [ "$i" = "reinstall" ]; then
+        sudo yum remove -y "$PKG_NAME" && sudo yum install -y "$PKG_PATH" && break
+    else
+        sudo yum "$i" -y "$PKG_PATH" && break
+    fi
     echo "[INFO] Does not succeed with \"yum $i\"."
 done

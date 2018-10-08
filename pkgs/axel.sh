@@ -20,6 +20,8 @@
         . scl_source enable devtoolset-7
         set -xe
 
+        . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
+
         time ./autogen.sh
         time ./configure --prefix="$INSTALL_ABS"
         time make -j$(nproc)

@@ -16,7 +16,7 @@ cd $_
 
 [ $# -ge 1 ] && export PATTERN="$1"
 
-parallel --bar --group -j 10 'bash -c '"'"'
+parallel --bar --group --shuf -j 10 'bash -c '"'"'
 set -e
 xargs -n1 <<< {}
 [ $(xargs -n1 <<< {} | wc -l) -ne 2 ] && exit 0

@@ -14,7 +14,6 @@ for i in llvm-{gcc,clang}; do
             echo "Retriving LLVM $LLVM_GIT_TAG..."
             until git clone --depth 1 --branch "$LLVM_GIT_TAG" "$LLVM_MIRROR/llvm.git"; do sleep 1; echo "Retrying"; done
             cd llvm
-            git tag -f "$LLVM_GIT_TAG"
             parallel -j0 --bar --line-buffer 'bash -c '"'"'
                 set -e
                 export PROJ="$(basename "{}")"
@@ -81,9 +80,12 @@ for i in llvm-{gcc,clang}; do
             #
             # TODO: Enable LTO after fixing "function redeclared as variable" bug in polly.
             if [ $i = llvm-gcc ]; then
-                cmake                                   \
-                    -DCMAKE_AR=$(which gcc-ar)          \
-                    -DCMAKE_RANLIB=$(which gcc-ranlib)  \
+                cmake                                       \
+                    -DCMAKE_AR="$(which gcc-ar)"            \
+                    -DCMAKE_C_COMPILER=gcc                  \
+                    -DCMAKE_CXX_COMPILER=g++                \
+                    -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src'"   \
+                    -DCMAKE_RANLIB="$(which gcc-ranlib)"    \
                     $LLVM_COMMON_ARGS
             else
                 # -DLIBOMPTARGET_NVPTX_ENABLE_BCLIB=ON
@@ -91,6 +93,7 @@ for i in llvm-{gcc,clang}; do
                 cmake                                   \
                     -DCMAKE_C_COMPILER=clang            \
                     -DCMAKE_CXX_COMPILER=clang++        \
+                    -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src'"   \
                     -DENABLE_X86_RELAX_RELOCATIONS=ON   \
                     -DLIBCXX_USE_COMPILER_RT=ON         \
                     -DLIBCXXABI_USE_COMPILER_RT=ON      \

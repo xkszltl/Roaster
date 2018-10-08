@@ -25,6 +25,8 @@
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
     (
+        . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
+
         mkdir -p build
         cd $_
 
@@ -32,9 +34,9 @@
             -DCMAKE_{EXE,SHARED}_LINKER_FLAGS="-fuse-ld=lld"    \
             -DCMAKE_BUILD_TYPE=Release                          \
             -DCMAKE_C_COMPILER=clang                            \
-            -DCMAKE_C{,XX}_COMPILER_LAUNCHER=ccache             \
-            -DCMAKE_C{,XX}_FLAGS="-g"                           \
             -DCMAKE_CXX_COMPILER=clang++                        \
+            -DCMAKE_{C,CXX,CUDA}_COMPILER_LAUNCHER=ccache       \
+            -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"               \
             -DCMAKE_VERBOSE_MAKEFILE=ON                         \
             -DOpenGL_GL_PREFERENCE=GLVND                        \

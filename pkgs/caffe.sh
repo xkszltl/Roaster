@@ -33,8 +33,10 @@
             -G"Ninja"                                       \
             -DBLAS=MKL                                      \
             -DCMAKE_BUILD_TYPE=Release                      \
+            -DCMAKE_C_COMPILER=gcc                          \
+            -DCMAKE_CXX_COMPILER=g++                        \
             -DCMAKE_{C,CXX,CUDA}_COMPILER_LAUNCHER=ccache   \
-            -DCMAKE_C{,XX}_FLAGS="-g"                       \
+            -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"           \
             -DCMAKE_VERBOSE_MAKEFILE=ON                     \
             -DCUDA_ARCH_NAME="Manual"                       \
