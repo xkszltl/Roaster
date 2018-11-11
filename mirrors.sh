@@ -70,9 +70,9 @@ frerich/clcache,\
 gflags/gflags,\
 github/{git-lfs,gitignore},\
 goldmann/docker-squash,\
-google/{benchmark,snappy,glog,googletest,leveldb,protobuf},\
+google/{benchmark,snappy,gemmlowp,glog,googletest,leveldb,protobuf},\
 halide/Halide,\
-intel/{ideep,mkl-dnn},\
+intel/{ARM_NEON_2_x86_SSE,compute-runtime,ideep,mkl-dnn},\
 intelxed/xed,\
 jemalloc/jemalloc,\
 jordansissel/fpm,\
@@ -98,7 +98,7 @@ PythonCharmers/python-future,\
 pypa/{pip,pipenv,setuptools,virtualenv,warehouse,wheel},\
 pytest-dev/{py,pytest},\
 python/typing,\
-pytorch/{examples,pytorch,tutorials},\
+pytorch/{examples,FBGEMM,pytorch,QNNPACK,tutorials},\
 RadeonOpenCompute/{hcc,ROCm-Device-Libs,ROCR-Runtime},\
 RMerl/{am-toolchains,asuswrt-merlin.ng},\
 ROCm-Developer-Tools/HIP,\
