@@ -25,7 +25,7 @@ for i in pkg-{skip,all}; do
                 {gdb,valgrind,perf,{l,s}trace}{,-*}
                 {make,ninja-build,cmake{,3},autoconf,libtool}{,-*}
                 {ant,maven}{,-*}
-                {git,subversion,mercurial}{,-*}
+                {git,sclo-git212,subversion,mercurial}{,-*}
                 valgrind{,-*}
                 doxygen{,-*}
                 pandoc{,-*}
