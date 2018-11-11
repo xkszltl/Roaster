@@ -20,7 +20,7 @@ sudo ping -nfc 10 localhost > /dev/null                                     \
 && export GIT_MIRROR=$(
     export PING_ROUND=$(sudo ping -nfc 10 localhost > /dev/null && echo '-fc100' || echo '-i0.2 -c10')
     for i in $(env | sed -n 's/^GIT_MIRROR_[^=]*=//p'); do :
-        sudo ping -n $PING_ROUND $(sed 's/.*:\/\///' <<<"$i" | sed 's/\/.*//')              \
+        sudo ping -W 1 -n $PING_ROUND $(sed 's/.*:\/\///' <<<"$i" | sed 's/\/.*//')              \
         | sed -n '/ms$/p'                                                                   \
         | sed 's/.*[^0-9]\([0-9]*\)%.*[^0-9\.]\([0-9\.]*\).*ms/\1 \2/'                      \
         | sed 's/.*ewma.*\/\([0-9\.]*\).*/\1/'                                              \
