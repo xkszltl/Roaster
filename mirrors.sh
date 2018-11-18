@@ -49,7 +49,7 @@ if [ ! "'"$PATTERN"'" ] || grep "'"$PATTERN"'" <<< "$SRC_DIR"; then
 fi
 '"'" ::: {\
 https://github.com/\ {\
-01org/{processor-trace,tbb},\
+01org/{mkl-dnn,processor-trace,tbb},\
 ARM-software/{arm-trusted-firmware,ComputeLibrary,lisa},\
 aws/aws-{cli,sdk-{cpp,go,java,js,net,php,ruby}},\
 axel-download-accelerator/axel,\
@@ -63,6 +63,7 @@ cython/cython,\
 dmlc/{dmlc-core,gluon-cv,gluon-nlp,HalideIR,tvm,xgboost},\
 dotnet/{cli,core{,-setup,clr,fx},standard},\
 eigenteam/eigen-git-mirror,\
+emil-e/rapidcheck,\
 facebook/{rocksdb,zstd},\
 facebookincubator/gloo,\
 facebookresearch/{Detectron,fastText},\
@@ -92,6 +93,7 @@ onnx/{models,onnx{,-tensorrt,mltools},tutorials},\
 open-mpi/ompi,\
 opencv/opencv,\
 openssl/openssl,\
+PeachPy/enum34,\
 protocolbuffers/protobuf,\
 pybind/pybind11,\
 PythonCharmers/python-future,\
@@ -110,6 +112,7 @@ tensorflow/tensorflow,\
 USCiLab/cereal,\
 xianyi/OpenBLAS,\
 yaml/pyyaml,\
+Yangqing/ios-cmake,\
 zeromq/{cppzmq,libzmq,pyzmq},\
 },\
 https://gitlab.com/\ {\
