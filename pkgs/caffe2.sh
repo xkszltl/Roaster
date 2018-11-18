@@ -19,6 +19,7 @@
 
     # PATCHES="redef"
     # PATCHES="$PATCHES gpu_dll"
+    PATCHES=tolia/prof
 
     for i in $PATCHES; do
         git checkout "$i"
@@ -29,26 +30,7 @@
         git pull --no-edit patch "$i"
     done
 
-    if [ $GIT_MIRROR == $GIT_MIRROR_CODINGCAFE ]; then
-        export HTTP_PROXY=proxy.codingcafe.org:8118
-        [ $HTTP_PROXY ] && export HTTPS_PROXY=$HTTP_PROXY
-        [ $HTTP_PROXY ] && export http_proxy=$HTTP_PROXY
-        [ $HTTPS_PROXY ] && export https_proxy=$HTTPS_PROXY
-        for i in 01org ARM-software benjaminp catchorg USCiLab eigenteam facebook{,incubator} google intel Maratyszcza NervanaSystems nvidia NVlabs onnx pybind shibatch; do
-            sed -i "s/[^[:space:]]*:\/\/[^\/]*\(\/$i\/.*\)/$(sed 's/\//\\\//g' <<<$GIT_MIRROR )\1.git/" .gitmodules
-            sed -i "s/\($(sed 's/\//\\\//g' <<<$GIT_MIRROR )\/$i\/.*\.git\)\.git[[:space:]]*$/\1/" .gitmodules
-        done
-    fi
-
-    git submodule init
-    git config --file .gitmodules --get-regexp path | cut -d' ' -f2 | parallel -j0 --ungroup --bar 'bash -c '"'"'
-        set -e
-        for i in $(seq 10 -1 0); do
-            git submodule update --recursive "{}" && exit 0
-            echo "Retrying \"{}\"... $i time(s) left."
-        done
-        exit 1
-    '"'"
+    . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
 
     # ------------------------------------------------------------
 
@@ -57,6 +39,7 @@
     (
         set +xe
         . scl_source enable devtoolset-7
+        # . "/opt/intel/mkl/bin/mklvars.sh" intel64
         # . /opt/intel/tbb/bin/tbbvars.sh intel64
         set -xe
 
@@ -81,6 +64,8 @@
             -DCMAKE_{C,CXX,CUDA}_COMPILER_LAUNCHER=ccache   \
             -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"           \
+            -DCMAKE_POLICY_DEFAULT_CMP0003=NEW              \
+            -DCMAKE_POLICY_DEFAULT_CMP0060=NEW              \
             -DCMAKE_VERBOSE_MAKEFILE=ON                     \
             -DCPUINFO_BUILD_TOOLS=ON                        \
             -DCUDA_ARCH_NAME=All                            \
@@ -89,10 +74,14 @@
             -DUSE_NATIVE_ARCH=ON                            \
             -DUSE_OBSERVERS=ON                              \
             -DUSE_OPENMP=ON                                 \
+            -DUSE_PROF=ON                                   \
             -DUSE_ROCKSDB=ON                                \
+            -DUSE_SYSTEM_EIGEN_INSTALL=ON                   \
             -DUSE_SYSTEM_NCCL=ON                            \
+            -DUSE_TENSORRT=ON                               \
             -DUSE_ZMQ=ON                                    \
             -DUSE_ZSTD=OFF                                  \
+            -DWITH_BLAS=mkl                                 \
             -G"Ninja"                                       \
             ..
 
@@ -100,8 +89,10 @@
         # Probably because PYTHON_* variables are partially cached.
         # This may be a cmake bug.
 
-        time cmake --build . --target install
+        time cmake --build . --target rebuild_cache
+        time cmake --build . --target
         time cmake --build . --target test || ! nvidia-smi
+        time cmake --build . --target install
 
         # rm -rf /usr/bin/ninja
 
