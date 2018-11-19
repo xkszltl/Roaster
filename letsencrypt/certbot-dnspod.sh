@@ -11,7 +11,7 @@ TokenDnspodCN='12345,1234567890abcdef0123456789abcdef'
 # ----------------------------------------------------------------
 
 MaxRetries=5
-Propagation=5
+Propagation=10
 
 Domain=codingcafe.org
 
