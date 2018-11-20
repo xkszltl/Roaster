@@ -33,26 +33,29 @@ Write-Host -NoNewline "Scanning for latest release of cuDNN "
 
 for ($i=7; ($i -ge 7) -and (-not (Test-Path cudnn.zip)); $i--)
 {
-    for ($j=9; ($j -ge 0) -and (-not (Test-Path cudnn.zip)); $j--)
+    for ($j=5; ($j -ge 4) -and (-not (Test-Path cudnn.zip)); $j--)
     {
         for ($k=9; ($k -ge 0) -and (-not (Test-Path cudnn.zip)); $k--)
         {
-            $ErrorActionPreference="SlightlyContinue"
-            try
+            for ($l=9; ($l -ge 0) -and (-not (Test-Path cudnn.zip)); $l--)
             {
-                $cudnn_name="cudnn-$((nvcc --version) -match ' release ([0-9\.]*)' -replace '.* release ([0-9\.]*).*','${1}')-windows10-x64-v${i}$(${j} -replace '^0$','' -replace '^(.)','.${1}').zip"
-                Invoke-WebRequest "${cudnn_url}/v${i}.${j}.${k}/${cudnn_name}" -OutFile "cudnn.zip"
-                if ($?)
+                $ErrorActionPreference="SlightlyContinue"
+                try
                 {
-                    echo ''
-                    echo "Found cuDNN v${i}.${j}.${k}"
+                    $cudnn_name="cudnn-$((nvcc --version) -match ' release ([0-9\.]*)' -replace '.* release ([0-9\.]*).*','${1}')-windows10-x64-v${i}.${j}.${k}.${l}.zip"
+                    Invoke-WebRequest "${cudnn_url}/v${i}.${j}.${k}/${cudnn_name}" -OutFile "cudnn.zip"
+                    if ($?)
+                    {
+                        echo ''
+                        echo "Found cuDNN v${i}.${j}.${k}.${l}"
+                    }
                 }
+                catch
+                {
+                    Write-Host -NoNewline '.'
+                }
+                $ErrorActionPreference="Stop"
             }
-            catch
-            {
-                Write-Host -NoNewline '.'
-            }
-            $ErrorActionPreference="Stop"
         }
     }
 }

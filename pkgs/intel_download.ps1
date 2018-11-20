@@ -16,11 +16,11 @@ New-Item -Path $DownloadDir -ItemType Directory -ErrorAction SilentlyContinue
 
 $wc = [System.Net.Webclient]::new()
 # Note: update files and URI suffixes as new version are released.
-$components = [System.Tuple]::Create("w_daal_2018.3.210.exe", "13039"),
-              [System.Tuple]::Create("w_ipp_2018.3.210.exe", "13038"),
-              [System.Tuple]::Create("w_mkl_2018.3.210.exe", "13037"),
-              [System.Tuple]::Create("w_mpi_p_2018.3.210.exe", "13111"),
-              [System.Tuple]::Create("w_tbb_2018.4.210.exe", "13111")
+$components = [System.Tuple]::Create("w_daal_2019.1.144.exe", "14863"),
+              [System.Tuple]::Create("w_ipp_2019.1.144.exe", "14889"),
+              [System.Tuple]::Create("w_mkl_2019.1.144.exe", "14893"),
+              [System.Tuple]::Create("w_mpi_p_2019.1.144.exe", "14881"),
+              [System.Tuple]::Create("w_tbb_2019.2.144.exe", "14878")
 
 foreach ($i in 0..($components.Length - 1))
 {
