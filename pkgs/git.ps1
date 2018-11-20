@@ -12,14 +12,14 @@ if (-not $(Test-Path $DownloadDir))
 }
 
 # Note: Periodically check for newer versions of Git and update accordingly
-$exe = "Git-2.18.0.64-bit.exe"
+$exe = "Git-2.19.1.64-bit.exe"
 if (-not $(Test-Path "$DownloadDir/$exe"))
 {
     Write-Host "Downloading Git installation files..."
     [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
     $wc = [System.Net.WebClient]::new()
     # TODO: Incorporate $exe variable in web client file download arguments
-    $wc.DownloadFile("https://github.com/git-for-windows/git/releases/download/v2.18.0.windows.1/Git-2.18.0-64-bit.exe", "$Env:TMP/Git/Git-2.18.0.64-bit.exe")
+    $wc.DownloadFile("https://github.com/git-for-windows/git/releases/download/v2.19.1.windows.1/Git-2.19.1-64-bit.exe", "$Env:TMP/Git/Git-2.19.1.64-bit.exe")
 }
 
 Write-Host "Installing Git..."
