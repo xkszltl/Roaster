@@ -123,7 +123,7 @@ parallel -j10 --line-buffer --bar 'bash -c '"'"'
 
     '"$DRY"' || wget '"$DRY_WGET"' -cq --bind-address='"$ROUTE"' "$CUDNN_URL/$(cut -d. -f1-3 <<< "$lhs")/cudnn-$(printf "$rhs" "x64-$lhs")" || true
     [ ! "$(ls)" ] && cd .. && rm -rf "$(cut -d. -f1-3 <<< "$lhs")"
-'"'" ::: v7.3.0.29@{9,10}.0-{{linux,osx}-%s.tgz,windows10-%s.zip} &
+'"'" ::: v7.4.1.5@{9.0,9.2,10.0}-{{linux,osx}-%s.tgz,windows10-%s.zip} &
 
 # ----------------------------------------------------------------
 # NVIDIA Repository Mirroring
