@@ -19,7 +19,6 @@
 
     # PATCHES="redef"
     # PATCHES="$PATCHES gpu_dll"
-    PATCHES=tolia/prof
 
     for i in $PATCHES; do
         git checkout "$i"
@@ -31,6 +30,11 @@
     done
 
     . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
+
+    if [ -d '/usr/local/src/mkl-dnn' ]; then
+        echo 'Use locally installed MKL-DNN.'
+        ln -sf '/usr/local/src/mkl-dnn' third_party/ideep/mkl-dnn
+    fi
 
     # ------------------------------------------------------------
 
@@ -93,6 +97,11 @@
         time cmake --build . --target
         time cmake --build . --target test || ! nvidia-smi
         time cmake --build . --target install
+
+        # Exclude MKL-DNN files.
+        pushd "$INSTALL_ROOT"
+        rpm -ql codingcafe-mkl-dnn | sed -n 's/^\//\.\//p' | xargs rm -rf
+        popd
 
         # rm -rf /usr/bin/ninja
 
