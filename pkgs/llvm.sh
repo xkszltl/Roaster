@@ -19,6 +19,11 @@ for i in llvm-{gcc,clang}; do
             fi
         '"'" ::: projects/{compiler-rt,lib{cxx{,abi},unwind},openmp} tools/{clang,lldb,lld,polly}
 
+        # LLVM repo uses branch instead of tag.
+        for i in 'MAJOR' 'MINOR' 'PATCH'; do
+            sed -n "s/.*set[[:space:]]*([[:space:]]*LLVM_VERSION_$i[[:space:]][[:space:]]*\([0-9][0-9]*\)[[:space:]]*).*/\1/p" CMakeLists.txt | head -n1
+        done | paste -sd. - | xargs git tag
+
         # ------------------------------------------------------------
 
         . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
