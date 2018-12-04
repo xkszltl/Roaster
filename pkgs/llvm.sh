@@ -4,28 +4,20 @@
 
 for i in llvm-{gcc,clang}; do
     [ -e $STAGE/$i ] && ( set -xe
-        export LLVM_MIRROR="$GIT_MIRROR/llvm-mirror"
-        export LLVM_GIT_TAG="$(git ls-remote "$LLVM_MIRROR/llvm.git" | sed -n 's/.*\/\(release_[0-9\.]*\)[[:space:]]*$/\1/p' | sort -V | tail -n1)"
-
         cd $SCRATCH
 
-        (
-            set -e
-            echo "Retriving LLVM $LLVM_GIT_TAG..."
-            until git clone --depth 1 --branch "$LLVM_GIT_TAG" "$LLVM_MIRROR/llvm.git"; do sleep 1; echo "Retrying"; done
-            cd llvm
-            parallel -j0 --bar --line-buffer 'bash -c '"'"'
-                set -e
-                export PROJ="$(basename "{}")"
-                [ "$PROJ" ]
-                until git clone --depth 1 --branch "'"$LLVM_GIT_TAG"'" "'"$LLVM_MIRROR"'/$PROJ.git" {}; do sleep 1; echo "Retrying"; done
-                if [ "$PROJ" = "clang" ]; then
-                    until git clone --depth 1 --branch "'"$LLVM_GIT_TAG"'" "'"$LLVM_MIRROR"'/$PROJ-tools-extra.git" "{}/tools/extra"; do sleep 1; echo "Retrying"; done
-                fi
-            '"'" ::: projects/{compiler-rt,lib{cxx{,abi},unwind},openmp} tools/{clang,lldb,lld,polly}
-        )
-
+        . "$ROOT_DIR/pkgs/utils/git/version.sh" llvm-mirror/llvm,release_
+        until git clone --depth 1 -b "$GIT_TAG" "$GIT_REPO"; do sleep 1; echo "Retrying"; done
         cd llvm
+        parallel -j0 --bar --line-buffer 'bash -c '"'"'
+            set -e
+            export PROJ="$(basename "{}")"
+            [ "$PROJ" ]
+            until git clone --depth 1 -b "'"$GIT_TAG"'" "'"$(sed 's/[^\/]*$//' <<< "$GIT_REPO")"'$PROJ.git" {}; do sleep 1; echo "Retrying"; done
+            if [ "$PROJ" = "clang" ]; then
+                until git clone --depth 1 -b "'"$GIT_TAG"'" "'"$(sed 's/[^\/]*$//' <<< "$GIT_REPO")"'/$PROJ-tools-extra.git" "{}/tools/extra"; do sleep 1; echo "Retrying"; done
+            fi
+        '"'" ::: projects/{compiler-rt,lib{cxx{,abi},unwind},openmp} tools/{clang,lldb,lld,polly}
 
         # ------------------------------------------------------------
 
@@ -114,7 +106,6 @@ for i in llvm-{gcc,clang}; do
             time cmake --build . --target install
         )
 
-        git tag -f "$(git describe --tags | sed 's/[^0-9]//g' | sed 's/\([0-9]\)/\1\./g' | sed 's/\.$//')"
         "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
 
         cd
