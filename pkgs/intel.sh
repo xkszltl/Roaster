@@ -15,8 +15,8 @@
         if [ "{}" = "_" ]; then
             if [ -d '/opt/intel' ] && rpm -qf '/opt/intel'; then
                 sudo yum remove -y $(rpm -qf '/opt/intel' | sed -n '/^intel-/p')
-                sudo rm -rf '/opt/intel'
             fi
+            sudo rm -rf '/opt/intel'
         else
             mkdir -p "{}"
             pushd $_
