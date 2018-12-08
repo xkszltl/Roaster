@@ -17,7 +17,8 @@
     (
         set +xe
         . scl_source enable devtoolset-7
-        . "/opt/intel/compilers_and_libraries/$(uname -s | tr '[A-Z]' '[a-z]')/mkl/bin/mklvars.sh" intel64
+        . "/opt/intel/compilers_and_libraries/$(uname -s | tr '[A-Z]' '[a-z]')/bin/compilervars.sh" intel64
+        . /opt/intel/mkl/bin/mklvars.sh intel64
         set -xe
 
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"

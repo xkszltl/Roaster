@@ -93,10 +93,10 @@
         # Probably because PYTHON_* variables are partially cached.
         # This may be a cmake bug.
 
-        time cmake --build . --target rebuild_cache
-        time cmake --build . --target
-        time cmake --build . --target test || ! nvidia-smi
+        # time cmake --build . --target rebuild_cache
+        # time cmake --build . --target
         time cmake --build . --target install
+        # time cmake --build . --target test || ! nvidia-smi
 
         # Exclude MKL-DNN files.
         pushd "$INSTALL_ROOT"
