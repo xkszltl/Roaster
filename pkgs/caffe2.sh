@@ -96,7 +96,7 @@
         # time cmake --build . --target rebuild_cache
         # time cmake --build . --target
         time cmake --build . --target install
-        # time cmake --build . --target test || ! nvidia-smi
+        time cmake --build . --target test || ! nvidia-smi
 
         # Exclude MKL-DNN files.
         pushd "$INSTALL_ROOT"
