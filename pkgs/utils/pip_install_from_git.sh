@@ -16,7 +16,11 @@ for i in pypa/setuptools,v pypa/{pip,wheel} $@; do
     . "$ROOT_DIR/pkgs/utils/git/version.sh" "$i"
     URL="git+$GIT_REPO@$GIT_TAG"
     if grep 'pypa/setuptools' <<< "$i" > /dev/null; then
-        echo "Cannot build setuptools from source. Install it from wheel instead."
+        echo "Cannot build $PKG from source. Install it from wheel instead."
+        URL="$PKG"
+    fi
+    if grep '/protobuf' <<< "$i" > /dev/null; then
+        echo "Cannot build $PKG from source. Install it from wheel instead."
         URL="$PKG"
     fi
     for py in $(which python{,3}); do

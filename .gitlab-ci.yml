@@ -156,15 +156,16 @@ dl:
     - branches
   script:
     - gitlab-ci/build_stage.sh
+    - docker tag $CI_REGISTRY_IMAGE:stage-dl $CI_REGISTRY_IMAGE:stage-edit
 
-.edit:
+edit:
   stage: edit
   retry: 2
   tags:
     - docker
     - gpu
   only:
-    - /^(build|resume)-(init|repo|font|pkg-(skip|all)|ss|tex|infra|llvm|util|misc|dl|edit)$/
+    - /^(build|resume)-edit$/
   except:
     - branches
   script:
@@ -182,6 +183,6 @@ finish:
     - branches
   script:
     - docker login --password-stdin --username $CI_REGISTRY_USER $CI_REGISTRY <<< "$CI_REGISTRY_PASSWORD"
-    - docker tag $CI_REGISTRY_IMAGE:stage-dl $CI_REGISTRY_IMAGE:latest
+    - docker tag $CI_REGISTRY_IMAGE:stage-edit $CI_REGISTRY_IMAGE:latest
     - time docker push $CI_REGISTRY_IMAGE:latest
 

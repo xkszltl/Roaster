@@ -7,6 +7,9 @@
 
     # ------------------------------------------------------------
 
+    # TODO: Install directly from local build.
+    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" protocolbuffers/protobuf,v
+
     . "$ROOT_DIR/pkgs/utils/git/version.sh" protocolbuffers/protobuf,v
     until git clone --depth 1 --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd protobuf
@@ -48,14 +51,15 @@
 
         export CC="ccache gcc"
         export CXX="ccache g++"
-        export C{,XX}FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g" 
+        export C{,XX}FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -fPIC -O3 -g" 
 
         ./autogen.sh
         ./configure --prefix="$INSTALL_ABS"
         make -j$(nproc)
         make check -j$(nproc)
         make install -j
-        make distclean -j
+
+        cd python
 
         # Having issue with v3.6.1.1 while using CMake.
 
