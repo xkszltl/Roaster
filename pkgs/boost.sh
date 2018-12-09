@@ -23,7 +23,7 @@
             curl -sSL $BOOST_SITE                                                   \
             | sed -n 's/.*href[[:space:]]*=[[:space:]]*"\([0-9\.]*\)\/*".*/\1/p'    \
             | sort -V                                                               \
-            | tail -n '$i'                                                          \
+            | tail -n "$i"                                                          \
             | head -n1
         )"
         [ "$BOOST_VERSION" ] || continue
