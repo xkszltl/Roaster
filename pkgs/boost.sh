@@ -17,17 +17,24 @@
     fi
 
     export BOOST_SITE='https://dl.bintray.com/boostorg/release'
-    export BOOST_VERSION="$(
-        curl -sSL $BOOST_SITE                                                   \
-        | sed -n 's/.*href[[:space:]]*=[[:space:]]*"\([0-9\.]*\)\/*".*/\1/p'    \
-        | sort -V                                                               \
-        | tail -n1
-    )"
-    [ "$BOOST_VERSION" ]
+    MAX_FALLBACK=3
+    for i in $(seq "$MAX_FALLBACK"); do
+        export BOOST_VERSION="$(
+            curl -sSL $BOOST_SITE                                                   \
+            | sed -n 's/.*href[[:space:]]*=[[:space:]]*"\([0-9\.]*\)\/*".*/\1/p'    \
+            | sort -V                                                               \
+            | tail -n '$i'                                                          \
+            | head -n1
+        )"
+        [ "$BOOST_VERSION" ] || continue
+        BOOST_URL="$BOOST_SITE/$BOOST_VERSION/source/boost_$(sed 's/[^0-9]/_/g' <<<"$BOOST_VERSION").tar.bz2"
+        curl -fsSIL "$BOOST_URL" && break
+    done
+    [ "$BOOST_URL" ]
 
     mkdir -p boost
     cd $_
-    curl -sSL "$BOOST_SITE/$BOOST_VERSION/source/boost_$(sed 's/[^0-9]/_/g' <<<"$BOOST_VERSION").tar.bz2" | tar -jxvf - --strip-components=1
+    curl -sSL "$BOOST_URL" | tar -jxvf - --strip-components=1
 
     # ------------------------------------------------------------
     # Create local git repo for installation script
