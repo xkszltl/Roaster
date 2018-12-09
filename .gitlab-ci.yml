@@ -158,7 +158,7 @@ dl:
     - gitlab-ci/build_stage.sh
     - docker tag $CI_REGISTRY_IMAGE:stage-dl $CI_REGISTRY_IMAGE:stage-edit
 
-.edit:
+edit:
   stage: edit
   retry: 2
   tags:
