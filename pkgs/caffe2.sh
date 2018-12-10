@@ -98,9 +98,10 @@
         time cmake --build . --target install
         time cmake --build . --target test || ! nvidia-smi
 
-        # Exclude MKL-DNN files.
+        # Exclude MKL-DNN/ONNX files.
         pushd "$INSTALL_ROOT"
         rpm -ql codingcafe-mkl-dnn | sed -n 's/^\//\.\//p' | xargs rm -rf
+        rpm -ql codingcafe-onnx | sed -n 's/^\//\.\//p' | xargs rm -rf
         popd
 
         # rm -rf /usr/bin/ninja
@@ -140,20 +141,6 @@
 
     cd
     rm -rf $SCRATCH/pytorch
-
-    # ------------------------------------------------------------
-
-    $ISCONTAINER || parallel -j0 --bar --line-buffer 'bash -c '"'"'
-        echo N | python -m caffe2.python.models.download -i {}
-    '"'" :::                    \
-        bvlc_{alexnet,googlenet,reference_{caffenet,rcnn_ilsvrc13}} \
-        densenet121             \
-        finetune_flickr_style   \
-        inception_v{1,2}        \
-        resnet50                \
-        shufflenet              \
-        squeezenet              \
-        vgg{16,19}
 )
 sudo rm -vf $STAGE/caffe2
 sync || true

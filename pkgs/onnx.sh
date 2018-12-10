@@ -1,19 +1,28 @@
 # ================================================================
-# Compile PyBind11
+# Compile ONNX
 # ================================================================
 
-[ -e $STAGE/pybind ] && ( set -xe
+[ -e $STAGE/onnx ] && ( set -xe
     cd $SCRATCH
 
-    export PYBIND11_USE_CMAKE=ON
-    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" cython/cython numpy/numpy,v pytest-dev/pytest pybind/pybind11,v
+    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" cython/cython numpy/numpy,v protocolbuffers/protobuf,v benjaminp/six onnx/onnx,rel-
+    "$ROOT_DIR/pkgs/utils/pip_install_from_wheel.sh" future
 
     # ------------------------------------------------------------
 
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" pybind/pybind11,v
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" onnx/onnx,rel-
     until git clone --depth 1 --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
 
-    cd pybind11
+    cd onnx
+
+    git tag -f "$GIT_TAG"
+
+    . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
+
+    pushd third_party
+    rm -rf pybind11
+    ln -sf /usr/local/src/pybind11
+    popd
 
     # ------------------------------------------------------------
 
@@ -30,18 +39,22 @@
         cd $_
 
         cmake                                       \
+            -DBENCHMARK_ENABLE_LTO=ON               \
+            -DBUILD_ONNX_PYTHON=ON                  \
             -DCMAKE_BUILD_TYPE=Release              \
             -DCMAKE_C_COMPILER=gcc                  \
             -DCMAKE_CXX_COMPILER=g++                \
             -DCMAKE_C{,XX}_COMPILER_LAUNCHER=ccache \
             -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
+            -DONNX_BUILD_BENCHMARKS=ON              \
+            -DONNX_BUILD_TESTS=OFF                  \
+            -DONNX_GEN_PB_TYPE_STUBS=ON             \
             -DPYBIND11_PYTHON_VERSION=2.7           \
             -G"Ninja"                               \
             ..
 
         time cmake --build .
-        time cmake --build . --target pytest
         time cmake --build . --target install
     )
 
@@ -50,7 +63,7 @@
     # ------------------------------------------------------------
 
     cd
-    rm -rf $SCRATCH/pybind11
+    rm -rf $SCRATCH/onnx
 )
-sudo rm -vf $STAGE/pybind
+sudo rm -vf $STAGE/onnx
 sync || true
