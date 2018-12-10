@@ -19,7 +19,7 @@
 
     pushd third_party
     rm -rf pybind11
-    ln -sf /usr/local/src/pybind11
+    cp -rf /usr/local/src/pybind11 pybind11
     popd
 
     # ------------------------------------------------------------
