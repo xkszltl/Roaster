@@ -15,8 +15,6 @@
 
     cd onnx
 
-    git tag -f "$GIT_TAG"
-
     . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
 
     pushd third_party
