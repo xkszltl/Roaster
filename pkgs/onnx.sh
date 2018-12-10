@@ -5,12 +5,12 @@
 [ -e $STAGE/onnx ] && ( set -xe
     cd $SCRATCH
 
-    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" cython/cython numpy/numpy,v protocolbuffers/protobuf,v benjaminp/six onnx/onnx,rel-
+    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" cython/cython numpy/numpy,v protocolbuffers/protobuf,v benjaminp/six onnx/onnx,master
     "$ROOT_DIR/pkgs/utils/pip_install_from_wheel.sh" future
 
     # ------------------------------------------------------------
 
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" onnx/onnx,rel-
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" onnx/onnx,master
     until git clone --depth 1 --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
 
     cd onnx
