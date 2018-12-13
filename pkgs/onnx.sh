@@ -36,7 +36,7 @@
 
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
 
-        CMAKE_ARGS="
+        CMAKE_ARGS="$CMAKE_ARGS
             -DBUILD_SHARED_LIBS=ON
             -DCMAKE_BUILD_TYPE=Release
             -DCMAKE_C_COMPILER=gcc
