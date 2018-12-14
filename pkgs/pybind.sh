@@ -5,8 +5,7 @@
 [ -e $STAGE/pybind ] && ( set -xe
     cd $SCRATCH
 
-    export PYBIND11_USE_CMAKE=ON
-    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" cython/cython numpy/numpy,v pytest-dev/pytest pybind/pybind11,v
+    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" cython/cython numpy/numpy,v pytest-dev/pytest
 
     # ------------------------------------------------------------
 
@@ -25,6 +24,8 @@
         set -xe
 
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
+
+        PYBIND11_USE_CMAKE=ON "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" .
 
         mkdir -p build
         cd $_

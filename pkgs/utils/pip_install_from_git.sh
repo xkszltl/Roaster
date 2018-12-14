@@ -16,8 +16,13 @@ CACHE_VALID=false
 for i in pypa/setuptools,v pypa/{pip,wheel} $@; do
     PKG_PATH="$(cut -d, -f1 <<< "$i,")"
     if grep '^[[:alnum:]]' <<< "$PKG_PATH" > /dev/null; then
-        . "$ROOT_DIR/pkgs/utils/git/version.sh" "$i"
-        URL="git+$GIT_REPO@$GIT_TAG"
+        if grep '/enum34' <<< "/$i" > /dev/null; then
+            echo "Cannot get $PKG because it uses hg. Install it from wheel instead."
+            URL="$PKG"
+        else
+            . "$ROOT_DIR/pkgs/utils/git/version.sh" "$i"
+            URL="git+$GIT_REPO@$GIT_TAG"
+        fi
     else
         URL="$(readlink -e $PKG_PATH)"
         [ -d "$URL" ]

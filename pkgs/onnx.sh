@@ -5,7 +5,7 @@
 [ -e $STAGE/onnx ] && ( set -xe
     cd $SCRATCH
 
-    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" cython/cython numpy/numpy,v protocolbuffers/protobuf,v benjaminp/six
+    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" python/typing cython/cython numpy/numpy,v protocolbuffers/protobuf,v benjaminp/six
     "$ROOT_DIR/pkgs/utils/pip_install_from_wheel.sh" future
 
     # ------------------------------------------------------------
