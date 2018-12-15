@@ -24,7 +24,7 @@ time fpm                                                                    \
     --package "$INSTALL_ROOT/.."                                            \
     --rpm-compression "$(false && echo xzmt || echo none)"                  \
     --rpm-digest sha512                                                     \
-    --rpm-dist "$(sed 's/.*\-\([[:alnum:]]*\)$/\1/' <<< "$DESC")"           \
+    --rpm-dist "g$(git rev-parse --short --verify HEAD)"                    \
     --vendor "CodingCafe"                                                   \
     --version "$(sed 's/\-[0-9]*\-[[:alnum:]]*$//' <<< "$DESC" | sed 's/[_\-]/\./g' | sed 's/[^0-9\.]//g' | sed 's/^[^0-9]*\(.*[0-9]\)[^0-9]*$/\1/')"
 
