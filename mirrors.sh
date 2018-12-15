@@ -82,7 +82,7 @@ llvm-mirror/{ll{vm,d,db,go},clang{,-tools-extra},polly,compiler-rt,openmp,lib{un
 LMDB/lmdb,\
 madler/zlib,\
 Maratyszcza/{confu,cpuinfo,FP16,FXdiv,NNPACK,PeachPy,psimd,pthreadpool},\
-Microsoft/{dotnet,TypeScript,vcpkg,vscode},\
+Microsoft/{dotnet,TypeScript,onnxruntime,vcpkg,vscode},\
 NervanaSystems/{neon,nervanagpu},\
 nanopb/nanopb,\
 ninja-build/ninja,\
