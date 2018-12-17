@@ -5,7 +5,7 @@
 [ -e $STAGE/mkl-dnn ] && ( set -xe
     cd $SCRATCH
 
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" intel/mkl-dnn,master
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" intel/mkl-dnn,v
     # until git clone --depth 1 -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     until git clone -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd mkl-dnn
