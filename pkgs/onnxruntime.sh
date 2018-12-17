@@ -74,6 +74,17 @@
 
         time cmake --build . --target
         time cmake --build . --target install
+
+        if [ "_$GIT_MIRROR" == "_$GIT_MIRROR_CODINGCAFE" ]; then
+            axel -n10 -o 'models.zip' 'https://repo.codingcafe.org/microsoft/onnxruntime/20181210.zip'
+        else
+            axel -n200 -o 'models.zip' 'https://onnxruntimetestdata.blob.core.windows.net/models/20181210.zip'
+        fi
+
+        md5sum -c <<< 'a966def7447f4ff04f5665bca235b3f3 models.zip'
+        unzip -o models.zip -d ../models
+        rm -rf models.zip
+
         time cmake --build . --target test || ! nvidia-smi
 
         # Exclude MKL-DNN/ONNX files.
