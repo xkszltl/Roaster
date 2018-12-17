@@ -42,7 +42,6 @@ for i in pkg-{skip,all}; do
                 {ftp{,lib},telnet,tftp,rsh}{,-debuginfo}
                 {h,if,io,latency,power,tip}top{,-*}
                 procps-ng{,-*}
-                glances{,-*}
                 {wget,axel,curl,net-tools}{,-*}
                 {f,tc,dhc,libo,io}ping{,-*}
                 hping3{,-*}
@@ -167,6 +166,10 @@ for i in pkg-{skip,all}; do
 
         $IS_CONTAINER || sudo package-cleanup --oldkernels --count=3
         sudo yum autoremove -y
+
+        # ------------------------------------------------------------
+
+        "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" enum34 giampaolo/psutil,release- nicolargo/glances,v
 
         # ------------------------------------------------------------
 
