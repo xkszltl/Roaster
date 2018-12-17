@@ -69,6 +69,7 @@ facebookincubator/gloo,\
 facebookresearch/{Detectron,fastText},\
 frerich/clcache,\
 gflags/gflags,\
+giampaolo/psutil,\
 github/{git-lfs,gitignore},\
 goldmann/docker-squash,\
 google/{benchmark,snappy,gemmlowp,glog,googletest,leveldb,protobuf},\
@@ -84,8 +85,9 @@ LMDB/lmdb,\
 madler/zlib,\
 Maratyszcza/{confu,cpuinfo,FP16,FXdiv,NNPACK,PeachPy,psimd,pthreadpool},\
 Microsoft/{dotnet,GSL,onnxruntime,TypeScript,vcpkg,vscode},\
-NervanaSystems/{neon,nervanagpu},\
 nanopb/nanopb,\
+NervanaSystems/{neon,nervanagpu},\
+nicolargo/glances,\
 ninja-build/ninja,\
 numpy/numpy{,doc},\
 NVIDIA/{DIGITS,cnmem,libglvnd,nccl,nvidia-container-runtime,nvidia-docker},\
