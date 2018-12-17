@@ -5,7 +5,7 @@
 [ -e $STAGE/caffe2 ] && ( set -xe
     cd $SCRATCH
 
-    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" python/typing enum34 cython/cython numpy/numpy,v benjaminp/six yaml/pyyaml
+    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" python/typing enum34 numpy/numpy,v benjaminp/six yaml/pyyaml
     "$ROOT_DIR/pkgs/utils/pip_install_from_wheel.sh" future
 
     # ------------------------------------------------------------
@@ -15,18 +15,12 @@
     cd pytorch
 
     git remote add patch https://github.com/xkszltl/pytorch.git
-    git fetch patch
 
     # PATCHES="redef"
     # PATCHES="$PATCHES gpu_dll"
 
     for i in $PATCHES; do
-        git checkout "$i"
-        git rebase master
-    done
-    git checkout master
-    for i in $PATCHES; do
-        git pull --no-edit patch "$i"
+        git pull --no-edit --rebase patch "$i"
     done
 
     . "$ROOT_DIR/pkgs/utils/git/submodule.sh"

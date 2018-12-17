@@ -37,7 +37,20 @@ for i in pypa/setuptools,v pypa/{pip,wheel} $@; do
         echo "Cannot build $PKG from source. Install it from wheel instead."
         URL="$PKG"
     fi
-    for py in $(which python{,3}); do
+    for py in ,python{,3} rh-python36,python; do
+    (
+        set -e
+
+        py="$py,"
+
+        scl="$(cut -d',' -f1 <<< "$py")"
+        if [ "$scl" ]; then
+            set +e
+            . scl_source enable rh-python36
+            set -e
+        fi
+
+        py="$(which "$(cut -d',' -f2 <<< "$py")")"
         # Not exactly correct since the actual package name is defined by "setup.py".
         "$CACHE_VALID" || CACHED_LIST="$("$py" -m pip freeze --all | tr '[:upper:]' '[:lower:]')"
         CACHE_VALID=true
@@ -47,5 +60,6 @@ for i in pypa/setuptools,v pypa/{pip,wheel} $@; do
         fi
         sudo "$py" -m pip install -U "$URL" || sudo "$py" -m pip install -IU "$URL"
         CACHE_VALID=false
+    )
     done
 done

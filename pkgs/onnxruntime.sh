@@ -5,13 +5,29 @@
 [ -e $STAGE/onnxruntime ] && ( set -xe
     cd $SCRATCH
 
+    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" numpy/numpy,v
+
     # ------------------------------------------------------------
 
     . "$ROOT_DIR/pkgs/utils/git/version.sh" Microsoft/onnxruntime,master
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd onnxruntime
 
+    git remote add patch https://github.com/xkszltl/onnxruntime.git
+
+    PATCHES="cudart"
+
+    for i in $PATCHES; do
+        git pull --no-edit --rebase patch "$i"
+    done
+
     . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
+
+    pushd cmake/external
+    rm -rf googletest protobuf
+    cp -rf /usr/local/src/{gtest,protobuf} ./
+    mv gtest googletest
+    popd
 
     # ------------------------------------------------------------
 
@@ -29,7 +45,6 @@
         cd $_
 
         cmake                                               \
-            -DBUILD_SHARED_LIBS=ON                          \
             -DCMAKE_BUILD_TYPE=Release                      \
             -DCMAKE_C_COMPILER=gcc                          \
             -DCMAKE_CXX_COMPILER=g++                        \
@@ -42,6 +57,7 @@
             -DONNX_CUSTOM_PROTOC_EXECUTABLE="/usr/local/bin/protoc" \
             -Deigen_SOURCE_PATH="/usr/local/include/eigen3" \
             -Donnxruntime_BUILD_SHARED_LIB=ON               \
+            -Donnxruntime_CUDNN_HOME='/usr/local/cuda'      \
             -Donnxruntime_ENABLE_PYTHON=ON                  \
             -Donnxruntime_RUN_ONNX_TESTS=ON                 \
             -Donnxruntime_USE_CUDA=ON                       \
