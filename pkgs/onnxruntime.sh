@@ -15,7 +15,7 @@
 
     git remote add patch https://github.com/xkszltl/onnxruntime.git
 
-    PATCHES="cudart"
+    PATCHES="cudart ext"
 
     for i in $PATCHES; do
         git pull --no-edit --rebase patch "$i"
@@ -23,11 +23,19 @@
 
     . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
 
-    pushd cmake/external
-    rm -rf googletest protobuf
-    cp -rf /usr/local/src/{gtest,protobuf} ./
-    mv gtest googletest
-    popd
+    (
+        set -xe
+
+        cd cmake/external
+
+        rm -rf googletest protobuf
+        cp -rf /usr/local/src/{gtest,protobuf} ./
+        mv gtest googletest
+
+        for i in ./*.cmake; do
+            sed -i "s/$(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR_GITHUB")\(\/..*\/.*\.git\)/$(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR")\1/" "$i"
+        done
+    )
 
     # ------------------------------------------------------------
 
@@ -63,7 +71,7 @@
             -Donnxruntime_USE_CUDA=ON                       \
             -Donnxruntime_USE_JEMALLOC=OFF                  \
             -Donnxruntime_USE_LLVM=ON                       \
-            -Donnxruntime_USE_MKLDNN=OFF                    \
+            -Donnxruntime_USE_MKLDNN=ON                     \
             -Donnxruntime_USE_MKLML=OFF                     \
             -Donnxruntime_USE_OPENMP=ON                     \
             -Donnxruntime_USE_PREBUILT_PB=ON                \
@@ -72,7 +80,7 @@
             -G"Ninja"                                       \
             ../cmake
 
-        time cmake --build . --target
+        time cmake --build .
         time cmake --build . --target install
 
         if [ "_$GIT_MIRROR" == "_$GIT_MIRROR_CODINGCAFE" ]; then
