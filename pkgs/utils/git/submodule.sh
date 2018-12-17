@@ -21,8 +21,8 @@ while [ "$SUBMODULE_QUEUE" ]; do
                 sed -i "s/$(sed 's/\([\/\.]\)/\\\1/g' <<< "$i" | tr '=' '/')/" .gitmodules
             done
             for i in 01org ARM-software benjaminp catchorg dmlc eigenteam emil-e facebook{,incubator} google HowardHinnant intel Maratyszcza Microsoft NervanaSystems NVIDIA NVlabs onnx PeachPy protocolbuffers pybind pytorch shibatch USCiLab; do
-                sed -i "s/[^[:space:]]*:\/\/[^\/]*\(\/$i\/.*\)/$(sed 's/\//\\\//g' <<<$GIT_MIRROR )\1.git/" .gitmodules
-                sed -i "s/\($(sed 's/\//\\\//g' <<<$GIT_MIRROR )\/$i\/.*\.git\)\.git[[:space:]]*$/\1/" .gitmodules
+                sed -i "s/[^[:space:]]*:\/\/[^\/]*\(\/$i\/.*\)/$(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR")\1.git/" .gitmodules
+                sed -i "s/\($(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR")\/$i\/.*\.git\)\.git[[:space:]]*$/\1/" .gitmodules
             done
         fi
 
