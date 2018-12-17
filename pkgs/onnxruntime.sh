@@ -76,7 +76,7 @@
         time cmake --build . --target install
 
         if [ "_$GIT_MIRROR" == "_$GIT_MIRROR_CODINGCAFE" ]; then
-            axel -n10 -o 'models.zip' 'https://repo.codingcafe.org/microsoft/onnxruntime/20181210.zip'
+            curl -sSL 'https://repo.codingcafe.org/microsoft/onnxruntime/20181210.zip' > 'models.zip'
         else
             axel -n200 -o 'models.zip' 'https://onnxruntimetestdata.blob.core.windows.net/models/20181210.zip'
         fi
