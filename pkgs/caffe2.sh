@@ -66,8 +66,8 @@
             -DCMAKE_POLICY_DEFAULT_CMP0060=NEW              \
             -DCMAKE_VERBOSE_MAKEFILE=ON                     \
             -DCPUINFO_BUILD_TOOLS=ON                        \
-            -DCUDA_ARCH_NAME=All                            \
             -DINSTALL_TEST=ON                               \
+            -DTORCH_CUDA_ARCH_LIST="Pascal;Volta"           \
             -DUSE_MKLDNN=ON                                 \
             -DUSE_NATIVE_ARCH=ON                            \
             -DUSE_OBSERVERS=ON                              \
