@@ -2,7 +2,7 @@
 # Compile ONNXRuntime
 # ================================================================
 
-[ -e $STAGE/onnxruntime ] && ( set -xe
+[ -e $STAGE/ort ] && ( set -xe
     cd $SCRATCH
 
     "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" numpy/numpy,v
@@ -95,6 +95,12 @@
 
         time cmake --build . --target test || ! nvidia-smi
 
+        python ../setup.py bdist_wheel --use_cuda
+        pushd dist
+        ../../rename_manylinux.sh
+        sudo python -m pip install --force-reinstall ./*-manylinux1_*.whl
+        popd
+
         # Exclude MKL-DNN/ONNX files.
         pushd "$INSTALL_ROOT"
         rpm -ql codingcafe-mkl-dnn | sed -n 's/^\//\.\//p' | xargs rm -rf
@@ -109,5 +115,5 @@
     cd
     rm -rf $SCRATCH/onnxruntime
 )
-sudo rm -vf $STAGE/onnxruntime
+sudo rm -vf $STAGE/ort
 sync || true
