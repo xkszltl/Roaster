@@ -13,7 +13,7 @@ fi
 
 CACHE_VALID=false
 
-for i in pypa/setuptools,v pypa/{pip,wheel} $@; do
+for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future, $@; do
     PKG_PATH="$(cut -d, -f1 <<< "$i,")"
     if grep '^[[:alnum:]]' <<< "$PKG_PATH" > /dev/null; then
         if grep '/enum34' <<< "/$i" > /dev/null; then
@@ -29,7 +29,12 @@ for i in pypa/setuptools,v pypa/{pip,wheel} $@; do
         [ -d "$URL" ]
         USE_LOCAL_GIT=true
     fi
+
     PKG="$(basename "$PKG_PATH")"
+    if [ "_$PKG" = "_python-future" ]; then
+        PKG="future"
+    fi
+
     if grep '/setuptools' <<< "/$i" > /dev/null; then
         echo "Cannot build $PKG from source. Install it from wheel instead."
         URL="$PKG"

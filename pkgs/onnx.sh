@@ -31,7 +31,7 @@
 
     (
         set +xe
-        . scl_source enable devtoolset-7
+        . scl_source enable devtoolset-7 rh-python36
         set -xe
 
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
@@ -61,7 +61,6 @@
             -DONNX_BUILD_BENCHMARKS=ON              \
             -DONNX_BUILD_TESTS=OFF                  \
             -DONNX_GEN_PB_TYPE_STUBS=ON             \
-            -DPYBIND11_PYTHON_VERSION=2.7           \
             -G"Ninja"                               \
             ..
 

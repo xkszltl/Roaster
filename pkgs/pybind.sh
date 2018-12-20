@@ -20,7 +20,7 @@
 
     (
         set +xe
-        . scl_source enable devtoolset-7
+        . scl_source enable devtoolset-7 rh-python36
         set -xe
 
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
@@ -37,7 +37,6 @@
             -DCMAKE_C{,XX}_COMPILER_LAUNCHER=ccache \
             -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
-            -DPYBIND11_PYTHON_VERSION=2.7           \
             -G"Ninja"                               \
             ..
 

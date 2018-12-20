@@ -6,7 +6,6 @@
     cd $SCRATCH
 
     "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" python/typing enum34 numpy/numpy,v benjaminp/six yaml/pyyaml
-    "$ROOT_DIR/pkgs/utils/pip_install_from_wheel.sh" future
 
     # ------------------------------------------------------------
 
@@ -36,7 +35,7 @@
 
     (
         set +xe
-        . scl_source enable devtoolset-7
+        . scl_source enable devtoolset-7 rh-python36
         # . "/opt/intel/mkl/bin/mklvars.sh" intel64
         # . /opt/intel/tbb/bin/tbbvars.sh intel64
         set -xe
