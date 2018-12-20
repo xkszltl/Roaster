@@ -50,9 +50,11 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
         py="$py,"
 
         scl="$(cut -d',' -f1 <<< "$py")"
+
         if [ "$scl" ]; then
+            echo "Enable SCL \"$scl\"."
             set +e
-            . scl_source enable rh-python36
+            . scl_source enable $scl
             set -e
         fi
 
