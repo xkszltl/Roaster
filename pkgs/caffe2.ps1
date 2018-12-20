@@ -8,8 +8,6 @@ $ErrorActionPreference="Stop"
 # Import VC env is only necessary for non-VS (such as ninja) build.
 # ================================================================================
 
-Invoke-Expression $($(cmd /c "`"${Env:ProgramFiles(x86)}/Microsoft Visual Studio/2017/Enterprise/VC/Auxiliary/Build/vcvarsall.bat`" x64 & set") -Match '^.+=' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
-
 & "${Env:PYTHONHOME}/Scripts/pip.exe" install -U numpy | Out-Null
 
 pushd ${Env:TMP}
