@@ -13,7 +13,7 @@ fi
 
 CACHE_VALID=false
 
-for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future, $@; do
+for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; do
     PKG_PATH="$(cut -d, -f1 <<< "$i,")"
     if grep '^[[:alnum:]]' <<< "$PKG_PATH" > /dev/null; then
         if grep '/enum34' <<< "/$i" > /dev/null; then
