@@ -98,7 +98,7 @@
         python ../setup.py bdist_wheel --use_cuda
         pushd dist
         ../../rename_manylinux.sh
-        sudo python -m pip install --force-reinstall ./*-manylinux1_*.whl
+        sudo python -m pip install -IU ./*-manylinux1_*.whl
         popd
 
         # Exclude MKL-DNN/ONNX files.
