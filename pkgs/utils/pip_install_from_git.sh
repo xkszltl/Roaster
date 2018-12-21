@@ -45,18 +45,11 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
     fi
     for py in ,python{,3} rh-python36,python; do
     (
-        set -e
-
         py="$py,"
 
-        scl="$(cut -d',' -f1 <<< "$py")"
-
-        if [ "$scl" ]; then
-            echo "Enable SCL \"$scl\"."
-            set +e
-            . scl_source enable $scl
-            set -e
-        fi
+        set +e
+        . scl_source enable $(cut -d',' -f1 <<< "$py")
+        set -e
 
         py="$(which "$(cut -d',' -f2 <<< "$py")")"
         # Not exactly correct since the actual package name is defined by "setup.py".

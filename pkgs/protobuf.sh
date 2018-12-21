@@ -22,7 +22,7 @@
 
     (
         set +xe
-        . scl_source enable devtoolset-7 rh-python36
+        . scl_source enable devtoolset-7
         set -xe
 
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
@@ -58,29 +58,41 @@
             time cmake --build . --target check
             time cmake --build . --target install
         fi
-
-        (
-            set -e
-
-            # Fake makefile output for CMake build due to hard-coded path in "setup.py".
-            pushd ../src
-            ln -sf ../build .libs
-            popd
-
-            export CC="$TOOLCHAIN/gcc"
-            export CXX="$TOOLCHAIN/g++"
-            export LD="$TOOLCHAIN/ld"
-
-            export PROTOC="$(readlink -e ./protoc)"
-
-            pushd ../python
-            python ./setup.py bdist_wheel --cpp_implementation
-            sudo python -m pip install -IU dist/*.whl
-            popd
-        )
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
+
+    # Fake makefile output for CMake build due to hard-coded path in "setup.py".
+    if [ -d "build" ]; then
+        pushd src
+        ln -sf ../build .libs
+        popd
+    fi
+
+    for py in ,python{,3} rh-python36,python; do
+    (
+        py="$py,"
+
+        set +xe
+        . scl_source enable devtoolset-7 $(cut -d',' -f1 <<< "$py")
+        set -xe
+
+        py="$(which "$(cut -d',' -f2 <<< "$py")")"
+
+        . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
+        export CC="$TOOLCHAIN/gcc"
+        export CXX="$TOOLCHAIN/g++"
+        export LD="$TOOLCHAIN/ld"
+
+        export PROTOC="$(readlink -e ./protoc)"
+
+        pushd python
+        git clean -dfx .
+        "$py" ./setup.py bdist_wheel --cpp_implementation
+        sudo "$py" -m pip install -IU dist/*.whl
+        popd
+    )
+    done
 
     # ------------------------------------------------------------
 
