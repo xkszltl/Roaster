@@ -40,8 +40,9 @@
             -DBUILD_SHARED_LIBS=ON
             -DCMAKE_BUILD_TYPE=Release
             -DCMAKE_C_COMPILER=gcc
+            -DCMAKE_C_COMPILER_LAUNCHER=ccache
             -DCMAKE_CXX_COMPILER=g++
-            -DCMAKE_C{,XX}_COMPILER_LAUNCHER=ccache
+            -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
             -DONNX_GEN_PB_TYPE_STUBS=ON
         " ONNX_ML=1 "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" .
 
