@@ -43,7 +43,7 @@
             -DCMAKE_CXX_COMPILER=g++
             -DCMAKE_C{,XX}_COMPILER_LAUNCHER=ccache
             -DONNX_GEN_PB_TYPE_STUBS=ON
-        " "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" .
+        " ONNX_ML=1 "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" .
 
         mkdir -p build
         cd $_
@@ -61,6 +61,7 @@
             -DONNX_BUILD_BENCHMARKS=ON              \
             -DONNX_BUILD_TESTS=OFF                  \
             -DONNX_GEN_PB_TYPE_STUBS=ON             \
+            -DONNX_ML=ON                            \
             -G"Ninja"                               \
             ..
 
