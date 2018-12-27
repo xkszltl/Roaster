@@ -50,7 +50,7 @@ cmake --build . --config RelWithDebInfo --target run_tests -- -maxcpucount
 cmd /c rmdir /S /Q "${Env:ProgramFiles}/CURL"
 cmake --build . --config RelWithDebInfo --target install -- -maxcpucount
 Get-ChildItem "${Env:ProgramFiles}/CURL" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
-Get-ChildItem "${Env:ProgramFiles}/CURL" -Filter *.exe -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
+Get-ChildItem "${Env:ProgramFiles}/CURL" -Filter *.exe -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName -ErrorAction SilentlyContinue }
 
 popd
 popd
