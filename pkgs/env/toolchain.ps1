@@ -13,10 +13,11 @@ if (${Env:PYTHONHOME} -eq $null -or -not $(Test-Path ${Env:PYTHONHOME} -ErrorAct
     ${Env:PYTHONHOME} = which python | sed 's/\/c/c:/' | Get-Command | select -ExpandProperty Source | Split-Path -Parent
     if (${Env:PYTHONHOME} -eq $null -or -not $(Test-Path ${Env:PYTHONHOME}))
     {
+        $py_ver="3.7.2"
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-        $DownloadPath = "${Env:TEMP}/python-3.7.1-amd64.exe"
+        $DownloadPath = "${Env:TEMP}/python-${py_ver}-amd64.exe"
         Write-Host "Downloading Python..."
-        Invoke-WebRequest -Uri https://www.python.org/ftp/python/3.7.1/python-3.7.1-amd64.exe -OutFile $DownloadPath
+        Invoke-WebRequest -Uri https://www.python.org/ftp/python/${py_ver}python-${py_ver}-amd64.exe -OutFile $DownloadPath
         Write-Host "Installing Python..."
         & $DownloadPath /passive InstallAllUsers=1 PrependPath=1 | Out-Null
         if ($(Test-Path ${Env:ProgramFiles}/Python37/python.exe))
@@ -29,9 +30,13 @@ if (${Env:PYTHONHOME} -eq $null -or -not $(Test-Path ${Env:PYTHONHOME} -ErrorAct
         }
         else
         {
-             Write-Host Python Installation Failed. Please install manually: https://www.python.org/ftp/python/3.7.1/python-3.7.1-amd64.exe
+             Write-Host "Python Installation Failed. Please install manually: https://www.python.org/ftp/python/${py_ver}/python-${py_ver}-amd64.exe"
              Exit 1
         }
+    }
+    else
+    {
+        echo "Python found."
     }
     ${Env:PATH} = "${Env:PYTHONHOME};${Env:PATH}"
 }
@@ -40,6 +45,17 @@ if (${Env:VSCMD_VER} -eq $null)
 {
     Invoke-Expression $($(cmd /c "`"${Env:ProgramFiles(x86)}/Microsoft Visual Studio/2017/Enterprise/VC/Auxiliary/Build/vcvarsall.bat`" x64 & set") -Match '^.+=' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
 }
+
+# ================================================================================
+# Update pip
+# ================================================================================
+
+echo "Updating pip..."
+
+& "${Env:PYTHONHOME}/python.exe" -m pip install -U setuptools | Out-Null
+& "${Env:PYTHONHOME}/python.exe" -m pip install -U pip | Out-Null
+& "${Env:PYTHONHOME}/python.exe" -m pip install -U wheel | Out-Null
+& "${Env:PYTHONHOME}/python.exe" -m pip install -U future | Out-Null
 
 # ================================================================================
 # Summary
