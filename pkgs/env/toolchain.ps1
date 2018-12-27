@@ -1,45 +1,123 @@
 #Requires -RunAsAdministrator
 
-# ================================================================================
-# PYTHONHOME
-# ================================================================================
 # Paths longer than 260 characters may resolve to some obscure errors. Let's avoid this by setting the appropriate registery value accordingly
 Set-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled -Value 1 -Force
 
-${Env:PYTHONHOME} = "$(Get-Command -Name python -ErrorAction SilentlyContinue | select -ExpandProperty Source | Split-Path -Parent)"
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
-if (${Env:PYTHONHOME} -eq $null -or -not $(Test-Path ${Env:PYTHONHOME} -ErrorAction SilentlyContinue))
+# ================================================================================
+# Perl
+# ================================================================================
+
+${Env:PERL_HOME} = "$(Get-Command -Name perl -ErrorAction SilentlyContinue | select -ExpandProperty Source | Split-Path -Parent)"
+
+if (${Env:PERL_HOME} -eq $null -or -not $(Test-Path ${Env:PERL_HOME}/perl.exe -ErrorAction SilentlyContinue))
 {
-    ${Env:PYTHONHOME} = which python | sed 's/\/c/c:/' | Get-Command | select -ExpandProperty Source | Split-Path -Parent
-    if (${Env:PYTHONHOME} -eq $null -or -not $(Test-Path ${Env:PYTHONHOME}))
+    ${Env:PERL_HOME} = Join-Path C: Perl64 bin
+}
+
+if (${Env:PERL_HOME} -eq $null -or -not $(Test-Path ${Env:PERL_HOME}/perl.exe -ErrorAction SilentlyContinue))
+{
+    $perl_ver="5.26.1.2601-MSWin32-x64-404865"
+    $DownloadURL = "https://downloads.activestate.com/ActivePerl/releases/" + $(${perl_ver} -replace '-.*','') + "/ActivePerl-${perl_ver}.exe"
+    $DownloadPath = "${Env:TMP}/ActivePerl-${perl_ver}.exe"
+    Write-Host "Downloading ActivePerl..."
+    Invoke-WebRequest -Uri $DownloadURL -OutFile $DownloadPath
+    Write-Host "Installing ActivePerl..."
+    & $DownloadPath /passive InstallAllUsers=1 PrependPath=1 | Out-Null
+    if ($(Test-Path C:/Perl64/bin/perl.exe -ErrorAction SilentlyContinue))
     {
-        $py_ver="3.7.2"
-        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-        $DownloadPath = "${Env:TMP}/python-${py_ver}-amd64.exe"
-        Write-Host "Downloading Python..."
-        Invoke-WebRequest -Uri https://www.python.org/ftp/python/${py_ver}python-${py_ver}-amd64.exe -OutFile $DownloadPath
-        Write-Host "Installing Python..."
-        & $DownloadPath /passive InstallAllUsers=1 PrependPath=1 | Out-Null
-        if ($(Test-Path ${Env:ProgramFiles}/Python37/python.exe))
-        {
-            ${Env:PYTHONHOME} = Join-Path ${Env:ProgramFiles} Python37
-        }
-        elseif ($(Test-Path ${Env:ProgramFiles(x86)}/Python37/python.exe))
-        {
-            ${Env:PYTHONHOME} = Join-Path ${Env:ProgramFiles(x86)} Python37
-        }
-        else
-        {
-             Write-Host "Python Installation Failed. Please install manually: https://www.python.org/ftp/python/${py_ver}/python-${py_ver}-amd64.exe"
-             Exit 1
-        }
+        ${Env:PERL_HOME} = Join-Path C: Perl64 bin
+        Write-Host "ActivePerl installed successfully."
     }
     else
     {
-        echo "Python found."
+        Write-Host "ActivePerl installation Failed. Please install manually: ${DownloadURL}"
+        Exit 1
     }
-    ${Env:PATH} = "${Env:PYTHONHOME};${Env:PATH}"
 }
+
+${Env:PATH} = "${Env:PERL_HOME};${Env:PATH}"
+
+# ================================================================================
+# NASM
+# ================================================================================
+
+${Env:NASM_HOME} = "$(Get-Command -Name nasm -ErrorAction SilentlyContinue | select -ExpandProperty Source | Split-Path -Parent)"
+
+if (${Env:NASM_HOME} -eq $null -or -not $(Test-Path ${Env:NASM_HOME}/nasm.exe -ErrorAction SilentlyContinue))
+{
+    ${Env:NASM_HOME} = Join-Path ${Env:ProgramFiles} NASM
+}
+
+if (${Env:NASM_HOME} -eq $null -or -not $(Test-Path ${Env:NASM_HOME}/nasm.exe -ErrorAction SilentlyContinue))
+{
+    # NASM 2.14.0{1,2} are banned by Windows Defender.
+    $nasm_ver="2.14"
+    $DownloadURL = "https://www.nasm.us/pub/nasm/releasebuilds/${nasm_ver}/win64/nasm-${nasm_ver}-installer-x64.exe"
+    $DownloadPath = "${Env:TMP}/nasm-${nasm_ver}-installer-x64.exe"
+    Write-Host "Downloading NASM..."
+    Invoke-WebRequest -Uri $DownloadURL -OutFile $DownloadPath
+    Write-Host "Installing NASM..."
+    & $DownloadPath /S | Out-Null
+    if ($(Test-Path "${Env:ProgramFiles}/NASM/nasm.exe" -ErrorAction SilentlyContinue))
+    {
+        ${Env:NASM_HOME} = Join-Path ${Env:ProgramFiles} NASM
+        Write-Host "NASM installed successfully."
+    }
+    else
+    {
+        Write-Host "NASM installation Failed. Please install manually: ${DownloadURL}"
+        Exit 1
+    }
+}
+
+${Env:PATH} = "${Env:NASM_HOME};${Env:PATH}"
+
+# ================================================================================
+# Python
+# ================================================================================
+
+${Env:PYTHONHOME} = "$(Get-Command -Name python -ErrorAction SilentlyContinue | select -ExpandProperty Source | Split-Path -Parent)"
+
+if (${Env:PYTHONHOME} -eq $null -or -not $(Test-Path ${Env:PYTHONHOME}/python.exe -ErrorAction SilentlyContinue))
+{
+    ${Env:PYTHONHOME} = Join-Path ${Env:ProgramFiles} Python37
+}
+
+if (${Env:PYTHONHOME} -eq $null -or -not $(Test-Path ${Env:PYTHONHOME}/python.exe -ErrorAction SilentlyContinue))
+{
+    $py_ver="3.7.2"
+    $DownloadURL = "https://www.python.org/ftp/python/${py_ver}python-${py_ver}-amd64.exe"
+    $DownloadPath = "${Env:TMP}/python-${py_ver}-amd64.exe"
+    Write-Host "Downloading Python..."
+    Invoke-WebRequest -Uri $DownloadURL -OutFile $DownloadPath
+    Write-Host "Installing Python..."
+    & $DownloadPath /passive InstallAllUsers=1 PrependPath=1 | Out-Null
+    if ($(Test-Path ${Env:ProgramFiles}/Python37/python.exe -ErrorAction SilentlyContinue))
+    {
+        ${Env:PYTHONHOME} = Join-Path ${Env:ProgramFiles} Python37
+        Write-Host "Python installed successfully."
+    }
+    else
+    {
+        Write-Host "Python installation Failed. Please install manually: ${DownloadURL}"
+        Exit 1
+    }
+}
+
+${Env:PATH} = "${Env:PYTHONHOME};${Env:PATH}"
+
+# ================================================================================
+# Update pip
+# ================================================================================
+
+Write-Host "Updating pip..."
+
+& "${Env:PYTHONHOME}/python.exe" -m pip install -U setuptools | Out-Null
+& "${Env:PYTHONHOME}/python.exe" -m pip install -U pip | Out-Null
+& "${Env:PYTHONHOME}/python.exe" -m pip install -U wheel | Out-Null
+& "${Env:PYTHONHOME}/python.exe" -m pip install -U future | Out-Null
 
 # ================================================================================
 # Import VC env is only necessary for non-VS (such as ninja) build.
@@ -51,23 +129,13 @@ if (${Env:VSCMD_VER} -eq $null)
 }
 
 # ================================================================================
-# Update pip
-# ================================================================================
-
-echo "Updating pip..."
-
-& "${Env:PYTHONHOME}/python.exe" -m pip install -U setuptools | Out-Null
-& "${Env:PYTHONHOME}/python.exe" -m pip install -U pip | Out-Null
-& "${Env:PYTHONHOME}/python.exe" -m pip install -U wheel | Out-Null
-& "${Env:PYTHONHOME}/python.exe" -m pip install -U future | Out-Null
-
-# ================================================================================
 # Summary
 # ================================================================================
 
 echo "================================================================================"
 echo "| Detected Toolchains"
 echo "--------------------------------------------------------------------------------"
+echo "| Perl Home:              ${Env:PERL_HOME}"
 echo "| Python Home:            ${Env:PYTHONHOME}"
 echo "| Visual Studio Toolset:  ${Env:VCToolsInstallDir}"
 echo "================================================================================"

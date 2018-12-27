@@ -1,15 +1,10 @@
 #Requires -RunAsAdministrator
 
 $ErrorActionPreference="Stop"
-& "$(Split-Path -Path $MyInvocation.MyCommand.Path -Parent)/env/mirror.ps1"
+& "$(Split-Path -Path $MyInvocation.MyCommand.Path -Parent)/env/mirror.ps1" | Out-Null
+& "$(Split-Path -Path $MyInvocation.MyCommand.Path -Parent)/env/toolchain.ps1"
 
-Invoke-Expression $($(cmd /c "`"${Env:ProgramFiles(x86)}/Microsoft Visual Studio/2017/Enterprise/VC/Auxiliary/Build/vcvarsall.bat`" x64 & set") -Match '^.+=' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
 ${Env:Path}="${Env:ProgramFiles}/NASM;${Env:Path}"
-
-# TODO: Install NASM and ActivePerl automatically.
-#       Current latest release (please install them manually now):
-#           https://www.nasm.us/pub/nasm/releasebuilds/2.13.03/win64/nasm-2.13.03-installer-x64.exe
-#           https://downloads.activestate.com/ActivePerl/releases/5.26.1.2601/ActivePerl-5.26.1.2601-MSWin32-x64-404865.exe
 
 pushd ${Env:TMP}
 $repo="${Env:GIT_MIRROR}/openssl/openssl.git"
