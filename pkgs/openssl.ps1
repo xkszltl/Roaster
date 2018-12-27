@@ -26,7 +26,7 @@ ${Env:__CNF_CFLAGS}="${Env:__CNF_CFLAGS} /GL /MP /guard:cf"
 ${Env:__CNF_LDFLAGS}="${Env:__CNF_LDFLAGS} /INCREMENTAL:NO /LTCG:incremental /guard:cf"
 perl Configure shared zlib VC-WIN64A --release --with-zlib-include="C:/PROGRA~1/zlib/include" --with-zlib-lib="C:/PROGRA~1/zlib/lib/zlib.lib"
 nmake
-nmake test
+# nmake test
 
 rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${Env:ProgramFiles}/OpenSSL"
 nmake install
