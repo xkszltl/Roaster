@@ -2,11 +2,7 @@
 
 $ErrorActionPreference="Stop"
 & "$(Split-Path -Path $MyInvocation.MyCommand.Path -Parent)/env/mirror.ps1" | Out-Null
-& "$(Split-Path -Path $MyInvocation.MyCommand.Path -Parent)/env/toolchain.ps1" | Out-Null
-
-# ================================================================================
-# Import VC env is only necessary for non-VS (such as ninja) build.
-# ================================================================================
+& "$(Split-Path -Path $MyInvocation.MyCommand.Path -Parent)/env/toolchain.ps1"
 
 & "${Env:PYTHONHOME}/python.exe" -m pip install -U numpy | Out-Null
 
@@ -88,11 +84,17 @@ $protobuf_dll=""
 $dep_dll="${protobuf_dll}"
 
 cmake                                                                                       `
+    -A x64                                                                                  `
     -DBUILD_SHARED_LIBS=OFF                                                                 `
-    -DCMAKE_C_FLAGS="/MP ${dep_dll}"                                                        `
-    -DCMAKE_CXX_FLAGS="/EHsc /MP ${dep_dll} ${gtest_silent_warning}"                        `
+    -DCMAKE_C_FLAGS="/GL /MP ${dep_dll}"                                                    `
+    -DCMAKE_CXX_FLAGS="/EHsc /GL /MP ${dep_dll} ${gtest_silent_warning}"                    `
     -DCMAKE_CUDA_SEPARABLE_COMPILATION=ON                                                   `
-    -DCMAKE_GENERATOR_PLATFORM=x64                                                          `
+    -DCMAKE_EXE_LINKER_FLAGS="/LTCG:incremental"                                            `
+    -DCMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO="/INCREMENTAL:NO"                               `
+    -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/onnxruntime"                                `
+    -DCMAKE_SHARED_LINKER_FLAGS="/LTCG:incremental"                                         `
+    -DCMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO="/INCREMENTAL:NO"                            `
+    -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                                         `
     -DONNX_CUSTOM_PROTOC_EXECUTABLE="${Env:ProgramFiles}/protobuf/bin/protoc.exe"           `
     -Deigen_SOURCE_PATH="${Env:ProgramFiles}/Eigen3/include/eigen3"                         `
     -Donnxruntime_BUILD_SHARED_LIB=ON                                                       `
@@ -113,6 +115,16 @@ cmake                                                                           
     ../cmake
 
 cmake --build . --config RelWithDebInfo -- -maxcpucount
+
+$model_path = "${Env:TMP}/onnxruntime_models.zip"
+rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${model_path}.downloading"
+if (-not $(Test-Path $model_path))
+{
+    Invoke-WebRequest -Uri "https://onnxruntimetestdata.blob.core.windows.net/models/20181210.zip" -OutFile "${model_path}.downloading"
+    mv -Force "${model_path}.downloading" "${model_path}"
+}
+unzip -o ${model_path} -d ../models 
+
 cmake --build . --config RelWithDebInfo --target run_tests -- -maxcpucount
 
 cmd /c rmdir /S /Q "${Env:ProgramFiles}/onnxruntime"

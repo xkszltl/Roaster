@@ -4,10 +4,6 @@ $ErrorActionPreference="Stop"
 & "$(Split-Path -Path $MyInvocation.MyCommand.Path -Parent)/env/mirror.ps1" | Out-Null
 & "$(Split-Path -Path $MyInvocation.MyCommand.Path -Parent)/env/toolchain.ps1" | Out-Null
 
-# ================================================================================
-# Import VC env is only necessary for non-VS (such as ninja) build.
-# ================================================================================
-
 & "${Env:PYTHONHOME}/python.exe" -m pip install -U numpy | Out-Null
 
 pushd ${Env:TMP}
@@ -46,6 +42,7 @@ $protobuf_dll="/DPROTOBUF_USE_DLLS"
 $dep_dll="${gflags_dll} ${protobuf_dll}"
 
 cmake                                                                           `
+    -A x64                                                                      `
     -DBLAS=MKL                                                                  `
     -DBUILD_CUSTOM_PROTOBUF=OFF                                                 `
     -DBUILD_PYTHON=OFF                                                          `
@@ -55,6 +52,7 @@ cmake                                                                           
     -DCMAKE_C_FLAGS="/MP ${dep_dll}"                                            `
     -DCMAKE_CXX_FLAGS="/EHsc /MP ${dep_dll} ${gtest_silent_warning}"            `
     -DCMAKE_EXE_LINKER_FLAGS="/LTCG"                                            `
+    -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/Caffe2"                         `
     -DCMAKE_SHARED_LINKER_FLAGS="/LTCG"                                         `
     -DCMAKE_STATIC_LINKER_FLAGS="/LTCG"                                         `
     -DCMAKE_VERBOSE_MAKEFILE=ON                                                 `
@@ -85,7 +83,7 @@ cmake                                                                           
     -Dgtest_force_shared_crt=ON                                                 `
     -Dprotobuf_BUILD_SHARED_LIBS=ON                                             `
     -Dpybind11_INCLUDE_DIR="${Env:ProgramFiles}/pybind11/include"               `
-    -G"Visual Studio 15 2017 Win64"                                             `
+    -G"Visual Studio 15 2017"                                                   `
     -T"host=x64"                                                                `
     ..
 

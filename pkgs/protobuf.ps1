@@ -1,7 +1,7 @@
 #Requires -RunAsAdministrator
 
 $ErrorActionPreference="Stop"
-& "$(Split-Path -Path $MyInvocation.MyCommand.Path -Parent)/env/mirror.ps1"
+& "$(Split-Path -Path $MyInvocation.MyCommand.Path -Parent)/env/mirror.ps1" | Out-Null
 
 pushd ${Env:TMP}
 $repo="${Env:GIT_MIRROR}/google/protobuf.git"
@@ -26,13 +26,14 @@ pushd build-win
 # - Avoid DLLs due symbol export issues with inline functions.
 #   Keep happening and no good fix/test coverage from Google so far.
 cmake                                                               `
+    -A x64                                                          `
     -DBUILD_SHARED_LIBS=ON                                          `
     -DCMAKE_BUILD_TYPE=RelWithDebInfo                               `
     -DCMAKE_C_FLAGS="/GL /MP"                                       `
     -DCMAKE_CXX_FLAGS="/EHsc /GL /MP"                               `
     -DCMAKE_EXE_LINKER_FLAGS="/LTCG:incremental"                    `
     -DCMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO="/INCREMENTAL:NO"       `
-    -DCMAKE_GENERATOR_PLATFORM=x64                                  `
+    -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/protobuf"           `
     -DCMAKE_SHARED_LINKER_FLAGS="/LTCG:incremental"                 `
     -DCMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO="/INCREMENTAL:NO"    `
     -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                 `
@@ -40,6 +41,7 @@ cmake                                                               `
     -Dprotobuf_BUILD_SHARED_LIBS=ON                                 `
     -Dprotobuf_INSTALL_EXAMPLES=ON                                  `
     -G"Visual Studio 15 2017"                                       `
+    -T"host=x64"                                                    `
     ../cmake
 
 # Multi-process build is not ready.

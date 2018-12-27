@@ -136,6 +136,7 @@ echo "==========================================================================
 echo "| Detected Toolchains"
 echo "--------------------------------------------------------------------------------"
 echo "| Perl Home:              ${Env:PERL_HOME}"
+echo "| NASM Home:              ${Env:NASM_HOME}"
 echo "| Python Home:            ${Env:PYTHONHOME}"
 echo "| Visual Studio Toolset:  ${Env:VCToolsInstallDir}"
 echo "================================================================================"
