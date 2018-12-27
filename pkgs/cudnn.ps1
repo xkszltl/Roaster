@@ -33,11 +33,11 @@ Write-Host -NoNewline "Scanning for latest release of cuDNN "
 
 for ($i=7; ($i -ge 7) -and (-not (Test-Path cudnn.zip)); $i--)
 {
-    for ($j=5; ($j -ge 4) -and (-not (Test-Path cudnn.zip)); $j--)
+    for ($j=4; ($j -ge 4) -and (-not (Test-Path cudnn.zip)); $j--)
     {
-        for ($k=9; ($k -ge 0) -and (-not (Test-Path cudnn.zip)); $k--)
+        for ($k=2; ($k -ge 0) -and (-not (Test-Path cudnn.zip)); $k--)
         {
-            for ($l=9; ($l -ge 0) -and (-not (Test-Path cudnn.zip)); $l--)
+            for ($l=24; ($l -ge 0) -and (-not (Test-Path cudnn.zip)); $l--)
             {
                 $ErrorActionPreference="SlightlyContinue"
                 try
