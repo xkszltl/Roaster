@@ -4,7 +4,7 @@ $ErrorActionPreference="Stop"
 & "$(Split-Path -Path $MyInvocation.MyCommand.Path -Parent)/env/mirror.ps1"
 & "$(Split-Path -Path $MyInvocation.MyCommand.Path -Parent)/env/toolchain.ps1"
 
-& "${Env:PYTHONHOME}/Scripts/pip.exe" install -U pytest
+& "${Env:PYTHONHOME}/python.exe" -m pip install -U pytest
 
 pushd ${Env:TMP}
 $repo="${Env:GIT_MIRROR}/pybind/pybind11.git"

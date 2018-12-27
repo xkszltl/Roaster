@@ -21,16 +21,19 @@ pushd "$root"
 mkdir build
 pushd build
 
-$Env:GFLAGS_INCLUDE="${Env:ProgramFiles}/GFlags/include/"
-$Env:GFLAGS_LIB_DEBUG="${Env:ProgramFiles}/GFlags/lib/gflags.lib"
-$Env:GFLAGS_LIB_RELEASE="${Env:ProgramFiles}/GFlags/lib/gflags.lib"
-$Env:SNAPPY_INCLUDE="${Env:ProgramFiles}/Snappy/include/"
-$Env:SNAPPY_LIB_DEBUG="${Env:ProgramFiles}/Snappy/lib/snappy.lib"
-$Env:SNAPPY_LIB_RELEASE="${Env:ProgramFiles}/Snappy/lib/snappy.lib"
+${Env:GFLAGS_INCLUDE} = "${Env:ProgramFiles}/GFlags/include/"
+${Env:GFLAGS_LIB_DEBUG} = "${Env:ProgramFiles}/GFlags/lib/gflags.lib"
+${Env:GFLAGS_LIB_RELEASE} = "${Env:ProgramFiles}/GFlags/lib/gflags.lib"
+${Env:SNAPPY_INCLUDE} = "${Env:ProgramFiles}/Snappy/include/"
+${Env:SNAPPY_LIB_DEBUG} = "${Env:ProgramFiles}/Snappy/lib/snappy.lib"
+${Env:SNAPPY_LIB_RELEASE} = "${Env:ProgramFiles}/Snappy/lib/snappy.lib"
 cmake                                   `
     -DCMAKE_BUILD_TYPE=RelWithDebInfo   `
     -DCMAKE_C_FLAGS="/MP"               `
-    -DCMAKE_CXX_FLAGS="/MP"             `
+    -DCMAKE_CXX_FLAGS="/EHsc /MP"       `
+    -DCMAKE_EXE_LINKER_FLAGS="/LTCG"    `
+    -DCMAKE_SHARED_LINKER_FLAGS="/LTCG" `
+    -DCMAKE_STATIC_LINKER_FLAGS="/LTCG" `
     -DFAIL_ON_WARNINGS=OFF              `
     -DROCKSDB_INSTALL_ON_WINDOWS=ON     `
     -DWITH_GFLAGS=ON                    `
@@ -42,7 +45,7 @@ cmake                                   `
 
 cmake --build . --config RelWithDebInfo -- -maxcpucount
 
-# cmake --build . --config RelWithDebInfo --target run_tests -- -maxcpucount
+cmake --build . --config RelWithDebInfo --target run_tests -- -maxcpucount
 
 rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${Env:ProgramFiles}/rocksdb"
 cmake --build . --config RelWithDebInfo --target install -- -maxcpucount

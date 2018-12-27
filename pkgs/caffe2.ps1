@@ -8,7 +8,7 @@ $ErrorActionPreference="Stop"
 # Import VC env is only necessary for non-VS (such as ninja) build.
 # ================================================================================
 
-& "${Env:PYTHONHOME}/Scripts/pip.exe" install -U numpy | Out-Null
+& "${Env:PYTHONHOME}/python.exe" -m pip install -U numpy | Out-Null
 
 pushd ${Env:TMP}
 $repo="${Env:GIT_MIRROR}/pytorch/pytorch.git"

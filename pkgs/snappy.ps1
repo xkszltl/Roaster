@@ -25,7 +25,10 @@ cmake                                   `
     -DBUILD_SHARED_LIBS=ON              `
     -DCMAKE_BUILD_TYPE=RelWithDebInfo   `
     -DCMAKE_C_FLAGS="/MP"               `
-    -DCMAKE_CXX_FLAGS="/MP"             `
+    -DCMAKE_CXX_FLAGS="/EHsc /MP"       `
+    -DCMAKE_EXE_LINKER_FLAGS="/LTCG"    `
+    -DCMAKE_SHARED_LINKER_FLAGS="/LTCG" `
+    -DCMAKE_STATIC_LINKER_FLAGS="/LTCG" `
     -G"Visual Studio 15 2017 Win64"     `
     ..
 
