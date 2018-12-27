@@ -27,13 +27,13 @@ cmake                                                               `
     -DAMD64=OFF                                                     `
     -DCMAKE_BUILD_TYPE=RelWithDebInfo                               `
     -DCMAKE_C_FLAGS="/GL /MP /guard:cf"                             `
-    -DCMAKE_CXX_FLAGS="/EHsc /GL /MP /guard:cf"                     `
     -DCMAKE_EXE_LINKER_FLAGS="/LTCG:incremental /guard:cf"          `
     -DCMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO="/INCREMENTAL:NO"       `
+    -DCMAKE_GENERATOR_PLATFORM=x64                                  `
     -DCMAKE_SHARED_LINKER_FLAGS="/LTCG:incremental /guard:cf"       `
     -DCMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO="/INCREMENTAL:NO"    `
     -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                 `
-    -G"Visual Studio 15 2017 Win64"                                 `
+    -G"Visual Studio 15 2017"                                       `
     -T"host=x64"                                                    `
     ..
 
@@ -42,7 +42,7 @@ cmake --build . --config RelWithDebInfo --target run_tests -- -m
 
 rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${Env:ProgramFiles}/zlib"
 cmake --build . --config RelWithDebInfo --target install -- -m
-Get-ChildItem "${Env:ProgramFiles}/zlib" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
+Get-ChildItem "${Env:ProgramFiles(x86)}/zlib" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 
 popd
 popd
