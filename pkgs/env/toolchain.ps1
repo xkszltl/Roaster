@@ -15,7 +15,7 @@ if (${Env:PYTHONHOME} -eq $null -or -not $(Test-Path ${Env:PYTHONHOME} -ErrorAct
     {
         $py_ver="3.7.2"
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-        $DownloadPath = "${Env:TEMP}/python-${py_ver}-amd64.exe"
+        $DownloadPath = "${Env:TMP}/python-${py_ver}-amd64.exe"
         Write-Host "Downloading Python..."
         Invoke-WebRequest -Uri https://www.python.org/ftp/python/${py_ver}python-${py_ver}-amd64.exe -OutFile $DownloadPath
         Write-Host "Installing Python..."
@@ -40,6 +40,10 @@ if (${Env:PYTHONHOME} -eq $null -or -not $(Test-Path ${Env:PYTHONHOME} -ErrorAct
     }
     ${Env:PATH} = "${Env:PYTHONHOME};${Env:PATH}"
 }
+
+# ================================================================================
+# Import VC env is only necessary for non-VS (such as ninja) build.
+# ================================================================================
 
 if (${Env:VSCMD_VER} -eq $null)
 {
