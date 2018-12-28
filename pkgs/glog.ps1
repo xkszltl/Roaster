@@ -23,15 +23,20 @@ pushd build-win
 
 # - Please ignore warning C4273 since it is by design and safe.
 #   dllexport in ".cc" will precedence over dllimport in ".h".
-cmake                                   `
-    -DBUILD_SHARED_LIBS=ON 				`
-    -DCMAKE_BUILD_TYPE=RelWithDebInfo   `
-    -DCMAKE_C_FLAGS="/MP"               `
-    -DCMAKE_CXX_FLAGS="/EHsc /MP"       `
-    -DCMAKE_EXE_LINKER_FLAGS="/LTCG"    `
-    -DCMAKE_SHARED_LINKER_FLAGS="/LTCG" `
-    -DCMAKE_STATIC_LINKER_FLAGS="/LTCG" `
-    -G"Visual Studio 15 2017 Win64"     `
+cmake                                                               `
+    -A x64                                                          `
+    -DBUILD_SHARED_LIBS=ON 				                            `
+    -DCMAKE_BUILD_TYPE=RelWithDebInfo                               `
+    -DCMAKE_C_FLAGS="/GL /MP"                                       `
+    -DCMAKE_CXX_FLAGS="/EHsc /GL /MP"                               `
+    -DCMAKE_EXE_LINKER_FLAGS="/LTCG:incremental"                    `
+    -DCMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO="/INCREMENTAL:NO"       `
+    -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/google-glog"        `
+    -DCMAKE_SHARED_LINKER_FLAGS="/LTCG:incremental"                 `
+    -DCMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO="/INCREMENTAL:NO"    `
+    -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                 `
+    -G"Visual Studio 15 2017"                                       `
+    -T"host=x64"                                                    `
     ..
 
 cmake --build . --config RelWithDebInfo -- -maxcpucount
