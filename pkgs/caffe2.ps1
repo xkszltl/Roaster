@@ -4,7 +4,7 @@ $ErrorActionPreference="Stop"
 & "$(Split-Path -Path $MyInvocation.MyCommand.Path -Parent)/env/mirror.ps1" | Out-Null
 & "$(Split-Path -Path $MyInvocation.MyCommand.Path -Parent)/env/toolchain.ps1" | Out-Null
 
-& "${Env:PYTHONHOME}/python.exe" -m pip install -U numpy | Out-Null
+& "${Env:PYTHONHOME}/python.exe" -m pip install -U numpy pyyaml | Out-Null
 
 pushd ${Env:TMP}
 $repo="${Env:GIT_MIRROR}/pytorch/pytorch.git"
@@ -22,8 +22,8 @@ git clone --recursive -j100 "$repo"
 pushd "$root"
 git remote add patch https://github.com/xkszltl/pytorch.git
 git fetch patch
-git pull patch redef
-git pull patch inputsize
+# git pull patch redef
+# git pull patch inputsize
 #TODO: cherry-pick patch/gpu_dll
 git checkout -- *
 
@@ -58,7 +58,6 @@ cmake                                                                           
     -DCMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO="/INCREMENTAL:NO"                `
     -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                             `
     -DCMAKE_VERBOSE_MAKEFILE=ON                                                 `
-    -DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=ON                                       `
     -DCPUINFO_BUILD_TOOLS=ON                                                    `
     -DCUDA_ARCH_NAME="All"                                                      `
     -DCUDA_NVCC_FLAGS='--expt-relaxed-constexpr'                                `
@@ -103,7 +102,7 @@ if (-Not $?)
 cmake --build . --config RelWithDebInfo --target run_tests -- -maxcpucount
 if (-Not $?)
 {
-    echo "Check failed but we temporarily bypass it."
+    echo "Check failed but we temporarily bypass it. Some tests are expected to fail on Windows."
 }
 $ErrorActionPreference="Stop"
 
