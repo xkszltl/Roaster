@@ -25,6 +25,7 @@ mkdir "$root"
 pushd "$root"
 
 $CUDA_HOME="$(Split-Path (Get-Command nvcc).Source -Parent)/.."
+Write-Host "Found CUDA ${CUDA_HOME}."
 $cudnn_url="https://developer.download.nvidia.com/compute/redist/cudnn"
 
 # Update the URL as new version releases.
@@ -39,20 +40,16 @@ for ($i=7; ($i -ge 7) -and (-not (Test-Path cudnn.zip)); $i--)
         {
             for ($l=24; ($l -ge 0) -and (-not (Test-Path cudnn.zip)); $l--)
             {
+                $cudnn_name="cudnn-$((nvcc --version) -match ' release ([0-9\.]*)' -replace '.* release ([0-9\.]*).*','${1}')-windows10-x64-v${i}.${j}.${k}.${l}.zip"
+                Write-Host -NoNewline '.'
                 $ErrorActionPreference="SlightlyContinue"
-                try
+                & "${Env:ProgramFiles}/CURL/bin/curl.exe" -fksSIL "${cudnn_url}/v${i}.${j}.${k}/${cudnn_name}" | Out-Null
+                if ($?)
                 {
-                    $cudnn_name="cudnn-$((nvcc --version) -match ' release ([0-9\.]*)' -replace '.* release ([0-9\.]*).*','${1}')-windows10-x64-v${i}.${j}.${k}.${l}.zip"
-                    Invoke-WebRequest "${cudnn_url}/v${i}.${j}.${k}/${cudnn_name}" -OutFile "cudnn.zip"
-                    if ($?)
-                    {
-                        echo ''
-                        echo "Found cuDNN v${i}.${j}.${k}.${l}"
-                    }
-                }
-                catch
-                {
-                    Write-Host -NoNewline '.'
+                    $ErrorActionPreference="Stop"
+                    echo ''
+                    echo "Found cuDNN v${i}.${j}.${k}.${l}"
+                    & "${Env:ProgramFiles}/CURL/bin/curl.exe" -fkSL "${cudnn_url}/v${i}.${j}.${k}/${cudnn_name}" -o "cudnn.zip"
                 }
                 $ErrorActionPreference="Stop"
             }
@@ -72,7 +69,8 @@ Expand-Archive "cudnn.zip"
 Move-Item -Force -Destination "${CUDA_HOME}/bin/" "cudnn/cuda/bin/*"
 Move-Item -Force -Destination "${CUDA_HOME}/include/" "cudnn/cuda/include/*"
 Move-Item -Force -Destination "${CUDA_HOME}/lib/x64/" "cudnn/cuda/lib/x64/*"
-Move-Item -Force -Destination "${CUDA_HOME}/" "*.txt"
+Move-Item -Force -Destination "${CUDA_HOME}/" "cudnn/cuda/*.txt"
 
 popd
 rm -Force -Recurse "$root"
+popd

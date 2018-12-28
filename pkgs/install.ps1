@@ -14,14 +14,14 @@ cd $prefix
 Write-Host 'Invoking cuda.ps1'
 ./cuda.ps1
 cd $prefix
+Write-Host 'Invoking cudnn.ps1'
+./cudnn.ps1
+cd $prefix
 Write-Host 'Invoking intel_download.ps1'
 ./intel_download.ps1
 cd $prefix
 Write-Host 'Invoking intel_link.ps1'
 ./intel_link.ps1
-cd $prefix
-Write-Host 'Invoking cudnn.ps1'
-./cudnn.ps1
 cd $prefix
 Write-Host 'Invoking boost.ps1'
 ./boost.ps1
@@ -31,6 +31,9 @@ Write-Host 'Invoking jsoncpp.ps1'
 cd $prefix
 Write-Host 'Invoking eigen.ps1'
 ./eigen.ps1
+cd $prefix
+Write-Host 'Invoking pybind11.ps1'
+./pybind11.ps1
 cd $prefix
 Write-Host 'Invoking mkl-dnn.ps1'
 ./mkl-dnn.ps1
@@ -46,9 +49,6 @@ Write-Host 'Invoking gtest.ps1'
 cd $prefix
 Write-Host 'Invoking snappy.ps1'
 ./snappy.ps1
-cd $prefix
-Write-Host 'Invoking pybind11.ps1'
-./pybind11.ps1
 cd $prefix
 Write-Host 'Invoking protobuf.ps1'
 ./protobuf.ps1

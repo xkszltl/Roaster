@@ -39,6 +39,7 @@ cmake                                                               `
     -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                 `
     -DCMAKE_USE_WINSSL=ON                                           `
     -DCMAKE_USE_OPENSSL=ON                                          `
+    -DCURL_CA_FALLBACK=ON                                           `
     -DENABLE_ARES=OFF                                               `
     -G"Visual Studio 15 2017"                                       `
     -T"host=x64"                                                    `
@@ -49,8 +50,15 @@ cmake --build . --config RelWithDebInfo --target run_tests -- -maxcpucount
 
 cmd /c rmdir /S /Q "${Env:ProgramFiles}/CURL"
 cmake --build . --config RelWithDebInfo --target install -- -maxcpucount
-Get-ChildItem "${Env:ProgramFiles}/CURL" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
-Get-ChildItem "${Env:ProgramFiles}/CURL" -Filter *.exe -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName -ErrorAction SilentlyContinue }
+Get-ChildItem "${Env:ProgramFiles}/CURL" -Filter '*.dll' -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
+try
+{
+    Get-ChildItem "${Env:ProgramFiles}/CURL" -Filter *.exe -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
+}
+catch
+{
+    Write-Host "Already have curl executable installed. Skipped."
+}
 
 popd
 popd
