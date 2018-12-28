@@ -38,11 +38,11 @@ cmake                                                               `
     -T"host=x64"                                                    `
     ..
 
-cmake --build . --config RelWithDebInfo -- -m
-cmake --build . --config RelWithDebInfo --target run_tests -- -m
+cmake --build . --config RelWithDebInfo -- -maxcpucount
+cmake --build . --config RelWithDebInfo --target run_tests -- -maxcpucount
 
 rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${Env:ProgramFiles}/zlib"
-cmake --build . --config RelWithDebInfo --target install -- -m
+cmake --build . --config RelWithDebInfo --target install -- -maxcpucount
 Get-ChildItem "${Env:ProgramFiles}/zlib" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 
 popd

@@ -24,11 +24,18 @@ pushd "$root"
 mkdir build
 pushd build
 
-cmake                                   `
-    -DCMAKE_BUILD_TYPE=RelWithDebInfo   `
-    -DCMAKE_C_FLAGS="/MP"               `
-    -DCMAKE_CXX_FLAGS="/EHsc /MP"       `
-    -G"Visual Studio 15 2017 Win64"     `
+cmake                                                               `
+    -A x64                                                          `
+    -DCMAKE_BUILD_TYPE=RelWithDebInfo                               `
+    -DCMAKE_CXX_FLAGS="/EHsc /GL /MP"                               `
+    -DCMAKE_EXE_LINKER_FLAGS="/LTCG:incremental"                    `
+    -DCMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO="/INCREMENTAL:NO"       `
+    -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/pybind11"           `
+    -DCMAKE_SHARED_LINKER_FLAGS="/LTCG:incremental"                 `
+    -DCMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO="/INCREMENTAL:NO"    `
+    -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                 `
+    -G"Visual Studio 15 2017"                                       `
+    -T"host=x64"                                                    `
     ..
 
 cmake --build . --config RelWithDebInfo -- -maxcpucount
@@ -43,6 +50,7 @@ $ErrorActionPreference="Stop"
 
 rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${Env:ProgramFiles}/pybind11"
 cmake --build . --config RelWithDebInfo --target install -- -maxcpucount
+Get-ChildItem "${Env:ProgramFiles}/pybind11" -Filter '*.dll' -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 
 popd
 popd
