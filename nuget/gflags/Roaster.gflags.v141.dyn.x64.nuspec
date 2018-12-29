@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Roaster.gflags.v141.dyn.x64</id>
+    <version>$version$</version>
+    <title>Roaster.gflags.v141.dyn.x64</title>
+    <authors>Google Inc.</authors>
+    <owners>Tongliang Liao</owners>
+    <licenseUrl>https://github.com/gflags/gflags/blob/master/COPYING.txt</licenseUrl>
+    <projectUrl>https://github.com/gflags/gflags</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>The gflags package contains a C++ library that implements commandline flags processing.</summary>
+    <description>The gflags package contains a C++ library that implements commandline flags processing. It includes built-in support for standard types such as string and the ability to define flags in the source file in which they are used. Online documentation available at: https://gflags.github.io/gflags/</description>
+    <releaseNotes>https://github.com/gflags/gflags/blob/master/ChangeLog.txt</releaseNotes>
+    <copyright>Copyright 2006</copyright>
+    <tags>gflags native C++ v141 dyn</tags>
+  </metadata>
+  <files>
+    <file src="Roaster.gflags.v141.dyn.targets" target="build\Roaster.gflags.v141.dyn.targets" />
+    <file src="gflags\bin\*"                    target="lib\Debug\" />
+    <file src="gflags\bin\*"                    target="lib\Release\" />
+    <file src="gflags\include\**\*"             target="build\include" />
+    <file src="gflags\lib\*"                    target="lib\Debug\" />
+    <file src="gflags\lib\*"                    target="lib\Release\" />
+    <file src="gflags\lib\cmake\**\*"           target="build\cmake\" />
+  </files>
+</package>

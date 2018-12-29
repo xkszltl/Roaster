@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <id>zlib.v141.windesktop.msvcstl.dyn.rt-dyn.x64</id>
-    <version>1.2.11</version>
-    <title>zlib.v141.windesktop.msvcstl.dyn.rt-dyn.x64</title>
+    <id>Roaster.zlib.v141.dyn.x64</id>
+    <version>$version$</version>
+    <title>Roaster.zlib.v141.dyn.x64</title>
     <authors>Jean-loup Gailly, Mark Adler</authors>
     <owners>Tongliang Liao</owners>
     <licenseUrl>https://zlib.net/zlib_license.html</licenseUrl>
@@ -18,6 +18,14 @@
     The lovely zlib-vise image above was provided courtesy of Bruce Gardner, art director of Dr. Dobb's Journal. It appears in Mark Nelson's article in the January 1997 issue (see below).</description>
     <releaseNotes>https://www.zlib.net/ChangeLog.txt</releaseNotes>
     <copyright>Copyright 1995-2017</copyright>
-    <tags>zlib native C++ v141 windesktop dyn rt-dyn msvcstl</tags>
+    <tags>zlib native C++ v141 dyn</tags>
   </metadata>
+  <files>
+    <file src="Roaster.zlib.v141.dyn.targets"   target="build\Roaster.zlib.v141.dyn.targets" />
+    <file src="zlib\bin\*"                      target="lib\Debug\" />
+    <file src="zlib\bin\*"                      target="lib\Release\" />
+    <file src="zlib\include\**\*"               target="build\include" />
+    <file src="zlib\lib\*"                      target="lib\Debug\" />
+    <file src="zlib\lib\*"                      target="lib\Release\" />
+  </files>
 </package>

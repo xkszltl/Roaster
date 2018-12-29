@@ -87,8 +87,8 @@ cmake                                                                           
     -A x64                                                                                  `
     -DBUILD_SHARED_LIBS=OFF                                                                 `
     -DCMAKE_C_FLAGS="/GL /MP ${dep_dll}"                                                    `
-    -DCMAKE_CXX_FLAGS="/EHsc /GL /MP ${dep_dll} ${gtest_silent_warning}"                    `
     -DCMAKE_CUDA_SEPARABLE_COMPILATION=ON                                                   `
+    -DCMAKE_CXX_FLAGS="/EHsc /GL /MP ${dep_dll} ${gtest_silent_warning}"                    `
     -DCMAKE_EXE_LINKER_FLAGS="/LTCG:incremental"                                            `
     -DCMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO="/INCREMENTAL:NO"                               `
     -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/onnxruntime"                                `

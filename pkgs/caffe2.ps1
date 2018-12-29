@@ -22,7 +22,6 @@ git clone --recursive -j100 "$repo"
 pushd "$root"
 git remote add patch https://github.com/xkszltl/pytorch.git
 git fetch patch
-# git pull patch redef
 # git pull patch inputsize
 #TODO: cherry-pick patch/gpu_dll
 git checkout -- *
@@ -41,15 +40,21 @@ $gflags_dll="/DGFLAGS_IS_A_DLL=1"
 $protobuf_dll="/DPROTOBUF_USE_DLLS"
 $dep_dll="${gflags_dll} ${protobuf_dll}"
 
+# ==========================================================================================
+# Known issues:
+#   * MKL-DNN requires OpenMP 3.0 which is not supported in MSVC.
+#   * CUDA separable compilation is extremely slow with MSBuild due to serial execution.
+# ==========================================================================================
 cmake                                                                           `
     -A x64                                                                      `
     -DBLAS=MKL                                                                  `
     -DBUILD_CUSTOM_PROTOBUF=OFF                                                 `
-    -DBUILD_PYTHON=OFF                                                          `
+    -DBUILD_PYTHON=ON                                                           `
     -DBUILD_SHARED_LIBS=ON                                                      `
     -DBUILD_TEST=ON                                                             `
     -DCMAKE_BUILD_TYPE=RelWithDebInfo                                           `
     -DCMAKE_C_FLAGS="/GL /MP ${dep_dll}"                                        `
+    -DCMAKE_CUDA_SEPARABLE_COMPILATION=OFF                                      `
     -DCMAKE_CXX_FLAGS="/EHsc /GL /MP ${dep_dll} ${gtest_silent_warning}"        `
     -DCMAKE_EXE_LINKER_FLAGS="/LTCG:incremental"                                `
     -DCMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO="/INCREMENTAL:NO"                   `
@@ -59,19 +64,16 @@ cmake                                                                           
     -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                             `
     -DCMAKE_VERBOSE_MAKEFILE=ON                                                 `
     -DCPUINFO_BUILD_TOOLS=ON                                                    `
-    -DCUDA_ARCH_NAME="All"                                                      `
-    -DCUDA_NVCC_FLAGS='--expt-relaxed-constexpr'                                `
-    -DCUDA_SEPARABLE_COMPILATION=OFF                                            `
     -DPROTOBUF_INCLUDE_DIRS="${Env:ProgramFiles}/protobuf/include"              `
     -DPROTOBUF_LIBRARIES="${Env:ProgramFiles}/protobuf/bin"                     `
     -DPROTOBUF_PROTOC_EXECUTABLE="${Env:ProgramFiles}/protobuf/bin/protoc.exe"  `
-    -DUSE_CUDA=OFF                                                              `
+    -DTORCH_CUDA_ARCH_LIST="Kepler;Maxwell;Pascal;Volta"                        `
+    -DUSE_CUDA=ON                                                               `
     -DUSE_GLOO=OFF                                                              `
-    -DUSE_IDEEP=OFF                                                             `
     -DUSE_LEVELDB=OFF                                                           `
     -DUSE_LMDB=OFF                                                              `
     -DUSE_METAL=OFF                                                             `
-    -DUSE_MOBILE_OPENGL=OFF                                                     `
+    -DUSE_MKLDNN=OFF                                                            `
     -DUSE_MPI=OFF                                                               `
     -DUSE_NCCL=OFF                                                              `
     -DUSE_NNPACK=OFF                                                            `
@@ -82,7 +84,6 @@ cmake                                                                           
     -DUSE_ROCKSDB=ON                                                            `
     -Dglog_DIR="${Env:ProgramFiles}/google-glog/lib/cmake/glog"                 `
     -Dgtest_force_shared_crt=ON                                                 `
-    -Dprotobuf_BUILD_SHARED_LIBS=ON                                             `
     -Dpybind11_INCLUDE_DIR="${Env:ProgramFiles}/pybind11/include"               `
     -G"Visual Studio 15 2017"                                                   `
     -T"host=x64"                                                                `

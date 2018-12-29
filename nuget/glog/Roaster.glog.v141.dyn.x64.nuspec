@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Roaster.glog.v141.dyn.x64</id>
+    <version>$version$</version>
+    <title>Roaster.glog.v141.dyn.x64</title>
+    <authors>Google Inc.</authors>
+    <owners>Tongliang Liao</owners>
+    <licenseUrl>https://github.com/google/glog/blob/master/COPYING</licenseUrl>
+    <projectUrl>https://github.com/google/glog</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>C++ implementation of the Google logging module</summary>
+    <description>This repository contains a C++ implementation of the Google logging module. Documentation for the implementation is in doc/.</description>
+    <releaseNotes>https://github.com/google/glog/blob/master/ChangeLog</releaseNotes>
+    <copyright>Copyright 2008</copyright>
+    <tags>glog native C++ v141 dyn</tags>
+  </metadata>
+  <files>
+    <file src="Roaster.glog.v141.dyn.targets"   target="build\Roaster.glog.v141.dyn.targets" />
+    <file src="glog\bin\*"                      target="lib\Debug\" />
+    <file src="glog\bin\*"                      target="lib\Release\" />
+    <file src="glog\include\**\*"               target="build\include" />
+    <file src="glog\lib\*"                      target="lib\Debug\" />
+    <file src="glog\lib\*"                      target="lib\Release\" />
+    <file src="glog\lib\cmake\**\*"             target="build\cmake\" />
+  </files>
+</package>
