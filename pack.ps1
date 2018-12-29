@@ -29,9 +29,16 @@ Write-Host 'iter'    $iter
 Write-Host 'hash'    $hash
 Write-Host 'version' $version
 
+if (Test-Path build)
+{
+    cmd /c rmdir /Q /S build
+}
+mkdir build
+pushd build
+
 Write-Host "--------------------------------------------------------------------------------"
 
-Get-ChildItem nuget | Foreach-Object {
+Get-ChildItem ../nuget | Foreach-Object {
     $pkg = $_.Name
     if ($pkg -eq "glog")
     {
@@ -49,16 +56,19 @@ Get-ChildItem nuget | Foreach-Object {
     {
         Write-Host "Packaging ${pkg}..."
 
-        pushd nuget
-        cmd /c rmdir /Q "$pkg\$pkg"
-        cmd /c mklink /D "$pkg\$pkg" $prefix
-        & ${Env:NUGET_HOME}/nuget.exe pack -version $version "$pkg/Roaster.${pkg}.v141.dyn.x64.nuspec"
-        cmd /c rmdir /Q "$pkg\$pkg"
-        popd
+        if (Test-Path "..\nuget\$pkg\$pkg")
+        {
+            cmd /c rmdir /Q "..\nuget\$pkg\$pkg"
+        }
+        cmd /c mklink /D "..\nuget\$pkg\$pkg" $prefix
+        & ${Env:NUGET_HOME}/nuget.exe pack -version $version "../nuget/$pkg/Roaster.${pkg}.v141.dyn.x64.nuspec"
+        cmd /c rmdir /Q "..\nuget\$pkg\$pkg"
 
         Write-Host "--------------------------------------------------------------------------------"
     }
 }
+
+popd
 
 Write-Host "Completed!"
 
