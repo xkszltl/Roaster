@@ -40,13 +40,21 @@ Write-Host "--------------------------------------------------------------------
 
 Get-ChildItem ../nuget | Foreach-Object {
     $pkg = $_.Name
-    if ($pkg -eq "glog")
+    if ($pkg -eq "eigen")
+    {
+        $prefix = "${Env:ProgramFiles}/Eigen3"
+    }
+    elseif ($pkg -eq "glog")
     {
         $prefix = "${Env:ProgramFiles}/google-glog"
     }
     elseif ($pkg -eq "mkldnn")
     {
         $prefix = "${Env:ProgramFiles}/Intel(R) MKL-DNN"
+    }
+    elseif ($pkg -eq "ort")
+    {
+        $prefix = "${Env:ProgramFiles}/onnxruntime"
     }
     else
     {
