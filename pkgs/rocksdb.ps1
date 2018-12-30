@@ -20,6 +20,7 @@ git clone --depth 1 --single-branch -b "$latest_ver" "$repo"
 pushd "$root"
 git remote add patch https://github.com/xkszltl/rocksdb.git
 git fetch patch
+git cherry-pick patch/import_lib
 git cherry-pick patch/zlib
 
 mkdir build

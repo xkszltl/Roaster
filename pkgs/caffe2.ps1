@@ -11,7 +11,7 @@ $repo="${Env:GIT_MIRROR}/pytorch/pytorch.git"
 $proj="$($repo -replace '.*/','' -replace '.git$','')"
 $root= Join-Path "${Env:TMP}" "$proj"
 
-cmd /c rmdir /S /Q "$root"
+rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "$root"
 if (Test-Path "$root")
 {
     echo "Failed to remove `"$root`""
@@ -22,9 +22,31 @@ git clone --recursive -j100 "$repo"
 pushd "$root"
 git remote add patch https://github.com/xkszltl/pytorch.git
 git fetch patch
-# git pull patch inputsize
-#TODO: cherry-pick patch/gpu_dll
-git checkout -- *
+
+# ================================================================================
+# Update Protobuf
+# ================================================================================
+
+pushd third_party/protobuf
+git fetch --tags
+$pb_latest_ver='v' + $($(git tag) -match '^v[0-9\.]*$' -replace '^v','' | sort {[Version]$_})[-1]
+git checkout "$pb_latest_ver"
+git remote add patch https://github.com/xkszltl/protobuf.git
+git fetch patch
+git cherry-pick patch/constexpr-3.6
+git submodule update --init
+popd
+
+# ================================================================================
+# Commit
+# ================================================================================
+
+git --no-pager diff
+git commit -am "Automatic git submodule updates."
+
+# ================================================================================
+# Build
+# ================================================================================
 
 mkdir build
 pushd build
@@ -44,18 +66,18 @@ $dep_dll="${gflags_dll} ${protobuf_dll}"
 # Known issues:
 #   * MKL-DNN requires OpenMP 3.0 which is not supported in MSVC.
 #   * CUDA separable compilation is extremely slow with MSBuild due to serial execution.
+#   * Fix CUDA compilation with /FS.
 # ==========================================================================================
 cmake                                                                           `
-    -A x64                                                                      `
     -DBLAS=MKL                                                                  `
     -DBUILD_CUSTOM_PROTOBUF=OFF                                                 `
     -DBUILD_PYTHON=ON                                                           `
     -DBUILD_SHARED_LIBS=ON                                                      `
     -DBUILD_TEST=ON                                                             `
     -DCMAKE_BUILD_TYPE=RelWithDebInfo                                           `
-    -DCMAKE_C_FLAGS="/GL /MP ${dep_dll}"                                        `
-    -DCMAKE_CUDA_SEPARABLE_COMPILATION=OFF                                      `
-    -DCMAKE_CXX_FLAGS="/EHsc /GL /MP ${dep_dll} ${gtest_silent_warning}"        `
+    -DCMAKE_C_FLAGS="/FS /GL /MP ${dep_dll}"                                    `
+    -DCMAKE_CUDA_SEPARABLE_COMPILATION=ON                                       `
+    -DCMAKE_CXX_FLAGS="/EHsc /FS /GL /MP ${dep_dll} ${gtest_silent_warning}"    `
     -DCMAKE_EXE_LINKER_FLAGS="/LTCG:incremental"                                `
     -DCMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO="/INCREMENTAL:NO"                   `
     -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/Caffe2"                         `
@@ -64,6 +86,8 @@ cmake                                                                           
     -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                             `
     -DCMAKE_VERBOSE_MAKEFILE=ON                                                 `
     -DCPUINFO_BUILD_TOOLS=ON                                                    `
+    -DCUDA_NVCC_FLAGS="--expt-relaxed-constexpr"                                `
+    -DCUDA_SEPARABLE_COMPILATION=ON                                             `
     -DPROTOBUF_INCLUDE_DIRS="${Env:ProgramFiles}/protobuf/include"              `
     -DPROTOBUF_LIBRARIES="${Env:ProgramFiles}/protobuf/bin"                     `
     -DPROTOBUF_PROTOC_EXECUTABLE="${Env:ProgramFiles}/protobuf/bin/protoc.exe"  `
@@ -85,22 +109,24 @@ cmake                                                                           
     -Dglog_DIR="${Env:ProgramFiles}/google-glog/lib/cmake/glog"                 `
     -Dgtest_force_shared_crt=ON                                                 `
     -Dpybind11_INCLUDE_DIR="${Env:ProgramFiles}/pybind11/include"               `
-    -G"Visual Studio 15 2017"                                                   `
-    -T"host=x64"                                                                `
+    -G"Ninja"                                                                   `
     ..
 
 $ErrorActionPreference="SilentlyContinue"
-cmake --build . --config RelWithDebInfo -- -maxcpucount
+# cmake --build . --config RelWithDebInfo -- -maxcpucount
+cmake --build .
 if (-Not $?)
 {
     echo "Failed to build."
     echo "Retry with single thread for logging."
     echo "You may Ctrl-C this if you don't need the log file."
-    cmake --build . --config RelWithDebInfo 2>&1 | tee ${Env:TMP}/${proj}.log
+    # cmake --build . --config RelWithDebInfo 2>&1 | tee ${Env:TMP}/${proj}.log
+    cmake --build . 2>&1 | tee ${Env:TMP}/${proj}.log
     exit 1
 }
 
-cmake --build . --config RelWithDebInfo --target run_tests -- -maxcpucount
+# cmake --build . --config RelWithDebInfo --target run_tests -- -maxcpucount
+cmake --build . --target run_tests
 if (-Not $?)
 {
     echo "Check failed but we temporarily bypass it. Some tests are expected to fail on Windows."
@@ -108,7 +134,8 @@ if (-Not $?)
 $ErrorActionPreference="Stop"
 
 cmd /c rmdir /S /Q "${Env:ProgramFiles}/Caffe2"
-cmake --build . --config RelWithDebInfo --target install -- -maxcpucount
+# cmake --build . --config RelWithDebInfo --target install -- -maxcpucount
+cmake --build . --target install
 Get-ChildItem "${Env:ProgramFiles}/Caffe2" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 
 popd

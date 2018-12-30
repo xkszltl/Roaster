@@ -47,7 +47,7 @@ $pb_latest_ver='v' + $($(git tag) -match '^v[0-9\.]*$' -replace '^v','' | sort {
 git checkout "$pb_latest_ver"
 git remote add patch https://github.com/xkszltl/protobuf.git
 git fetch patch
-git cherry-pick patch/constexpr
+git cherry-pick patch/constexpr-3.6
 git submodule update --init
 popd
 
