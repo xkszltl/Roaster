@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Roaster.mkldnn.v141.dyn.x64</id>
+    <version>$version$</version>
+    <title>Roaster.mkldnn.v141.dyn.x64</title>
+    <authors>Intel Corporation</authors>
+    <owners>Tongliang Liao</owners>
+    <licenseUrl>https://github.com/intel/mkl-dnn/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://01.org/mkl-dnn</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>Intel(R) Math Kernel Library for Deep Neural Networks (Intel(R) MKL-DNN)</summary>
+    <description>Intel(R) Math Kernel Library for Deep Neural Networks (Intel(R) MKL-DNN) is an open-source performance library for deep-learning applications. The library accelerates deep-learning applications and frameworks on Intel architecture. Intel MKL-DNN contains vectorized and threaded building blocks that you can use to implement deep neural networks (DNN) with C and C++ interfaces.</description>
+    <releaseNotes>https://github.com/protocolbuffers/protobuf/blob/master/CHANGES.txt</releaseNotes>
+    <copyright>Copyright</copyright>
+    <tags>mkldnn native C++ v141 dyn</tags>
+  </metadata>
+  <files>
+    <file src="Roaster.mkldnn.v141.dyn.targets" target="build\Roaster.mkldnn.v141.dyn.targets" />
+    <file src="mkldnn\share\**\*"               target="build\" />
+    <file src="mkldnn\include\**\*"             target="build\include" />
+    <file src="mkldnn\lib\*"                    target="lib\Debug\" />
+    <file src="mkldnn\lib\*"                    target="lib\Release\" />
+  </files>
+</package>
