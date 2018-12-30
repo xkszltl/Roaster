@@ -120,6 +120,38 @@ Write-Host "Updating pip..."
 & "${Env:PYTHONHOME}/python.exe" -m pip install -U future | Out-Null
 
 # ================================================================================
+# Ninja
+# ================================================================================
+
+${Env:NINJA_HOME} = "$(Get-Command -Name ninja -ErrorAction SilentlyContinue | select -ExpandProperty Source | Split-Path -Parent)"
+
+if (${Env:NINJA_HOME} -eq $null -or -not $(Test-Path ${Env:NINJA_HOME}/ninja.exe -ErrorAction SilentlyContinue))
+{
+    ${Env:NINJA_HOME} = Join-Path ${Env:ProgramFiles} Ninja
+}
+
+if (${Env:NINJA_HOME} -eq $null -or -not $(Test-Path ${Env:NINJA_HOME}/ninja.exe -ErrorAction SilentlyContinue))
+{
+    $ninja_ver="1.8.2"
+    $DownloadURL = "https://github.com/ninja-build/ninja/releases/download/v${ninja_ver}/ninja-win.zip"
+    $DownloadPath = "${Env:TMP}/ninja-win.zip"
+    Write-Host "Downloading Ninja..."
+    Invoke-WebRequest -Uri $DownloadURL -OutFile $DownloadPath
+    Expand-Archive ${DownloadPath} ${Env:ProgramFiles}/Ninja
+    if ($(Test-Path ${Env:ProgramFiles}/Ninja/ninja.exe -ErrorAction SilentlyContinue))
+    {
+        ${Env:NINJA_HOME} = Join-Path ${Env:ProgramFiles} Ninja
+        New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}/System32/ninja.exe" -Value "${Env:NINJA_HOME}/ninja.exe"
+        Write-Host "Ninja installed successfully."
+    }
+    else
+    {
+        Write-Host "Ninja installation Failed. Please install manually: ${DownloadURL}"
+        Exit 1
+    }
+}
+
+# ================================================================================
 # Import VC env is only necessary for non-VS (such as ninja) build.
 # ================================================================================
 
@@ -132,11 +164,12 @@ if (${Env:VSCMD_VER} -eq $null)
 # Summary
 # ================================================================================
 
-echo "================================================================================"
-echo "| Detected Toolchains"
-echo "--------------------------------------------------------------------------------"
-echo "| Perl Home:              ${Env:PERL_HOME}"
-echo "| NASM Home:              ${Env:NASM_HOME}"
-echo "| Python Home:            ${Env:PYTHONHOME}"
-echo "| Visual Studio Toolset:  ${Env:VCToolsInstallDir}"
-echo "================================================================================"
+Write-Host "================================================================================"
+Write-Host "| Detected Toolchains"
+Write-Host "--------------------------------------------------------------------------------"
+Write-Host "| Perl Home:              ${Env:PERL_HOME}"
+Write-Host "| NASM Home:              ${Env:NASM_HOME}"
+Write-Host "| Python Home:            ${Env:PYTHONHOME}"
+Write-Host "| Ninja Home:             ${Env:NINJA_HOME}"
+Write-Host "| Visual Studio Toolset:  ${Env:VCToolsInstallDir}"
+Write-Host "================================================================================"
