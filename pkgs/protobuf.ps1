@@ -19,6 +19,10 @@ $latest_ver='v' + $($(git ls-remote --tags "$repo") -match '.*refs/tags/v[0-9\.]
 git clone --depth 1 --recursive --single-branch -b "$latest_ver" -j8 "$repo"
 pushd "$root"
 
+git remote add patch https://github.com/xkszltl/protobuf.git
+git fetch patch
+git cherry-pick patch/constexpr
+
 # Repo contains file "BUILD" for Bazel and it will conflict with "build" on NTFS.
 mkdir build-win
 pushd build-win

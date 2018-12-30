@@ -45,6 +45,9 @@ pushd cmake/external/protobuf
 git fetch --tags
 $pb_latest_ver='v' + $($(git tag) -match '^v[0-9\.]*$' -replace '^v','' | sort {[Version]$_})[-1]
 git checkout "$pb_latest_ver"
+git remote add patch https://github.com/xkszltl/protobuf.git
+git fetch patch
+git cherry-pick patch/constexpr
 git submodule update --init
 popd
 
@@ -78,9 +81,7 @@ Invoke-Expression $($(cmd /C "`"${Env:ProgramFiles(x86)}/IntelSWTools/compilers_
 Invoke-Expression $($(cmd /C "`"${Env:ProgramFiles(x86)}/IntelSWTools/compilers_and_libraries/windows/mkl/bin/mklvars.bat`" intel64 vs2017 & set") -Match '^INCLUDE' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
 
 $gtest_silent_warning="/D_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS /D_SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING"
-# NVCC does not support exporting classes using constexpr.
-# $protobuf_dll="/DPROTOBUF_USE_DLLS"
-$protobuf_dll=""
+$protobuf_dll="/DPROTOBUF_USE_DLLS"
 $dep_dll="${protobuf_dll}"
 
 cmake                                                                                       `
@@ -98,7 +99,7 @@ cmake                                                                           
     -DONNX_CUSTOM_PROTOC_EXECUTABLE="${Env:ProgramFiles}/protobuf/bin/protoc.exe"           `
     -Deigen_SOURCE_PATH="${Env:ProgramFiles}/Eigen3/include/eigen3"                         `
     -Donnxruntime_BUILD_SHARED_LIB=ON                                                       `
-    -Donnxruntime_CUDNN_HOME="${Env:ProgramFiles}/NVIDIA GPU Computing Toolkit/CUDA/v10.0"  `
+    -Donnxruntime_CUDNN_HOME="$(Split-Path (Get-Command nvcc).Source -Parent)/.."           `
     -Donnxruntime_ENABLE_PYTHON=ON                                                          `
     -Donnxruntime_RUN_ONNX_TESTS=ON                                                         `
     -Donnxruntime_USE_CUDA=ON                                                               `
@@ -107,7 +108,7 @@ cmake                                                                           
     -Donnxruntime_USE_MKLDNN=ON                                                             `
     -Donnxruntime_USE_MKLML=OFF                                                             `
     -Donnxruntime_USE_OPENMP=ON                                                             `
-    -Donnxruntime_USE_PREBUILT_PB=OFF                                                       `
+    -Donnxruntime_USE_PREBUILT_PB=ON                                                        `
     -Donnxruntime_USE_PREINSTALLED_EIGEN=ON                                                 `
     -Donnxruntime_USE_TVM=OFF                                                               `
     -G"Visual Studio 15 2017"                                                               `
