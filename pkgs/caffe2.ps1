@@ -92,8 +92,9 @@ cmake                                                                           
     -DPROTOBUF_LIBRARIES="${Env:ProgramFiles}/protobuf/bin"                     `
     -DPROTOBUF_PROTOC_EXECUTABLE="${Env:ProgramFiles}/protobuf/bin/protoc.exe"  `
     -DTORCH_CUDA_ARCH_LIST="Kepler;Maxwell;Pascal;Volta"                        `
-    -DUSE_CUDA=ON                                                               `
+    -DUSE_CUDA=OFF                                                              `
     -DUSE_GLOO=OFF                                                              `
+    -DUSE_FBGEMM=ON                                                             `
     -DUSE_LEVELDB=OFF                                                           `
     -DUSE_LMDB=OFF                                                              `
     -DUSE_METAL=OFF                                                             `
@@ -126,7 +127,7 @@ if (-Not $?)
 }
 
 # cmake --build . --config RelWithDebInfo --target run_tests -- -maxcpucount
-cmake --build . --target run_tests
+cmake --build . --target test
 if (-Not $?)
 {
     echo "Check failed but we temporarily bypass it. Some tests are expected to fail on Windows."
