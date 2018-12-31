@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Roaster.caffe2.v141.dyn.x64</id>
+    <version>$version$</version>
+    <title>Roaster.caffe2.v141.dyn.x64</title>
+    <authors>Facebook, Inc</authors>
+    <owners>Tongliang Liao</owners>
+    <licenseUrl>https://github.com/pytorch/pytorch/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://pytorch.org/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>Caffe2 is a lightweight, modular, and scalable deep learning framework.</summary>
+    <description>Building on the original Caffe, Caffe2 is designed with expression, speed, and modularity in mind.</description>
+    <releaseNotes>https://pytorch.org/blog/</releaseNotes>
+    <copyright>Copyright 2001</copyright>
+    <tags>caffe2 native C++ v141 dyn</tags>
+    <dependencies>
+      <dependency id="Roaster.eigen.v141.dyn.x64"       version="0.0" />
+      <dependency id="Roaster.gflags.v141.dyn.x64"      version="0.0" />
+      <dependency id="Roaster.glog.v141.dyn.x64"        version="0.0" />
+      <dependency id="Roaster.mkldnn.v141.dyn.x64"      version="0.0" />
+      <dependency id="Roaster.protobuf.v141.dyn.x64"    version="0.0" />
+      <dependency id="Roaster.rocksdb.v141.dyn.x64"     version="0.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="Roaster.caffe2.v141.dyn.targets" target="build\Roaster.caffe2.v141.dyn.targets" />
+    <file src="caffe2\include\**\*"             target="build\include" />
+    <file src="caffe2\lib\**\*"                 target="lib\Debug\" />
+    <file src="caffe2\lib\**\*"                 target="lib\Release\" />
+    <file src="caffe2\share\**\*"               target="build\cmake\" />
+    <file src="caffe2\test\*"                   target="lib\Debug\" />
+    <file src="caffe2\test\*"                   target="lib\Release\" />
+  </files>
+</package>
