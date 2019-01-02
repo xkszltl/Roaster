@@ -109,6 +109,9 @@
         #     '"'" ::: $(find caffe2/python -name '*.py')
         # done
 
+        # Relocate site-package installation.
+        mv -f {"$INSTALL_ABS","$INSTALL_ROOT/$(dirname "$(which python)")/.."}"/lib/python$(python --version 2>&1 | sed -n 's/^[^0-9]*\([0-9][0-9]*\.[0-9][0-9]*\).*/\1/p' | head -n1)/site-packages/caffe2"
+
         # --------------------------------------------------------
         # Tag with version detected from cmake cache
         # --------------------------------------------------------
