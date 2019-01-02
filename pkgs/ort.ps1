@@ -23,7 +23,6 @@ pushd "$root"
 git remote add patch https://github.com/xkszltl/onnxruntime.git
 git fetch patch
 git pull patch cudart
-git pull patch eigen
 git pull patch protobuf
 
 # ================================================================================
