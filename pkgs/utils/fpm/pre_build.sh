@@ -20,7 +20,12 @@ export INSTALL_ROOT="$(readlink -e "$INSTALL_ROOT")"
 # List file to exclude
 # ----------------------------------------------------------------
 
-rpm -q filesystem > /dev/null && rpm -ql filesystem | sed 's/^\///' | sed 's/$/\//' > "$INSTALL_ROOT/../exclude.conf" &
+(
+    set -e
+    for i in filesystem; do
+        rpm -q "$i" > /dev/null && rpm -ql "$i" | sed 's/^\///' | sed 's/$/\//' >> "$INSTALL_ROOT/../exclude.conf"
+    done
+) &
 
 # ----------------------------------------------------------------
 # Copy source code

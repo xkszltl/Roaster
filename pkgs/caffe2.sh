@@ -109,9 +109,6 @@
         #     '"'" ::: $(find caffe2/python -name '*.py')
         # done
 
-        # Relocate site-package installation.
-        mv -f {"$INSTALL_ABS","$INSTALL_ROOT/$(dirname "$(which python)")/.."}"/lib/python$(python --version 2>&1 | sed -n 's/^[^0-9]*\([0-9][0-9]*\.[0-9][0-9]*\).*/\1/p' | head -n1)/site-packages/caffe2"
-
         # --------------------------------------------------------
         # Tag with version detected from cmake cache
         # --------------------------------------------------------
@@ -124,11 +121,17 @@
         fi | xargs git tag -f
 
         # --------------------------------------------------------
-        # Avoid caffe/gtest conflicts
+        # Avoid caffe/gtest/rh-python36 conflicts
         # --------------------------------------------------------
 
         rm -rf "$INSTALL_ROOT/usr/local/include/"{caffe/proto,gmock,gtest}
         rm -rf "$INSTALL_ROOT/usr/local/lib64/"{pkgconfig/,lib}{gmock,gtest}{,_*}.*
+
+        # --------------------------------------------------------
+        # Relocate site-package installation.
+        # --------------------------------------------------------
+        mkdir -p "$(readlink -m "$INSTALL_ROOT/$(dirname "$(which python)")/../lib/python$(python --version 2>&1 | sed -n 's/^[^0-9]*\([0-9][0-9]*\.[0-9][0-9]*\).*/\1/p' | head -n1)/site-packages")"
+        mv -f {"$INSTALL_ABS","$INSTALL_ROOT/$(dirname "$(which python)")/.."}"/lib/python$(python --version 2>&1 | sed -n 's/^[^0-9]*\([0-9][0-9]*\.[0-9][0-9]*\).*/\1/p' | head -n1)/site-packages/caffe2"
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
