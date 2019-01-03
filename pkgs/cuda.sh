@@ -23,16 +23,19 @@
     fi
     curl -sSL "$CUDNN_DIR/$CUDNN_NAME" | sudo tar -zxvf - -C "/usr/local/" --no-overwrite-dir
 
-    NCCL_DIR="https://repo.codingcafe.org/nvidia/nccl"
-    NCCL_NAME="$(curl -sSL "$NCCL_DIR" | sed -n 's/.*href="\(.*cuda'"$CUDA_VER_MAJOR.$CUDA_VER_MINOR"'_x86_64.*\)".*/\1/p' | sort -V | tail -n1)"
-    wget -q "$NCCL_DIR/$NCCL_NAME"
+    # Build NCCL from source.
+    if false; then
+        NCCL_DIR="https://repo.codingcafe.org/nvidia/nccl"
+        NCCL_NAME="$(curl -sSL "$NCCL_DIR" | sed -n 's/.*href="\(.*cuda'"$CUDA_VER_MAJOR.$CUDA_VER_MINOR"'_x86_64.*\)".*/\1/p' | sort -V | tail -n1)"
+        wget -q "$NCCL_DIR/$NCCL_NAME"
 
-    sudo [ -e /usr/local/cuda/lib ] || sudo ln -s /usr/local/cuda/lib{64,}
-    sudo tar -xvf nccl* -C /usr/local/cuda --strip-components=1 --no-overwrite-dir --skip-old-files
-    sudo [ -L /usr/local/cuda/lib ] && sudo rm -f /usr/local/cuda/lib
+        sudo [ -e /usr/local/cuda/lib ] || sudo ln -s /usr/local/cuda/lib{64,}
+        sudo tar -xvf nccl* -C /usr/local/cuda --strip-components=1 --no-overwrite-dir --skip-old-files
+        sudo [ -L /usr/local/cuda/lib ] && sudo rm -f /usr/local/cuda/lib
 
-    tar -Jtf nccl* | sed -n 's/^[^\/]*\/lib[^\/]*\(\/.*[^\/]\)$/sudo ln -sf \/usr\/local\/cuda\/lib64\1 \/usr\/lib\1/p' | bash
-    tar -Jtf nccl* | sed -n 's/^[^\/]*\(\/include\/.*[^\/]\)$/sudo ln -sf \/usr\/local\/cuda\1 \/usr\1/p' | bash
+        tar -Jtf nccl* | sed -n 's/^[^\/]*\/lib[^\/]*\(\/.*[^\/]\)$/sudo ln -sf \/usr\/local\/cuda\/lib64\1 \/usr\/lib\1/p' | bash
+        tar -Jtf nccl* | sed -n 's/^[^\/]*\(\/include\/.*[^\/]\)$/sudo ln -sf \/usr\/local\/cuda\1 \/usr\1/p' | bash
+    fi
 
     sudo ldconfig
 
