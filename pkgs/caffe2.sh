@@ -131,7 +131,7 @@
         # Relocate site-package installation.
         # --------------------------------------------------------
         mkdir -p "$(readlink -m "$INSTALL_ROOT/$(dirname "$(which python)")/../lib/python$(python --version 2>&1 | sed -n 's/^[^0-9]*\([0-9][0-9]*\.[0-9][0-9]*\).*/\1/p' | head -n1)/site-packages")"
-        mv -f {"$INSTALL_ABS","$INSTALL_ROOT/$(dirname "$(which python)")/.."}"/lib/python$(python --version 2>&1 | sed -n 's/^[^0-9]*\([0-9][0-9]*\.[0-9][0-9]*\).*/\1/p' | head -n1)/site-packages/caffe2"
+        mv -f {"$INSTALL_ABS","$(readlink -m "$INSTALL_ROOT/$(dirname "$(which python)")/..")"}"/lib/python$(python --version 2>&1 | sed -n 's/^[^0-9]*\([0-9][0-9]*\.[0-9][0-9]*\).*/\1/p' | head -n1)/site-packages/caffe2"
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
