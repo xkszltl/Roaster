@@ -90,7 +90,7 @@ NervanaSystems/{neon,nervanagpu},\
 nicolargo/glances,\
 ninja-build/ninja,\
 numpy/numpy{,doc},\
-NVIDIA/{DIGITS,cnmem,libglvnd,nccl,nvidia-container-runtime,nvidia-docker},\
+NVIDIA/{DALI,DIGITS,cnmem,libglvnd,nccl,nccl-tests,nvidia-{container-runtime,docker,installer,modprobe,persistenced,settings,xconfig}},\
 NVLabs/{cub,xmp},\
 onnx/{models,onnx{,-tensorrt,mltools},tutorials},\
 open-mpi/ompi,\
