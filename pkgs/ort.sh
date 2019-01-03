@@ -15,7 +15,7 @@
 
     git remote add patch https://github.com/xkszltl/onnxruntime.git
 
-    PATCHES="cudart"
+    PATCHES=""
 
     for i in $PATCHES; do
         git pull --no-edit --rebase patch "$i"
