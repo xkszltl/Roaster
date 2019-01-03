@@ -22,8 +22,7 @@ git clone --recursive -j100 "$repo"
 pushd "$root"
 git remote add patch https://github.com/xkszltl/onnxruntime.git
 git fetch patch
-git pull patch cudart
-git pull patch protobuf
+# git pull patch protobuf
 
 # ================================================================================
 # Update GTest
@@ -86,15 +85,14 @@ $dep_dll="${protobuf_dll}"
 cmake                                                                                       `
     -A x64                                                                                  `
     -DBUILD_SHARED_LIBS=OFF                                                                 `
-    -DCMAKE_C_FLAGS="/GL /MP ${dep_dll}"                                                    `
+    -DCMAKE_C_FLAGS="/GL /MP /Z7 ${dep_dll}"                                                `
     -DCMAKE_CUDA_SEPARABLE_COMPILATION=ON                                                   `
-    -DCMAKE_CXX_FLAGS="/EHsc /GL /MP ${dep_dll} ${gtest_silent_warning}"                    `
+    -DCMAKE_CXX_FLAGS="/EHsc /GL /MP /Z7 ${dep_dll} ${gtest_silent_warning}"                `
     -DCMAKE_EXE_LINKER_FLAGS="/LTCG:incremental"                                            `
-    -DCMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO="/INCREMENTAL:NO"                               `
     -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/onnxruntime"                                `
     -DCMAKE_SHARED_LINKER_FLAGS="/LTCG:incremental"                                         `
-    -DCMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO="/INCREMENTAL:NO"                            `
     -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                                         `
+    -DCUDA_VERBOSE_BUILD=ON                                                                 `
     -DONNX_CUSTOM_PROTOC_EXECUTABLE="${Env:ProgramFiles}/protobuf/bin/protoc.exe"           `
     -Deigen_SOURCE_PATH="${Env:ProgramFiles}/Eigen3/include/eigen3"                         `
     -Donnxruntime_BUILD_SHARED_LIB=ON                                                       `
@@ -114,7 +112,7 @@ cmake                                                                           
     -T"host=x64"                                                                            `
     ../cmake
 
-cmake --build . --config RelWithDebInfo -- -maxcpucount
+cmake --build . --config Release -- -maxcpucount
 
 $model_path = "${Env:TMP}/onnxruntime_models.zip"
 rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${model_path}.downloading"
@@ -126,11 +124,11 @@ if (-not $(Test-Path $model_path))
 Expand-Archive ${model_path} models
 
 $ErrorActionPreference="SilentlyContinue"
-cmake --build . --config RelWithDebInfo --target run_tests -- -maxcpucount
+cmake --build . --config Release --target run_tests -- -maxcpucount
 if (-Not $?)
 {
     echo "Check failed but we temporarily bypass it. It might be a CUDA-only issue. Trying to reproduce:"
-    pushd RelWithDebInfo
+    pushd Release
     ./onnxruntime_test_all.exe
     ./onnxruntime_shared_lib_test.exe
     popd
@@ -138,7 +136,7 @@ if (-Not $?)
 $ErrorActionPreference="Stop"
 
 cmd /c rmdir /S /Q "${Env:ProgramFiles}/onnxruntime"
-cmake --build . --config RelWithDebInfo --target install -- -maxcpucount
+cmake --build . --config Release --target install -- -maxcpucount
 Get-ChildItem "${Env:ProgramFiles}/onnxruntime" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 Get-ChildItem "${Env:ProgramFiles}/onnxruntime" -Filter *.exe -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 
