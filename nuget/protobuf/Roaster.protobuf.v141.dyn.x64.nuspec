@@ -16,12 +16,12 @@
     <tags>protobuf native C++ v141 dyn</tags>
   </metadata>
   <files>
-    <file src="Roaster.protobuf.v141.dyn.targets"   target="build\native\Roaster.protobuf.v141.dyn.targets" />
-    <file src="protobuf\bin\*"                      target="lib\native\lib\Debug\" />
-    <file src="protobuf\bin\*"                      target="lib\native\lib\Release\" />
-    <file src="protobuf\cmake\**\*"                 target="lib\native\cmake\" />
-    <file src="protobuf\include\**\*"               target="lib\native\include" />
-    <file src="protobuf\lib\*"                      target="lib\native\lib\Debug\" />
-    <file src="protobuf\lib\*"                      target="lib\native\lib\Release\" />
+    <file src="Roaster.protobuf.v141.dyn.x64.targets"   target="build\native\Roaster.protobuf.v141.dyn.x64.targets" />
+    <file src="protobuf\bin\*"                          target="lib\native\lib\Debug\" />
+    <file src="protobuf\bin\*"                          target="lib\native\lib\Release\" />
+    <file src="protobuf\cmake\**\*"                     target="lib\native\cmake\" />
+    <file src="protobuf\include\**\*"                   target="lib\native\include" />
+    <file src="protobuf\lib\*"                          target="lib\native\lib\Debug\" />
+    <file src="protobuf\lib\*"                          target="lib\native\lib\Release\" />
   </files>
 </package>
