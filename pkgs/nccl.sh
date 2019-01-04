@@ -36,10 +36,12 @@
         make src.build NCCL_HOME="$INSTALL_ABS/cuda" -j$(nproc)
         mkdir -p "${INSTALL_ABS}/cuda/bin/"
         install build/* "$_"
+        mv -f "$INSTALL_ABS/cuda/lib"{,64}
+
         for i in $(ls build); do
         (
             set -xe
-            export LD_LIBRARY_PATH="$INSTALL_ABS/cuda/lib:$LD_LIBRARY_PATH"
+            export LD_LIBRARY_PATH="$INSTALL_ABS/cuda/lib64:$LD_LIBRARY_PATH"
             "build/$i" -g 1
             set +e
             for data_type in int8 int32 int64 half float double; do
@@ -48,8 +50,6 @@
         )
         done
         popd
-
-        mv -f "$INSTALL_ABS/cuda/lib"{,64}
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
