@@ -16,12 +16,12 @@
     <tags>glog native C++ v141 dyn</tags>
   </metadata>
   <files>
-    <file src="Roaster.glog.v141.dyn.targets"   target="build\Roaster.glog.v141.dyn.targets" />
-    <file src="glog\bin\*"                      target="lib\Debug\" />
-    <file src="glog\bin\*"                      target="lib\Release\" />
-    <file src="glog\include\**\*"               target="build\include" />
-    <file src="glog\lib\*"                      target="lib\Debug\" />
-    <file src="glog\lib\*"                      target="lib\Release\" />
-    <file src="glog\lib\cmake\**\*"             target="build\cmake\" />
+    <file src="Roaster.glog.v141.dyn.targets"   target="build\native\Roaster.glog.v141.dyn.targets" />
+    <file src="glog\bin\*"                      target="lib\native\lib\Debug\" />
+    <file src="glog\bin\*"                      target="lib\native\lib\Release\" />
+    <file src="glog\include\**\*"               target="lib\native\include" />
+    <file src="glog\lib\*"                      target="lib\native\lib\Debug\" />
+    <file src="glog\lib\*"                      target="lib\native\lib\Release\" />
+    <file src="glog\lib\cmake\**\*"             target="lib\native\cmake\" />
   </files>
 </package>

@@ -21,12 +21,12 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="Roaster.rocksdb.v141.dyn.targets"  target="build\Roaster.rocksdb.v141.dyn.targets" />
-    <file src="rocksdb\bin\*"                     target="lib\Debug\" />
-    <file src="rocksdb\bin\*"                     target="lib\Release\" />
-    <file src="rocksdb\include\**\*"              target="build\include" />
-    <file src="rocksdb\lib\*"                     target="lib\Debug\" />
-    <file src="rocksdb\lib\*"                     target="lib\Release\" />
-    <file src="rocksdb\lib\cmake\**\*"            target="build\" />
+    <file src="Roaster.rocksdb.v141.dyn.targets"  target="build\native\Roaster.rocksdb.v141.dyn.targets" />
+    <file src="rocksdb\bin\*"                     target="lib\native\lib\Debug\" />
+    <file src="rocksdb\bin\*"                     target="lib\native\lib\Release\" />
+    <file src="rocksdb\include\**\*"              target="lib\native\include" />
+    <file src="rocksdb\lib\*"                     target="lib\native\lib\Debug\" />
+    <file src="rocksdb\lib\*"                     target="lib\native\lib\Release\" />
+    <file src="rocksdb\lib\cmake\**\*"            target="lib\native\" />
   </files>
 </package>

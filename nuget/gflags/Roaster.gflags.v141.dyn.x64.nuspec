@@ -17,11 +17,11 @@
   </metadata>
   <files>
     <file src="Roaster.gflags.v141.dyn.targets" target="build\Roaster.gflags.v141.dyn.targets" />
-    <file src="gflags\bin\*"                    target="lib\Debug\" />
-    <file src="gflags\bin\*"                    target="lib\Release\" />
-    <file src="gflags\include\**\*"             target="build\include" />
-    <file src="gflags\lib\*"                    target="lib\Debug\" />
-    <file src="gflags\lib\*"                    target="lib\Release\" />
-    <file src="gflags\lib\cmake\**\*"           target="build\cmake\" />
+    <file src="gflags\bin\*"                    target="lib\native\lib\Debug\" />
+    <file src="gflags\bin\*"                    target="lib\native\lib\Release\" />
+    <file src="gflags\include\**\*"             target="lib\native\include" />
+    <file src="gflags\lib\*"                    target="lib\native\lib\Debug\" />
+    <file src="gflags\lib\*"                    target="lib\native\lib\Release\" />
+    <file src="gflags\lib\cmake\**\*"           target="lib\native\cmake\" />
   </files>
 </package>

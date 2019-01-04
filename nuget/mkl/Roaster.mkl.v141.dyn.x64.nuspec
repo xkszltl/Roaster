@@ -21,9 +21,9 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="Roaster.mkl.v141.dyn.targets"                                target="build\Roaster.mkl.v141.dyn.targets" />
-    <file src="mkl\compilers_and_libraries\windows\redist\intel64\mkl\**\*" target="lib\Release\" />
-    <file src="mkl\compilers_and_libraries\windows\mkl\include\**\*"        target="lib\Release\" />
-    <file src="mkl\compilers_and_libraries\windows\mkl\lib\intel64\**\*"    target="lib\Release\" />
+    <file src="Roaster.mkl.v141.dyn.targets"                                target="build\native\Roaster.mkl.v141.dyn.targets" />
+    <file src="mkl\compilers_and_libraries\windows\redist\intel64\mkl\**\*" target="lib\native\lib\Release\" />
+    <file src="mkl\compilers_and_libraries\windows\mkl\include\**\*"        target="lib\native\include\" />
+    <file src="mkl\compilers_and_libraries\windows\mkl\lib\intel64\**\*"    target="lib\native\lib\Release\" />
   </files>
 </package>

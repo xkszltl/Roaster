@@ -22,11 +22,11 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="Roaster.ort.v141.dyn.targets"    target="build\Roaster.ort.v141.dyn.targets" />
-    <file src="ort\bin\*"                       target="lib\Debug\" />
-    <file src="ort\bin\*"                       target="lib\Release\" />
-    <file src="ort\include\**\*"                target="build\include" />
-    <file src="ort\lib\*"                       target="lib\Debug\" />
-    <file src="ort\lib\*"                       target="lib\Release\" />
+    <file src="Roaster.ort.v141.dyn.targets"    target="build\native\Roaster.ort.v141.dyn.targets" />
+    <file src="ort\bin\*"                       target="lib\native\lib\Debug\" />
+    <file src="ort\bin\*"                       target="lib\native\lib\Release\" />
+    <file src="ort\include\**\*"                target="lib\native\include" />
+    <file src="ort\lib\*"                       target="lib\native\lib\Debug\" />
+    <file src="ort\lib\*"                       target="lib\native\lib\Release\" />
   </files>
 </package>

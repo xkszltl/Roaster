@@ -21,11 +21,11 @@
     <tags>zlib native C++ v141 dyn</tags>
   </metadata>
   <files>
-    <file src="Roaster.zlib.v141.dyn.targets"   target="build\Roaster.zlib.v141.dyn.targets" />
-    <file src="zlib\bin\*"                      target="lib\Debug\" />
-    <file src="zlib\bin\*"                      target="lib\Release\" />
-    <file src="zlib\include\**\*"               target="build\include" />
-    <file src="zlib\lib\*"                      target="lib\Debug\" />
-    <file src="zlib\lib\*"                      target="lib\Release\" />
+    <file src="Roaster.zlib.v141.dyn.targets"   target="build\native\Roaster.zlib.v141.dyn.targets" />
+    <file src="zlib\bin\*"                      target="lib\native\lib\Debug\" />
+    <file src="zlib\bin\*"                      target="lib\native\lib\Release\" />
+    <file src="zlib\include\**\*"               target="lib\native\include" />
+    <file src="zlib\lib\*"                      target="lib\native\lib\Debug\" />
+    <file src="zlib\lib\*"                      target="lib\native\lib\Release\" />
   </files>
 </package>

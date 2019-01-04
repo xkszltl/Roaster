@@ -16,8 +16,8 @@
     <tags>eigen native C++ v141 dyn</tags>
   </metadata>
   <files>
-    <file src="Roaster.eigen.v141.dyn.targets"  target="build\Roaster.eigen.v141.dyn.targets" />
-    <file src="eigen\include\eigen3\**\*"       target="build\include" />
-    <file src="eigen\share\eigen3\cmake\**\*"   target="build\cmake\" />
+    <file src="Roaster.eigen.v141.dyn.targets"  target="build\native\Roaster.eigen.v141.dyn.targets" />
+    <file src="eigen\include\eigen3\**\*"       target="lib\native\include" />
+    <file src="eigen\share\eigen3\cmake\**\*"   target="lib\native\cmake\" />
   </files>
 </package>
