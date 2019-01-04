@@ -26,7 +26,7 @@
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
 
         export CXX="$TOOLCHAIN/g++"
-        export CXXFLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/cuda/src' -g"
+        export CXXFLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"
 
         # Inject CXXFLAGS via GCOV_FLAGS
         make src.build GCOV_FLAGS="$CXXFLAGS" -j$(nproc)
