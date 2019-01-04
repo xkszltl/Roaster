@@ -2,87 +2,87 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" >
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)/../lib/native/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)/../../lib/native/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)/../lib/native/lib/Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)/../../lib/native/lib/Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>mkl_blas95_ilp64.lib;mkl_core_dll.lib;mkl_intel_ilp64_dll.lib;mkl_intel_thread_dll.lib;mkl_lapack95_ilp64.lib;mkl_rt.lib;mkl_tbb_thread_dll.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/libimalloc.dll">
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/libimalloc.dll">
       <Link>libimalloc.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/mkl_avx.dll">
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/mkl_avx.dll">
       <Link>mkl_avx.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/mkl_avx2.dll">
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/mkl_avx2.dll">
       <Link>mkl_avx2.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/mkl_avx512.dll">
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/mkl_avx512.dll">
       <Link>mkl_avx512.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/mkl_core.dll">
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/mkl_core.dll">
       <Link>mkl_core.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/mkl_def.dll">
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/mkl_def.dll">
       <Link>mkl_def.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/mkl_intel_thread.dll">
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/mkl_intel_thread.dll">
       <Link>mkl_intel_thread.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/mkl_mc.dll">
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/mkl_mc.dll">
       <Link>mkl_mc.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/mkl_mc3.dll">
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/mkl_mc3.dll">
       <Link>mkl_mc3.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/mkl_sequential.dll">
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/mkl_sequential.dll">
       <Link>mkl_sequential.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/mkl_tbb_thread.dll">
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/mkl_tbb_thread.dll">
       <Link>mkl_tbb_thread.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/mkl_vml_avx.dll">
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/mkl_vml_avx.dll">
       <Link>mkl_vml_avx.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/mkl_vml_avx2.dll">
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/mkl_vml_avx2.dll">
       <Link>mkl_vml_avx2.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/mkl_vml_avx512.dll">
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/mkl_vml_avx512.dll">
       <Link>mkl_vml_avx512.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/mkl_vml_cmpt.dll">
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/mkl_vml_cmpt.dll">
       <Link>mkl_vml_cmpt.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/mkl_vml_def.dll">
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/mkl_vml_def.dll">
       <Link>mkl_vml_def.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/mkl_vml_mc.dll">
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/mkl_vml_mc.dll">
       <Link>mkl_vml_mc.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/mkl_vml_mc2.dll">
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/mkl_vml_mc2.dll">
       <Link>mkl_vml_mc2.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/mkl_vml_mc3.dll">
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/mkl_vml_mc3.dll">
       <Link>mkl_vml_mc3.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

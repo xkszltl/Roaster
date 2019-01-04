@@ -80,6 +80,8 @@ Get-ChildItem ../nuget | Foreach-Object {
     }
 }
 
+& ${Env:NUGET_HOME}/nuget.exe push -Source "OneOCR" -ApiKey AzureDevOps ./Roaster.*.nupkg
+
 popd
 
 Write-Host "Completed!"
