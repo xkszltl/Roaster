@@ -76,11 +76,11 @@ Get-ChildItem ../nuget | Foreach-Object {
         & ${Env:NUGET_HOME}/nuget.exe pack -version $version "../nuget/$pkg/Roaster.${pkg}.v141.dyn.x64.nuspec"
         cmd /c rmdir /Q "..\nuget\$pkg\$pkg"
 
+        & ${Env:NUGET_HOME}/nuget.exe push -Source "OneOCR" -ApiKey AzureDevOps ./Roaster.${pkg}.v141.dyn.x64.${version}.nupkg
+
         Write-Host "--------------------------------------------------------------------------------"
     }
 }
-
-& ${Env:NUGET_HOME}/nuget.exe push -Source "OneOCR" -ApiKey AzureDevOps ./Roaster.*.nupkg
 
 popd
 
