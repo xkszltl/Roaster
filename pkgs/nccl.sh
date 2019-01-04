@@ -43,9 +43,8 @@
             set -xe
             export LD_LIBRARY_PATH="$INSTALL_ABS/cuda/lib64:$LD_LIBRARY_PATH"
             "build/$i" -g 1 || $IS_CONTAINER
-            set +e
             for data_type in int8 int32 int64 half float double; do
-                "build/$i" -b 8 -e 256M -f 2 -g 1 -d "$data_type"
+                "build/$i" -b 8 -e 256M -f 2 -g 1 -d "$data_type" || $IS_CONTAINER
             done
         )
         done
