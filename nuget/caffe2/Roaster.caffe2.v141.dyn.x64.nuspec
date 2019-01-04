@@ -18,6 +18,7 @@
       <dependency id="Roaster.eigen.v141.dyn.x64"       version="0.0" />
       <dependency id="Roaster.gflags.v141.dyn.x64"      version="0.0" />
       <dependency id="Roaster.glog.v141.dyn.x64"        version="0.0" />
+      <dependency id="Roaster.mkl.v141.dyn.x64"         version="0.0" />
       <dependency id="Roaster.mkldnn.v141.dyn.x64"      version="0.0" />
       <dependency id="Roaster.protobuf.v141.dyn.x64"    version="0.0" />
       <dependency id="Roaster.rocksdb.v141.dyn.x64"     version="0.0" />
