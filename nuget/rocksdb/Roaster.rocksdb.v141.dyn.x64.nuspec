@@ -27,6 +27,6 @@
     <file src="rocksdb\include\**\*"                  target="lib\native\include" />
     <file src="rocksdb\lib\*"                         target="lib\native\lib\Debug\" />
     <file src="rocksdb\lib\*"                         target="lib\native\lib\Release\" />
-    <file src="rocksdb\lib\cmake\**\*"                target="lib\native\" />
+    <file src="rocksdb\lib\cmake\**\*"                target="lib\native\cmake" />
   </files>
 </package>
