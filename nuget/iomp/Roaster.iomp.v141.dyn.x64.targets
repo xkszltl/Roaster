@@ -3,7 +3,7 @@
   <ItemDefinitionGroup>
     <Link>
       <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)/../../lib/native/lib/Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libiomp5md.lib;libiompstubs5md.lib%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libiomp5md.lib;libiompstubs5md.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
