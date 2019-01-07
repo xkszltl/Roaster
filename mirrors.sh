@@ -101,7 +101,7 @@ protocolbuffers/protobuf,\
 pybind/pybind11,\
 PythonCharmers/python-future,\
 pypa/{pip,pipenv,setuptools,virtualenv,warehouse,wheel},\
-pytest-dev/{py,pytest},\
+pytest-dev/{pluggy,py,pytest},\
 python/typing,\
 pytorch/{examples,FBGEMM,pytorch,QNNPACK,tutorials},\
 RadeonOpenCompute/{hcc,ROCm-Device-Libs,ROCR-Runtime},\
