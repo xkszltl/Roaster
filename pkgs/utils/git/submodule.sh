@@ -31,6 +31,7 @@ set -e
 
             for i in $(seq 10 -1 0); do
                 git submodule update --init -j 100 && break
+                sleep 1
                 echo "Retrying... $i time(s) left."
             done
 
