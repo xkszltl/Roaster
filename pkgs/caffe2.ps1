@@ -22,6 +22,7 @@ git clone --recursive -j100 "$repo"
 pushd "$root"
 git remote add patch https://github.com/xkszltl/pytorch.git
 git fetch patch
+git pull patch intrinsics
 
 # ================================================================================
 # Update Protobuf
@@ -69,48 +70,48 @@ $dep_dll="${gflags_dll} ${protobuf_dll}"
 #   * Fix CUDA compilation with /FS.
 #   * Currently MSVC build disables AVX2 by default for unknown reason.
 # ==========================================================================================
-cmake                                                                                       `
-    -DBLAS=MKL                                                                              `
-    -DBUILD_CUSTOM_PROTOBUF=OFF                                                             `
-    -DBUILD_PYTHON=ON                                                                       `
-    -DBUILD_SHARED_LIBS=ON                                                                  `
-    -DBUILD_TEST=ON                                                                         `
-    -DCMAKE_BUILD_TYPE=Release                                                              `
-    -DCMAKE_C_FLAGS="/FS /GL /MP /Z7 /arch:AVX2 ${dep_dll}"                                 `
-    -DCMAKE_CUDA_SEPARABLE_COMPILATION=ON                                                   `
-    -DCMAKE_CXX_FLAGS="/EHsc /FS /GL /MP /Z7 /arch:AVX2 ${dep_dll} ${gtest_silent_warning}" `
-    -DCMAKE_EXE_LINKER_FLAGS="/LTCG:incremental"                                            `
-    -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/Caffe2"                                     `
-    -DCMAKE_SHARED_LINKER_FLAGS="/LTCG:incremental"                                         `
-    -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                                         `
-    -DCMAKE_VERBOSE_MAKEFILE=ON                                                             `
-    -DCPUINFO_BUILD_TOOLS=ON                                                                `
-    -DCUDA_NVCC_FLAGS="--expt-relaxed-constexpr"                                            `
-    -DCUDA_SEPARABLE_COMPILATION=ON                                                         `
-    -DCUDA_VERBOSE_BUILD=ON                                                                 `
-    -DPROTOBUF_INCLUDE_DIRS="${Env:ProgramFiles}/protobuf/include"                          `
-    -DPROTOBUF_LIBRARIES="${Env:ProgramFiles}/protobuf/bin"                                 `
-    -DPROTOBUF_PROTOC_EXECUTABLE="${Env:ProgramFiles}/protobuf/bin/protoc.exe"              `
-    -DTORCH_CUDA_ARCH_LIST="Kepler;Maxwell;Pascal;Volta"                                    `
-    -DUSE_CUDA=OFF                                                                          `
-    -DUSE_GLOO=OFF                                                                          `
-    -DUSE_FBGEMM=ON                                                                         `
-    -DUSE_LEVELDB=OFF                                                                       `
-    -DUSE_LMDB=OFF                                                                          `
-    -DUSE_METAL=OFF                                                                         `
-    -DUSE_MKLDNN=OFF                                                                        `
-    -DUSE_MPI=OFF                                                                           `
-    -DUSE_NCCL=OFF                                                                          `
-    -DUSE_NNPACK=OFF                                                                        `
-    -DUSE_NUMA=OFF                                                                          `
-    -DUSE_OBSERVERS=ON                                                                      `
-    -DUSE_OPENMP=ON                                                                         `
-    -DUSE_OPENCV=OFF                                                                        `
-    -DUSE_ROCKSDB=ON                                                                        `
-    -Dglog_DIR="${Env:ProgramFiles}/google-glog/lib/cmake/glog"                             `
-    -Dgtest_force_shared_crt=ON                                                             `
-    -Dpybind11_INCLUDE_DIR="${Env:ProgramFiles}/pybind11/include"                           `
-    -G"Ninja"                                                                               `
+cmake                                                                               `
+    -DBLAS=MKL                                                                      `
+    -DBUILD_CUSTOM_PROTOBUF=OFF                                                     `
+    -DBUILD_PYTHON=ON                                                               `
+    -DBUILD_SHARED_LIBS=ON                                                          `
+    -DBUILD_TEST=ON                                                                 `
+    -DCMAKE_BUILD_TYPE=Release                                                      `
+    -DCMAKE_C_FLAGS="/FS /GL /MP /Z7 ${dep_dll}"                                    `
+    -DCMAKE_CUDA_SEPARABLE_COMPILATION=ON                                           `
+    -DCMAKE_CXX_FLAGS="/EHsc /FS /GL /MP /Z7 ${dep_dll} ${gtest_silent_warning}"    `
+    -DCMAKE_EXE_LINKER_FLAGS="/LTCG:incremental"                                    `
+    -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/Caffe2"                             `
+    -DCMAKE_SHARED_LINKER_FLAGS="/LTCG:incremental"                                 `
+    -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                                 `
+    -DCMAKE_VERBOSE_MAKEFILE=ON                                                     `
+    -DCPUINFO_BUILD_TOOLS=ON                                                        `
+    -DCUDA_NVCC_FLAGS="--expt-relaxed-constexpr"                                    `
+    -DCUDA_SEPARABLE_COMPILATION=ON                                                 `
+    -DCUDA_VERBOSE_BUILD=ON                                                         `
+    -DPROTOBUF_INCLUDE_DIRS="${Env:ProgramFiles}/protobuf/include"                  `
+    -DPROTOBUF_LIBRARIES="${Env:ProgramFiles}/protobuf/bin"                         `
+    -DPROTOBUF_PROTOC_EXECUTABLE="${Env:ProgramFiles}/protobuf/bin/protoc.exe"      `
+    -DTORCH_CUDA_ARCH_LIST="Kepler;Maxwell;Pascal;Volta"                            `
+    -DUSE_CUDA=OFF                                                                  `
+    -DUSE_GLOO=OFF                                                                  `
+    -DUSE_FBGEMM=ON                                                                 `
+    -DUSE_LEVELDB=OFF                                                               `
+    -DUSE_LMDB=OFF                                                                  `
+    -DUSE_METAL=OFF                                                                 `
+    -DUSE_MKLDNN=OFF                                                                `
+    -DUSE_MPI=OFF                                                                   `
+    -DUSE_NCCL=ON                                                                   `
+    -DUSE_NNPACK=OFF                                                                `
+    -DUSE_NUMA=OFF                                                                  `
+    -DUSE_OBSERVERS=ON                                                              `
+    -DUSE_OPENMP=ON                                                                 `
+    -DUSE_OPENCV=OFF                                                                `
+    -DUSE_ROCKSDB=ON                                                                `
+    -Dglog_DIR="${Env:ProgramFiles}/google-glog/lib/cmake/glog"                     `
+    -Dgtest_force_shared_crt=ON                                                     `
+    -Dpybind11_INCLUDE_DIR="${Env:ProgramFiles}/pybind11/include"                   `
+    -G"Ninja"                                                                       `
     ..
 
 $ErrorActionPreference="SilentlyContinue"
