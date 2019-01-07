@@ -5,7 +5,7 @@
 [ -e $STAGE/pybind ] && ( set -xe
     cd $SCRATCH
 
-    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" cython/cython numpy/numpy,v pytest-dev/pluggy pytest-dev/pytest
+    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" python-attrs/attrs cython/cython numpy/numpy,v pytest-dev/pluggy pytest-dev/pytest
 
     # ------------------------------------------------------------
 
