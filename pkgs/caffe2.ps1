@@ -115,19 +115,16 @@ cmake                                                                           
     ..
 
 $ErrorActionPreference="SilentlyContinue"
-# cmake --build . --config Release -- -maxcpucount
 cmake --build .
 if (-Not $?)
 {
     echo "Failed to build."
     echo "Retry with single thread for logging."
     echo "You may Ctrl-C this if you don't need the log file."
-    # cmake --build . --config Release 2>&1 | tee ${Env:TMP}/${proj}.log
     cmake --build . 2>&1 | tee ${Env:TMP}/${proj}.log
     exit 1
 }
 
-# cmake --build . --config Release --target run_tests -- -maxcpucount
 cmake --build . --target test
 if (-Not $?)
 {
@@ -136,8 +133,8 @@ if (-Not $?)
 $ErrorActionPreference="Stop"
 
 cmd /c rmdir /S /Q "${Env:ProgramFiles}/Caffe2"
-# cmake --build . --config Release --target install -- -maxcpucount
 cmake --build . --target install
+cmd /c xcopy /s /y "${Env:ProgramFiles}/Caffe2/lib/include" "${Env:ProgramFiles}/Caffe2/include"
 Get-ChildItem "${Env:ProgramFiles}/Caffe2" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 
 popd
