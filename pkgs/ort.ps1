@@ -85,9 +85,8 @@ $dep_dll="${protobuf_dll}"
 cmake                                                                                       `
     -A x64                                                                                  `
     -DBUILD_SHARED_LIBS=OFF                                                                 `
-    -DCMAKE_C_FLAGS="/GL /MP /Z7 ${dep_dll}"                                                `
-    -DCMAKE_CUDA_SEPARABLE_COMPILATION=ON                                                   `
-    -DCMAKE_CXX_FLAGS="/EHsc /GL /MP /Z7 ${dep_dll} ${gtest_silent_warning}"                `
+    -DCMAKE_C_FLAGS="/GL /MP /Z7 /arch:AVX2 ${dep_dll}"                                     `
+    -DCMAKE_CXX_FLAGS="/EHsc /GL /MP /Z7 /arch:AVX2 ${dep_dll} ${gtest_silent_warning}"     `
     -DCMAKE_EXE_LINKER_FLAGS="/LTCG:incremental"                                            `
     -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/onnxruntime"                                `
     -DCMAKE_SHARED_LINKER_FLAGS="/LTCG:incremental"                                         `
