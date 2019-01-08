@@ -126,7 +126,7 @@ $ErrorActionPreference="SilentlyContinue"
 cmake --build . --config Release --target run_tests -- -maxcpucount
 if (-Not $?)
 {
-    echo "Check failed but we temporarily bypass it. It might be a CUDA-only issue. Trying to reproduce:"
+    echo "Check failed but we temporarily bypass it. Trying to reproduce:"
     pushd Release
     ./onnxruntime_test_all.exe
     ./onnxruntime_shared_lib_test.exe
@@ -141,7 +141,7 @@ Get-ChildItem "${Env:ProgramFiles}/onnxruntime" -Filter *.exe -Recurse | Foreach
 
 onnx_test_runner -e cpu ./models
 onnx_test_runner -e mkldnn ./models
-# onnx_test_runner -e cuda ./models
+onnx_test_runner -e cuda ./models
 
 popd
 popd
