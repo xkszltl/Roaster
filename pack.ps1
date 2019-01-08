@@ -38,6 +38,8 @@ pushd build
 
 Write-Host "--------------------------------------------------------------------------------"
 
+Remove-Job *
+
 Get-ChildItem ../nuget | Foreach-Object {
     $pkg = $_.Name
     if ($pkg -eq "eigen")
