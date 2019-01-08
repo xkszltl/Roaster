@@ -18,7 +18,7 @@
     <copyright>Copyright 1998-2018</copyright>
     <tags>openssl native C++ v141 dyn</tags>
     <dependencies>
-      <dependency id="Roaster.zlib.v141.dyn.x64" version="0.0" />
+      <dependency id="Roaster.zlib.v141.dyn.x64" version="$version$" />
     </dependencies>
   </metadata>
   <files>

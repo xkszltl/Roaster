@@ -44,10 +44,6 @@ Get-ChildItem ../nuget | Foreach-Object {
     {
         $prefix = "${Env:ProgramFiles}/Eigen3"
     }
-    elseif ($pkg -eq "glog")
-    {
-        $prefix = "${Env:ProgramFiles}/google-glog"
-    }
     elseif ($pkg -eq "mkldnn")
     {
         $prefix = "${Env:ProgramFiles}/Intel(R) MKL-DNN"

@@ -46,6 +46,10 @@
       <Link>mkl_mc3.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/mkl_rt.dll">
+      <Link>mkl_rt.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/mkl_sequential.dll">
       <Link>mkl_sequential.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

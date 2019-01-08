@@ -31,7 +31,7 @@ cmake                                                               `
     -DCMAKE_CXX_FLAGS="/EHsc /GL /MP"                               `
     -DCMAKE_EXE_LINKER_FLAGS="/LTCG:incremental"                    `
     -DCMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO="/INCREMENTAL:NO"       `
-    -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/google-glog"        `
+    -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/glog"               `
     -DCMAKE_SHARED_LINKER_FLAGS="/LTCG:incremental"                 `
     -DCMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO="/INCREMENTAL:NO"    `
     -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                 `
@@ -43,9 +43,13 @@ cmake --build . --config RelWithDebInfo -- -maxcpucount
 
 # cmake --build . --config RelWithDebInfo --target run_tests -- -maxcpucount
 
-rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${Env:ProgramFiles}/google-glog"
+rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${Env:ProgramFiles}/glog"
 cmake --build . --config RelWithDebInfo --target install -- -maxcpucount
-Get-ChildItem "${Env:ProgramFiles}/google-glog" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
+Get-ChildItem "${Env:ProgramFiles}/glog" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
+
+# Alias to google-glog as it is the default name in CMake.
+cmd /c rmdir /S /Q "${Env:ProgramFiles}/google-glog"
+cmd /c mklink /D "${Env:ProgramFiles}//google-glog" "${Env:ProgramFiles}/glog"
 
 popd
 popd

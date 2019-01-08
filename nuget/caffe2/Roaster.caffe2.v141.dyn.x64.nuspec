@@ -15,13 +15,13 @@
     <copyright>Copyright 2001</copyright>
     <tags>caffe2 native C++ v141 dyn</tags>
     <dependencies>
-      <dependency id="Roaster.eigen.v141.dyn.x64"       version="0.0" />
-      <dependency id="Roaster.gflags.v141.dyn.x64"      version="0.0" />
-      <dependency id="Roaster.glog.v141.dyn.x64"        version="0.0" />
-      <dependency id="Roaster.mkl.v141.dyn.x64"         version="0.0" />
-      <dependency id="Roaster.mkldnn.v141.dyn.x64"      version="0.0" />
-      <dependency id="Roaster.protobuf.v141.dyn.x64"    version="0.0" />
-      <dependency id="Roaster.rocksdb.v141.dyn.x64"     version="0.0" />
+      <dependency id="Roaster.eigen.v141.dyn.x64"       version="$version$" />
+      <dependency id="Roaster.gflags.v141.dyn.x64"      version="$version$" />
+      <dependency id="Roaster.glog.v141.dyn.x64"        version="$version$" />
+      <dependency id="Roaster.mkl.v141.dyn.x64"         version="$version$" />
+      <dependency id="Roaster.mkldnn.v141.dyn.x64"      version="$version$" />
+      <dependency id="Roaster.protobuf.v141.dyn.x64"    version="$version$" />
+      <dependency id="Roaster.rocksdb.v141.dyn.x64"     version="$version$" />
     </dependencies>
   </metadata>
   <files>
