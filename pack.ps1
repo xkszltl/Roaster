@@ -62,22 +62,37 @@ Get-ChildItem ../nuget | Foreach-Object {
     }
     if (Test-Path $prefix)
     {
-        Write-Host "Packaging ${pkg}..."
+        $job = {
+            param(${pkg}, ${prefix}, ${version})
 
-        if (Test-Path "..\nuget\$pkg\$pkg")
-        {
-            cmd /c rmdir /Q "..\nuget\$pkg\$pkg"
+            Set-Location $using:PWD
+
+            Write-Host "Packaging ${pkg}..."
+
+            if (Test-Path "..\nuget\${pkg}\${pkg}")
+            {
+                cmd /c rmdir /Q "..\nuget\${pkg}\${pkg}"
+            }
+            cmd /c mklink /D "..\nuget\${pkg}\${pkg}" ${prefix}
+            & ${Env:NUGET_HOME}/nuget.exe pack -version ${version} "../nuget/${pkg}/Roaster.${pkg}.v141.dyn.x64.nuspec"
+            cmd /c rmdir /Q "..\nuget\${pkg}\${pkg}"
+
+            & ${Env:NUGET_HOME}/nuget.exe push -Source "OneOCR" -ApiKey AzureDevOps ./Roaster.${pkg}.v141.dyn.x64.${version}.nupkg
+            & ${Env:NUGET_HOME}/nuget.exe locals http-cache -clear
+
+            Write-Host "--------------------------------------------------------------------------------"
         }
-        cmd /c mklink /D "..\nuget\$pkg\$pkg" $prefix
-        & ${Env:NUGET_HOME}/nuget.exe pack -version $version "../nuget/$pkg/Roaster.${pkg}.v141.dyn.x64.nuspec"
-        cmd /c rmdir /Q "..\nuget\$pkg\$pkg"
-
-        & ${Env:NUGET_HOME}/nuget.exe push -Source "OneOCR" -ApiKey AzureDevOps ./Roaster.${pkg}.v141.dyn.x64.${version}.nupkg
-        & ${Env:NUGET_HOME}/nuget.exe locals http-cache -clear
-
-        Write-Host "--------------------------------------------------------------------------------"
+        Start-Job $job -ArgumentList @(${pkg}, ${prefix}, ${version})
     }
 }
+
+While (Get-Job -State "Running")
+{
+    Write-Host (Get-Job -State "Completed").count "/" (Get-Job).count
+    Start-Sleep 3
+}
+Get-Job | Receive-Job
+Remove-Job *
 
 popd
 
