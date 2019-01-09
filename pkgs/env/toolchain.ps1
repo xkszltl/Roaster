@@ -88,7 +88,7 @@ if (${Env:PYTHONHOME} -eq $null -or -not $(Test-Path ${Env:PYTHONHOME}/python.ex
 if (${Env:PYTHONHOME} -eq $null -or -not $(Test-Path ${Env:PYTHONHOME}/python.exe -ErrorAction SilentlyContinue))
 {
     $py_ver="3.7.2"
-    $DownloadURL = "https://www.python.org/ftp/python/${py_ver}python-${py_ver}-amd64.exe"
+    $DownloadURL = "https://www.python.org/ftp/python/${py_ver}/python-${py_ver}-amd64.exe"
     $DownloadPath = "${Env:TMP}/python-${py_ver}-amd64.exe"
     Write-Host "Downloading Python..."
     Invoke-WebRequest -Uri $DownloadURL -OutFile $DownloadPath
