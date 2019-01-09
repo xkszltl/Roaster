@@ -46,6 +46,7 @@ pushd build
 
 Write-Host "--------------------------------------------------------------------------------"
 
+Get-Job | Receive-Job
 Remove-Job *
 
 Get-ChildItem ../nuget | Foreach-Object {
@@ -88,7 +89,7 @@ Get-ChildItem ../nuget | Foreach-Object {
             cmd /c rmdir /Q "..\nuget\${pkg}\${pkg}"
 
             & ${Env:NUGET_HOME}/nuget.exe push -Source "OneOCR" -ApiKey AzureDevOps ./Roaster.${pkg}.v141.dyn.x64.${version}.nupkg
-            & ${Env:NUGET_HOME}/nuget.exe push -Source "OneOCR" -ApiKey AzureDevOps ./Roaster.${pkg}.v141.dyn.x64.${version}.nupkg
+            & ${Env:NUGET_HOME}/nuget.exe push -Source "API-OCR" -ApiKey AzureDevOps ./Roaster.${pkg}.v141.dyn.x64.${version}.nupkg
             & ${Env:NUGET_HOME}/nuget.exe locals http-cache -clear
 
             Write-Host "--------------------------------------------------------------------------------"
