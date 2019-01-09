@@ -57,6 +57,7 @@ cmake                                                                           
     ..
 
 cmake --build .
+cmake --build . --target test
 
 cmd /c rmdir /S /Q "${Env:ProgramFiles}/Cream"
 cmake --build . --target install
