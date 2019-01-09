@@ -11,6 +11,14 @@ if (${Env:NUGET_HOME} -eq $null -or -not $(Test-Path ${Env:NUGET_HOME}/nuget.exe
 
 Test-Path ${Env:NUGET_HOME}/nuget.exe | Out-Null
 
+$ErrorActionPreference="SilentlyContinue"
+& ${Env:NUGET_HOME}/nuget.exe sources Add -Name "OneOCR" -Source "https://pkgs.dev.azure.com/msresearch/_packaging/OneOCR/nuget/v3/index.json"
+& ${Env:NUGET_HOME}/nuget.exe sources Add -Name "API-OCR" -Source "https://msazure.pkgs.visualstudio.com/_packaging/API-OCR/nuget/v3/index.json"
+$ErrorActionPreference="Stop"
+& ${Env:NUGET_HOME}/nuget.exe sources Update -Name "OneOCR" -Source "https://pkgs.dev.azure.com/msresearch/_packaging/OneOCR/nuget/v3/index.json"
+& ${Env:NUGET_HOME}/nuget.exe sources Update -Name "API-OCR" -Source "https://msazure.pkgs.visualstudio.com/_packaging/API-OCR/nuget/v3/index.json"
+& ${Env:NUGET_HOME}/nuget.exe sources
+
 pushd $PSScriptRoot
 
 $versionPrefix = 'v'
@@ -79,6 +87,7 @@ Get-ChildItem ../nuget | Foreach-Object {
             & ${Env:NUGET_HOME}/nuget.exe pack -version ${version} "../nuget/${pkg}/Roaster.${pkg}.v141.dyn.x64.nuspec"
             cmd /c rmdir /Q "..\nuget\${pkg}\${pkg}"
 
+            & ${Env:NUGET_HOME}/nuget.exe push -Source "OneOCR" -ApiKey AzureDevOps ./Roaster.${pkg}.v141.dyn.x64.${version}.nupkg
             & ${Env:NUGET_HOME}/nuget.exe push -Source "OneOCR" -ApiKey AzureDevOps ./Roaster.${pkg}.v141.dyn.x64.${version}.nupkg
             & ${Env:NUGET_HOME}/nuget.exe locals http-cache -clear
 
