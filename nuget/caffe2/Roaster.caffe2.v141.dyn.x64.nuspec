@@ -4,7 +4,7 @@
     <id>Roaster.caffe2.v141.dyn.x64</id>
     <version>$version$</version>
     <title>Roaster.caffe2.v141.dyn.x64</title>
-    <authors>Facebook, Inc</authors>
+    <authors>Facebook Inc</authors>
     <owners>Tongliang Liao</owners>
     <licenseUrl>https://github.com/pytorch/pytorch/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://pytorch.org/</projectUrl>
