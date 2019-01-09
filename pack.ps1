@@ -46,7 +46,8 @@ pushd build
 
 Write-Host "--------------------------------------------------------------------------------"
 
-Get-Job | Receive-Job
+Get-Job | Stop-Job
+Get-Job | Wait-Job
 Remove-Job *
 
 Get-ChildItem ../nuget | Foreach-Object {
@@ -73,7 +74,7 @@ Get-ChildItem ../nuget | Foreach-Object {
     }
     if (Test-Path $prefix)
     {
-        $job = {
+        Start-Job {
             param(${pkg}, ${prefix}, ${version})
 
             Set-Location $using:PWD
@@ -88,13 +89,25 @@ Get-ChildItem ../nuget | Foreach-Object {
             & ${Env:NUGET_HOME}/nuget.exe pack -version ${version} "../nuget/${pkg}/Roaster.${pkg}.v141.dyn.x64.nuspec"
             cmd /c rmdir /Q "..\nuget\${pkg}\${pkg}"
 
-            & ${Env:NUGET_HOME}/nuget.exe push -Source "OneOCR" -ApiKey AzureDevOps ./Roaster.${pkg}.v141.dyn.x64.${version}.nupkg
-            & ${Env:NUGET_HOME}/nuget.exe push -Source "API-OCR" -ApiKey AzureDevOps ./Roaster.${pkg}.v141.dyn.x64.${version}.nupkg
-            & ${Env:NUGET_HOME}/nuget.exe locals http-cache -clear
+            ForEach (${feed} in @("OneOCR", "API-OCR"))
+            {
+                Start-Job {
+                    param(${nupkg}, ${feed})
+
+                    Set-Location $using:PWD
+
+                    & ${Env:NUGET_HOME}/nuget.exe push -Source ${feed} -ApiKey AzureDevOps ${nupkg}
+                    & ${Env:NUGET_HOME}/nuget.exe locals http-cache -clear
+                } -ArgumentList @("./Roaster.${pkg}.v141.dyn.x64.${version}.nupkg", ${feed})
+            }
+
+            Get-Job | Wait-Job
+            Get-Job | Receive-Job
+
+            Remove-Job *
 
             Write-Host "--------------------------------------------------------------------------------"
-        }
-        Start-Job $job -ArgumentList @(${pkg}, ${prefix}, ${version})
+        } -ArgumentList @(${pkg}, ${prefix}, ${version})
     }
 }
 
