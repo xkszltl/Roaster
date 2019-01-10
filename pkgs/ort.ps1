@@ -157,11 +157,11 @@ $ErrorActionPreference="Stop"
 
 cmd /c rmdir /S /Q "${Env:ProgramFiles}/onnxruntime"
 cmake --build . --config Release --target install -- -maxcpucount
-cmd /c xcopy /s /y "`"../cmake/external/gsl/include`""  "`"${Env:ProgramFiles}/onnxruntime/include`""
-cmd /c xcopy /s /y "`"onnx\*.pb.h`""                    "`"${Env:ProgramFiles}/onnxruntime/include/onnx`""
-cmd /c xcopy /s /y "`"onnxruntime_config.h`""           "`"${Env:ProgramFiles}/onnxruntime/include`""
-# cmd /c xcopy /s /y "`"../include`""                     "`"${Env:ProgramFiles}/onnxruntime/include`""
-# cmd /c xcopy /s /y "`"../onnxruntime`""                 "`"${Env:ProgramFiles}/onnxruntime/include/onnxruntime`""
+cmd /c xcopy /i /e /f /y "`"../cmake/external/gsl/include`""  "`"${Env:ProgramFiles}/onnxruntime/include`""
+cmd /c xcopy /i /e /f /y "`"onnx\*.pb.h`""                    "`"${Env:ProgramFiles}/onnxruntime/include/onnx`""
+cmd /c xcopy /i /e /f /y "`"onnxruntime_config.h`""           "`"${Env:ProgramFiles}/onnxruntime/include`""
+# cmd /c xcopy /i /e /f /y "`"../include`""                     "`"${Env:ProgramFiles}/onnxruntime/include`""
+# cmd /c xcopy /i /e /f /y "`"../onnxruntime`""                 "`"${Env:ProgramFiles}/onnxruntime/include/onnxruntime`""
 Get-ChildItem "${Env:ProgramFiles}/onnxruntime" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 Get-ChildItem "${Env:ProgramFiles}/onnxruntime" -Filter *.exe -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 
