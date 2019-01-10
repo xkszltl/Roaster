@@ -45,8 +45,6 @@
         mkdir -p build
         cd $_
 
-        # ln -sf $(which ninja-build) /usr/bin/ninja
-
         export MPI_HOME=/usr/local/openmpi
 
         cmake                                               \
@@ -89,15 +87,16 @@
         # time cmake --build . --target rebuild_cache
         # time cmake --build . --target
         time cmake --build . --target install
+
         time cmake --build . --target test || ! nvidia-smi
 
-        # Exclude MKL-DNN/ONNX files.
+        # Exclude GTest/MKL-DNN/ONNX/Caffe files.
         pushd "$INSTALL_ROOT"
-        rpm -ql codingcafe-mkl-dnn | sed -n 's/^\//\.\//p' | xargs rm -rf
-        rpm -ql codingcafe-onnx | sed -n 's/^\//\.\//p' | xargs rm -rf
+        for i in gtest mkl-dnn onnx caffe; do
+            [ "$(rpm -qa "codingcafe-$i")" ] || continue
+            rpm -ql "codingcafe-$i" | sed -n 's/^\//\.\//p' | xargs rm -rf
+        done
         popd
-
-        # rm -rf /usr/bin/ninja
 
         # --------------------------------------------------------
         # Install python files
@@ -119,13 +118,6 @@
         else
             sed -n 's/^set[[:space:]]*([[:space:]]*CAFFE2_VERSION_.....[[:space:]][[:space:]]*\([0-9]*\)[[:space:]]*).*/\1/p' ../CMakeLists.txt | paste -sd.
         fi | xargs git tag -f
-
-        # --------------------------------------------------------
-        # Avoid caffe/gtest/rh-python36 conflicts
-        # --------------------------------------------------------
-
-        rm -rf "$INSTALL_ROOT/usr/local/include/"{caffe/proto,gmock,gtest}
-        rm -rf "$INSTALL_ROOT/usr/local/lib64/"{pkgconfig/,lib}{gmock,gtest}{,_*}.*
 
         # --------------------------------------------------------
         # Relocate site-package installation.
