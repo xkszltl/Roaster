@@ -39,6 +39,26 @@ git submodule update --init
 popd
 
 # ================================================================================
+# Update ONNX
+# ================================================================================
+
+pushd third_party/onnx
+git pull origin master
+git submodule update --init --recursive
+
+pushd third_party/pybind11
+git fetch --tags
+$pybind_latest_ver='v' + $($(git tag) -match '^v[0-9\.]*$' -replace '^v','' | sort {[Version]$_})[-1]
+git checkout "$pybind_latest_ver"
+git submodule update --init --recursive
+popd
+
+git --no-pager diff
+git commit -am "Automatic git submodule updates."
+
+popd
+
+# ================================================================================
 # Commit
 # ================================================================================
 
@@ -134,7 +154,6 @@ $ErrorActionPreference="Stop"
 
 cmd /c rmdir /S /Q "${Env:ProgramFiles}/Caffe2"
 cmake --build . --target install
-# cmd /c xcopy /s /y "${Env:ProgramFiles}/Caffe2/lib/include" "${Env:ProgramFiles}/Caffe2/include"
 Get-ChildItem "${Env:ProgramFiles}/Caffe2" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 
 popd

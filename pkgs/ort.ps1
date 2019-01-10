@@ -50,12 +50,23 @@ git submodule update --init
 popd
 
 # ================================================================================
-# Update ONNX
+# Update ONNX and its PyBind
 # ================================================================================
 
 pushd cmake/external/onnx
 git pull origin master
-git submodule update --init
+git submodule update --init --recursive
+
+pushd third_party/pybind11
+git fetch --tags
+$pybind_latest_ver='v' + $($(git tag) -match '^v[0-9\.]*$' -replace '^v','' | sort {[Version]$_})[-1]
+git checkout "$pybind_latest_ver"
+git submodule update --init --recursive
+popd
+
+git --no-pager diff
+git commit -am "Automatic git submodule updates."
+
 popd
 
 # ================================================================================
@@ -82,8 +93,7 @@ $gtest_silent_warning="/D_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS /D_SILENCE_TR
 $protobuf_dll="/DPROTOBUF_USE_DLLS"
 $dep_dll="${protobuf_dll}"
 
-$delay_dll="/DELAYLOAD:cudart64_100.dll"
-
+# Turn off CUDA temporarily until Ort team switch back to static cudart.
 cmake                                                                                   `
     -A x64                                                                              `
     -DBUILD_SHARED_LIBS=OFF                                                             `
@@ -91,7 +101,7 @@ cmake                                                                           
     -DCMAKE_CXX_FLAGS="/EHsc /GL /MP /Z7 /arch:AVX2 ${dep_dll} ${gtest_silent_warning}" `
     -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"                        `
     -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/onnxruntime"                            `
-    -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental ${delay_dll}"        `
+    -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"                     `
     -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                                     `
     -DCUDA_VERBOSE_BUILD=ON                                                             `
     -DONNX_CUSTOM_PROTOC_EXECUTABLE="${Env:ProgramFiles}/protobuf/bin/protoc.exe"       `
@@ -100,7 +110,7 @@ cmake                                                                           
     -Donnxruntime_CUDNN_HOME="$(Split-Path (Get-Command nvcc).Source -Parent)/.."       `
     -Donnxruntime_ENABLE_PYTHON=ON                                                      `
     -Donnxruntime_RUN_ONNX_TESTS=ON                                                     `
-    -Donnxruntime_USE_CUDA=ON                                                           `
+    -Donnxruntime_USE_CUDA=OFF                                                          `
     -Donnxruntime_USE_JEMALLOC=OFF                                                      `
     -Donnxruntime_USE_LLVM=OFF                                                          `
     -Donnxruntime_USE_MKLDNN=ON                                                         `
@@ -122,7 +132,16 @@ if (-not $(Test-Path $model_path))
     & "${Env:ProgramFiles}/CURL/bin/curl.exe" -fkSL "https://onnxruntimetestdata.blob.core.windows.net/models/20181210.zip" -o "${model_path}.downloading"
     mv -Force "${model_path}.downloading" "${model_path}"
 }
-Expand-Archive ${model_path} models
+
+if (Get-Command -Name unzip -ErrorAction SilentlyContinue)
+{
+    unzip -ou "${model_path}" -d "${model_path}.d"
+    cmd /c mklink /D models "`"${model_path}.d`""
+}
+else
+{
+    Expand-Archive "${model_path}" "models"
+}
 
 $ErrorActionPreference="SilentlyContinue"
 cmake --build . --config Release --target run_tests -- -maxcpucount
@@ -138,6 +157,8 @@ $ErrorActionPreference="Stop"
 
 cmd /c rmdir /S /Q "${Env:ProgramFiles}/onnxruntime"
 cmake --build . --config Release --target install -- -maxcpucount
+cmd /c xcopy /s /y "..\cmake\external\gsl\include" "${Env:ProgramFiles}\onnxruntime\include"
+cmd /c xcopy /s /y ".\onnxruntime_config.h" "${Env:ProgramFiles}\onnxruntime\include\"
 Get-ChildItem "${Env:ProgramFiles}/onnxruntime" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 Get-ChildItem "${Env:ProgramFiles}/onnxruntime" -Filter *.exe -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 
