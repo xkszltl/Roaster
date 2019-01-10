@@ -37,23 +37,23 @@ $gflags_dll="/DGFLAGS_IS_A_DLL=1"
 $protobuf_dll="/DPROTOBUF_USE_DLLS"
 $dep_dll="${gflags_dll} ${protobuf_dll}"
 
-cmake                                                                                   `
-    -DBOOST_ROOT="${Env:ProgramFiles}/boost"                                            `
-    -DBUILD_SHARED_LIBS=ON                                                              `
-    -DCMAKE_BUILD_TYPE=Release                                                          `
-    -DCMAKE_C_FLAGS="/GL /MP /Z7 /arch:AVX2 ${dep_dll}"                                 `
-    -DCMAKE_CUDA_SEPARABLE_COMPILATION=ON                                               `
+cmake                                                                   `
+    -DBOOST_ROOT="${Env:ProgramFiles}/boost"                            `
+    -DBUILD_SHARED_LIBS=ON                                              `
+    -DCMAKE_BUILD_TYPE=Release                                          `
+    -DCMAKE_C_FLAGS="/GL /MP /Z7 /arch:AVX2 ${dep_dll}"                 `
+    -DCMAKE_CUDA_SEPARABLE_COMPILATION=ON                               `
     -DCMAKE_CXX_FLAGS="/EHsc /GL /MP /Z7 /arch:AVX2 ${dep_dll} ${gtest_silent_warning}" `
-    -DCMAKE_EXE_LINKER_FLAGS="/LTCG:incremental"                                        `
-    -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/Cream"                                  `
-    -DCMAKE_SHARED_LINKER_FLAGS="/LTCG:incremental"                                     `
-    -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                                     `
-    -DCMAKE_VERBOSE_MAKEFILE=ON                                                         `
-    -DCUDA_NVCC_FLAGS="--expt-relaxed-constexpr"                                        `
-    -DCUDA_VERBOSE_BUILD=ON                                                             `
-    -DGTEST_ROOT="${Env:ProgramFiles}/googletest"                                       `
-    -Dglog_DIR="${Env:ProgramFiles}/glog/lib/cmake/glog"                                `
-    -G"Ninja"                                                                           `
+    -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"        `
+    -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/Cream"                  `
+    -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"     `
+    -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                     `
+    -DCMAKE_VERBOSE_MAKEFILE=ON                                         `
+    -DCUDA_NVCC_FLAGS="--expt-relaxed-constexpr"                        `
+    -DCUDA_VERBOSE_BUILD=ON                                             `
+    -DGTEST_ROOT="${Env:ProgramFiles}/googletest"                       `
+    -Dglog_DIR="${Env:ProgramFiles}/glog/lib/cmake/glog"                `
+    -G"Ninja"                                                           `
     ..
 
 cmake --build .

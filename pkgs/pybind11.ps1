@@ -1,8 +1,8 @@
 #Requires -RunAsAdministrator
 
 $ErrorActionPreference="Stop"
-& "$(Split-Path -Path $MyInvocation.MyCommand.Path -Parent)/env/mirror.ps1"
-& "$(Split-Path -Path $MyInvocation.MyCommand.Path -Parent)/env/toolchain.ps1"
+& "$(Split-Path -Path $MyInvocation.MyCommand.Path -Parent)/env/mirror.ps1" | Out-Null
+& "$(Split-Path -Path $MyInvocation.MyCommand.Path -Parent)/env/toolchain.ps1" | Out-Null
 
 & "${Env:PYTHONHOME}/python.exe" -m pip install -U pytest
 
@@ -25,23 +25,19 @@ mkdir build
 pushd build
 
 cmake                                                               `
-    -A x64                                                          `
-    -DCMAKE_BUILD_TYPE=RelWithDebInfo                               `
-    -DCMAKE_CXX_FLAGS="/EHsc /GL /MP"                               `
+    -DCMAKE_BUILD_TYPE=Release                                      `
+    -DCMAKE_CXX_FLAGS="/EHsc /GL /MP /Z7"                           `
     -DCMAKE_EXE_LINKER_FLAGS="/LTCG:incremental"                    `
-    -DCMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO="/INCREMENTAL:NO"       `
     -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/pybind11"           `
-    -DCMAKE_SHARED_LINKER_FLAGS="/LTCG:incremental"                 `
-    -DCMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO="/INCREMENTAL:NO"    `
+    -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental" `
     -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                 `
-    -G"Visual Studio 15 2017"                                       `
-    -T"host=x64"                                                    `
+    -G"Ninja"                                                       `
     ..
 
-cmake --build . --config RelWithDebInfo -- -maxcpucount
+cmake --build .
 
 $ErrorActionPreference="SilentlyContinue"
-cmake --build . --config RelWithDebInfo --target check -- -maxcpucount
+cmake --build . --target check
 if (-Not $?)
 {
     echo "Check failed but we temporarily bypass it."
@@ -49,7 +45,7 @@ if (-Not $?)
 $ErrorActionPreference="Stop"
 
 rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${Env:ProgramFiles}/pybind11"
-cmake --build . --config RelWithDebInfo --target install -- -maxcpucount
+cmake --build . --target install
 Get-ChildItem "${Env:ProgramFiles}/pybind11" -Filter '*.dll' -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 
 popd

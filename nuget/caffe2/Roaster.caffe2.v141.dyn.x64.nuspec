@@ -21,6 +21,7 @@
       <dependency id="Roaster.mkl.v141.dyn.x64"         version="$version$" />
       <dependency id="Roaster.mkldnn.v141.dyn.x64"      version="$version$" />
       <dependency id="Roaster.protobuf.v141.dyn.x64"    version="$version$" />
+      <dependency id="Roaster.onnx.v141.dyn.x64"        version="$version$" />
       <dependency id="Roaster.rocksdb.v141.dyn.x64"     version="$version$" />
     </dependencies>
   </metadata>
@@ -29,7 +30,6 @@
     <file src="caffe2\include\**\*"                 target="lib\native\include" />
     <file src="caffe2\lib\**\*"                     target="lib\native\lib\Debug\" />
     <file src="caffe2\lib\**\*"                     target="lib\native\lib\Release\" />
-    <file src="caffe2\lib\include\**\*"             target="lib\native\include" />
     <file src="caffe2\share\**\*"                   target="lib\native\cmake\" />
     <file src="caffe2\test\*"                       target="lib\native\lib\Debug\" />
     <file src="caffe2\test\*"                       target="lib\native\lib\Release\" />

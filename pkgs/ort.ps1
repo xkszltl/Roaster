@@ -2,7 +2,7 @@
 
 $ErrorActionPreference="Stop"
 & "$(Split-Path -Path $MyInvocation.MyCommand.Path -Parent)/env/mirror.ps1" | Out-Null
-& "$(Split-Path -Path $MyInvocation.MyCommand.Path -Parent)/env/toolchain.ps1"
+& "$(Split-Path -Path $MyInvocation.MyCommand.Path -Parent)/env/toolchain.ps1" | Out-Null
 
 & "${Env:PYTHONHOME}/python.exe" -m pip install -U numpy | Out-Null
 
@@ -82,33 +82,35 @@ $gtest_silent_warning="/D_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS /D_SILENCE_TR
 $protobuf_dll="/DPROTOBUF_USE_DLLS"
 $dep_dll="${protobuf_dll}"
 
-cmake                                                                                       `
-    -A x64                                                                                  `
-    -DBUILD_SHARED_LIBS=OFF                                                                 `
-    -DCMAKE_C_FLAGS="/GL /MP /Z7 /arch:AVX2 ${dep_dll}"                                     `
-    -DCMAKE_CXX_FLAGS="/EHsc /GL /MP /Z7 /arch:AVX2 ${dep_dll} ${gtest_silent_warning}"     `
-    -DCMAKE_EXE_LINKER_FLAGS="/LTCG:incremental"                                            `
-    -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/onnxruntime"                                `
-    -DCMAKE_SHARED_LINKER_FLAGS="/LTCG:incremental"                                         `
-    -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                                         `
-    -DCUDA_VERBOSE_BUILD=ON                                                                 `
-    -DONNX_CUSTOM_PROTOC_EXECUTABLE="${Env:ProgramFiles}/protobuf/bin/protoc.exe"           `
-    -Deigen_SOURCE_PATH="${Env:ProgramFiles}/Eigen3/include/eigen3"                         `
-    -Donnxruntime_BUILD_SHARED_LIB=ON                                                       `
-    -Donnxruntime_CUDNN_HOME="$(Split-Path (Get-Command nvcc).Source -Parent)/.."           `
-    -Donnxruntime_ENABLE_PYTHON=ON                                                          `
-    -Donnxruntime_RUN_ONNX_TESTS=ON                                                         `
-    -Donnxruntime_USE_CUDA=ON                                                               `
-    -Donnxruntime_USE_JEMALLOC=OFF                                                          `
-    -Donnxruntime_USE_LLVM=OFF                                                              `
-    -Donnxruntime_USE_MKLDNN=ON                                                             `
-    -Donnxruntime_USE_MKLML=OFF                                                             `
-    -Donnxruntime_USE_OPENMP=ON                                                             `
-    -Donnxruntime_USE_PREBUILT_PB=ON                                                        `
-    -Donnxruntime_USE_PREINSTALLED_EIGEN=ON                                                 `
-    -Donnxruntime_USE_TVM=OFF                                                               `
-    -G"Visual Studio 15 2017"                                                               `
-    -T"host=x64"                                                                            `
+$delay_dll="/DELAYLOAD:cudart64_100.dll"
+
+cmake                                                                                   `
+    -A x64                                                                              `
+    -DBUILD_SHARED_LIBS=OFF                                                             `
+    -DCMAKE_C_FLAGS="/GL /MP /Z7 /arch:AVX2 ${dep_dll}"                                 `
+    -DCMAKE_CXX_FLAGS="/EHsc /GL /MP /Z7 /arch:AVX2 ${dep_dll} ${gtest_silent_warning}" `
+    -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"                        `
+    -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/onnxruntime"                            `
+    -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental ${delay_dll}"        `
+    -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                                     `
+    -DCUDA_VERBOSE_BUILD=ON                                                             `
+    -DONNX_CUSTOM_PROTOC_EXECUTABLE="${Env:ProgramFiles}/protobuf/bin/protoc.exe"       `
+    -Deigen_SOURCE_PATH="${Env:ProgramFiles}/Eigen3/include/eigen3"                     `
+    -Donnxruntime_BUILD_SHARED_LIB=ON                                                   `
+    -Donnxruntime_CUDNN_HOME="$(Split-Path (Get-Command nvcc).Source -Parent)/.."       `
+    -Donnxruntime_ENABLE_PYTHON=ON                                                      `
+    -Donnxruntime_RUN_ONNX_TESTS=ON                                                     `
+    -Donnxruntime_USE_CUDA=ON                                                           `
+    -Donnxruntime_USE_JEMALLOC=OFF                                                      `
+    -Donnxruntime_USE_LLVM=OFF                                                          `
+    -Donnxruntime_USE_MKLDNN=ON                                                         `
+    -Donnxruntime_USE_MKLML=OFF                                                         `
+    -Donnxruntime_USE_OPENMP=ON                                                         `
+    -Donnxruntime_USE_PREBUILT_PB=ON                                                    `
+    -Donnxruntime_USE_PREINSTALLED_EIGEN=ON                                             `
+    -Donnxruntime_USE_TVM=OFF                                                           `
+    -G"Visual Studio 15 2017"                                                           `
+    -T"host=x64"                                                                        `
     ../cmake
 
 cmake --build . --config Release -- -maxcpucount

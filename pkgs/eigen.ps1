@@ -2,6 +2,7 @@
 
 $ErrorActionPreference="Stop"
 & "$(Split-Path -Path $MyInvocation.MyCommand.Path -Parent)/env/mirror.ps1" | Out-Null
+& "$(Split-Path -Path $MyInvocation.MyCommand.Path -Parent)/env/toolchain.ps1" | Out-Null
 
 pushd ${Env:TMP}
 $repo="${Env:GIT_MIRROR}/eigenteam/eigen-git-mirror.git"
@@ -19,27 +20,43 @@ $latest_ver=$($(git ls-remote --tags "$repo") -match '.*refs/tags/[0-9\.]*$' -re
 git clone --depth 1 --single-branch -b "$latest_ver" "$repo"
 pushd "$root"
 
+# Copy MKL's environment variables from ".bat" file to PowerShell.
+Invoke-Expression $($(cmd /C "`"${Env:ProgramFiles(x86)}/IntelSWTools/compilers_and_libraries/windows/mkl/bin/mklvars.bat`" intel64 vs2017 & set") -Match '^MKL(_|ROOT)' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
+Invoke-Expression $($(cmd /C "`"${Env:ProgramFiles(x86)}/IntelSWTools/compilers_and_libraries/windows/mkl/bin/mklvars.bat`" intel64 vs2017 & set") -Match '^LIB' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
+Invoke-Expression $($(cmd /C "`"${Env:ProgramFiles(x86)}/IntelSWTools/compilers_and_libraries/windows/mkl/bin/mklvars.bat`" intel64 vs2017 & set") -Match '^CPATH' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
+Invoke-Expression $($(cmd /C "`"${Env:ProgramFiles(x86)}/IntelSWTools/compilers_and_libraries/windows/mkl/bin/mklvars.bat`" intel64 vs2017 & set") -Match '^INCLUDE' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
+
 mkdir build
 pushd build
 
-cmake                                   `
-    -DCMAKE_BUILD_TYPE=RelWithDebInfo   `
-    -DCMAKE_C_FLAGS="/MP"               `
-    -DCMAKE_CXX_FLAGS="/MP"             `
-    -DEIGEN_TEST_CUDA=ON                `
-    -DEIGEN_TEST_CXX11=ON               `
-    -G"Visual Studio 15 2017 Win64"     `
+cmake                                                                   `
+    -DCMAKE_BUILD_TYPE=Release                                          `
+    -DCMAKE_C_FLAGS="/GL /MP /Z7 /arch:AVX2"                            `
+    -DCMAKE_CXX_FLAGS="/EHsc /GL /MP /Z7 /arch:AVX2"                    `
+    -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"        `
+    -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/Eigen3"                 `
+    -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"     `
+    -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                     `
+    -DEIGEN_TEST_CUDA=ON                                                `
+    -DEIGEN_TEST_CXX11=ON                                               `
+    -G"Ninja"                                                           `
     ..
 
-cmake --build . --config RelWithDebInfo -- -maxcpucount
+cmake --build .
 
-cmake --build . --config RelWithDebInfo --target blas -- -maxcpucount
+# This will take hours.
+cmake --build . --target blas
 
-# Test takes extremely long to build.
-# cmake --build . --config RelWithDebInfo --target check -- -maxcpucount
+$ErrorActionPreference="SilentlyContinue"
+# cmake --build . --target check
+# if (-Not $?)
+# {
+#     echo "Check failed but we temporarily bypass it."
+# }
+$ErrorActionPreference="Stop"
 
 rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${Env:ProgramFiles}/Eigen3"
-cmake --build . --config RelWithDebInfo --target install -- -maxcpucount
+cmake --build . --target install
 
 popd
 popd

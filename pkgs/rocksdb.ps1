@@ -36,17 +36,16 @@ ${Env:ZLIB_INCLUDE} = "${Env:ProgramFiles}/zlib/include/"
 ${Env:ZLIB_LIB_DEBUG} = "${Env:ProgramFiles}/zlib/lib/zlib.lib"
 ${Env:ZLIB_LIB_RELEASE} = "${Env:ProgramFiles}/zlib/lib/zlib.lib"
 
-# Tests are not supported in CMake Release build.
+# Known issues:
+#   - Tests are not supported in CMake Release build.
+#   - /Zi hard-coded.
 cmake                                                               `
-    -A x64                                                          `
-    -DCMAKE_BUILD_TYPE=RelWithDebInfo                               `
+    -DCMAKE_BUILD_TYPE=Release                                      `
     -DCMAKE_C_FLAGS="/GL /MP"                                       `
     -DCMAKE_CXX_FLAGS="/EHsc /GL /MP"                               `
-    -DCMAKE_EXE_LINKER_FLAGS="/LTCG:incremental"                    `
-    -DCMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO="/INCREMENTAL:NO"       `
+    -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"    `
     -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/rocksdb"            `
-    -DCMAKE_SHARED_LINKER_FLAGS="/LTCG:incremental"                 `
-    -DCMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO="/INCREMENTAL:NO"    `
+    -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental" `
     -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                 `
     -DFAIL_ON_WARNINGS=OFF                                          `
     -DROCKSDB_INSTALL_ON_WINDOWS=ON                                 `
@@ -55,15 +54,22 @@ cmake                                                               `
     -DWITH_TESTS=OFF                                                `
     -DWITH_XPRESS=ON                                                `
     -DWITH_ZLIB=ON                                                  `
-    -G"Visual Studio 15 2017"                                       `
-    -T"host=x64"                                                    `
+    -G"Ninja"                                                       `
     ..
 
-cmake --build . --config RelWithDebInfo -- -maxcpucount
-# cmake --build . --config RelWithDebInfo --target run_tests -- -maxcpucount
+cmake --build .
+
+$ErrorActionPreference="SilentlyContinue"
+# cmake --build . --target test
+# if (-Not $?)
+# {
+#     echo "Oops! Expect to pass all tests."
+#     exit 1
+# }
+$ErrorActionPreference="Stop"
 
 rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${Env:ProgramFiles}/rocksdb"
-cmake --build . --config RelWithDebInfo --target install -- -maxcpucount
+cmake --build . --target install
 Get-ChildItem "${Env:ProgramFiles}/rocksdb" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 
 popd

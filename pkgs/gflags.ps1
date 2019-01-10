@@ -2,6 +2,7 @@
 
 $ErrorActionPreference="Stop"
 & "$(Split-Path -Path $MyInvocation.MyCommand.Path -Parent)/env/mirror.ps1" | Out-Null
+& "$(Split-Path -Path $MyInvocation.MyCommand.Path -Parent)/env/toolchain.ps1" | Out-Null
 
 pushd ${Env:TMP}
 $repo="${Env:GIT_MIRROR}/gflags/gflags.git"
@@ -22,28 +23,34 @@ mkdir build-win
 pushd build-win
 
 cmake                                                               `
-    -A x64                                                          `
     -DBUILD_PACKAGING=ON                                            `
     -DBUILD_SHARED_LIBS=ON                                          `
-    -DCMAKE_BUILD_TYPE=RelWithDebInfo                               `
-    -DCMAKE_C_FLAGS="/GL /MP"                                       `
-    -DCMAKE_CXX_FLAGS="/EHsc /GL /MP"                               `
-    -DCMAKE_EXE_LINKER_FLAGS="/LTCG:incremental"                    `
-    -DCMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO="/INCREMENTAL:NO"       `
+    -DBUILD_TESTING=ON                                              `
+    -DCMAKE_BUILD_TYPE=Release                                      `
+    -DCMAKE_C_FLAGS="/GL /MP /Z7"                                   `
+    -DCMAKE_CXX_FLAGS="/EHsc /GL /MP /Z7"                           `
+    -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"    `
     -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/gflags"             `
-    -DCMAKE_SHARED_LINKER_FLAGS="/LTCG:incremental"                 `
-    -DCMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO="/INCREMENTAL:NO"    `
+    -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental" `
     -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                 `
-    -G"Visual Studio 15 2017"                                       `
-    -T"host=x64"                                                    `
+    -G"Ninja"                                                       `
     ..
 
-cmake --build . --config RelWithDebInfo -- -maxcpucount
+cmake --build .
 
-cmake --build . --config RelWithDebInfo --target package -- -maxcpucount
+$ErrorActionPreference="SilentlyContinue"
+cmake --build . --target test
+if (-Not $?)
+{
+    echo "Oops! Expect to pass all tests."
+    exit 1
+}
+$ErrorActionPreference="Stop"
+
+cmake --build . --target package
 
 rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${Env:ProgramFiles}/gflags"
-cmake --build . --config RelWithDebInfo --target install -- -maxcpucount
+cmake --build . --target install
 Get-ChildItem "${Env:ProgramFiles}/gflags" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 
 popd

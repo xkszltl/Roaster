@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Roaster.onnx.v141.dyn.x64</id>
+    <version>$version$</version>
+    <title>Roaster.onnx.v141.dyn.x64</title>
+    <authors>Facebook Inc, Microsoft Corporation</authors>
+    <owners>Tongliang Liao</owners>
+    <licenseUrl>https://github.com/onnx/onnx/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://onnx.ai/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>Open Neural Network Exchange (ONNX) is an open ecosystem that empowers AI developers to choose the right tools as their project evolves.</summary>
+    <description>Open Neural Network Exchange (ONNX) is an open ecosystem that empowers AI developers to choose the right tools as their project evolves. ONNX provides an open source format for AI models, both deep learning and traditional ML. It defines an extensible computation graph model, as well as definitions of built-in operators and standard data types. Currently we focus on the capabilities needed for inferencing (scoring).</description>
+    <releaseNotes>https://github.com/onnx/onnx/blob/master/docs/Versioning.md</releaseNotes>
+    <copyright>Copyright 2018</copyright>
+    <tags>onnx native C++ v141 dyn</tags>
+    <dependencies>
+      <dependency id="Roaster.protobuf.v141.dyn.x64" version="$version$" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="Roaster.onnx.v141.dyn.x64.targets" target="build\native\Roaster.onnx.v141.dyn.x64.targets" />
+    <file src="onnx\include\**\*"                 target="lib\native\include" />
+    <file src="onnx\lib\**\*"                     target="lib\native\lib\Debug\" />
+    <file src="onnx\lib\**\*"                     target="lib\native\lib\Release\" />
+    <file src="onnx\share\cmake\**\*"             target="lib\native\cmake\" />
+  </files>
+</package>
