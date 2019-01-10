@@ -159,6 +159,7 @@ cmd /c rmdir /S /Q "${Env:ProgramFiles}/onnxruntime"
 cmake --build . --config Release --target install -- -maxcpucount
 cmd /c xcopy /s /y "..\cmake\external\gsl\include" "${Env:ProgramFiles}\onnxruntime\include"
 cmd /c xcopy /s /y ".\onnxruntime_config.h" "${Env:ProgramFiles}\onnxruntime\include\"
+cmd /c xcopy /s /y "..\include" "${Env:ProgramFiles}\onnxruntime\include"
 Get-ChildItem "${Env:ProgramFiles}/onnxruntime" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 Get-ChildItem "${Env:ProgramFiles}/onnxruntime" -Filter *.exe -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 
