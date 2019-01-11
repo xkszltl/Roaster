@@ -157,6 +157,7 @@ $ErrorActionPreference="Stop"
 
 cmd /c rmdir /S /Q "${Env:ProgramFiles}/onnxruntime"
 cmd /c xcopy /e /i /f /y "..\cmake\external\gsl\include"    "${Env:ProgramFiles}\onnxruntime\include"
+cmd /c xcopy /e /i /f /y "..\cmake\external\onnx\onnx"      "${Env:ProgramFiles}\onnxruntime\include\onnx"
 cmd /c xcopy    /i /f /y "onnx\*.pb.h"                      "${Env:ProgramFiles}\onnxruntime\include\onnx"
 cmd /c xcopy    /i /f /y "onnxruntime_config.h"             "${Env:ProgramFiles}\onnxruntime\include\onnxruntime"
 cmd /c xcopy /e /i /f /y "..\onnxruntime\core"              "${Env:ProgramFiles}\onnxruntime\include\onnxruntime\core"
@@ -170,5 +171,5 @@ onnx_test_runner -e cuda ./models
 
 popd
 popd
-rm -Force -Recurse "$root"
+# rm -Force -Recurse "$root"
 popd
