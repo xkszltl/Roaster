@@ -171,5 +171,5 @@ onnx_test_runner -e cuda ./models
 
 popd
 popd
-# rm -Force -Recurse "$root"
+rm -Force -Recurse "$root"
 popd
