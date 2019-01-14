@@ -82,6 +82,7 @@ jordansissel/fpm,\
 Kitware/{CMake,VTK},\
 llvm-mirror/{ll{vm,d,db,go},clang{,-tools-extra},polly,compiler-rt,openmp,lib{unwind,cxx{,abi}},test-suite},\
 LMDB/lmdb,\
+lutzroeder/netron,\
 madler/zlib,\
 Maratyszcza/{confu,cpuinfo,FP16,FXdiv,NNPACK,PeachPy,psimd,pthreadpool},\
 Microsoft/{dotnet,GSL,onnxruntime,TypeScript,vcpkg,vscode},\
