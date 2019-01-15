@@ -78,15 +78,17 @@ Invoke-Expression $($(cmd /C "`"${Env:ProgramFiles(x86)}/IntelSWTools/compilers_
 Invoke-Expression $($(cmd /C "`"${Env:ProgramFiles(x86)}/IntelSWTools/compilers_and_libraries/windows/mkl/bin/mklvars.bat`" intel64 vs2017 & set") -Match '^CPATH' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
 Invoke-Expression $($(cmd /C "`"${Env:ProgramFiles(x86)}/IntelSWTools/compilers_and_libraries/windows/mkl/bin/mklvars.bat`" intel64 vs2017 & set") -Match '^INCLUDE' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
 
-$gtest_silent_warning="/D_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS /D_SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING /w"
-$gflags_dll="/DGFLAGS_IS_A_DLL=1"
-$protobuf_dll="/DPROTOBUF_USE_DLLS"
-$dep_dll="${gflags_dll} ${protobuf_dll}"
+$gtest_silent_warning   = "/D_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS /D_SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING /w"
+$gflags_dll             = "/DGFLAGS_IS_A_DLL=1"
+$protobuf_dll           = "/DPROTOBUF_USE_DLLS"
+$dep_dll                = "${gflags_dll} ${protobuf_dll}"
+$mkldnn_win             = "/DWIN32"
+$cflags                 = "${dep_dll} ${mkldnn_win}"
+$cxxflags               = "${c_def} ${gtest_silent_warning}"
 
 # ==========================================================================================
 # Known issues:
-#   * MKL-DNN requires OpenMP 3.0 which is not supported in MSVC.
-#   * CUDA separable compilation is extremely slow with MSBuild due to serial execution.
+#   * They claim (I think it's wrong) that MKL-DNN requires OpenMP 3.0 which is not supported in MSVC.
 #   * Fix CUDA compilation with /FS.
 #   * Currently MSVC build disables AVX2 by default for unknown reason.
 # ==========================================================================================
@@ -97,9 +99,9 @@ cmake                                                                           
     -DBUILD_SHARED_LIBS=ON                                                      `
     -DBUILD_TEST=ON                                                             `
     -DCMAKE_BUILD_TYPE=Release                                                  `
-    -DCMAKE_C_FLAGS="/FS /GL /MP /Z7 /arch:AVX2 ${dep_dll}"                     `
+    -DCMAKE_C_FLAGS="/FS /GL /MP /Z7 /arch:AVX2 ${cflags}"                      `
     -DCMAKE_CUDA_SEPARABLE_COMPILATION=ON                                       `
-    -DCMAKE_CXX_FLAGS="/EHsc /FS /GL /MP /Z7 /arch:AVX2 ${dep_dll} ${gtest_silent_warning}" `
+    -DCMAKE_CXX_FLAGS="/EHsc /FS /GL /MP /Z7 /arch:AVX2 ${cxxflags}"            `
     -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"                `
     -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/Caffe2"                         `
     -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"             `
@@ -119,7 +121,7 @@ cmake                                                                           
     -DUSE_LEVELDB=OFF                                                           `
     -DUSE_LMDB=OFF                                                              `
     -DUSE_METAL=OFF                                                             `
-    -DUSE_MKLDNN=OFF                                                            `
+    -DUSE_MKLDNN=ON                                                             `
     -DUSE_MPI=OFF                                                               `
     -DUSE_NCCL=ON                                                               `
     -DUSE_NNPACK=OFF                                                            `
@@ -141,6 +143,7 @@ if (-Not $?)
     echo "Failed to build."
     echo "Retry with single thread for logging."
     echo "You may Ctrl-C this if you don't need the log file."
+    cmake --build . -- -k0
     cmake --build . 2>&1 | tee ${Env:TMP}/${proj}.log
     exit 1
 }
