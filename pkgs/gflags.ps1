@@ -27,10 +27,11 @@ cmake                                                               `
     -DBUILD_SHARED_LIBS=ON                                          `
     -DBUILD_TESTING=ON                                              `
     -DCMAKE_BUILD_TYPE=Release                                      `
-    -DCMAKE_C_FLAGS="/GL /MP /Z7"                                   `
-    -DCMAKE_CXX_FLAGS="/EHsc /GL /MP /Z7"                           `
+    -DCMAKE_C_FLAGS="/GL /MP /Zi"                                   `
+    -DCMAKE_CXX_FLAGS="/EHsc /GL /MP /Zi"                           `
     -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"    `
     -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/gflags"             `
+    -DCMAKE_PDB_OUTPUT_DIRECTORY="${PWD}/pdb"                       `
     -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental" `
     -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                 `
     -G"Ninja"                                                       `
@@ -51,6 +52,7 @@ cmake --build . --target package
 
 rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${Env:ProgramFiles}/gflags"
 cmake --build . --target install
+cmd /c xcopy /i /f /y "pdb\*.pdb" "${Env:ProgramFiles}\gflags\bin"
 Get-ChildItem "${Env:ProgramFiles}/gflags" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 
 popd

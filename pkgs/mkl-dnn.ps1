@@ -31,10 +31,11 @@ pushd build
 
 cmake                                                                   `
     -DCMAKE_BUILD_TYPE=Release                                          `
-    -DCMAKE_C_FLAGS="/GL /MP /Z7 /arch:AVX2"                            `
-    -DCMAKE_CXX_FLAGS="/EHsc /GL /MP /Z7 /arch:AVX2"                    `
+    -DCMAKE_C_FLAGS="/GL /MP /Zi /arch:AVX2"                            `
+    -DCMAKE_CXX_FLAGS="/EHsc /GL /MP /Zi /arch:AVX2"                    `
     -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"        `
     -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/Intel(R) MKL-DNN"       `
+    -DCMAKE_PDB_OUTPUT_DIRECTORY="${PWD}/pdb"                           `
     -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"     `
     -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                     `
     -G"Ninja"                                                           `
@@ -53,6 +54,7 @@ $ErrorActionPreference="Stop"
 
 rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${Env:ProgramFiles}/Intel(R) MKL-DNN"
 cmake --build . --target install
+cmd /c xcopy    /i /f /y "pdb\*.pdb" "${Env:ProgramFiles}\Intel(R) MKL-DNN\lib"
 Get-ChildItem "${Env:ProgramFiles}/Intel(R) MKL-DNN" -Filter '*.dll' -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 
 popd

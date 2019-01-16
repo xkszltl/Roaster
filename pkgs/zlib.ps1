@@ -27,9 +27,10 @@ pushd build
 cmake                                                                           `
     -DAMD64=OFF                                                                 `
     -DCMAKE_BUILD_TYPE=Release                                                  `
-    -DCMAKE_C_FLAGS="/GL /MP /Z7 /guard:cf"                                     `
+    -DCMAKE_C_FLAGS="/GL /MP /Zi /guard:cf"                                     `
     -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental /guard:cf"      `
     -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/zlib"                           `
+    -DCMAKE_PDB_OUTPUT_DIRECTORY="${PWD}/pdb"                                   `
     -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental /guard:cf"   `
     -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                             `
     -G"Ninja"                                                                   `
@@ -48,6 +49,7 @@ $ErrorActionPreference="Stop"
 
 rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${Env:ProgramFiles}/zlib"
 cmake --build . --target install
+cmd /c xcopy /i /f /y "pdb\*.pdb" "${Env:ProgramFiles}\zlib\bin"
 Get-ChildItem "${Env:ProgramFiles}/zlib" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 
 popd

@@ -15,5 +15,9 @@
       <Link>gflags.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/$(Configuration)/gflags.pdb">
+      <Link>gflags.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

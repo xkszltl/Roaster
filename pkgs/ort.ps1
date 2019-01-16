@@ -33,7 +33,13 @@ git fetch patch
 # ================================================================================
 
 git remote add lotusplus https://msresearch.visualstudio.com/DefaultCollection/OneOCR/_git/LotusPlus
-git pull lotusplus
+git pull lotusplus custom_ops
+
+if (-Not $?)
+{
+    echo "Failed to integrate LotusPlus"
+    exit 1
+}
 
 # ================================================================================
 # Update GTest
@@ -109,10 +115,11 @@ cmake                                                                           
     -A x64                                                                              `
     -DBOOST_ROOT="${Env:ProgramFiles}/boost"                                            `
     -DBUILD_SHARED_LIBS=OFF                                                             `
-    -DCMAKE_C_FLAGS="/GL /MP /Z7 /arch:AVX2 ${dep_dll}"                                 `
-    -DCMAKE_CXX_FLAGS="/EHsc /GL /MP /Z7 /arch:AVX2 ${dep_dll} ${gtest_silent_warning}" `
+    -DCMAKE_C_FLAGS="/GL /MP /Zi /arch:AVX2 ${dep_dll}"                                 `
+    -DCMAKE_CXX_FLAGS="/EHsc /GL /MP /Zi /arch:AVX2 ${dep_dll} ${gtest_silent_warning}" `
     -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"                        `
     -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/onnxruntime"                            `
+    -DCMAKE_PDB_OUTPUT_DIRECTORY="${PWD}/pdb"                                           `
     -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"                     `
     -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                                     `
     -DCUDA_VERBOSE_BUILD=ON                                                             `
@@ -168,13 +175,14 @@ if (-Not $?)
 $ErrorActionPreference="Stop"
 
 cmd /c rmdir /S /Q "${Env:ProgramFiles}/onnxruntime"
+cmake --build . --config Release --target install -- -maxcpucount
+cmd /c xcopy    /i /f /y "pdb\Release\*.pdb"                "${Env:ProgramFiles}\onnxruntime\bin"
 # cmd /c xcopy /e /i /f /y "..\cmake\external\gsl\include"    "${Env:ProgramFiles}\onnxruntime\include"
 # cmd /c xcopy /e /i /f /y "..\cmake\external\onnx\onnx"      "${Env:ProgramFiles}\onnxruntime\include\onnx"
 # cmd /c xcopy    /i /f /y "onnx\*.pb.h"                      "${Env:ProgramFiles}\onnxruntime\include\onnx"
 # cmd /c xcopy    /i /f /y "onnx\Release\*.lib"               "${Env:ProgramFiles}\onnxruntime\lib"
 # cmd /c xcopy    /i /f /y "onnxruntime_config.h"             "${Env:ProgramFiles}\onnxruntime\include\onnxruntime"
 # cmd /c xcopy /e /i /f /y "..\onnxruntime\core"              "${Env:ProgramFiles}\onnxruntime\include\onnxruntime\core"
-cmake --build . --config Release --target install -- -maxcpucount
 Get-ChildItem "${Env:ProgramFiles}/onnxruntime" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 Get-ChildItem "${Env:ProgramFiles}/onnxruntime" -Filter *.exe -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 

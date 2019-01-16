@@ -15,12 +15,24 @@
       <Link>libprotobuf.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/$(Configuration)/libprotobuf.pdb">
+      <Link>libprotobuf.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/$(Configuration)/libprotoc.dll">
       <Link>libprotoc.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/$(Configuration)/libprotoc.pdb">
+      <Link>libprotoc.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/$(Configuration)/protoc.exe">
       <Link>protoc.exe</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/$(Configuration)/protoc.pdb">
+      <Link>protoc.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

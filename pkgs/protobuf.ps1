@@ -33,10 +33,11 @@ pushd build-win
 cmake                                                                   `
     -DBUILD_SHARED_LIBS=ON                                              `
     -DCMAKE_BUILD_TYPE=Release                                          `
-    -DCMAKE_C_FLAGS="/GL /MP /Z7 /arch:AVX2"                            `
-    -DCMAKE_CXX_FLAGS="/EHsc /GL /MP /Z7 /arch:AVX2"                    `
+    -DCMAKE_C_FLAGS="/GL /MP /Zi /arch:AVX2"                            `
+    -DCMAKE_CXX_FLAGS="/EHsc /GL /MP /Zi /arch:AVX2"                    `
     -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"        `
     -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/protobuf"               `
+    -DCMAKE_PDB_OUTPUT_DIRECTORY="${PWD}/pdb"                           `
     -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"     `
     -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                     `
     -Dprotobuf_BUILD_EXAMPLES=ON                                        `
@@ -59,6 +60,7 @@ $ErrorActionPreference="Stop"
 
 rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${Env:ProgramFiles}/protobuf"
 cmake --build .  --target install
+cmd /c xcopy /i /f /y "pdb\*.pdb" "${Env:ProgramFiles}\protobuf\bin"
 Get-ChildItem "${Env:ProgramFiles}/protobuf" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 Get-ChildItem "${Env:ProgramFiles}/protobuf" -Filter *.exe -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 
