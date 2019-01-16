@@ -20,9 +20,20 @@ if (Test-Path "$root")
 
 git clone --recursive -j100 "$repo"
 pushd "$root"
+
+# ================================================================================
+# Patch
+# ================================================================================
+
 git remote add patch https://github.com/xkszltl/onnxruntime.git
 git fetch patch
-# git pull patch protobuf
+
+# ================================================================================
+# LotusPlus
+# ================================================================================
+
+git remote add lotusplus https://msresearch.visualstudio.com/DefaultCollection/OneOCR/_git/LotusPlus
+git pull lotusplus
 
 # ================================================================================
 # Update GTest
@@ -96,6 +107,7 @@ $dep_dll="${protobuf_dll}"
 # Turn off CUDA temporarily until Ort team switch back to static cudart.
 cmake                                                                                   `
     -A x64                                                                              `
+    -DBOOST_ROOT="${Env:ProgramFiles}/boost"                                            `
     -DBUILD_SHARED_LIBS=OFF                                                             `
     -DCMAKE_C_FLAGS="/GL /MP /Z7 /arch:AVX2 ${dep_dll}"                                 `
     -DCMAKE_CXX_FLAGS="/EHsc /GL /MP /Z7 /arch:AVX2 ${dep_dll} ${gtest_silent_warning}" `
@@ -156,11 +168,12 @@ if (-Not $?)
 $ErrorActionPreference="Stop"
 
 cmd /c rmdir /S /Q "${Env:ProgramFiles}/onnxruntime"
-cmd /c xcopy /e /i /f /y "..\cmake\external\gsl\include"    "${Env:ProgramFiles}\onnxruntime\include"
-cmd /c xcopy /e /i /f /y "..\cmake\external\onnx\onnx"      "${Env:ProgramFiles}\onnxruntime\include\onnx"
-cmd /c xcopy    /i /f /y "onnx\*.pb.h"                      "${Env:ProgramFiles}\onnxruntime\include\onnx"
-cmd /c xcopy    /i /f /y "onnxruntime_config.h"             "${Env:ProgramFiles}\onnxruntime\include\onnxruntime"
-cmd /c xcopy /e /i /f /y "..\onnxruntime\core"              "${Env:ProgramFiles}\onnxruntime\include\onnxruntime\core"
+# cmd /c xcopy /e /i /f /y "..\cmake\external\gsl\include"    "${Env:ProgramFiles}\onnxruntime\include"
+# cmd /c xcopy /e /i /f /y "..\cmake\external\onnx\onnx"      "${Env:ProgramFiles}\onnxruntime\include\onnx"
+# cmd /c xcopy    /i /f /y "onnx\*.pb.h"                      "${Env:ProgramFiles}\onnxruntime\include\onnx"
+# cmd /c xcopy    /i /f /y "onnx\Release\*.lib"               "${Env:ProgramFiles}\onnxruntime\lib"
+# cmd /c xcopy    /i /f /y "onnxruntime_config.h"             "${Env:ProgramFiles}\onnxruntime\include\onnxruntime"
+# cmd /c xcopy /e /i /f /y "..\onnxruntime\core"              "${Env:ProgramFiles}\onnxruntime\include\onnxruntime\core"
 cmake --build . --config Release --target install -- -maxcpucount
 Get-ChildItem "${Env:ProgramFiles}/onnxruntime" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 Get-ChildItem "${Env:ProgramFiles}/onnxruntime" -Filter *.exe -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
@@ -171,5 +184,5 @@ onnx_test_runner -e cuda ./models
 
 popd
 popd
-rm -Force -Recurse "$root"
+cmd /c rmdir /S /Q "$root"
 popd
