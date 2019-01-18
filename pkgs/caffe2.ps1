@@ -22,7 +22,6 @@ git clone --recursive -j100 "$repo"
 pushd "$root"
 git remote add patch https://github.com/xkszltl/pytorch.git
 git fetch patch
-git pull patch intrinsics
 
 # ================================================================================
 # Update Protobuf
