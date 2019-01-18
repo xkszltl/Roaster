@@ -30,7 +30,15 @@ $time    = (Get-Date).ToUniversalTime().ToString("yyyyMMddHHmmssfffffff")
 $iter    = $rawVersion.split('-')[-2]
 $hash    = $rawVersion.split('-')[-1]
 $tag     = $rawVersion.split('-')[0].split('/')[-1]
-$version = $tag.TrimStart($versionPrefix) + '.' + $iter + '-T' + $time + $hash
+
+# NuGet drops some trailing zero.
+$nullable_iter = '.' + $iter
+if ($iter -eq '0')
+{
+    $nullable_iter = ''
+}
+
+$version = $tag.TrimStart($versionPrefix) + $nullable_iter + '-T' + $time + $hash
 
 Write-Host 'tag'     $tag
 Write-Host 'iter'    $iter
@@ -96,7 +104,8 @@ Get-ChildItem ../nuget | Foreach-Object {
 
                     Set-Location $using:PWD
 
-                    & ${Env:NUGET_HOME}/nuget.exe push -Source ${feed} -ApiKey AzureDevOps ${nupkg}
+                    # Set 10 min timeout as the default (5 min) is not enough for MSAzure recently (Jan 2019).
+                    & ${Env:NUGET_HOME}/nuget.exe push -Source ${feed} -ApiKey AzureDevOps ${nupkg} -Timeout 600
                     & ${Env:NUGET_HOME}/nuget.exe locals http-cache -clear
                 } -ArgumentList @("./Roaster.${pkg}.v141.dyn.x64.${version}.nupkg", ${feed})
             }

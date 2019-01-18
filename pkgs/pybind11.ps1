@@ -26,7 +26,7 @@ pushd build
 
 cmake                                                               `
     -DCMAKE_BUILD_TYPE=Release                                      `
-    -DCMAKE_CXX_FLAGS="/EHsc /GL /MP /Z7"                           `
+    -DCMAKE_CXX_FLAGS="/EHsc /GL /MP /Zi"                           `
     -DCMAKE_EXE_LINKER_FLAGS="/LTCG:incremental"                    `
     -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/pybind11"           `
     -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental" `

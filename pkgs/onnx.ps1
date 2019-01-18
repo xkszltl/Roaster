@@ -56,10 +56,11 @@ cmake                                                                           
     -DBENCHMARK_ENABLE_LTO=ON                                                   `
     -DBUILD_SHARED_LIBS=OFF                                                     `
     -DBUILD_ONNX_PYTHON=OFF                                                     `
-    -DCMAKE_C_FLAGS="/MP /Z7 /arch:AVX2 ${dep_dll}"                             `
-    -DCMAKE_CXX_FLAGS="/EHsc /MP /Z7 /arch:AVX2 ${dep_dll}"                     `
+    -DCMAKE_C_FLAGS="/MP /Zi /arch:AVX2 ${dep_dll}"                             `
+    -DCMAKE_CXX_FLAGS="/EHsc /MP /Zi /arch:AVX2 ${dep_dll}"                     `
     -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"                `
     -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/ONNX"                           `
+    -DCMAKE_PDB_OUTPUT_DIRECTORY="${PWD}/pdb"                                   `
     -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"             `
     -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                             `
     -DONNX_BUILD_BENCHMARKS=ON                                                  `
@@ -85,6 +86,7 @@ $ErrorActionPreference="Stop"
 
 cmd /c rmdir /S /Q "${Env:ProgramFiles}/ONNX"
 cmake --build . --target install
+cmd /c xcopy /i /f /y "pdb\*.pdb" "${Env:ProgramFiles}\ONNX\lib"
 Get-ChildItem "${Env:ProgramFiles}/ONNX" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 
 popd
