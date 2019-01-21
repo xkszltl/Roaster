@@ -15,8 +15,7 @@
 
     git remote add patch https://github.com/xkszltl/pytorch.git
 
-    # PATCHES="redef"
-    # PATCHES="$PATCHES gpu_dll"
+    PATCHES="gemm mergedim lstm"
 
     for i in $PATCHES; do
         git pull --no-edit --rebase patch "$i"
