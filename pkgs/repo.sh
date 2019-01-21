@@ -34,11 +34,11 @@
     sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
     [ $GIT_MIRROR ] && [ $GIT_MIRROR_CODINGCAFE ] && $ROOT_DIR/apply_cache.sh docker-ce-stable{,-source,-debuginfo}
 
-    curl -sSL https://packages.gitlab.com/install/repositories/runner/gitlab-ci-multi-runner/script.rpm.sh | bash
+    curl -sSL https://packages.gitlab.com/install/repositories/runner/gitlab-ci-multi-runner/script.rpm.sh | sudo bash
     [ $GIT_MIRROR ] && [ $GIT_MIRROR_CODINGCAFE ] && $ROOT_DIR/apply_cache.sh runner_gitlab-ci-multi-runner{,-source}
 
     sudo rm -rvf /etc/yum.repos.d/gitlab_gitlab-ce.repo
-    curl -sSL https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh | bash
+    curl -sSL https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh | sudo bash
     [ $GIT_MIRROR ] && [ $GIT_MIRROR_CODINGCAFE ] && $ROOT_DIR/apply_cache.sh gitlab_gitlab-ce{,-source}
 
     until sudo yum install -y bc ping pv which; do echo 'Retrying'; done
