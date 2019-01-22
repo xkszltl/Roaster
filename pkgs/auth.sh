@@ -19,10 +19,10 @@
 
     cd /etc/openldap
     for i in 'BASE' 'URI' 'TLS_CACERT' 'TLS_REQCERT'; do :
-        if [ `grep '^[[:space:]#]*'$i'[[:space:]]' ldap.conf | wc -l` -ne 1 ]; then
-            sed 's/^[[:space:]#]*'$i'[[:space:]].*//' ldap.conf > .ldap.conf
-            mv -f .ldap.conf ldap.conf
-            echo '#'$i' ' >> ldap.conf
+        if [ "$(grep "^[[:space:]#]*$i[[:space:]]" ldap.conf | wc -l)" -ne 1 ]; then
+            sed "s/^[[:space:]#]*$i[[:space:]].*//" ldap.conf > .ldap.conf
+            sudo mv -f .ldap.conf ldap.conf
+            sudo echo '#'$i' ' >> ldap.conf
         fi
     done
     cat ldap.conf                                                                                               \
@@ -31,14 +31,14 @@
     | sed 's/^[[:space:]#]*\(TLS_CACERT[[:space:]][[:space:]]*\).*/\1\/etc\/pki\/tls\/certs\/ca-bundle.crt/'    \
     | sed 's/^[[:space:]#]*\(TLS_REQCERT[[:space:]][[:space:]]*\).*/\1demand/'                                  \
     > .ldap.conf
-    mv -f .ldap.conf ldap.conf
+    sudo mv -f .ldap.conf ldap.conf
     cd $SCRATCH
 
     # ------------------------------------------------------------
 
     # May fail at the first time in unprivileged docker due to domainname change.
     for i in $($IS_CONTAINER && echo true) false; do :
-        authconfig                                                                          \
+        sudo authconfig                                                                     \
             --enable{sssd{,auth},ldap{,auth,tls},locauthorize,cachecreds,mkhomedir}         \
             --disable{cache,md5,nis,rfc2307bis}                                             \
             --ldapserver=ldap://ldap.codingcafe.org                                         \
@@ -49,10 +49,10 @@
         || $i
     done
 
-    systemctl daemon-reload || $IS_CONTAINER
+    sudo systemctl daemon-reload || $IS_CONTAINER
     for i in sssd; do :
-        systemctl enable $i
-        systemctl start $i || $IS_CONTAINER
+        sudo systemctl enable $i
+        sudo systemctl start $i || $IS_CONTAINER
     done
 
     # ------------------------------------------------------------
