@@ -4,42 +4,58 @@
 
 [ -e $STAGE/ss ] && ( set -xe
     cd "$SCRATCH"
-    mkdir -p ss
-    cd ss
-
-    if ! $IS_CONTAINER; then
-        sudo systemctl enable firewalld
-        sudo systemctl status firewalld || sudo systemctl start firewalld
-        sudo firewall-cmd --permanent --add-port=8388/tcp
-        sudo firewall-cmd --reload
-    fi
 
     "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" shadowsocks/shadowsocks,master
 
-    jq -n '
-    {
-        "server":           "0.0.0.0",
-        "server_port":      8388,
-        "password":         "sensitive_password_removed",
-        "method":           "aes-256-gcm",
-        "fast_open":        true
-    }' > 'ssserver.json'
+    # ------------------------------------------------------------
 
-    jq -n '
-    {
-        "server":           "sensitive_url_removed",
-        "server_port":      8388,
-        "local_address":    "127.0.0.1",
-        "local_port":       1080,
-        "password":         "sensitive_password_removed",
-        "method":           "aes-256-gcm",
-        "fast_open":        true
-    }' > 'sslocal.json'
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" shadowsocks/shadowsocks,master
+    until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
+    cd shadowsocks
 
-    sudo install 'ss'{'server','local'}'.json' '/etc/shadowsocks/'
+    # ------------------------------------------------------------
 
-    # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    cat << EOF > shadowsocks.service
+    . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
+
+    # ------------------------------------------------------------
+    # Config
+    # ------------------------------------------------------------
+    (
+        set -xe
+        mkdir -p "$INSTALL_ROOT/etc/shadowsocks"
+        cd $_
+
+        jq -n '
+        {
+            "server":           "0.0.0.0",
+            "server_port":      8388,
+            "password":         "sensitive_password_removed",
+            "method":           "aes-256-gcm",
+            "fast_open":        true
+        }' > 'ssserver.json'
+
+        jq -n '
+        {
+            "server":           "sensitive_url_removed",
+            "server_port":      8388,
+            "local_address":    "127.0.0.1",
+            "local_port":       1080,
+            "password":         "sensitive_password_remove",
+            "method":           "aes-256-gcm",
+            "fast_open":        true
+        }' > 'sslocal.json'
+    )
+
+    # ------------------------------------------------------------
+    # Sytemd
+    # ------------------------------------------------------------
+    (
+        set -xe
+        mkdir -p "$INSTALL_ROOT/usr/lib/systemd/system"
+        cd $_
+
+        # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        cat << EOF > shadowsocks.service
 [Unit]
 Description=Shadowsocks daemon
 After=network.target
@@ -52,10 +68,10 @@ User=nobody
 [Install]
 WantedBy=multi-user.target
 EOF
-    # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-    # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    cat << EOF > shadowsocks-client.service
+        # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        cat << EOF > shadowsocks-client.service
 [Unit]
 Description=Shadowsocks client daemon
 After=network.target
@@ -68,24 +84,39 @@ User=nobody
 [Install]
 WantedBy=multi-user.target
 EOF
-    # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-    sudo install "shadowsocks"{,"-client"}".service" '/usr/lib/systemd/system/'
-    sudo systemctl daemon-reload || $IS_CONTAINER
-    for i in shadowsocks{,-client}; do :
-        sudo systemctl enable $i
-        sudo systemctl start $i || $IS_CONTAINER
-    done
+        # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    )
 
     # ------------------------------------------------------------
+    # Load kmod
+    # ------------------------------------------------------------
+    (
+        set -xe
+        mkdir -p "$INSTALL_ROOT/etc/modules-load.d"
+        cd "$_"
 
-    export SS_KMOD_CONF='90-shadowsocks.conf'
-    export SS_SYSCTL_CONF='90-shadowsocks.conf'
+        SS_CONF='90-shadowsocks.conf'
 
-    touch $SS_KMOD_CONF
+        touch "$SS_CONF"
+        for i in hybla htcp; do
+            if modprobe -a "tcp_$i"; then
+                echo $i >> "$SS_CONF"
+            fi
+        done
+    )
 
-    # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    cat << EOF > "$SS_SYSCTL_CONF"
+    # ------------------------------------------------------------
+    # Configure sysctl
+    # ------------------------------------------------------------
+    (
+        set -xe
+        mkdir -p "$INSTALL_ROOT/etc/sysctl.d"
+        cd "$_"
+
+        SS_CONF='90-shadowsocks.conf'
+
+        # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        cat << EOF > "$SS_CONF"
 net.core.rmem_max = 67108864
 net.core.wmem_max = 67108864
 net.core.netdev_max_backlog = 250000
@@ -100,23 +131,48 @@ net.ipv4.tcp_rmem = 4096 87380 67108864
 net.ipv4.tcp_wmem = 4096 65536 67108864
 net.ipv4.tcp_mtu_probing = 1
 EOF
+        # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+        for i in hybla htcp; do
+            if modprobe -a "tcp_$i"; then
+                echo "net.ipv4.tcp_allowed_congestion_control = $(sysctl -n net.ipv4.tcp_allowed_congestion_control) $i" >> "$SS_CONF"
+            fi
+        done
+    )
+
+    # ------------------------------------------------------------
+
+    # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    cat << \EOF > "$INSTALL_ROOT/../fpm/post_install.sh"
+export SS_PORT='8388/tcp'
+
+systemctl enable firewalld || $IS_CONTAINER
+systemctl status firewalld || systemctl start firewalld || $IS_CONTAINER
+if [ -f "/etc/shadowsocks/ssserver.json" ]; then
+    firewall-cmd --permanent --add-port="$SS_PORT" || $IS_CONTAINER
+else
+    firewall-cmd --permanent --remove-port="$SS_PORT" || $IS_CONTAINER
+fi
+firewall-cmd --reload || $IS_CONTAINER
+
+for i in shadowsocks{,-client}; do
+    if [ -f "/etc/shadowsocks/ssserver.json" ]; then
+        systemctl enable $i
+        systemctl start $i || $IS_CONTAINER
+    else
+        systemctl disable $i
+        systemctl stop $i || $IS_CONTAINER
+    fi
+done
+EOF
     # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-    for i in hybla htcp; do
-        if modprobe -a tcp_$i; then
-            modprobe -a $i || echo $i >> $SS_KMOD_CONF
-            echo "net.ipv4.tcp_allowed_congestion_control = $(sysctl -n net.ipv4.tcp_allowed_congestion_control) $i" >> "$SS_SYSCTL_CONF"
-        fi
-    done
+    "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
 
-    sudo install "$SS_KMOD_CONF" '/etc/modules-load.d/'
-    sudo install "$SS_SYSCTL_CONF" '/etc/sysctl.d/'
-
-    sudo sysctl --system || $IS_CONTAINER
-    # sslocal -s sensitive_url_removed -p 8388 -k sensitive_password_removed -m aes-256-gcm --fast-open -d restart
+    # ------------------------------------------------------------
 
     cd
-    rm -rf $SCRATCH/ss
+    rm -rf $SCRATCH/shadowsocks
 )
 sudo rm -vf $STAGE/ss
 sync || true

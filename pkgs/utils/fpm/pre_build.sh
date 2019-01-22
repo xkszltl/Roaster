@@ -17,13 +17,19 @@ export INSTALL_ABS=$(readlink -e "$INSTALL_REL")
 export INSTALL_ROOT="$(readlink -e "$INSTALL_ROOT")"
 
 # ----------------------------------------------------------------
+# Add fpm hook directory.
+# ----------------------------------------------------------------
+
+mkdir -p "$INSTALL_ROOT/../fpm"
+
+# ----------------------------------------------------------------
 # List file to exclude
 # ----------------------------------------------------------------
 
 (
     set -e
     for i in filesystem; do
-        rpm -q "$i" > /dev/null && rpm -ql "$i" | sed 's/^\///' | sed 's/$/\//' >> "$INSTALL_ROOT/../exclude.conf"
+        rpm -q "$i" > /dev/null && rpm -ql "$i" | sed 's/^\///' | sed 's/$/\//' >> "$INSTALL_ROOT/../fpm/exclude.conf"
     done
 ) &
 
