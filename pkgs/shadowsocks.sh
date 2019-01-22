@@ -16,6 +16,28 @@
 
     "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" shadowsocks/shadowsocks,master
 
+    jq -n '
+    {
+        "server":           "0.0.0.0",
+        "server_port":      8388,
+        "password":         "sensitive_password_removed",
+        "method":           "aes-256-gcm",
+        "fast_open":        true
+    }' > 'ssserver.json'
+
+    jq -n '
+    {
+        "server":           "sensitive_url_removed",
+        "server_port":      8388,
+        "local_address":    "127.0.0.1",
+        "local_port":       1080,
+        "password":         "sensitive_password_removed",
+        "method":           "aes-256-gcm",
+        "fast_open":        true
+    }' > 'sslocal.json'
+
+    sudo install 'ss'{'server','local'}'.json' '/etc/shadowsocks/'
+
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     cat << EOF > shadowsocks.service
 [Unit]
@@ -24,7 +46,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/ssserver -p 8388 -k sensitive_password_removed -m aes-256-gcm --fast-open
+ExecStart=/usr/bin/ssserver -c /etc/shadowsocks/ssserver.json
 User=nobody
 
 [Install]
@@ -40,7 +62,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/sslocal -l 1080 -s sensitive_url_removed -p 8388 -k sensitive_password_removed -m aes-256-gcm --fast-open
+ExecStart=/usr/bin/sslocal -c /etc/shadowsocks/sslocal.json
 User=nobody
 
 [Install]
