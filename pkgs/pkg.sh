@@ -22,7 +22,7 @@ for i in pkg-{skip,all}; do
                 {openmpi,mpich-3.{0,2}}{,-devel,-doc,-debuginfo}
                 java-1.8.0-openjdk{,-*}
                 octave{,-*}
-                {gdb,valgrind,perf,{l,s}trace}{,-*}
+                {gdb,gperf,gperftools,valgrind,perf,{l,s}trace}{,-*}
                 {make,ninja-build,cmake{,3},autoconf,libtool}{,-*}
                 {ant,maven}{,-*}
                 {git,sclo-git212,subversion,mercurial}{,-*}
