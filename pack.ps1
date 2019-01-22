@@ -106,7 +106,6 @@ Get-ChildItem ../nuget | Foreach-Object {
 
                     # Set 10 min timeout as the default (5 min) is not enough for MSAzure recently (Jan 2019).
                     & ${Env:NUGET_HOME}/nuget.exe push -Source ${feed} -ApiKey AzureDevOps ${nupkg} -Timeout 600
-                    & ${Env:NUGET_HOME}/nuget.exe locals http-cache -clear
                 } -ArgumentList @("./Roaster.${pkg}.v141.dyn.x64.${version}.nupkg", ${feed})
             }
 
@@ -117,6 +116,8 @@ Get-ChildItem ../nuget | Foreach-Object {
 
             Write-Host "--------------------------------------------------------------------------------"
         } -ArgumentList @(${pkg}, ${prefix}, ${version})
+
+        & ${Env:NUGET_HOME}/nuget.exe locals http-cache -clear
     }
 }
 
