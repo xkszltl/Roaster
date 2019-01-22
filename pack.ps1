@@ -116,8 +116,6 @@ Get-ChildItem ../nuget | Foreach-Object {
 
             Write-Host "--------------------------------------------------------------------------------"
         } -ArgumentList @(${pkg}, ${prefix}, ${version})
-
-        & ${Env:NUGET_HOME}/nuget.exe locals http-cache -clear
     }
 }
 
@@ -128,6 +126,8 @@ While (Get-Job -State "Running")
 }
 Get-Job | Receive-Job
 Remove-Job *
+
+& ${Env:NUGET_HOME}/nuget.exe locals http-cache -clear
 
 popd
 
