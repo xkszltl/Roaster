@@ -17,10 +17,8 @@
   </metadata>
   <files>
     <file src="Roaster.snappy.v141.dyn.x64.targets" target="build\native\Roaster.snappy.v141.dyn.x64.targets" />
-    <file src="snappy\bin\*"                        target="lib\native\lib\Debug\" />
     <file src="snappy\bin\*"                        target="lib\native\lib\Release\" />
     <file src="snappy\include\**\*"                 target="lib\native\include" />
-    <file src="snappy\lib\*"                        target="lib\native\lib\Debug\" />
     <file src="snappy\lib\*"                        target="lib\native\lib\Release\" />
     <file src="snappy\lib\cmake\**\*"               target="lib\native\cmake\" />
   </files>

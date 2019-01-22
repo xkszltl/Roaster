@@ -5,32 +5,32 @@
       <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)/../../lib/native/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)/../../lib/native/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)/../../lib/native/lib/Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>libcrypto.lib;libssl.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/$(Configuration)/libcrypto.dll">
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/libcrypto.dll">
       <Link>libcrypto.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/$(Configuration)/libcrypto-1_1-x64.dll">
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/libcrypto-1_1-x64.dll">
       <Link>libcrypto-1_1-x64.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/$(Configuration)/libcrypto-1_1-x64.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/libcrypto-1_1-x64.pdb">
       <Link>libcrypto-1_1-x64.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/$(Configuration)/libssl.dll">
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/libssl.dll">
       <Link>libssl.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/$(Configuration)/libssl-1_1-x64.dll">
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/libssl-1_1-x64.dll">
       <Link>libssl-1_1-x64.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/$(Configuration)/libssl-1_1-x64.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/libssl-1_1-x64.pdb">
       <Link>libssl-1_1-x64.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -17,10 +17,8 @@
   </metadata>
   <files>
     <file src="Roaster.gflags.v141.dyn.x64.targets" target="build\native\Roaster.gflags.v141.dyn.x64.targets" />
-    <file src="gflags\bin\*"                        target="lib\native\lib\Debug\" />
     <file src="gflags\bin\*"                        target="lib\native\lib\Release\" />
     <file src="gflags\include\**\*"                 target="lib\native\include" />
-    <file src="gflags\lib\*"                        target="lib\native\lib\Debug\" />
     <file src="gflags\lib\*"                        target="lib\native\lib\Release\" />
     <file src="gflags\lib\cmake\**\*"               target="lib\native\cmake\" />
   </files>

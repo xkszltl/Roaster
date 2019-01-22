@@ -5,24 +5,24 @@
       <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)/../../lib/native/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)/../../lib/native/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)/../../lib/native/lib/Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>cream.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/$(Configuration)/cream.dll">
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/cream.dll">
       <Link>cream.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/$(Configuration)/cream.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/cream.pdb">
       <Link>cream.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/$(Configuration)/cream_all_tests.exe">
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/cream_all_tests.exe">
       <Link>cream_all_tests.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/$(Configuration)/cream_all_tests.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/cream_all_tests.pdb">
       <Link>cream_all_tests.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

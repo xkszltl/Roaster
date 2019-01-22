@@ -22,10 +22,8 @@
   </metadata>
   <files>
     <file src="Roaster.zlib.v141.dyn.x64.targets"   target="build\native\Roaster.zlib.v141.dyn.x64.targets" />
-    <file src="zlib\bin\*"                          target="lib\native\lib\Debug\" />
     <file src="zlib\bin\*"                          target="lib\native\lib\Release\" />
     <file src="zlib\include\**\*"                   target="lib\native\include" />
-    <file src="zlib\lib\*"                          target="lib\native\lib\Debug\" />
     <file src="zlib\lib\*"                          target="lib\native\lib\Release\" />
   </files>
 </package>

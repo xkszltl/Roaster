@@ -17,10 +17,8 @@
   </metadata>
   <files>
     <file src="Roaster.glog.v141.dyn.x64.targets"   target="build\native\Roaster.glog.v141.dyn.x64.targets" />
-    <file src="glog\bin\*"                          target="lib\native\lib\Debug\" />
     <file src="glog\bin\*"                          target="lib\native\lib\Release\" />
     <file src="glog\include\**\*"                   target="lib\native\include" />
-    <file src="glog\lib\*"                          target="lib\native\lib\Debug\" />
     <file src="glog\lib\*"                          target="lib\native\lib\Release\" />
     <file src="glog\lib\cmake\**\*"                 target="lib\native\cmake\" />
   </files>

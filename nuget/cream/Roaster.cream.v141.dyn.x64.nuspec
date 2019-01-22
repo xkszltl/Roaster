@@ -21,10 +21,8 @@
   <files>
     <file src="Roaster.cream.v141.dyn.x64.targets"  target="build\native\Roaster.cream.v141.dyn.x64.targets" />
     <file src="cream\include\**\*"                  target="lib\native\include" />
-    <file src="cream\lib\**\*"                      target="lib\native\lib\Debug\" />
     <file src="cream\lib\**\*"                      target="lib\native\lib\Release\" />
     <file src="cream\share\**\*"                    target="lib\native\cmake\" />
-    <file src="cream\bin\*"                         target="lib\native\lib\Debug\" />
     <file src="cream\bin\*"                         target="lib\native\lib\Release\" />
   </files>
 </package>

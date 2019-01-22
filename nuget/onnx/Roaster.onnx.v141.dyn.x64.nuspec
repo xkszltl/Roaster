@@ -21,7 +21,6 @@
   <files>
     <file src="Roaster.onnx.v141.dyn.x64.targets" target="build\native\Roaster.onnx.v141.dyn.x64.targets" />
     <file src="onnx\include\**\*"                 target="lib\native\include" />
-    <file src="onnx\lib\**\*"                     target="lib\native\lib\Debug\" />
     <file src="onnx\lib\**\*"                     target="lib\native\lib\Release\" />
     <file src="onnx\share\cmake\**\*"             target="lib\native\cmake\" />
   </files>

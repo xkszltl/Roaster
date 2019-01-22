@@ -22,7 +22,6 @@
     <file src="Roaster.mkldnn.v141.dyn.x64.targets" target="build\native\Roaster.mkldnn.v141.dyn.x64.targets" />
     <file src="mkldnn\share\**\*"                   target="lib\native\" />
     <file src="mkldnn\include\**\*"                 target="lib\native\include" />
-    <file src="mkldnn\lib\*"                        target="lib\native\lib\Debug\" />
     <file src="mkldnn\lib\*"                        target="lib\native\lib\Release\" />
   </files>
 </package>

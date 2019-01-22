@@ -28,10 +28,8 @@
   <files>
     <file src="Roaster.caffe2.v141.dyn.x64.targets" target="build\native\Roaster.caffe2.v141.dyn.x64.targets" />
     <file src="caffe2\include\**\*"                 target="lib\native\include" />
-    <file src="caffe2\lib\**\*"                     target="lib\native\lib\Debug\" />
     <file src="caffe2\lib\**\*"                     target="lib\native\lib\Release\" />
     <file src="caffe2\share\**\*"                   target="lib\native\cmake\" />
-    <file src="caffe2\test\*"                       target="lib\native\lib\Debug\" />
     <file src="caffe2\test\*"                       target="lib\native\lib\Release\" />
   </files>
 </package>
