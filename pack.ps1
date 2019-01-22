@@ -133,4 +133,6 @@ popd
 
 Write-Host "Completed!"
 
+Write-Host "If you see `"Suggestion [3,General]: The command nuget was not found`" message below, please ignore."
+
 popd
