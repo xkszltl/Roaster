@@ -3,16 +3,21 @@
 # ================================================================
 
 [ -e $STAGE/ss ] && ( set -xe
+    cd "$SCRATCH"
+    mkdir -p ss
+    cd ss
+
     if ! $IS_CONTAINER; then
-        firewall-cmd --permanent --add-port=8388/tcp
-        firewall-cmd --reload
+        sudo systemctl enable firewalld
+        sudo systemctl status firewalld || sudo systemctl start firewalld
+        sudo firewall-cmd --permanent --add-port=8388/tcp
+        sudo firewall-cmd --reload
     fi
 
     "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" shadowsocks/shadowsocks,master
 
-
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    cat << EOF > /usr/lib/systemd/system/shadowsocks.service
+    cat << EOF > shadowsocks.service
 [Unit]
 Description=Shadowsocks daemon
 After=network.target
@@ -28,7 +33,7 @@ EOF
     # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    cat << EOF > /usr/lib/systemd/system/shadowsocks-client.service
+    cat << EOF > shadowsocks-client.service
 [Unit]
 Description=Shadowsocks client daemon
 After=network.target
@@ -43,7 +48,8 @@ WantedBy=multi-user.target
 EOF
     # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-    systemctl daemon-reload || $IS_CONTAINER
+    sudo install "shadowsocks"{,"-client"}".service" '/usr/lib/systemd/system/'
+    sudo systemctl daemon-reload || $IS_CONTAINER
     for i in shadowsocks{,-client}; do :
         sudo systemctl enable $i
         sudo systemctl start $i || $IS_CONTAINER
@@ -51,17 +57,13 @@ EOF
 
     # ------------------------------------------------------------
 
-    export SS_KMOD_CONF='/etc/modules-load.d/90-shadowsocks.conf'
-    export SS_SYSCTL_CONF='/etc/sysctl.d/90-shadowsocks.conf'
+    export SS_KMOD_CONF='90-shadowsocks.conf'
+    export SS_SYSCTL_CONF='90-shadowsocks.conf'
 
-    truncate -s0 $SS_KMOD_CONF $SS_SYSCTL_CONF
-
-    for i in tcp_{htcp,hybla}; do
-        modprobe -a $i || echo $i >> $SS_KMOD_CONF
-    done
+    touch $SS_KMOD_CONF
 
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    cat << EOF >> $SS_SYSCTL_CONF
+    cat << EOF > "$SS_SYSCTL_CONF"
 net.core.rmem_max = 67108864
 net.core.wmem_max = 67108864
 net.core.netdev_max_backlog = 250000
@@ -78,16 +80,21 @@ net.ipv4.tcp_mtu_probing = 1
 EOF
     # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-    for i in htcp hybla; do
+    for i in hybla htcp; do
         if modprobe -a tcp_$i; then
-            echo "net.ipv4.tcp_allowed_congestion_control = $(sysctl -n net.ipv4.tcp_allowed_congestion_control) $i" >> $SS_SYSCTL_CONF
-            echo "net.ipv4.tcp_congestion_control = $i"
-            break
+            modprobe -a $i || echo $i >> $SS_KMOD_CONF
+            echo "net.ipv4.tcp_allowed_congestion_control = $(sysctl -n net.ipv4.tcp_allowed_congestion_control) $i" >> "$SS_SYSCTL_CONF"
         fi
     done
 
-    sysctl --system || $IS_CONTAINER
+    sudo install "$SS_KMOD_CONF" '/etc/modules-load.d/'
+    sudo install "$SS_SYSCTL_CONF" '/etc/sysctl.d/'
+
+    sudo sysctl --system || $IS_CONTAINER
     # sslocal -s sensitive_url_removed -p 8388 -k sensitive_password_removed -m aes-256-gcm --fast-open -d restart
+
+    cd
+    rm -rf $SCRATCH/ss
 )
 sudo rm -vf $STAGE/ss
 sync || true
