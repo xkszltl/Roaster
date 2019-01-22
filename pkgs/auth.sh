@@ -20,12 +20,12 @@
     cd /etc/openldap
     for i in 'BASE' 'URI' 'TLS_CACERT' 'TLS_REQCERT'; do :
         if [ "$(grep "^[[:space:]#]*$i[[:space:]]" ldap.conf | wc -l)" -ne 1 ]; then
-            sed "s/^[[:space:]#]*$i[[:space:]].*//" ldap.conf > .ldap.conf
+            sudo sed "s/^[[:space:]#]*$i[[:space:]].*//" ldap.conf > .ldap.conf
             sudo mv -f .ldap.conf ldap.conf
             sudo echo '#'$i' ' >> ldap.conf
         fi
     done
-    cat ldap.conf                                                                                               \
+    sudo cat ldap.conf                                                                                          \
     | sed 's/^[[:space:]#]*\(BASE[[:space:]][[:space:]]*\).*/\1dc=codingcafe,dc=org/'                           \
     | sed 's/^[[:space:]#]*\(URI[[:space:]][[:space:]]*\).*/\1ldap:\/\/ldap.codingcafe.org/'                    \
     | sed 's/^[[:space:]#]*\(TLS_CACERT[[:space:]][[:space:]]*\).*/\1\/etc\/pki\/tls\/certs\/ca-bundle.crt/'    \
