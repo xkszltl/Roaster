@@ -4,8 +4,9 @@
 
 [ -e $STAGE/auth ] && ( set -xe
     cd
-    mkdir -p .ssh
-    cd .ssh
+    mkdir -p ".ssh"
+    chmod 700 "$_"
+    cd "$_"
     rm -rvf id_{ecdsa,rsa}{,.pub}
     parallel -j0 --line-buffer --bar 'bash -c '"'"'
         set -e
@@ -13,26 +14,26 @@
         export BITS="$(sed '"'"'s/.*,//'"'"' <<< '"'"'{}'"'"')"
         ssh-keygen -qN "" -f "id_$ALGO" -t "$ALGO" -b "$BITS"
     '"'" ::: 'ecdsa,521' 'rsa,8192'
-    cd $SCRATCH
+    cd "$SCRATCH"
 
     # ------------------------------------------------------------
 
-    cd /etc/openldap
+    cd '/etc/openldap'
     for i in 'BASE' 'URI' 'TLS_CACERT' 'TLS_REQCERT'; do :
-        if [ "$(grep "^[[:space:]#]*$i[[:space:]]" ldap.conf | wc -l)" -ne 1 ]; then
-            sudo sed "s/^[[:space:]#]*$i[[:space:]].*//" ldap.conf > .ldap.conf
-            sudo mv -f .ldap.conf ldap.conf
-            sudo echo '#'$i' ' >> ldap.conf
+        if [ "$(grep "^[[:space:]#]*$i[[:space:]]" 'ldap.conf' | wc -l)" -ne 1 ]; then
+            sed "s/^[[:space:]#]*$i[[:space:]].*//" 'ldap.conf' > "$SCRATCH/.ldap.conf"
+            sudo echo "# $i " >> "$SCRATCH/.ldap.conf"
+            sudo mv -f {"$SCRATCH/.",}'ldap.conf'
         fi
     done
-    sudo cat ldap.conf                                                                                          \
+    sudo cat 'ldap.conf'                                                                                        \
     | sed 's/^[[:space:]#]*\(BASE[[:space:]][[:space:]]*\).*/\1dc=codingcafe,dc=org/'                           \
     | sed 's/^[[:space:]#]*\(URI[[:space:]][[:space:]]*\).*/\1ldap:\/\/ldap.codingcafe.org/'                    \
     | sed 's/^[[:space:]#]*\(TLS_CACERT[[:space:]][[:space:]]*\).*/\1\/etc\/pki\/tls\/certs\/ca-bundle.crt/'    \
     | sed 's/^[[:space:]#]*\(TLS_REQCERT[[:space:]][[:space:]]*\).*/\1demand/'                                  \
-    > .ldap.conf
-    sudo mv -f .ldap.conf ldap.conf
-    cd $SCRATCH
+    > "$SCRATCH/.ldap.conf"
+    sudo mv -f {"$SCRATCH/.",}'ldap.conf'
+    cd "$SCRATCH"
 
     # ------------------------------------------------------------
 
