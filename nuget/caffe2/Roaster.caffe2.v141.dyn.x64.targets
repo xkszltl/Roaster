@@ -7,7 +7,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)/../../lib/native/lib/Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>c10.lib;caffe2.lib;caffe2_detectron_ops.lib;caffe2_observers.lib;caffe2_rocksdb.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>c10.lib;caffe2.lib;caffe2_detectron_ops.lib;caffe2_observers.lib;caffe2_rocksdb.lib;libprotobuf.lib;libprotobuf-lite.lib;onnx.lib;onnx_proto.lib;onnxifi_dummy.lib;onnxifi_loader.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -49,6 +49,14 @@
     </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/caffe2_rocksdb.pdb">
       <Link>caffe2_rocksdb.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/onnxifi.dll">
+      <Link>onnxifi.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/onnxifi_dummy.dll">
+      <Link>onnxifi_dummy.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
