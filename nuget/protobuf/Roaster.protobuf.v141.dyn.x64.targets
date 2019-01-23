@@ -7,7 +7,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)/../../lib/native/lib/Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libprotobuf.lib;libprotoc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libprotobuf.lib;libprotobuf-lite.lib;libprotoc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -17,6 +17,14 @@
     </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/libprotobuf.pdb">
       <Link>libprotobuf.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/libprotobuf-lite.dll">
+      <Link>libprotobuf-lite.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/libprotobuf-lite.pdb">
+      <Link>libprotobuf-lite.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/libprotoc.dll">
