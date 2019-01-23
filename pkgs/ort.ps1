@@ -69,6 +69,7 @@ git checkout "$pb_latest_ver"
 git remote add patch https://github.com/xkszltl/protobuf.git
 git fetch patch
 git cherry-pick patch/constexpr-3.6
+# git cherry-pick patch/export-3.6
 git submodule update --init
 popd
 

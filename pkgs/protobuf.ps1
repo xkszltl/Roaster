@@ -23,6 +23,7 @@ pushd "$root"
 git remote add patch https://github.com/xkszltl/protobuf.git
 git fetch patch
 git cherry-pick patch/constexpr-3.6
+# git cherry-pick patch/export-3.6
 
 # Repo contains file "BUILD" for Bazel and it will conflict with "build" on NTFS.
 mkdir build-win
@@ -49,6 +50,12 @@ cmake                                                                   `
 # Multi-process build is not ready.
 # Conflict (permission denied) while multiple protoc generating the same file.
 cmake --build .
+if (-Not $?)
+{
+    cmake --build . -- -k0
+    cmake --build .
+    exit 1
+}
 
 $ErrorActionPreference="SilentlyContinue"
 cmake --build . --target check

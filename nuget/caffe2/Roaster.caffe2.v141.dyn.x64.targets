@@ -15,20 +15,40 @@
       <Link>c10.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/c10.pdb">
+      <Link>c10.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/caffe2.dll">
       <Link>caffe2.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/caffe2.pdb">
+      <Link>caffe2.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/caffe2_detectron_ops.dll">
       <Link>caffe2_detectron_ops.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/caffe2_detectron_ops.pdb">
+      <Link>caffe2_detectron_ops.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/caffe2_observers.dll">
       <Link>caffe2_observers.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/caffe2_observers.pdb">
+      <Link>caffe2_observers.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/caffe2_rocksdb.dll">
       <Link>caffe2_rocksdb.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/caffe2_rocksdb.pdb">
+      <Link>caffe2_rocksdb.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -29,7 +29,7 @@ git remote add patch https://github.com/xkszltl/pytorch.git
 git fetch patch
 git pull patch gemm
 git pull patch mergedim
-git pull patch pb_msvc
+# git pull patch pb_msvc
 
 # ================================================================================
 # Update Protobuf
@@ -42,6 +42,7 @@ git checkout "$pb_latest_ver"
 git remote add patch https://github.com/xkszltl/protobuf.git
 git fetch patch
 git cherry-pick patch/constexpr-3.6
+# git cherry-pick patch/export-3.6
 git submodule update --init
 popd
 
@@ -97,11 +98,11 @@ $cxxflags               = "${c_def} ${gtest_silent_warning}"
 # Known issues:
 #   * They claim (I think it's wrong) that MKL-DNN requires OpenMP 3.0 which is not supported in MSVC.
 #   * Fix CUDA compilation with /FS.
-#   * Currently MSVC build disables AVX2 by default for unknown reason.
+#   * /Zi is replaced by /Z7 in CMake.
 # ==========================================================================================
 cmake                                                                           `
     -DBLAS=MKL                                                                  `
-    -DBUILD_CUSTOM_PROTOBUF=OFF                                                 `
+    -DBUILD_CUSTOM_PROTOBUF=ON                                                  `
     -DBUILD_PYTHON=ON                                                           `
     -DBUILD_SHARED_LIBS=ON                                                      `
     -DBUILD_TEST=ON                                                             `
@@ -165,7 +166,7 @@ $ErrorActionPreference="Stop"
 
 cmd /c rmdir /S /Q "${Env:ProgramFiles}/Caffe2"
 cmake --build . --target install
-cmd /c xcopy    /i /f /y "pdb\*.pdb" "${Env:ProgramFiles}\Caffe2\lib"
+# cmd /c xcopy    /i /f /y "pdb\*.pdb" "${Env:ProgramFiles}\Caffe2\lib"
 Get-ChildItem "${Env:ProgramFiles}/Caffe2" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 
 popd
