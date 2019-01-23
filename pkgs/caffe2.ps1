@@ -92,7 +92,7 @@ $protobuf_dll           = "/DPROTOBUF_USE_DLLS"
 $dep_dll                = "${gflags_dll} ${protobuf_dll}"
 $mkldnn_win             = "/DWIN32"
 $cflags                 = "${dep_dll} ${mkldnn_win}"
-$cxxflags               = "${c_def} ${gtest_silent_warning}"
+$cxxflags               = "${cflags} ${gtest_silent_warning}"
 
 # ==========================================================================================
 # Known issues:
@@ -102,7 +102,7 @@ $cxxflags               = "${c_def} ${gtest_silent_warning}"
 # ==========================================================================================
 cmake                                                                           `
     -DBLAS=MKL                                                                  `
-    -DBUILD_CUSTOM_PROTOBUF=ON                                                  `
+    -DBUILD_CUSTOM_PROTOBUF=OFF                                                 `
     -DBUILD_PYTHON=ON                                                           `
     -DBUILD_SHARED_LIBS=ON                                                      `
     -DBUILD_TEST=ON                                                             `
