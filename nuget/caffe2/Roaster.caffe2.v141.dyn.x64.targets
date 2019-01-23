@@ -47,10 +47,6 @@
       <Link>caffe2_rocksdb.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/caffe2_rocksdb.pdb">
-      <Link>caffe2_rocksdb.pdb</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/onnxifi.dll">
       <Link>onnxifi.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
