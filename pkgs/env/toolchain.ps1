@@ -158,7 +158,7 @@ if (${Env:NINJA_HOME} -eq $null -or -not $(Test-Path ${Env:NINJA_HOME}/ninja.exe
 if (${Env:VSCMD_VER} -eq $null)
 {
     ${VS_HOME} = & "${Env:ProgramFiles(x86)}/Microsoft Visual Studio/Installer/vswhere.exe" -latest -property installationPath
-    Invoke-Expression $($(cmd /c "`"${VS_HOME}/VC/Auxiliary/Build/vcvarsall.bat`" x64 & set") -Match '^.+=' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
+    Invoke-Expression $($(cmd /c "`"${VS_HOME}/VC/Auxiliary/Build/vcvarsall.bat`" x64 10.0.16299.0 & set") -Match '^.+=' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
 }
 
 # ================================================================================
