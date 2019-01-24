@@ -149,6 +149,14 @@ cmake                                                                           
     ../cmake
 
 cmake --build . --config Release -- -maxcpucount
+if (-Not $?)
+{
+    echo "Failed to build."
+    echo "Retry with single thread for logging."
+    echo "You may Ctrl-C this if you don't need the log file."
+    cmake --build . --config Release 2>&1 | tee ${Env:TMP}/${proj}.log
+    exit 1
+}
 
 $model_path = "${Env:TMP}/onnxruntime_models.zip"
 rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${model_path}.downloading"

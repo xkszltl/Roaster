@@ -43,6 +43,15 @@ cmake                                                                   `
     ..
 
 cmake --build .
+if (-Not $?)
+{
+    echo "Failed to build."
+    echo "Retry with single thread for logging."
+    echo "You may Ctrl-C this if you don't need the log file."
+    cmake --build . -- -k0
+    cmake --build . 2>&1 | tee ${Env:TMP}/${proj}.log
+    exit 1
+}
 
 # This will take hours.
 cmake --build . --target blas

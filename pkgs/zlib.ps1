@@ -37,9 +37,18 @@ cmake                                                                           
     ..
 
 cmake --build .
+if (-Not $?)
+{
+    echo "Failed to build."
+    echo "Retry with single thread for logging."
+    echo "You may Ctrl-C this if you don't need the log file."
+    cmake --build . -- -k0
+    cmake --build . 2>&1 | tee ${Env:TMP}/${proj}.log
+    exit 1
+}
 
 $ErrorActionPreference="SilentlyContinue"
-cmake --build . --config run_tests
+cmake --build . --target test
 if (-Not $?)
 {
     echo "Oops! Expect to pass all tests."

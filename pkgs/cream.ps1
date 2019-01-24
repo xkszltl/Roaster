@@ -57,7 +57,22 @@ cmake                                                                   `
     ..
 
 cmake --build .
+if (-Not $?)
+{
+    echo "Failed to build."
+    echo "Retry with single thread for logging."
+    echo "You may Ctrl-C this if you don't need the log file."
+    cmake --build . -- -k0
+    cmake --build . 2>&1 | tee ${Env:TMP}/${proj}.log
+    exit 1
+}
+
 cmake --build . --target test
+if (-Not $?)
+{
+    echo "Oops! Expect to pass all tests."
+    exit 1
+}
 
 cmd /c rmdir /S /Q "${Env:ProgramFiles}/Cream"
 cmake --build . --target install

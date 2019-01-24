@@ -25,7 +25,17 @@ pushd "$root"
 ${Env:__CNF_CFLAGS}="${Env:__CNF_CFLAGS} /GL /MP /guard:cf"
 ${Env:__CNF_LDFLAGS}="${Env:__CNF_LDFLAGS} /INCREMENTAL:NO /LTCG:incremental /guard:cf"
 perl Configure shared zlib VC-WIN64A --release --with-zlib-include="C:/PROGRA~1/zlib/include" --with-zlib-lib="C:/PROGRA~1/zlib/lib/zlib.lib"
+
 nmake
+{
+    echo "Failed to build."
+    echo "Retry with single thread for logging."
+    echo "You may Ctrl-C this if you don't need the log file."
+    cmake --build . -- -k0
+    cmake --build . 2>&1 | tee ${Env:TMP}/${proj}.log
+    exit 1
+}
+
 # nmake test
 
 rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${Env:ProgramFiles}/OpenSSL"
