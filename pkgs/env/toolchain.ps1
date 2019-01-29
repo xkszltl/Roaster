@@ -13,7 +13,7 @@ ${Env:PERL_HOME} = "$(Get-Command -Name perl -ErrorAction SilentlyContinue | sel
 
 if (${Env:PERL_HOME} -eq $null -or -not $(Test-Path ${Env:PERL_HOME}/perl.exe -ErrorAction SilentlyContinue))
 {
-    ${Env:PERL_HOME} = Join-Path C: Perl64 bin
+    ${Env:PERL_HOME} = Join-Path C:/Perl64 bin
 }
 
 if (${Env:PERL_HOME} -eq $null -or -not $(Test-Path ${Env:PERL_HOME}/perl.exe -ErrorAction SilentlyContinue))
@@ -27,7 +27,7 @@ if (${Env:PERL_HOME} -eq $null -or -not $(Test-Path ${Env:PERL_HOME}/perl.exe -E
     & $DownloadPath /passive InstallAllUsers=1 PrependPath=1 | Out-Null
     if ($(Test-Path C:/Perl64/bin/perl.exe -ErrorAction SilentlyContinue))
     {
-        ${Env:PERL_HOME} = Join-Path C: Perl64 bin
+        ${Env:PERL_HOME} = Join-Path C:/Perl64 bin
         Write-Host "ActivePerl installed successfully."
     }
     else
