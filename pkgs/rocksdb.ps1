@@ -18,8 +18,10 @@ if (Test-Path "$root")
 $latest_ver='v' + $($(git ls-remote --tags "$repo") -match '.*refs/tags/v[0-9\.]*$' -replace '.*refs/tags/v','' | sort {[Version]$_})[-1]
 # Need "rocksdb-shared.lib" patch after v5.17.2
 $latest_ver='master'
-git clone --depth 1 --single-branch -b "$latest_ver" "$repo"
+git clone --single-branch -b "$latest_ver" "$repo"
+
 pushd "$root"
+
 git remote add patch https://github.com/xkszltl/rocksdb.git
 git fetch patch
 
