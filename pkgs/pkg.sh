@@ -108,7 +108,8 @@ for i in pkg-{skip,all}; do
 
                 hdf5{,-*}
                 {leveldb,lmdb}{,-*}
-                {mariadb,postgresql}{,-*}
+                mariadb{,-*}
+                rh-postgresql10{,-postgresql{,-*}}
 
                 {fio,{file,sys}bench}{,-*}
 
