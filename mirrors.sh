@@ -68,6 +68,7 @@ facebook/{rocksdb,zstd},\
 facebookincubator/gloo,\
 facebookresearch/{Detectron,fastText},\
 frerich/clcache,\
+Frozenball/pytest-sugar,\
 gflags/gflags,\
 giampaolo/psutil,\
 github/{git-lfs,gitignore},\
