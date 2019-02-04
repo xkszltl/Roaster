@@ -76,6 +76,7 @@ goldmann/docker-squash,\
 google/{benchmark,snappy,gemmlowp,glog,googletest,leveldb,nsync,protobuf},\
 halide/Halide,\
 HowardHinnant/date,\
+HypothesisWorks/hypothesis,\
 intel/{ARM_NEON_2_x86_SSE,compute-runtime,ideep,mkl-dnn},\
 intelxed/xed,\
 jemalloc/jemalloc,\
