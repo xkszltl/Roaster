@@ -27,9 +27,9 @@ pushd "$root"
 
 git remote add patch https://github.com/xkszltl/pytorch.git
 git fetch patch
+git pull patch ewl
 git pull patch gemm
 git pull patch mergedim
-# git pull patch pb_msvc
 
 # ================================================================================
 # Update Protobuf
