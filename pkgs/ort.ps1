@@ -37,7 +37,7 @@ git fetch patch
 # ================================================================================
 
 git remote add lotusplus https://msresearch.visualstudio.com/DefaultCollection/OneOCR/_git/LotusPlus
-git pull lotusplus custom_ops
+git pull --no-edit lotusplus custom_ops
 
 if (-Not $?)
 {
