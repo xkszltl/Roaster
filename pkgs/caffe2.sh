@@ -5,7 +5,7 @@
 [ -e $STAGE/caffe2 ] && ( set -xe
     cd $SCRATCH
 
-    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" python/typing enum34 numpy/numpy,v benjaminp/six yaml/pyyaml
+    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" python/typing enum34 numpy/numpy,v benjaminp/six yaml/pyyaml pytest-dev/pytest Frozenball/pytest-sugar,v
 
     # ------------------------------------------------------------
 
@@ -15,11 +15,13 @@
 
     git remote add patch https://github.com/xkszltl/pytorch.git
 
-    PATCHES="gemm mergedim lstm"
+    PATCHES="ewl gemm mean mergedim lstm"
 
-    for i in $PATCHES; do
-        git pull --no-edit --rebase patch "$i"
-    done
+    git pull --no-edit patch $PATCHES
+
+    # for i in $PATCHES; do
+    #     git pull --no-edit --rebase patch "$i"
+    # done
 
     . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
 
@@ -88,6 +90,8 @@
         time cmake --build . --target install
 
         time cmake --build . --target test || ! nvidia-smi
+
+        # python -m pytest --disable-warnings -v caffe2/python
 
         # Exclude GTest/MKL-DNN/ONNX/Caffe files.
         pushd "$INSTALL_ROOT"
