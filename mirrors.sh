@@ -18,12 +18,14 @@ cd $_
 
 parallel --bar --group --shuf -j 10 'bash -c '"'"'
 set -e
-xargs -n1 <<< {}
-[ $(xargs -n1 <<< {} | wc -l) -ne 2 ] && exit 0
-export SRC_SITE="$(xargs -n1 <<< {} 2>/dev/null | head -n1)"
-export SRC_DIR="$(xargs -n1 <<< {} 2>/dev/null | tail -n1)"
+export ARGS={}"  "
+xargs -n1 <<< "$ARGS"
+[ $(xargs -n1 <<< {} | wc -l) -ne 3 ] && exit 0
+export SRC_SITE="$(cut -d" " -f1 <<< "$ARGS")"
+export SRC_DIR="$(cut -d" " -f3 <<< "$ARGS")"
 export SRC="$SRC_SITE$SRC_DIR.git"
-export DST_SITE="git@git.codingcafe.org:Mirrors/"
+export DST_DOMAIN="$(cut -d" " -f2 <<< "$ARGS" | sed "s/^\/*//" | sed "s/\/*$//")"
+export DST_SITE="git@git.codingcafe.org:Mirrors/$DST_DOMAIN"
 export DST_DIR="$SRC_DIR"
 export DST="$DST_SITE$DST_DIR.git"
 export LOCAL="$(pwd)/$DST_DIR.git"
@@ -48,7 +50,7 @@ if [ ! "'"$PATTERN"'" ] || grep "'"$PATTERN"'" <<< "$SRC_DIR"; then
     git push --mirror origin 2>&1
 fi
 '"'" ::: {\
-https://github.com/\ {\
+https://github.com/\ /\ {\
 01org/{mkl-dnn,processor-trace,tbb},\
 ARM-software/{arm-trusted-firmware,ComputeLibrary,lisa},\
 aws/aws-{cli,sdk-{cpp,go,java,js,net,php,ruby}},\
@@ -99,6 +101,7 @@ onnx/{models,onnx{,-tensorrt,mltools},tutorials},\
 open-mpi/ompi,\
 opencv/opencv,\
 openssl/openssl,\
+openwrt/{luci,openwrt,packages,targets,telephony,video},
 PeachPy/enum34,\
 protocolbuffers/protobuf,\
 pybind/pybind11,\
@@ -122,7 +125,7 @@ yaml/pyyaml,\
 Yangqing/ios-cmake,\
 zeromq/{cppzmq,libzmq,pyzmq},\
 },\
-https://gitlab.com/\ {\
+https://gitlab.com/\ /\ {\
 NVIDIA/cuda,\
 },\
 }
