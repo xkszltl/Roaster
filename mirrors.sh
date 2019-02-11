@@ -101,7 +101,7 @@ onnx/{models,onnx{,-tensorrt,mltools},tutorials},\
 open-mpi/ompi,\
 opencv/opencv,\
 openssl/openssl,\
-openwrt/{luci,openwrt,packages,targets,telephony,video},
+openwrt/{luci,openwrt,packages,targets,telephony,video},\
 PeachPy/enum34,\
 protocolbuffers/protobuf,\
 pybind/pybind11,\
@@ -119,6 +119,7 @@ scipy/scipy{,-mathjax,-sphinx-theme},\
 shadowsocks/{ShadowsocksX-NG,libQtShadowsocks,shadowsocks{,-go,-libev,-manager,-windows}},\
 shibatch/sleef,\
 tensorflow/tensorflow,\
+torvalds/linux,\
 USCiLab/cereal,\
 xianyi/OpenBLAS,\
 yaml/pyyaml,\
