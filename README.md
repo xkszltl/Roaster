@@ -169,6 +169,41 @@ Take a look in `/env`, there's variables for switching Python or other toolchain
 Set a different `${Env:GIT_MIRROR}` in case you want to use a private mirror for faster `git clone`.
 Note that this does not affect the submodule URLs.
 
+Nuget
+================
+
+We support binary delivery via Nuget.
+Generally speaking it's as simple as calling `pack.ps1`.
+
+Steps
+----------
+
+1. We push to MSAzure and MSResearch by default. You'll need a [credential provider] (https://pkgs.dev.azure.com/msresearch/_apis/public/nuget/client/CredentialProviderBundle.zip).
+2. `nuget.exe` should be somehow accessible. You can
+  * Rely on cwd, i.e. run `pack.ps1` from your nuget executable directory.
+  * Put it in `$Env:PATH`.
+3. Prepare your binary. `pack.ps1` looks for installed packages on your system and available configurations under `/nuget`, and pack everything it found. So make sure you've built entire Roaster before uploading a new version.
+4. Make sure your time is correctly synced (time zone doesn't matter). NTP recommended.
+5. Run `pack.ps1` and wait. It'll pack and upload everything in parallel.
+6. If you want to Ctrl-C, don't forget to go to `taskmgr` and kill all zombie `nuget.exe`.
+7. If you get network error from certain feed, retry. If failed again, manually push each packages.
+
+Versioning
+----------
+
+Currently we put everything under distribution version number, i.e. use Roaster version for packages.
+The version is generated automatically from git tag, hash and pack time in UTC.
+
+**Format**
+`<major>.<minor>.<patch>.<commit>-<time><hash>`
+
+* `<major>`: Fundamental change to Roaster itself, i.e. different dependency resolution method.
+* `<minor>`: Common build args change, new toolchain, new packages, ...
+* `<patch>`: Local fix for particular packages, or a simple bugfix that deserves some attention.
+* `<commit>`: 0-based distance to the latest tagged version before current commit. Nuget will ignore it if it's 0.
+* `<time>`: UTC time, expect to have high sub-second resolution.
+* `<hash>`: Git hash, starting with `g`.
+
 Issue
 ================
 
