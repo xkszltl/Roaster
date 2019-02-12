@@ -161,8 +161,8 @@ Environment
 
 Take a look in `/env`, there's variables for switching Python or other toolchains:
 * Python 3
-* ActivePerl
-* NASM
+* ActivePerl (for OpenSSL)
+* NASM (for OpenSSL)
 * Visual Studio
 * Ninja
 
