@@ -67,6 +67,11 @@ Due to the pipe issue, you must use for `curl -o` and `tar -f`.
 There's no similar output options for `protoc` (you may need it to alternate neural network models).
 In this case wrap it with `cmd /c`.
 
+**Exit Code**
+
+Powershell doesn't have (or I'm not aware of) `set -e` to exit immediately at non-zero exit code.
+You'll have to check it with `if (-Not $?)` manually.
+
 Static/Dynamic
 ----------
 
