@@ -1,8 +1,11 @@
 Project
 ================
 
-Roaster is the way you get Caffe2 from scratch.
-It helps you build dependencies and install system-wide as dynamic libraries.
+Roaster is a distribution for open-source project on Windows.
+The main goal for us is to support the entire dependency tree of Deep Learning frameworks, like Caffe2/Ort.
+It also includes some other libraries as long as we need to use them.
+
+Roaster helps you build dependencies and install system-wide as dynamic libraries.
 You can reuse these libraries/tools in other projects.
 
 System Requirement
@@ -26,16 +29,18 @@ Visual Studio
 ----------
 
 Latest version is preferred.
-Currently it's Visual Studio 2017.
+Currently it's Visual Studio 2017, latest subversion preferred.
+Please install all versions of WinSDK and VC toolchains (XP is not needed...).
 
 Git
 ----------
-Install it manually or get it from Visual Studio Installation. Please ensure to opt in for updating the environment path variable as we leverage several of the tools that are installed along w/git.
+Install it manually or get it from Visual Studio Installation.
+Please ensure to opt in for updating the environment path variable as we leverage several of the tools that are installed along w/git.
 
 CMake
 ----------
 
-Get the latest version, `3.11.1` at least.
+Always get the latest version.
 
 Design
 ================
@@ -48,6 +53,37 @@ Hence no annoying dependencies, like python or compilers, is needed.
 We also try to avoid anything related to `cmd` because it's too old.
 But for compatibility reason, sometimes we need to bring in `*vars.bat` to setup environment.
 In that case we will call `cmd` and steal things back to powershell.
+
+For some speical case not supported by powershell, we will uses `cmd /c`.
+Known issues are:
+1. Pipe / Redirection. Powershell alternates all data in pipe to use UTF-16.
+2. `mklink`. Cmd allows you to create link without admin permission.
+3. `rmdir`. There're some cases where powershell doesn't work well.
+
+**Pipe**
+
+Due to the pipe issue, you must use for `curl -o` and `tar -f`.
+
+There's no similar output options for `protoc` (you may need it to alternate neural network models).
+In this case wrap it with `cmd /c`.
+
+Static/Dynamic
+----------
+
+Everything in Roaster should be built as dynamic libraries, unless it's not doable or have huge performance impact.
+The goal here is to:
+1. Reduce downstream build time.
+2. Provide ABI compatibility, especially for STL and CRT. We uses several different dev/prod environments. There was even a mix of vc140/vc141.
+3. Provide LTO (i.e. `/GL` and `/LTCG`) compatibility.
+
+Many open-source project are created for Linux and gcc, and lack of Windows support, especially for DLL because:
+1. MSVC hide symbols while gcc/clang exports everything by default.
+2. In the gcc world, visibility is enough. For MSVC, there's difference between `dllimport` and `dllexport`.
+
+If you get into any trouble, don't be surprised.
+You can typically resolve it in the following way:
+1. Patch symbols with proper decoration, and submit PR to upstream.
+2. The evil way, `CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS`. It won't always work.
 
 Version
 ----------
