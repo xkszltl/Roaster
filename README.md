@@ -105,9 +105,17 @@ Patch
 PR to the official repo is always preferred.
 When PR process is too slow or impossible, to Google for example, try the following suggestions:
 
-1. Some bugs, especially DLL related issues, might be bypassed by turning the build arguments.
-2. When you really have to patch the source code, use regex for small dirty fixes. This may last longer than `git merge`.
-3. For big fixes or pending PR, use a fork repo to hold private commits and use `git pull <patch repo> <PR branch>` after `git clone` from the official one.
+1. Some bugs, especially DLL related issues, might be bypassed by tuning the build arguments.
+2. When you really have to patch the source code, use regex for tiny dirty fixes. This may last longer than `git merge`.
+3. For big fixes or pending PR, use a fork repo to hold private commits and use `git pull <patch repo> <PR branch>` after `git clone` the official one.
+
+**Branch**
+
+Follow this guidance for creating patch branch:
+1. Squash your commits. You may need to rebase constantly and this reduce the workload.
+2. Try your best to push it to upstream. Otherwise you'll be resolving conflicts constantly.
+3. Always patch if you cannot resolve it by special build args.
+4. Before patching a release version, check if it's fixed the latest master first.
 
 Install
 ----------
@@ -128,7 +136,11 @@ Usage
 
 Method 1
 --------
-Run install.ps1 from a Powershell command prompt w/administrative rights.
+Run `install.ps1` from a Powershell command prompt with admin.
+It calls all packages in a topo-sorted order for dependency graph.
+
+If this is the first time, please do the same thing manually, because you'll have to restart powershell / reboot in the middle.
+See Method 2 for details.
 
 Method 2
 --------
@@ -139,17 +151,22 @@ Here's an example:
 & ${ROASTER_ROOT}/pkgs/caffe2
 ```
 
-No implicit dependency analysis available. Please call the scripts in the same order as specified
-in the installation script "install.ps1"
+No implicit dependency analysis available.
+Please call the scripts in the same order as specified in the installation script "install.ps1"
 
 You can always reinstall/update packages by the same process.
 
 Environment
 ----------
 
-Take a look in `/env`, there's variables for switching Python or other toolchains.
+Take a look in `/env`, there's variables for switching Python or other toolchains:
+* Python 3
+* ActivePerl
+* NASM
+* Visual Studio
+* Ninja
 
-Set a different `${Env:GIT_MIRROR}` in case you want to use a private repo for faster `git clone`.
+Set a different `${Env:GIT_MIRROR}` in case you want to use a private mirror for faster `git clone`.
 Note that this does not affect the submodule URLs.
 
 Issue
