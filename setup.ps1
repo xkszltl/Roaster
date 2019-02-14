@@ -45,7 +45,7 @@ foreach ($pkg in @(
         continue
     }
 
-    if (-Not $($pkg -in $args))
+    if ($($args.Count -gt 1) -and -not $($pkg -in $args))
     {
         continue
     }
@@ -55,6 +55,11 @@ foreach ($pkg in @(
     if ($(Test-Path $path -ErrorAction SilentlyContinue))
     {
         & "${PSHOME}/powershell.exe" $path
+        if (-Not $?)
+        {
+            Write-Host "[Error] Failed to install `"$pkg`""
+            exit 1
+        }
     }
     else
     {
