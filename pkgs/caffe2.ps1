@@ -27,7 +27,7 @@ pushd "$root"
 
 git remote add patch https://github.com/xkszltl/pytorch.git
 git fetch patch
-git pull patch ewl gemm mergedim lstm
+git pull patch ewl lstm
 
 if (-Not $?)
 {
