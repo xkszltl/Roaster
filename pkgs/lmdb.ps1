@@ -1,7 +1,10 @@
 #Requires -RunAsAdministrator
 
+Get-Content "$PSScriptRoot/utils/re-entry.ps1" -Raw | Invoke-Expression
 $ErrorActionPreference="Stop"
-& "$(Split-Path -Path $MyInvocation.MyCommand.Path -Parent)/env/mirror.ps1"
+
+. "$PSScriptRoot/env/mirror.ps1"
+. "$PSScriptRoot/env/toolchain.ps1"
 
 pushd ${Env:TMP}
 $repo="${Env:GIT_MIRROR}/lmdb/lmdb.git"

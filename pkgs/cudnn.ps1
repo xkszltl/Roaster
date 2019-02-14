@@ -8,6 +8,7 @@
 
 #Requires -RunAsAdministrator
 
+Get-Content "$PSScriptRoot/utils/re-entry.ps1" -Raw | Invoke-Expression
 $ErrorActionPreference="Stop"
 
 pushd ${Env:TMP}

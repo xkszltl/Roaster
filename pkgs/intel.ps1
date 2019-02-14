@@ -5,9 +5,10 @@
 # You agree to take full responsibility for using this script, and relief
 # authors from any liability of not acquiring data in the normal way.
 ################################################################################
-# TODO: Consider parallelizing downloads
+
 #Requires -RunAsAdministrator
 
+Get-Content "$PSScriptRoot/utils/re-entry.ps1" -Raw | Invoke-Expression
 $ErrorActionPreference="Stop"
 
 $intel_url = "http://registrationcenter-download.intel.com/akdlm/irc_nas/tec"
@@ -40,3 +41,5 @@ foreach ($i in 0..($components.Length - 1))
     dir $InstallationDir
     & $(Join-Path $DownloadDir $setup) install --output="$DownloadDir/$f_output_log.txt" --eula=accept | Out-Null
 }
+
+Get-ChildItem "${Env:ProgramFiles(x86)}/IntelSWTools/compilers_and_libraries/windows/redist/intel64" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }

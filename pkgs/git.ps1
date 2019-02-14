@@ -3,6 +3,9 @@
 # TODO: Check that Git and Unix tools are added to CMD path for all users (see https://github.com/git-for-windows/build-extra/blob/master/installer/install.iss for options available for Windows Git installation).
 #       After doing so, add this script to install.ps1
 
+Get-Content "$PSScriptRoot/utils/re-entry.ps1" -Raw | Invoke-Expression
+$ErrorActionPreference="Stop"
+
 $DownloadDir = "$Env:TMP/Git"
 New-Item -Path $DownloadDir -Type Directory -ErrorAction SilentlyContinue
 if (-not $(Test-Path $DownloadDir))

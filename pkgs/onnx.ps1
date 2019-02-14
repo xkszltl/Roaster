@@ -1,8 +1,10 @@
 #Requires -RunAsAdministrator
 
+Get-Content "$PSScriptRoot/utils/re-entry.ps1" -Raw | Invoke-Expression
 $ErrorActionPreference="Stop"
-& "$(Split-Path -Path $MyInvocation.MyCommand.Path -Parent)/env/mirror.ps1" | Out-Null
-& "$(Split-Path -Path $MyInvocation.MyCommand.Path -Parent)/env/toolchain.ps1" | Out-Null
+
+. "$PSScriptRoot/env/mirror.ps1"
+. "$PSScriptRoot/env/toolchain.ps1"
 
 & "${Env:PYTHONHOME}/python.exe" -m pip install -U numpy | Out-Null
 
@@ -78,7 +80,7 @@ cmake --build .
 if (-Not $?)
 {
     echo "Failed to build."
-    echo "Retry with single thread for logging."
+    echo "Retry with best-effort for logging."
     echo "You may Ctrl-C this if you don't need the log file."
     cmake --build . -- -k0
     cmake --build . 2>&1 | tee ${Env:TMP}/${proj}.log

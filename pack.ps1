@@ -1,3 +1,4 @@
+Get-Content "$PSScriptRoot/pkgs/utils/re-entry.ps1" -Raw | Invoke-Expression
 $ErrorActionPreference="Stop"
 
 Write-Host "Create NuGet Packages"

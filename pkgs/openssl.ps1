@@ -1,8 +1,10 @@
 #Requires -RunAsAdministrator
 
+Get-Content "$PSScriptRoot/utils/re-entry.ps1" -Raw | Invoke-Expression
 $ErrorActionPreference="Stop"
-& "$(Split-Path -Path $MyInvocation.MyCommand.Path -Parent)/env/mirror.ps1" | Out-Null
-& "$(Split-Path -Path $MyInvocation.MyCommand.Path -Parent)/env/toolchain.ps1"
+
+. "$PSScriptRoot/env/mirror.ps1"
+. "$PSScriptRoot/env/toolchain.ps1"
 
 ${Env:Path}="${Env:ProgramFiles}/NASM;${Env:Path}"
 
@@ -27,12 +29,9 @@ ${Env:__CNF_LDFLAGS}="${Env:__CNF_LDFLAGS} /INCREMENTAL:NO /LTCG:incremental /gu
 perl Configure shared zlib VC-WIN64A --release --with-zlib-include="C:/PROGRA~1/zlib/include" --with-zlib-lib="C:/PROGRA~1/zlib/lib/zlib.lib"
 
 nmake
+if (-Not $?)
 {
     echo "Failed to build."
-    echo "Retry with single thread for logging."
-    echo "You may Ctrl-C this if you don't need the log file."
-    cmake --build . -- -k0
-    cmake --build . 2>&1 | tee ${Env:TMP}/${proj}.log
     exit 1
 }
 
