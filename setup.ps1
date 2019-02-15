@@ -45,6 +45,11 @@ foreach ($pkg in @(
         continue
     }
 
+    if ($pkg -match '^#')
+    {
+        continue
+    }
+
     if ($($args.Count -gt 1) -and -not $($pkg -in $args))
     {
         continue
