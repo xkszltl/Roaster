@@ -204,6 +204,42 @@ The version is generated automatically from git tag, hash and pack time in UTC.
 * `<time>`: UTC time, expect to have high sub-second resolution.
 * `<hash>`: Git hash, starting with `g`.
 
+Maintenance
+================
+
+We try to automate the script to find the latest release.
+However, some libraries require active manual maintenance.
+Usually this is caused by anti-crawler mechanism. 
+
+Intel Performance Libraries
+----------
+
+Usually Intel releases several versions each year.
+
+Go to Intel website (or simply Google "MKL") and find the download page.
+You'll be asked to fill a registration form before receiving download link.
+There's no S/N or cookie required for downloading.
+So simply update the script with new URL.
+
+CUDA
+----------
+
+Usually Nvidia releases several versions of CUDA each year.
+And all the libraries like cuDNN, NCCL and TensorRT will also update accordingly.
+
+For CUDA we used to do a loop-based scan, but recently they start to use very long version.
+You'll have to copy the URL from CUDA website.
+
+Similarly you can update other CUDA libraries.
+Some of them requires you to sign-in, or even requires cookie for authorization.
+
+Toolchain
+----------
+
+There're some hard-coded version in `/env/toolchain.ps1`.
+It's mainly due to the fact that Windows does not have `sed`.
+If you want, feel free to write a crawler.
+
 Issue
 ================
 
