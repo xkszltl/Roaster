@@ -44,7 +44,7 @@ if (Test-Path $InstallationPath)
     }
 }
 
-./b2 --prefix=$InstallationPath -j"$Env:NUMBER_OF_PROCESSORS" link=shared --threading=multi address-model=64 runtime-link=shared installshared
+./b2 --prefix=$InstallationPath -j"$Env:NUMBER_OF_PROCESSORS" link=shared --threading=multi address-model=64 runtime-link=shared install
 if (-Not $?)
 {
     echo "Failed to build."
