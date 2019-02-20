@@ -138,7 +138,7 @@ cmake                                                                           
     -Donnxruntime_USE_CUDA=OFF                                                          `
     -Donnxruntime_USE_JEMALLOC=OFF                                                      `
     -Donnxruntime_USE_LLVM=OFF                                                          `
-    -Donnxruntime_USE_MKLDNN=ON                                                         `
+    -Donnxruntime_USE_MKLDNN=OFF                                                        `
     -Donnxruntime_USE_MKLML=ON                                                          `
     -Donnxruntime_USE_OPENMP=OFF                                                        `
     -Donnxruntime_USE_PREBUILT_PB=ON                                                    `
