@@ -140,7 +140,7 @@ cmake                                                                           
     -Donnxruntime_USE_LLVM=OFF                                                          `
     -Donnxruntime_USE_MKLDNN=ON                                                         `
     -Donnxruntime_USE_MKLML=ON                                                          `
-    -Donnxruntime_USE_OPENMP=ON                                                         `
+    -Donnxruntime_USE_OPENMP=OFF                                                        `
     -Donnxruntime_USE_PREBUILT_PB=ON                                                    `
     -Donnxruntime_USE_PREINSTALLED_EIGEN=ON                                             `
     -Donnxruntime_USE_TVM=OFF                                                           `
