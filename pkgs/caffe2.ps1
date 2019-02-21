@@ -29,7 +29,7 @@ pushd "$root"
 
 git remote add patch https://github.com/xkszltl/pytorch.git
 git fetch patch
-git pull patch lstm
+git pull patch ewl lstm
 
 if (-Not $?)
 {
@@ -166,7 +166,7 @@ if (-Not $?)
 cmake --build . --target test
 if (-Not $?)
 {
-    echo "Check failed but we temporarily bypass it. Some tests are expected to fail on Windows."
+    echo "[Warning] Check failed but we temporarily bypass it. Some tests are expected to fail on Windows."
 }
 $ErrorActionPreference="Stop"
 
