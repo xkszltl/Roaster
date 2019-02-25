@@ -66,9 +66,14 @@
             -DCPUINFO_BUILD_TOOLS=ON                        \
             -DINSTALL_TEST=ON                               \
             -DTORCH_CUDA_ARCH_LIST="Pascal;Volta"           \
+            -DUSE_GFLAGS=ON                                 \
+            -DUSE_GLOG=ON                                   \
+            -DUSE_LEVELDB=ON                                \
+            -DUSE_LMDB=ON                                   \
             -DUSE_MKLDNN=ON                                 \
             -DUSE_NATIVE_ARCH=ON                            \
             -DUSE_OBSERVERS=ON                              \
+            -DUSE_OPENCV=ON                                 \
             -DUSE_OPENMP=ON                                 \
             -DUSE_PROF=ON                                   \
             -DUSE_ROCKSDB=ON                                \
