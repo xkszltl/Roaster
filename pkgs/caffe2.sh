@@ -15,7 +15,7 @@
 
     git remote add patch https://github.com/xkszltl/pytorch.git
 
-    PATCHES="ewl gemm mergedim lstm"
+    PATCHES="lstm"
 
     git pull --no-edit patch $PATCHES
 
