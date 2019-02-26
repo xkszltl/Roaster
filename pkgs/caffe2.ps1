@@ -131,6 +131,8 @@ cmake                                                                           
     -DPROTOBUF_PROTOC_EXECUTABLE="${Env:ProgramFiles}/protobuf/bin/protoc.exe"  `
     -DTORCH_CUDA_ARCH_LIST="Kepler;Maxwell;Pascal;Volta"                        `
     -DUSE_CUDA=OFF                                                              `
+    -DUSE_GFLAGS=ON                                                             `
+    -DUSE_GLOG=ON                                                               `
     -DUSE_GLOO=OFF                                                              `
     -DUSE_FBGEMM=ON                                                             `
     -DUSE_LEVELDB=OFF                                                           `
