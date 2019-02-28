@@ -107,14 +107,26 @@ mkdir build
 pushd build
 
 # Copy MKL's environment variables from ".bat" file to PowerShell.
-Invoke-Expression $($(cmd /C "`"${Env:ProgramFiles(x86)}/IntelSWTools/compilers_and_libraries/windows/mkl/bin/mklvars.bat`" intel64 vs2017 & set") -Match '^MKL(_|ROOT)' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
-Invoke-Expression $($(cmd /C "`"${Env:ProgramFiles(x86)}/IntelSWTools/compilers_and_libraries/windows/mkl/bin/mklvars.bat`" intel64 vs2017 & set") -Match '^LIB' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
-Invoke-Expression $($(cmd /C "`"${Env:ProgramFiles(x86)}/IntelSWTools/compilers_and_libraries/windows/mkl/bin/mklvars.bat`" intel64 vs2017 & set") -Match '^CPATH' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
-Invoke-Expression $($(cmd /C "`"${Env:ProgramFiles(x86)}/IntelSWTools/compilers_and_libraries/windows/mkl/bin/mklvars.bat`" intel64 vs2017 & set") -Match '^INCLUDE' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
+# Invoke-Expression $($(cmd /C "`"${Env:ProgramFiles(x86)}/IntelSWTools/compilers_and_libraries/windows/mkl/bin/mklvars.bat`" intel64 vs2017 & set") -Match '^MKL(_|ROOT)' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
+# Invoke-Expression $($(cmd /C "`"${Env:ProgramFiles(x86)}/IntelSWTools/compilers_and_libraries/windows/mkl/bin/mklvars.bat`" intel64 vs2017 & set") -Match '^LIB' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
+# Invoke-Expression $($(cmd /C "`"${Env:ProgramFiles(x86)}/IntelSWTools/compilers_and_libraries/windows/mkl/bin/mklvars.bat`" intel64 vs2017 & set") -Match '^CPATH' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
+# Invoke-Expression $($(cmd /C "`"${Env:ProgramFiles(x86)}/IntelSWTools/compilers_and_libraries/windows/mkl/bin/mklvars.bat`" intel64 vs2017 & set") -Match '^INCLUDE' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
 
 $gtest_silent_warning="/D_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS /D_SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING"
 $protobuf_dll="/DPROTOBUF_USE_DLLS"
 $dep_dll="${protobuf_dll}"
+
+# ./build.bat                                         `
+#     --build_csharp                                  `
+#     --cmake_extra_defines                           `
+#         BOOST_ROOT=`"${Env:ProgramFiles}/boost`"    `
+#         CMAKE_C_FLAGS=`"/DPROTOBUF_USE_DLLS /w`"    `
+#         CMAKE_CXX_FLAGS=`"/DPROTOBUF_USE_DLLS /w`"  `
+#     --config=Release                                `
+#     --pb_home="${Env:ProgramFiles}/protobuf"        `
+#     --use_openmp
+
+# exit 1
 
 # Turn off CUDA temporarily until Ort team switch back to static cudart.
 cmake                                                                                   `
@@ -133,16 +145,22 @@ cmake                                                                           
     -Deigen_SOURCE_PATH="${Env:ProgramFiles}/Eigen3/include/eigen3"                     `
     -Donnxruntime_BUILD_SHARED_LIB=ON                                                   `
     -Donnxruntime_CUDNN_HOME="$(Split-Path (Get-Command nvcc).Source -Parent)/.."       `
+    -Donnxruntime_ENABLE_MICROSOFT_INTERNAL=OFF                                         `
     -Donnxruntime_ENABLE_PYTHON=ON                                                      `
     -Donnxruntime_RUN_ONNX_TESTS=ON                                                     `
     -Donnxruntime_USE_CUDA=OFF                                                          `
+    -Donnxruntime_USE_EIGEN_FOR_BLAS=ON                                                 `
     -Donnxruntime_USE_JEMALLOC=OFF                                                      `
     -Donnxruntime_USE_LLVM=OFF                                                          `
     -Donnxruntime_USE_MKLDNN=OFF                                                        `
-    -Donnxruntime_USE_MKLML=ON                                                          `
-    -Donnxruntime_USE_OPENMP=OFF                                                        `
+    -Donnxruntime_USE_MKLML=OFF                                                         `
+    -Donnxruntime_USE_MLAS=ON                                                           `
+    -Donnxruntime_USE_NUPHAR=OFF                                                        `
+    -Donnxruntime_USE_OPENBLAS=OFF                                                      `
+    -Donnxruntime_USE_OPENMP=ON                                                         `
     -Donnxruntime_USE_PREBUILT_PB=ON                                                    `
     -Donnxruntime_USE_PREINSTALLED_EIGEN=ON                                             `
+    -Donnxruntime_USE_TRT=OFF                                                           `
     -Donnxruntime_USE_TVM=OFF                                                           `
     -G"Visual Studio 15 2017"                                                           `
     -T"host=x64"                                                                        `
