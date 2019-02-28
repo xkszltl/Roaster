@@ -11,10 +11,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/mklml.dll">
-      <Link>mklml.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/onnx_test_runner.exe">
       <Link>onnx_test_runner.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

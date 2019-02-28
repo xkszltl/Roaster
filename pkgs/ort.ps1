@@ -208,7 +208,7 @@ $ErrorActionPreference="Stop"
 
 cmd /c rmdir /S /Q "${Env:ProgramFiles}/onnxruntime"
 cmake --build . --config Release --target install -- -maxcpucount
-cmd /c xcopy    /i /f /y "Release\mklml.dll"                "${Env:ProgramFiles}\onnxruntime\bin"
+# cmd /c xcopy    /i /f /y "Release\mklml.dll"                "${Env:ProgramFiles}\onnxruntime\bin"
 cmd /c xcopy    /i /f /y "pdb\Release\*.pdb"                "${Env:ProgramFiles}\onnxruntime\bin"
 # cmd /c xcopy /e /i /f /y "..\cmake\external\gsl\include"    "${Env:ProgramFiles}\onnxruntime\include"
 # cmd /c xcopy /e /i /f /y "..\cmake\external\onnx\onnx"      "${Env:ProgramFiles}\onnxruntime\include\onnx"
