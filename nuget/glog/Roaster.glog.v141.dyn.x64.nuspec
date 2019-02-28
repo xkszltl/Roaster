@@ -14,6 +14,9 @@
     <releaseNotes>https://github.com/google/glog/blob/master/ChangeLog</releaseNotes>
     <copyright>Copyright 2008</copyright>
     <tags>glog native C++ v141 dyn</tags>
+    <dependencies>
+      <dependency id="Roaster.gflags.v141.dyn.x64" version="$version$" />
+    </dependencies>
   </metadata>
   <files>
     <file src="Roaster.glog.v141.dyn.x64.targets"   target="build\native\Roaster.glog.v141.dyn.x64.targets" />
