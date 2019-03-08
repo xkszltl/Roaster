@@ -16,7 +16,7 @@
     <tags>gflags native C++ v141 dyn</tags>
   </metadata>
   <files>
-    <file src="Roaster.gflags.v141.dyn.x64.targets" target="build\native\Roaster.gflags.v141.dyn.x64.targets" />
+    <file src="Roaster.gflags.v141.dyn.x64.targets" target="build\Roaster.gflags.v141.dyn.x64.targets" />
     <file src="gflags\bin\*"                        target="lib\native\lib\Release\" />
     <file src="gflags\include\**\*"                 target="lib\native\include" />
     <file src="gflags\lib\*"                        target="lib\native\lib\Release\" />

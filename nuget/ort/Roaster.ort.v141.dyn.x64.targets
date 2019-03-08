@@ -2,28 +2,32 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" >
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)/../../lib/native/include;$(MSBuildThisFileDirectory)/../../lib/native/include/onnxruntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)/../lib/native/include;$(MSBuildThisFileDirectory)/../lib/native/include/onnxruntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>ONNX_NAMESPACE=onnx;ONNX_ML;ORT_DLL_IMPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)/../../lib/native/lib/Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)/../lib/native/lib/Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>onnxruntime.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/onnx_test_runner.exe">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/mklml.dll">
+      <Link>mklml.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/onnx_test_runner.exe">
       <Link>onnx_test_runner.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/onnx_test_runner.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/onnx_test_runner.pdb">
       <Link>onnx_test_runner.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/onnxruntime.dll">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/onnxruntime.dll">
       <Link>onnxruntime.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/onnxruntime.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/onnxruntime.pdb">
       <Link>onnxruntime.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

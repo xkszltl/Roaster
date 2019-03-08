@@ -2,48 +2,48 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" >
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)/../../lib/native/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)/../lib/native/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>ONNX_NAMESPACE=onnx_c2;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)/../../lib/native/lib/Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)/../lib/native/lib/Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>c10.lib;caffe2.lib;caffe2_detectron_ops.lib;caffe2_observers.lib;caffe2_rocksdb.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/c10.dll">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/c10.dll">
       <Link>c10.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/c10.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/c10.pdb">
       <Link>c10.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/caffe2.dll">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/caffe2.dll">
       <Link>caffe2.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/caffe2.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/caffe2.pdb">
       <Link>caffe2.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/caffe2_detectron_ops.dll">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/caffe2_detectron_ops.dll">
       <Link>caffe2_detectron_ops.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/caffe2_detectron_ops.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/caffe2_detectron_ops.pdb">
       <Link>caffe2_detectron_ops.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/caffe2_observers.dll">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/caffe2_observers.dll">
       <Link>caffe2_observers.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/caffe2_observers.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/caffe2_observers.pdb">
       <Link>caffe2_observers.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/caffe2_rocksdb.dll">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/caffe2_rocksdb.dll">
       <Link>caffe2_rocksdb.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

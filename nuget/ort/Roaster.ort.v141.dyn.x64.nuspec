@@ -22,7 +22,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="Roaster.ort.v141.dyn.x64.targets"    target="build\native\Roaster.ort.v141.dyn.x64.targets" />
+    <file src="Roaster.ort.v141.dyn.x64.targets"    target="build\Roaster.ort.v141.dyn.x64.targets" />
     <file src="ort\bin\*"                           target="lib\native\lib\Release\" />
     <file src="ort\include\**\*"                    target="lib\native\include" />
     <file src="ort\lib\*"                           target="lib\native\lib\Release\" />
