@@ -24,7 +24,7 @@ pushd "$root"
 
 git remote add patch https://github.com/xkszltl/protobuf.git
 git fetch patch
-git cherry-pick patch/constexpr-3.6
+git cherry-pick patch/constexpr-3.7
 
 # Repo contains file "BUILD" for Bazel and it will conflict with "build" on NTFS.
 mkdir build-win

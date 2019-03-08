@@ -98,7 +98,7 @@ Get-ChildItem ../nuget | Foreach-Object {
             & ${Env:NUGET_HOME}/nuget.exe pack -version ${version} "../nuget/${pkg}/Roaster.${pkg}.v141.dyn.x64.nuspec"
             cmd /c rmdir /Q "..\nuget\${pkg}\${pkg}"
 
-            ForEach (${feed} in @("OneOCR", "API-OCR"))
+            ForEach (${feed} in @("API-OCR"))
             {
                 Start-Job {
                     param(${nupkg}, ${feed})
