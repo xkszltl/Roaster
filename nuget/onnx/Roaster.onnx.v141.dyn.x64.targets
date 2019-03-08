@@ -2,24 +2,24 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" >
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)/../../lib/native/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)/../lib/native/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>ONNX_NAMESPACE=onnx;ONNX_ML;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)/../../lib/native/lib/Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)/../lib/native/lib/Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>onnx.lib;onnx_proto.lib;onnxifi_dummy.lib;onnxifi_loader.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/onnxifi.dll">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/onnxifi.dll">
       <Link>onnxifi.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/onnxifi_dummy.dll">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/onnxifi_dummy.dll">
       <Link>onnxifi_dummy.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/onnxifi_dummy.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/onnxifi_dummy.pdb">
       <Link>onnxifi_dummy.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

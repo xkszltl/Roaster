@@ -2,27 +2,27 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" >
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)/../../lib/native/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)/../lib/native/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)/../../lib/native/lib/Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)/../lib/native/lib/Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>cream.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/cream.dll">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/cream.dll">
       <Link>cream.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/cream.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/cream.pdb">
       <Link>cream.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/cream_all_tests.exe">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/cream_all_tests.exe">
       <Link>cream_all_tests.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../../lib/native/lib/Release/cream_all_tests.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/cream_all_tests.pdb">
       <Link>cream_all_tests.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

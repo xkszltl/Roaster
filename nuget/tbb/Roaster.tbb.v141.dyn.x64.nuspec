@@ -20,7 +20,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="Roaster.tbb.v141.dyn.x64.targets"                                  target="build\native\Roaster.tbb.v141.dyn.x64.targets" />
+    <file src="Roaster.tbb.v141.dyn.x64.targets"                                  target="build\Roaster.tbb.v141.dyn.x64.targets" />
     <file src="tbb\compilers_and_libraries\windows\redist\intel64\tbb\vc_mt\**\*" target="lib\native\lib\Release" />
     <file src="tbb\compilers_and_libraries\windows\tbb\lib\intel64\vc_mt\**\*"    target="lib\native\lib\Release" />
   </files>
