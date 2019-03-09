@@ -23,6 +23,7 @@ foreach ($pkg in @(
     "cuda",
     "cudnn",
     "intel",
+    "mklml",
     "boost",
     "jsoncpp",
     "eigen",
