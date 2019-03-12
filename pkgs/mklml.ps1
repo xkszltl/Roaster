@@ -34,12 +34,13 @@ rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue
 pushd external
 if (Get-Command -Name unzip -ErrorAction SilentlyContinue)
 {
-    unzip -ou "mklml_win_*.zip" -d "mklml"
+    unzip -ou "mklml_win_*.zip" -d "mklml.d"
 }
 else
 {
-    Expand-Archive "mklml_win_*.zip" "mklml"
+    Expand-Archive "mklml_win_*.zip" "mklml.d"
 }
+mv -force mklml.d/mklml_win_* mklml
 xcopy /e /i /f /y "mklml\*" "${Env:ProgramFiles}\mklml"
 popd
 
