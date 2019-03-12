@@ -24,6 +24,15 @@ git clone --recursive -j100 "$repo"
 pushd "$root"
 
 # ================================================================================
+# Build Options
+# ================================================================================
+
+$update_gtest = true
+$update_onnx = false
+$update_protobuf = true
+$use_bat = false
+
+# ================================================================================
 # Experimental PR
 # ================================================================================
 
@@ -51,46 +60,59 @@ if (-Not $?)
 # Update GTest
 # ================================================================================
 
-pushd cmake/external/googletest
-git fetch --tags
-$gtest_latest_ver='release-' + $($(git tag) -match '^release-[0-9\.]*$' -replace '^release-','' | sort {[Version]$_})[-1]
-git checkout "$gtest_latest_ver"
-git submodule update --init
-popd
+if ($update_gtest)
+{
+    pushd cmake/external/googletest
+    git fetch --tags
+    $gtest_latest_ver='release-' + $($(git tag) -match '^release-[0-9\.]*$' -replace '^release-','' | sort {[Version]$_})[-1]
+    git checkout "$gtest_latest_ver"
+    git submodule update --init
+    popd
+}
+
+# ================================================================================
+# Update ONNX and its PyBind
+#
+# Warning:
+#     ONNX Breaking change on Mar 11, 2019 causes build error in Ort.
+#     https://github.com/onnx/onnx/pull/1834
+# ================================================================================
+
+if ($update_onnx)
+{
+    pushd cmake/external/onnx
+    git pull origin master
+    git submodule update --init --recursive
+
+    pushd third_party/pybind11
+    git fetch --tags
+    $pybind_latest_ver='v' + $($(git tag) -match '^v[0-9\.]*$' -replace '^v','' | sort {[Version]$_})[-1]
+    git checkout "$pybind_latest_ver"
+    git submodule update --init --recursive
+    popd
+
+    git --no-pager diff
+    git commit -am "Automatic git submodule updates."
+
+    popd
+}
 
 # ================================================================================
 # Update Protobuf
 # ================================================================================
 
-pushd cmake/external/protobuf
-git fetch --tags
-$pb_latest_ver='v' + $($(git tag) -match '^v[0-9\.]*$' -replace '^v','' | sort {[Version]$_})[-1]
-git checkout "$pb_latest_ver"
-git remote add patch https://github.com/xkszltl/protobuf.git
-git fetch patch
-git cherry-pick patch/constexpr-3.7
-git submodule update --init
-popd
-
-# ================================================================================
-# Update ONNX and its PyBind
-# ================================================================================
-
-pushd cmake/external/onnx
-git pull origin master
-git submodule update --init --recursive
-
-pushd third_party/pybind11
-git fetch --tags
-$pybind_latest_ver='v' + $($(git tag) -match '^v[0-9\.]*$' -replace '^v','' | sort {[Version]$_})[-1]
-git checkout "$pybind_latest_ver"
-git submodule update --init --recursive
-popd
-
-git --no-pager diff
-git commit -am "Automatic git submodule updates."
-
-popd
+if ($update_protobuf)
+{
+    pushd cmake/external/protobuf
+    git fetch --tags
+    $pb_latest_ver='v' + $($(git tag) -match '^v[0-9\.]*$' -replace '^v','' | sort {[Version]$_})[-1]
+    git checkout "$pb_latest_ver"
+    git remote add patch https://github.com/xkszltl/protobuf.git
+    git fetch patch
+    git cherry-pick patch/constexpr-3.7
+    git submodule update --init
+    popd
+}
 
 # ================================================================================
 # Commit
@@ -103,8 +125,11 @@ git commit -am "Automatic git submodule updates."
 # Build
 # ================================================================================
 
-mkdir build
-pushd build
+if (-not $use_bat)
+{
+    mkdir build
+    pushd build
+}
 
 # Copy MKL's environment variables from ".bat" file to PowerShell.
 # Invoke-Expression $($(cmd /C "`"${Env:ProgramFiles(x86)}/IntelSWTools/compilers_and_libraries/windows/mkl/bin/mklvars.bat`" intel64 vs2017 & set") -Match '^MKL(_|ROOT)' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
@@ -116,64 +141,69 @@ $gtest_silent_warning="/D_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS /D_SILENCE_TR
 $protobuf_dll="/DPROTOBUF_USE_DLLS"
 $dep_dll="${protobuf_dll}"
 
-# ./build.bat                                         `
-#     --build_csharp                                  `
-#     --cmake_extra_defines                           `
-#         BOOST_ROOT=`"${Env:ProgramFiles}/boost`"    `
-#         CMAKE_C_FLAGS=`"/DPROTOBUF_USE_DLLS /w`"    `
-#         CMAKE_CXX_FLAGS=`"/DPROTOBUF_USE_DLLS /w`"  `
-#     --config=Release                                `
-#     --pb_home="${Env:ProgramFiles}/protobuf"        `
-#     --use_openmp
-
-# exit 1
-
-# Turn off CUDA temporarily until Ort team switch back to static cudart.
-cmake                                                                                   `
-    -A x64                                                                              `
-    -DBOOST_ROOT="${Env:ProgramFiles}/boost"                                            `
-    -DBUILD_SHARED_LIBS=OFF                                                             `
-    -DCMAKE_C_FLAGS="/GL /MP /Zi /arch:AVX2 ${dep_dll}"                                 `
-    -DCMAKE_CXX_FLAGS="/EHsc /GL /MP /Zi /arch:AVX2 ${dep_dll} ${gtest_silent_warning}" `
-    -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"                        `
-    -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/onnxruntime"                            `
-    -DCMAKE_PDB_OUTPUT_DIRECTORY="${PWD}/pdb"                                           `
-    -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"                     `
-    -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                                     `
-    -DCUDA_VERBOSE_BUILD=ON                                                             `
-    -DONNX_CUSTOM_PROTOC_EXECUTABLE="${Env:ProgramFiles}/protobuf/bin/protoc.exe"       `
-    -Deigen_SOURCE_PATH="${Env:ProgramFiles}/Eigen3/include/eigen3"                     `
-    -Donnxruntime_BUILD_SHARED_LIB=ON                                                   `
-    -Donnxruntime_CUDNN_HOME="$(Split-Path (Get-Command nvcc).Source -Parent)/.."       `
-    -Donnxruntime_ENABLE_MICROSOFT_INTERNAL=OFF                                         `
-    -Donnxruntime_ENABLE_PYTHON=ON                                                      `
-    -Donnxruntime_RUN_ONNX_TESTS=ON                                                     `
-    -Donnxruntime_USE_CUDA=OFF                                                          `
-    -Donnxruntime_USE_EIGEN_FOR_BLAS=ON                                                 `
-    -Donnxruntime_USE_JEMALLOC=OFF                                                      `
-    -Donnxruntime_USE_LLVM=OFF                                                          `
-    -Donnxruntime_USE_MKLDNN=OFF                                                        `
-    -Donnxruntime_USE_MKLML=OFF                                                         `
-    -Donnxruntime_USE_MLAS=ON                                                           `
-    -Donnxruntime_USE_NUPHAR=OFF                                                        `
-    -Donnxruntime_USE_OPENBLAS=OFF                                                      `
-    -Donnxruntime_USE_OPENMP=ON                                                         `
-    -Donnxruntime_USE_PREBUILT_PB=ON                                                    `
-    -Donnxruntime_USE_PREINSTALLED_EIGEN=ON                                             `
-    -Donnxruntime_USE_TRT=OFF                                                           `
-    -Donnxruntime_USE_TVM=OFF                                                           `
-    -G"Visual Studio 15 2017"                                                           `
-    -T"host=x64"                                                                        `
-    ../cmake
-
-cmake --build . --config Release -- -maxcpucount
-if (-Not $?)
+if ($use_bat)
 {
-    echo "Failed to build."
-    echo "Retry with single thread for logging."
-    echo "You may Ctrl-C this if you don't need the log file."
-    cmake --build . --config Release 2>&1 | tee ${Env:TMP}/${proj}.log
+    ./build.bat                                         `
+        --build_shared_lib                              `
+        --cmake_extra_defines                           `
+            BOOST_ROOT=`"${Env:ProgramFiles}/boost`"    `
+            CMAKE_C_FLAGS=`"/DPROTOBUF_USE_DLLS /w`"    `
+            CMAKE_CXX_FLAGS=`"/DPROTOBUF_USE_DLLS /w`"  `
+        --config=Release                                `
+        --pb_home="${Env:ProgramFiles}/protobuf"        `
+        --use_openmp
+
     exit 1
+}
+else
+{
+    # Turn off CUDA temporarily until Ort team switch back to static cudart.
+    cmake                                                                                   `
+        -A x64                                                                              `
+        -DBOOST_ROOT="${Env:ProgramFiles}/boost"                                            `
+        -DBUILD_SHARED_LIBS=OFF                                                             `
+        -DCMAKE_C_FLAGS="/GL /MP /Zi /arch:AVX2 ${dep_dll}"                                 `
+        -DCMAKE_CXX_FLAGS="/EHsc /GL /MP /Zi /arch:AVX2 ${dep_dll} ${gtest_silent_warning}" `
+        -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"                        `
+        -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/onnxruntime"                            `
+        -DCMAKE_PDB_OUTPUT_DIRECTORY="${PWD}/pdb"                                           `
+        -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"                     `
+        -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                                     `
+        -DCUDA_VERBOSE_BUILD=ON                                                             `
+        -DONNX_CUSTOM_PROTOC_EXECUTABLE="${Env:ProgramFiles}/protobuf/bin/protoc.exe"       `
+        -Deigen_SOURCE_PATH="${Env:ProgramFiles}/Eigen3/include/eigen3"                     `
+        -Donnxruntime_BUILD_SHARED_LIB=ON                                                   `
+        -Donnxruntime_CUDNN_HOME="$(Split-Path (Get-Command nvcc).Source -Parent)/.."       `
+        -Donnxruntime_ENABLE_MICROSOFT_INTERNAL=OFF                                         `
+        -Donnxruntime_ENABLE_PYTHON=ON                                                      `
+        -Donnxruntime_RUN_ONNX_TESTS=ON                                                     `
+        -Donnxruntime_USE_CUDA=OFF                                                          `
+        -Donnxruntime_USE_EIGEN_FOR_BLAS=ON                                                 `
+        -Donnxruntime_USE_JEMALLOC=OFF                                                      `
+        -Donnxruntime_USE_LLVM=OFF                                                          `
+        -Donnxruntime_USE_MKLDNN=OFF                                                        `
+        -Donnxruntime_USE_MKLML=OFF                                                         `
+        -Donnxruntime_USE_MLAS=ON                                                           `
+        -Donnxruntime_USE_NUPHAR=OFF                                                        `
+        -Donnxruntime_USE_OPENBLAS=OFF                                                      `
+        -Donnxruntime_USE_OPENMP=ON                                                         `
+        -Donnxruntime_USE_PREBUILT_PB=ON                                                    `
+        -Donnxruntime_USE_PREINSTALLED_EIGEN=ON                                             `
+        -Donnxruntime_USE_TRT=OFF                                                           `
+        -Donnxruntime_USE_TVM=OFF                                                           `
+        -G"Visual Studio 15 2017"                                                           `
+        -T"host=x64"                                                                        `
+        ../cmake
+
+    cmake --build . --config Release -- -maxcpucount
+    if (-Not $?)
+    {
+        echo "Failed to build."
+        echo "Retry with single thread for logging."
+        echo "You may Ctrl-C this if you don't need the log file."
+        cmake --build . --config Release 2>&1 | tee ${Env:TMP}/${proj}.log
+        exit 1
+    }
 }
 
 $model_path = "${Env:TMP}/onnxruntime_models.zip"
