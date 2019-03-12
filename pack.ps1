@@ -1,25 +1,6 @@
 Get-Content "$PSScriptRoot/pkgs/utils/re-entry.ps1" -Raw | Invoke-Expression
 $ErrorActionPreference="Stop"
 
-Write-Host "Create NuGet Packages"
-
-${Env:NUGET_HOME} = "$(Get-Command -Name nuget -ErrorAction SilentlyContinue | select -ExpandProperty Source | Split-Path -Parent)"
-
-if (${Env:NUGET_HOME} -eq $null -or -not $(Test-Path ${Env:NUGET_HOME}/nuget.exe -ErrorAction SilentlyContinue))
-{
-    ${Env:NUGET_HOME} = $pwd.Path
-}
-
-Test-Path ${Env:NUGET_HOME}/nuget.exe | Out-Null
-
-$ErrorActionPreference="SilentlyContinue"
-& ${Env:NUGET_HOME}/nuget.exe sources Add -Name "OneOCR" -Source "https://pkgs.dev.azure.com/msresearch/_packaging/OneOCR/nuget/v3/index.json"
-& ${Env:NUGET_HOME}/nuget.exe sources Add -Name "API-OCR" -Source "https://msazure.pkgs.visualstudio.com/_packaging/API-OCR/nuget/v3/index.json"
-$ErrorActionPreference="Stop"
-& ${Env:NUGET_HOME}/nuget.exe sources Update -Name "OneOCR" -Source "https://pkgs.dev.azure.com/msresearch/_packaging/OneOCR/nuget/v3/index.json"
-& ${Env:NUGET_HOME}/nuget.exe sources Update -Name "API-OCR" -Source "https://msazure.pkgs.visualstudio.com/_packaging/API-OCR/nuget/v3/index.json"
-& ${Env:NUGET_HOME}/nuget.exe sources
-
 pushd $PSScriptRoot
 
 $versionPrefix = 'v'
@@ -52,6 +33,40 @@ if (Test-Path build)
 }
 mkdir build
 pushd build
+
+Write-Host "Create NuGet Packages"
+
+${Env:NUGET_HOME} = "$(Get-Command -Name nuget -ErrorAction SilentlyContinue | select -ExpandProperty Source | Split-Path -Parent)"
+
+if (${Env:NUGET_HOME} -eq $null -or -not $(Test-Path ${Env:NUGET_HOME}/nuget.exe -ErrorAction SilentlyContinue))
+{
+    ${Env:NUGET_HOME} = $pwd.Path
+}
+
+# Download CredentialProviderBundle of Nuget.
+if (${Env:NUGET_HOME} -eq $null -or -not $(Test-Path ${Env:NUGET_HOME}/nuget.exe -ErrorAction SilentlyContinue))
+{
+    & "${Env:ProgramFiles}/CURL/bin/curl.exe" -fkSL "https://msazure.pkgs.visualstudio.com/_apis/public/nuget/client/CredentialProviderBundle.zip" -o "CredentialProviderBundle.zip"
+    if (Get-Command -Name unzip -ErrorAction SilentlyContinue)
+    {
+        unzip -ou "CredentialProviderBundle.zip" -d "CredentialProviderBundle"
+    }
+    else
+    {
+        Expand-Archive "CredentialProviderBundle.zip" "CredentialProviderBundle"
+    }
+    ${Env:NUGET_HOME} = "CredentialProviderBundle"
+}
+
+Test-Path ${Env:NUGET_HOME}/nuget.exe | Out-Null
+
+$ErrorActionPreference="SilentlyContinue"
+& ${Env:NUGET_HOME}/nuget.exe sources Add -Name "OneOCR" -Source "https://pkgs.dev.azure.com/msresearch/_packaging/OneOCR/nuget/v3/index.json"
+& ${Env:NUGET_HOME}/nuget.exe sources Add -Name "API-OCR" -Source "https://msazure.pkgs.visualstudio.com/_packaging/API-OCR/nuget/v3/index.json"
+$ErrorActionPreference="Stop"
+& ${Env:NUGET_HOME}/nuget.exe sources Update -Name "OneOCR" -Source "https://pkgs.dev.azure.com/msresearch/_packaging/OneOCR/nuget/v3/index.json"
+& ${Env:NUGET_HOME}/nuget.exe sources Update -Name "API-OCR" -Source "https://msazure.pkgs.visualstudio.com/_packaging/API-OCR/nuget/v3/index.json"
+& ${Env:NUGET_HOME}/nuget.exe sources
 
 Write-Host "--------------------------------------------------------------------------------"
 
