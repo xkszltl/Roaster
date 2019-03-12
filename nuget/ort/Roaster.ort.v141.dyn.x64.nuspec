@@ -15,11 +15,11 @@
     <copyright>Copyright 2018</copyright>
     <tags>ort onnxruntime native C++ v141 dyn</tags>
     <dependencies>
-      <dependency id="Roaster.eigen.v141.dyn.x64"     version="$version$" />
-      <dependency id="Roaster.mkl.v141.dyn.x64"       version="$version$" />
-      <dependency id="Roaster.mklml.v141.dyn.x64"     version="$version$" />
-      <dependency id="Roaster.mkldnn.v141.dyn.x64"    version="$version$" />
-      <dependency id="Roaster.protobuf.v141.dyn.x64"  version="$version$" />
+      <dependency id="Roaster.eigen.v141.dyn.x64"     version="[$version$]" />
+      <dependency id="Roaster.mkl.v141.dyn.x64"       version="[$version$]" />
+      <dependency id="Roaster.mklml.v141.dyn.x64"     version="[$version$]" />
+      <dependency id="Roaster.mkldnn.v141.dyn.x64"    version="[$version$]" />
+      <dependency id="Roaster.protobuf.v141.dyn.x64"  version="[$version$]" />
     </dependencies>
   </metadata>
   <files>

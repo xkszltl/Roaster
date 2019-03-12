@@ -15,7 +15,7 @@
     <copyright>Copyright 2018</copyright>
     <tags>cream native C++ v141 dyn</tags>
     <dependencies>
-      <dependency id="Roaster.caffe2.v141.dyn.x64" version="$version$" />
+      <dependency id="Roaster.caffe2.v141.dyn.x64" version="[$version$]" />
     </dependencies>
   </metadata>
   <files>
