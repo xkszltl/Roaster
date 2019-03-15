@@ -7,7 +7,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)/../lib/native/lib/Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>mkl_blas95_ilp64.lib;mkl_core_dll.lib;mkl_intel_ilp64_dll.lib;mkl_lapack95_ilp64.lib;mkl_rt.lib;mkl_tbb_thread_dll.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>mkl_blas95_ilp64.lib;mkl_core_dll.lib;mkl_intel_ilp64_dll.lib;mkl_intel_thread.lib;mkl_lapack95_ilp64.lib;mkl_rt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
