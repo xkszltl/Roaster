@@ -91,7 +91,7 @@ madler/zlib,\
 Maratyszcza/{confu,cpuinfo,FP16,FXdiv,NNPACK,PeachPy,psimd,pthreadpool},\
 Microsoft/{dotnet,GSL,onnxruntime,TypeScript,vcpkg,vscode},\
 nanopb/nanopb,\
-NervanaSystems/{neon,nervanagpu},\
+NervanaSystems/{coach,distiller,neon,ngraph},\
 nicolargo/glances,\
 ninja-build/ninja,\
 numpy/numpy{,doc},\
