@@ -75,7 +75,7 @@ gflags/gflags,\
 giampaolo/psutil,\
 github/{git-lfs,gitignore},\
 goldmann/docker-squash,\
-google/{benchmark,snappy,gemmlowp,glog,googletest,leveldb,nsync,protobuf},\
+google/{benchmark,snappy,gemmlowp,glog,googletest,leveldb,nsync,protobuf,re2},\
 halide/Halide,\
 HowardHinnant/date,\
 HypothesisWorks/hypothesis,\

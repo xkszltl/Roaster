@@ -9,8 +9,7 @@
 
     # ------------------------------------------------------------
 
-    # v3.6.1.3 has issues with CMake on Linux.
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" protocolbuffers/protobuf,master
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" protocolbuffers/protobuf,v
     until git clone --depth 1 --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd protobuf
 
