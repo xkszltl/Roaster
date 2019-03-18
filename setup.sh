@@ -104,7 +104,7 @@ cd $SCRATCH
     sudo rm -rvf $STAGE
     sudo mkdir -p $(dirname $STAGE)/.$(basename $STAGE)
     cd $_
-    [ $# -gt 0 ] && sudo touch $@ || sudo touch repo font pkg-{skip,all} fpm auth slurm nagios ss tex ccache cmake axel intel ipt ompi cuda nccl llvm-{gcc,clang} boost jemalloc eigen openblas gtest gflags glog snappy protobuf catch2 pybind libpng mkl-dnn halide opencv leveldb rocksdb lmdb onnx caffe caffe2 ort
+    [ $# -gt 0 ] && sudo touch $@ || sudo touch repo font pkg-{skip,all} fpm auth slurm nagios ss tex ccache cmake axel intel ipt ompi cuda llvm-{gcc,clang} boost jemalloc eigen openblas gtest gflags glog snappy protobuf catch2 pybind libpng mkl-dnn halide opencv leveldb rocksdb lmdb onnx caffe caffe2 ort
     sync || true
     cd $SCRATCH
     sudo mv -vf $(dirname $STAGE)/.$(basename $STAGE) $STAGE

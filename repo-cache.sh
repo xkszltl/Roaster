@@ -108,25 +108,7 @@ parallel -j0 --line-buffer --bar 'bash -c '"'"'
 &
 
 # ----------------------------------------------------------------
-# NVIDIA Repository Mirroring
-# ----------------------------------------------------------------
-
-parallel -j10 --line-buffer --bar 'bash -c '"'"'
-    set -e
-
-    export CUDNN_URL="https://developer.download.nvidia.com/compute/redist/cudnn"
-    export lhs=$(sed "s/@.*//" <<< "{}")
-    export rhs=$(sed "s/.*@//" <<< "{}")
-
-    mkdir -p "nvidia/cudnn/$(cut -d. -f1-3 <<< "$lhs")"
-    cd "$_"
-
-    '"$DRY"' || wget '"$DRY_WGET"' -cq --bind-address='"$ROUTE"' "$CUDNN_URL/$(cut -d. -f1-3 <<< "$lhs")/cudnn-$(printf "$rhs" "x64-$lhs")" || true
-    [ ! "$(ls)" ] && cd .. && rm -rf "$(cut -d. -f1-3 <<< "$lhs")"
-'"'" ::: v7.4.1.5@{9.0,9.2,10.0}-{{linux,osx}-%s.tgz,windows10-%s.zip} &
-
-# ----------------------------------------------------------------
-# NVIDIA Repository Mirroring
+# Makecache
 # ----------------------------------------------------------------
 
 yum makecache fast -y || true
@@ -185,9 +167,10 @@ for j in =$(uname -i)/$i -testing=$(uname -i)/$i/testing -source=Source/$i -debu
     export rhs=$(sed 's/.*=//' <<< $j)
     export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
     {
-        "repo":     "'"centos-sclo-$i$lhs"'",
-        "path":     "'"centos/7/sclo/$rhs"'",
-        "retries":  '$DEF_RETRIES'
+        "repo":         "'"centos-sclo-$i$lhs"'",
+        "path":         "'"centos/7/sclo/$rhs"'",
+        "retries":      '$DEF_RETRIES',
+        "sync_args":    "--delete"
     }')
 done
 done
@@ -209,22 +192,24 @@ done
 # CUDA Repository Mirroring Task
 # ----------------------------------------------------------------
 
-(
-    set -e
+for sub_repo in cuda,cuda nvidia-machine-learning,machine-learning; do
+    name="$(cut -d',' -f1 <<< "$sub_repo,")"
+    dir="$(cut -d',' -f2 <<< "$sub_repo,")"
+    mkdir -p "nvidia/$dir/rhel7/$(uname -i)"
+    pushd "$_"
+    $DRY || wget $DRY_WGET -cq "https://developer.download.nvidia.com/compute/$dir/repos/rhel7/$(uname -i)/7fa2af80.pub"
+    $DRY || rpm --import "7fa2af80.pub"
+    popd
 
-    mkdir -p "cuda/rhel7/$(uname -i)"
-    cd "$_"
-    $DRY || wget $DRY_WGET -cq https://developer.download.nvidia.com/compute/cuda/repos/rhel7/$(uname -i)/7fa2af80.pub
-    $DRY || rpm --import 7fa2af80.pub
-)
-
-export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
-{
-    "repo":         "'"cuda"'",
-    "path":         "'"cuda/rhel7/$(uname -i)"'",
-    "retries":      10,
-    "use_proxy":    "'"true"'"
-}')
+    export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
+    {
+        "repo":         "'"$name"'",
+        "path":         "'"nvidia/$dir/rhel7/$(uname -i)"'",
+        "retries":      10,
+        "use_proxy":    "'"false"'",
+        "sync_args":    "--delete --newest-only"
+    }')
+done
 
 # ----------------------------------------------------------------
 # Docker Repository Mirroring Task

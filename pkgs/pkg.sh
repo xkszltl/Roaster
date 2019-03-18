@@ -14,7 +14,7 @@ for i in pkg-{skip,all}; do
 
         for attempt in $(seq $RPM_MAX_ATTEMPT -1 0); do
             echo "
-                devtoolset-{7,8}{,-*}
+                devtoolset-{6,7,8}{,-*}
                 llvm-toolset-7{,-*}
 
                 qpid-cpp-client{,-*}
@@ -104,6 +104,7 @@ for i in pkg-{skip,all}; do
                 {nrpe,nsca}
                 {collectd,rrdtool,pnp4nagios}{,-*}
                 cuda
+                libcudnn7{,-devel} libnccl{,-devel,-static}
                 nvidia-docker2
 
                 hdf5{,-*}
