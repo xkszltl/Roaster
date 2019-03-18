@@ -223,9 +223,17 @@ enabled=0
 
 [cache-cuda]
 name=[Cache] cuda
-baseurl=https://repo.codingcafe.org/cuda/rhel$releasever/$basearch
+baseurl=https://repo.codingcafe.org/nvidia/cuda/rhel$releasever/$basearch
 gpgcheck=1
-gpgkey=https://repo.codingcafe.org/cuda/rhel$releasever/$basearch/7fa2af80.pub
+gpgkey=https://repo.codingcafe.org/nvidia/cuda/rhel$releasever/$basearch/7fa2af80.pub
+priority=1
+enabled=0
+
+[cache-nvidia-machine-learning]
+name=[Cache] nvidia-machine-learning
+baseurl=https://repo.codingcafe.org/nvidia/machine-learning/rhel$releasever/$basearch/
+gpgcheck=1
+gpgkey=https://repo.codingcafe.org/nvidia/machine-learning/rhel$releasever/$basearch/7fa2af80.pub
 priority=1
 enabled=0
 
