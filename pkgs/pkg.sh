@@ -98,7 +98,9 @@ for i in pkg-{skip,all}; do
                 ImageMagick{,-*}
                 qt5-*
                 yasm{,-*}
+                gperf{,-*}
                 docbook{,5,2X}{,-*}
+                asciidoc{,-*}
                 txt2man
                 nagios{,-selinux,-devel,-debuginfo,-plugins-all}
                 {nrpe,nsca}
