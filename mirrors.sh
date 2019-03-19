@@ -121,6 +121,7 @@ shibatch/sleef,\
 tensorflow/tensorflow,\
 torvalds/linux,\
 USCiLab/cereal,\
+wjakob/clang-cindex-python3,\
 xianyi/OpenBLAS,\
 yaml/pyyaml,\
 Yangqing/ios-cmake,\

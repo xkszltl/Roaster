@@ -51,6 +51,11 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
         . scl_source enable $(cut -d',' -f1 <<< "$py")
         set -e
 
+        if [ "_$URL" = "_enum34" ] && [ "_$(cut -d',' -f1 <<< "$py")" = "_rh-python36" ]; then
+            echo "enum34 is not compatible with python 3.6.1 or above. Skipped."
+            continue;
+        fi
+
         py="$(which "$(cut -d',' -f2 <<< "$py")")"
         # Not exactly correct since the actual package name is defined by "setup.py".
         "$CACHE_VALID" || CACHED_LIST="$("$py" -m pip freeze --all | tr '[:upper:]' '[:lower:]')"

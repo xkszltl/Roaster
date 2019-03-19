@@ -21,7 +21,7 @@
 
     (
         set +xe
-        . scl_source enable devtoolset-7
+        . scl_source enable devtoolset-8
         set -xe
 
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
@@ -73,7 +73,7 @@
         py="$py,"
 
         set +xe
-        . scl_source enable devtoolset-7 $(cut -d',' -f1 <<< "$py")
+        . scl_source enable devtoolset-8 $(cut -d',' -f1 <<< "$py")
         set -xe
 
         py="$(which "$(cut -d',' -f2 <<< "$py")")"

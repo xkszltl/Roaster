@@ -31,6 +31,9 @@
     ) || true
     [ $GIT_MIRROR ] && [ $GIT_MIRROR_CODINGCAFE ] && $ROOT_DIR/apply_cache.sh cuda
 
+    until sudo yum install -y 'https://developer.download.nvidia.com/compute/machine-learning/repos/rhel7/x86_64/nvidia-machine-learning-repo-rhel7-1.0.0-1.x86_64.rpm'; do echo 'Retrying'; done
+    [ $GIT_MIRROR ] && [ $GIT_MIRROR_CODINGCAFE ] && $ROOT_DIR/apply_cache.sh nccl
+
     sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
     [ $GIT_MIRROR ] && [ $GIT_MIRROR_CODINGCAFE ] && $ROOT_DIR/apply_cache.sh docker-ce-stable{,-source,-debuginfo}
 

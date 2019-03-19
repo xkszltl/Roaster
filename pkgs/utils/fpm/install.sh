@@ -59,3 +59,20 @@ for i in $PKG_YUM_SEQ _; do
     fi
     echo "[INFO] Does not succeed with \"yum $i\"."
 done
+
+# ----------------------------------------------------------------
+# Publish
+# ----------------------------------------------------------------
+
+export RPM_PUB_DIR='/var/www/repos/codingcafe'
+
+if [ -d "$RPM_PUB_DIR" ]; then
+    pushd "$RPM_PUB_DIR"
+    sudo mkdir -p "rhel7/$(uname -i)"
+    pushd "$_"
+    find . -maxdepth 1 -name "$PKG_NAME-*" -type f | xargs sudo rm -f
+    sudo install -m664 -t . "$PKG_PATH"
+    popd
+    popd
+fi
+

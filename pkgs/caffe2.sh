@@ -36,7 +36,7 @@
 
     (
         set +xe
-        . scl_source enable devtoolset-7 rh-python36
+        . scl_source enable devtoolset-8 rh-python36
         # . "/opt/intel/mkl/bin/mklvars.sh" intel64
         # . /opt/intel/tbb/bin/tbbvars.sh intel64
         set -xe

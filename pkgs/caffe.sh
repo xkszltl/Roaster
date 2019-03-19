@@ -19,7 +19,7 @@
 
     (
         set +xe
-        . scl_source enable devtoolset-7
+        . scl_source enable devtoolset-8
         . /opt/intel/tbb/bin/tbbvars.sh intel64
         set -xe
 

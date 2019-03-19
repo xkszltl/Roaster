@@ -17,7 +17,7 @@
 
     (
         set +xe
-        . scl_source enable devtoolset-7
+        . scl_source enable devtoolset-8
         set -xe
 
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"

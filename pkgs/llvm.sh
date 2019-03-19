@@ -30,7 +30,7 @@ for i in llvm-{gcc,clang}; do
 
         (
             set +xe
-            . scl_source enable devtoolset-7
+            . scl_source enable devtoolset-8
             set -xe
 
             mkdir -p build

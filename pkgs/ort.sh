@@ -9,7 +9,7 @@
 
     # ------------------------------------------------------------
 
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" Microsoft/onnxruntime,master
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" Microsoft/onnxruntime,v
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd onnxruntime
 
@@ -43,7 +43,7 @@
 
     (
         set +xe
-        . scl_source enable devtoolset-7 rh-python36
+        . scl_source enable devtoolset-8 rh-python36
         . "/opt/intel/mkl/bin/mklvars.sh" intel64
         set -xe
 
@@ -72,7 +72,7 @@
             -Donnxruntime_USE_JEMALLOC=OFF                  \
             -Donnxruntime_USE_LLVM=ON                       \
             -Donnxruntime_USE_MKLDNN=ON                     \
-            -Donnxruntime_USE_MKLML=OFF                     \
+            -Donnxruntime_USE_MKLML=ON                      \
             -Donnxruntime_USE_OPENMP=ON                     \
             -Donnxruntime_USE_PREBUILT_PB=ON                \
             -Donnxruntime_USE_PREINSTALLED_EIGEN=ON         \

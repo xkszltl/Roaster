@@ -20,7 +20,7 @@
 
     (
         set +xe
-        . scl_source enable devtoolset-7 rh-python36
+        . scl_source enable devtoolset-8 rh-python36
         set -xe
 
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
