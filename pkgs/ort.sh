@@ -9,7 +9,7 @@
 
     # ------------------------------------------------------------
 
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" Microsoft/onnxruntime,v
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" Microsoft/onnxruntime,master
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd onnxruntime
 
@@ -65,17 +65,24 @@
             -DONNX_CUSTOM_PROTOC_EXECUTABLE="/usr/local/bin/protoc" \
             -Deigen_SOURCE_PATH="/usr/local/include/eigen3" \
             -Donnxruntime_BUILD_SHARED_LIB=ON               \
-            -Donnxruntime_CUDNN_HOME='/usr/local/cuda'      \
+            -Donnxruntime_CUDNN_HOME='/usr/lib64'           \
             -Donnxruntime_ENABLE_PYTHON=ON                  \
             -Donnxruntime_RUN_ONNX_TESTS=ON                 \
-            -Donnxruntime_USE_CUDA=ON                       \
+            -Donnxruntime_USE_BRAINSLICE=OFF                \
+            -Donnxruntime_USE_CUDA=OFF                      \
+            -Donnxruntime_USE_EIGEN_FOR_BLAS=OFF            \
+            -Donnxruntime_USE_EIGEN_THREADPOOL=OFF          \
             -Donnxruntime_USE_JEMALLOC=OFF                  \
             -Donnxruntime_USE_LLVM=ON                       \
-            -Donnxruntime_USE_MKLDNN=ON                     \
-            -Donnxruntime_USE_MKLML=ON                      \
+            -Donnxruntime_USE_MKLDNN=OFF                    \
+            -Donnxruntime_USE_MKLML=OFF                     \
+            -Donnxruntime_USE_NSYNC=ON                      \
+            -Donnxruntime_USE_NUPHAR=OFF                    \
+            -Donnxruntime_USE_OPENBLAS=OFF                  \
             -Donnxruntime_USE_OPENMP=ON                     \
             -Donnxruntime_USE_PREBUILT_PB=ON                \
             -Donnxruntime_USE_PREINSTALLED_EIGEN=ON         \
+            -Donnxruntime_USE_TENSORRT=ON                   \
             -Donnxruntime_USE_TVM=OFF                       \
             -G"Ninja"                                       \
             ../cmake
