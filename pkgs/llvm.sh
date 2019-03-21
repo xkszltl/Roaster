@@ -30,7 +30,7 @@ for i in llvm-{gcc,clang}; do
 
         (
             set +xe
-            . scl_source enable devtoolset-8
+            . scl_source enable devtoolset-6
             set -xe
 
             mkdir -p build
@@ -108,7 +108,7 @@ for i in llvm-{gcc,clang}; do
             # time cmake --build . --target dist
             # time cmake --build . --target dist-check
             # time cmake --build . --target rpm
-            time cmake --build . --target install
+            time cmake --build . --target install -- -k0
         )
 
         "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
