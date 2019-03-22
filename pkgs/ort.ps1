@@ -118,7 +118,7 @@ if ($update_protobuf)
     git checkout "$pb_latest_ver"
     git remote add patch https://github.com/xkszltl/protobuf.git
     git fetch patch
-    git cherry-pick patch/constexpr-3.7
+    # git cherry-pick patch/constexpr-3.7
     git submodule update --init
     popd
 }
