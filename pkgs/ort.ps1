@@ -36,10 +36,10 @@ pushd "$root"
 # Build Options
 # ================================================================================
 
-$update_gtest = true
-$update_onnx = false
-$update_protobuf = true
-$use_bat = false
+$update_gtest = $true
+$update_onnx = $false
+$update_protobuf = $true
+$use_bat = $false
 
 # ================================================================================
 # Experimental PR
