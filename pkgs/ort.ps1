@@ -38,7 +38,7 @@ pushd "$root"
 
 $update_gtest = $true
 $update_onnx = $false
-$update_protobuf = $true
+$update_protobuf = $false
 $use_bat = $false
 
 # ================================================================================
@@ -118,7 +118,6 @@ if ($update_protobuf)
     git checkout "$pb_latest_ver"
     git remote add patch https://github.com/xkszltl/protobuf.git
     git fetch patch
-    # git cherry-pick patch/constexpr-3.7
     git submodule update --init
     popd
 }
@@ -140,20 +139,15 @@ if (-not $use_bat)
     pushd build
 }
 
-$gtest_silent_warning="/D_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS /D_SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING"
-$protobuf_dll="/DPROTOBUF_USE_DLLS"
-$dep_dll="${protobuf_dll}"
-
 if ($use_bat)
 {
     ./build.bat                                         `
         --build_shared_lib                              `
         --cmake_extra_defines                           `
             BOOST_ROOT=`"${Env:ProgramFiles}/boost`"    `
-            CMAKE_C_FLAGS=`"/DPROTOBUF_USE_DLLS /w`"    `
-            CMAKE_CXX_FLAGS=`"/DPROTOBUF_USE_DLLS /w`"  `
+            CMAKE_C_FLAGS=`"/w`"                        `
+            CMAKE_CXX_FLAGS=`"/w`"                      `
         --config=Release                                `
-        --pb_home="${Env:ProgramFiles}/protobuf"        `
         --use_mklml
 
     exit 1
@@ -161,41 +155,46 @@ if ($use_bat)
 else
 {
     # Turn off CUDA temporarily until Ort team switch back to static cudart.
-    cmake                                                                                   `
-        -A x64                                                                              `
-        -DBOOST_ROOT="${Env:ProgramFiles}/boost"                                            `
-        -DBUILD_SHARED_LIBS=OFF                                                             `
-        -DCMAKE_C_FLAGS="/GL /MP /Zi /arch:AVX2 ${dep_dll}"                                 `
-        -DCMAKE_CXX_FLAGS="/EHsc /GL /MP /Zi /arch:AVX2 ${dep_dll} ${gtest_silent_warning}" `
-        -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"                        `
-        -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/onnxruntime"                            `
-        -DCMAKE_PDB_OUTPUT_DIRECTORY="${PWD}/pdb"                                           `
-        -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"                     `
-        -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                                     `
-        -DCUDA_VERBOSE_BUILD=ON                                                             `
-        -DONNX_CUSTOM_PROTOC_EXECUTABLE="${Env:ProgramFiles}/protobuf/bin/protoc.exe"       `
-        -Deigen_SOURCE_PATH="${Env:ProgramFiles}/Eigen3/include/eigen3"                     `
-        -Donnxruntime_BUILD_SHARED_LIB=ON                                                   `
-        -Donnxruntime_CUDNN_HOME="$(Split-Path (Get-Command nvcc).Source -Parent)/.."       `
-        -Donnxruntime_ENABLE_MICROSOFT_INTERNAL=OFF                                         `
-        -Donnxruntime_ENABLE_PYTHON=ON                                                      `
-        -Donnxruntime_RUN_ONNX_TESTS=ON                                                     `
-        -Donnxruntime_USE_CUDA=OFF                                                          `
-        -Donnxruntime_USE_EIGEN_FOR_BLAS=ON                                                 `
-        -Donnxruntime_USE_JEMALLOC=OFF                                                      `
-        -Donnxruntime_USE_LLVM=OFF                                                          `
-        -Donnxruntime_USE_MKLDNN=OFF                                                        `
-        -Donnxruntime_USE_MKLML=ON                                                          `
-        -Donnxruntime_USE_MLAS=ON                                                           `
-        -Donnxruntime_USE_NUPHAR=OFF                                                        `
-        -Donnxruntime_USE_OPENBLAS=OFF                                                      `
-        -Donnxruntime_USE_OPENMP=OFF                                                        `
-        -Donnxruntime_USE_PREBUILT_PB=ON                                                    `
-        -Donnxruntime_USE_PREINSTALLED_EIGEN=ON                                             `
-        -Donnxruntime_USE_TRT=OFF                                                           `
-        -Donnxruntime_USE_TVM=OFF                                                           `
-        -G"Visual Studio 15 2017"                                                           `
-        -T"host=x64"                                                                        `
+    # Turn off unit test due to missing protobuf 3.7 support.
+    #
+    # Ort team is removing prebuilt protobuf.
+    #     -DONNX_CUSTOM_PROTOC_EXECUTABLE="${Env:ProgramFiles}/protobuf/bin/protoc.exe"
+    #     -Donnxruntime_USE_PREBUILT_PB=ON
+    cmake                                                                               `
+        -A x64                                                                          `
+        -DBOOST_ROOT="${Env:ProgramFiles}/boost"                                        `
+        -DBUILD_SHARED_LIBS=OFF                                                         `
+        -DCMAKE_C_FLAGS="/GL /MP /Zi /arch:AVX2"                                        `
+        -DCMAKE_CXX_FLAGS="/EHsc /GL /MP /Zi /arch:AVX2"                                `
+        -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"                    `
+        -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/onnxruntime"                        `
+        -DCMAKE_PDB_OUTPUT_DIRECTORY="${PWD}/pdb"                                       `
+        -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"                 `
+        -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                                 `
+        -DCUDA_VERBOSE_BUILD=ON                                                         `
+        -Deigen_SOURCE_PATH="${Env:ProgramFiles}/Eigen3/include/eigen3"                 `
+        -Donnxruntime_BUILD_SHARED_LIB=ON                                               `
+        -Donnxruntime_BUILD_UNIT_TESTS=ON                                               `
+        -Donnxruntime_CUDNN_HOME="$(Split-Path (Get-Command nvcc).Source -Parent)/.."   `
+        -Donnxruntime_ENABLE_MICROSOFT_INTERNAL=OFF                                     `
+        -Donnxruntime_ENABLE_PYTHON=ON                                                  `
+        -Donnxruntime_RUN_ONNX_TESTS=ON                                                 `
+        -Donnxruntime_USE_CUDA=OFF                                                      `
+        -Donnxruntime_USE_EIGEN_FOR_BLAS=ON                                             `
+        -Donnxruntime_USE_FULL_PROTOBUF=ON                                              `
+        -Donnxruntime_USE_JEMALLOC=OFF                                                  `
+        -Donnxruntime_USE_LLVM=OFF                                                      `
+        -Donnxruntime_USE_MKLDNN=OFF                                                    `
+        -Donnxruntime_USE_MKLML=ON                                                      `
+        -Donnxruntime_USE_MLAS=ON                                                       `
+        -Donnxruntime_USE_NUPHAR=OFF                                                    `
+        -Donnxruntime_USE_OPENBLAS=OFF                                                  `
+        -Donnxruntime_USE_OPENMP=OFF                                                    `
+        -Donnxruntime_USE_PREINSTALLED_EIGEN=ON                                         `
+        -Donnxruntime_USE_TRT=OFF                                                       `
+        -Donnxruntime_USE_TVM=OFF                                                       `
+        -G"Visual Studio 15 2017"                                                       `
+        -T"host=x64"                                                                    `
         ../cmake
 
     cmake --build . --config Release -- -maxcpucount
