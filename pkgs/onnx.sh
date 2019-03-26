@@ -17,13 +17,13 @@
 
     . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
 
-    pushd third_party/pybind11
-    git checkout master
+    # pushd third_party/pybind11
+    # git checkout master
     # rm -rf pybind11
     # cp -rf /usr/local/src/pybind11 pybind11
-    popd
+    # popd
 
-    git commit -am "Update submodule \"pybind11\"."
+    # git commit -am "Update submodule \"pybind11\"."
 
     # ------------------------------------------------------------
 
