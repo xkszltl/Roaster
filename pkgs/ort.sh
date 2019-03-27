@@ -28,9 +28,9 @@
 
         cd cmake/external
 
-        rm -rf googletest protobuf
-        cp -rf /usr/local/src/{gtest,protobuf} ./
-        mv gtest googletest
+        # rm -rf googletest protobuf
+        # cp -rf /usr/local/src/{gtest,protobuf} ./
+        # mv gtest googletest
 
         for i in ./*.cmake; do
             sed -i "s/$(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR_GITHUB")\(\/..*\/.*\.git\)/$(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR")\1/" "$i"
@@ -62,27 +62,28 @@
             -DCMAKE_POLICY_DEFAULT_CMP0003=NEW              \
             -DCMAKE_POLICY_DEFAULT_CMP0060=NEW              \
             -DCMAKE_VERBOSE_MAKEFILE=ON                     \
-            -DONNX_CUSTOM_PROTOC_EXECUTABLE="/usr/local/bin/protoc" \
             -Deigen_SOURCE_PATH="/usr/local/include/eigen3" \
+            -Donnxruntime_BUILD_FOR_NATIVE_MACHINE=ON       \
             -Donnxruntime_BUILD_SHARED_LIB=ON               \
             -Donnxruntime_CUDNN_HOME='/usr/lib64'           \
             -Donnxruntime_ENABLE_PYTHON=ON                  \
+            -Donnxruntime_ENABLE_LTO=ON                     \
             -Donnxruntime_RUN_ONNX_TESTS=ON                 \
             -Donnxruntime_USE_BRAINSLICE=OFF                \
-            -Donnxruntime_USE_CUDA=ON                       \
+            -Donnxruntime_USE_CUDA=OFF                      \
             -Donnxruntime_USE_EIGEN_FOR_BLAS=OFF            \
             -Donnxruntime_USE_EIGEN_THREADPOOL=OFF          \
+            -Donnxruntime_USE_FULL_PROTOBUF=ON              \
             -Donnxruntime_USE_JEMALLOC=OFF                  \
             -Donnxruntime_USE_LLVM=ON                       \
-            -Donnxruntime_USE_MKLDNN=OFF                    \
-            -Donnxruntime_USE_MKLML=OFF                     \
+            -Donnxruntime_USE_MKLDNN=ON                     \
+            -Donnxruntime_USE_MKLML=ON                      \
             -Donnxruntime_USE_NSYNC=ON                      \
             -Donnxruntime_USE_NUPHAR=OFF                    \
-            -Donnxruntime_USE_OPENBLAS=OFF                  \
+            -Donnxruntime_USE_OPENBLAS=ON                   \
             -Donnxruntime_USE_OPENMP=ON                     \
-            -Donnxruntime_USE_PREBUILT_PB=ON                \
             -Donnxruntime_USE_PREINSTALLED_EIGEN=ON         \
-            -Donnxruntime_USE_TENSORRT=ON                   \
+            -Donnxruntime_USE_TENSORRT=OFF                  \
             -Donnxruntime_USE_TVM=OFF                       \
             -G"Ninja"                                       \
             ../cmake
