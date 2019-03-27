@@ -51,6 +51,7 @@
         cmake                                               \
             -DATEN_NO_TEST=ON                               \
             -DBLAS=MKL                                      \
+            -DBUILD_BINARY=ON                               \
             -DBUILD_CUSTOM_PROTOBUF=OFF                     \
             -DBUILD_SHARED_LIBS=ON                          \
             -DBUILD_TEST=ON                                 \
@@ -66,6 +67,7 @@
             -DCPUINFO_BUILD_TOOLS=ON                        \
             -DINSTALL_TEST=ON                               \
             -DTORCH_CUDA_ARCH_LIST="Pascal;Volta"           \
+            -DUSE_FBGEMM=ON                                 \
             -DUSE_GFLAGS=ON                                 \
             -DUSE_GLOG=ON                                   \
             -DUSE_LEVELDB=ON                                \
@@ -79,7 +81,7 @@
             -DUSE_ROCKSDB=ON                                \
             -DUSE_SYSTEM_EIGEN_INSTALL=ON                   \
             -DUSE_SYSTEM_NCCL=ON                            \
-            -DUSE_TENSORRT=ON                               \
+            -DUSE_TENSORRT=OFF                              \
             -DUSE_ZMQ=ON                                    \
             -DUSE_ZSTD=OFF                                  \
             -DWITH_BLAS=mkl                                 \
