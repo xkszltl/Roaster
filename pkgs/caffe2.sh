@@ -5,7 +5,7 @@
 [ -e $STAGE/caffe2 ] && ( set -xe
     cd $SCRATCH
 
-    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" python/typing enum34 numpy/numpy,v benjaminp/six yaml/pyyaml pytest-dev/pytest Frozenball/pytest-sugar,v
+    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" python/typing numpy/numpy,v benjaminp/six yaml/pyyaml pytest-dev/pytest Frozenball/pytest-sugar,v
 
     # ------------------------------------------------------------
 

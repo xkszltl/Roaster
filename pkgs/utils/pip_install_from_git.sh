@@ -43,7 +43,7 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
         echo "Cannot build $PKG from source. Install it from wheel instead."
         URL="$PKG"
     fi
-    for py in ,python{,3} rh-python36,python; do
+    for py in rh-python36,python; do
     (
         py="$py,"
 
@@ -58,8 +58,17 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
 
         py="$(which "$(cut -d',' -f2 <<< "$py")")"
         # Not exactly correct since the actual package name is defined by "setup.py".
-        "$CACHE_VALID" || CACHED_LIST="$("$py" -m pip freeze --all | tr '[:upper:]' '[:lower:]')"
-        CACHE_VALID=true
+        until $CACHE_VALID; do
+            CACHED_LIST="$("$py" -m pip freeze --all | tr '[:upper:]' '[:lower:]')"
+            CACHE_VALID=true
+
+            # Always remove enum34.
+            if [ "$(grep '^enum34==' <<< "$CACHED_LIST")" ]; then
+                sudo "$py" -m pip uninstall -y 'enum34'
+                CACHE_VALID=false
+                continue
+            fi
+        done
         if [ ! "$USE_LOCAL_GIT" ] && [ "$GIT_TAG_VER" ] && [ "_$(sed -n "s/^$(tr '[:upper:]' '[:lower:]' <<< "$PKG")==//p" <<< "$CACHED_LIST")" = "_$GIT_TAG_VER" ]; then
             echo "Package \"$PKG\" for \"$py\" is already up-to-date ($GIT_TAG_VER). Skip."
             continue

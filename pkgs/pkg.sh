@@ -173,7 +173,7 @@ for i in pkg-{skip,all}; do
 
         # ------------------------------------------------------------
 
-        "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" enum34 giampaolo/psutil,release- nicolargo/glances,v
+        "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" giampaolo/psutil,release- nicolargo/glances,v
 
         # ------------------------------------------------------------
 
