@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <id>Roaster.mkl.v141.dyn.x64</id>
+    <id>Roaster.mkl-dev.v141.dyn.x64</id>
     <version>$version$</version>
-    <title>Roaster.mkl.v141.dyn.x64</title>
+    <title>Roaster.mkl-dev.v141.dyn.x64</title>
     <authors>Intel Corporation</authors>
     <owners>Tongliang Liao</owners>
     <licenseUrl>https://software.intel.com/articles/end-user-license-agreement</licenseUrl>
@@ -17,10 +17,12 @@
     <tags>mkl native C++ v141 dyn</tags>
     <dependencies>
       <dependency id="Roaster.iomp.v141.dyn.x64" version="[$version$]" />
+      <dependency id="Roaster.mkl.v141.dyn.x64" version="[$version$]" />
     </dependencies>
   </metadata>
   <files>
-    <file src="Roaster.mkl.v141.dyn.x64.targets"                            target="build\Roaster.mkl.v141.dyn.x64.targets" />
-    <file src="mkl\compilers_and_libraries\windows\mkl\lib\intel64\**\*"    target="lib\native\lib\Release\" />
+    <file src="Roaster.mkl-dev.v141.dyn.x64.targets"                        target="build\Roaster.mkl-dev.v141.dyn.x64.targets" />
+    <file src="mkl\compilers_and_libraries\windows\mkl\include\**\*"        target="lib\native\include\" />
+    <file src="mkl\compilers_and_libraries\windows\redist\intel64\mkl\**\*" target="lib\native\lib\Release\" />
   </files>
 </package>

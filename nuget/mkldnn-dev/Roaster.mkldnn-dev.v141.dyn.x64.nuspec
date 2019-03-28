@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <id>Roaster.mkldnn.v141.dyn.x64</id>
+    <id>Roaster.mkldnn-dev.v141.dyn.x64</id>
     <version>$version$</version>
-    <title>Roaster.mkldnn.v141.dyn.x64</title>
+    <title>Roaster.mkldnn-dev.v141.dyn.x64</title>
     <authors>Intel Corporation</authors>
     <owners>Tongliang Liao</owners>
     <licenseUrl>https://github.com/intel/mkl-dnn/blob/master/LICENSE</licenseUrl>
@@ -15,11 +15,15 @@
     <copyright>Copyright 2016</copyright>
     <tags>mkldnn native C++ v141 dyn</tags>
     <dependencies>
-      <dependency id="Roaster.mkl.v141.dyn.x64"  version="[$version$]" />
+      <dependency id="Roaster.mkl-dev.v141.dyn.x64"  version="[$version$]" />
+      <dependency id="Roaster.mkldnn.v141.dyn.x64"  version="[$version$]" />
     </dependencies>
   </metadata>
   <files>
-    <file src="Roaster.mkldnn.v141.dyn.x64.targets" target="build\Roaster.mkldnn.v141.dyn.x64.targets" />
-    <file src="mkldnn\lib\*.dll"                    target="lib\native\lib\Release\" />
+    <file src="Roaster.mkldnn-dev.v141.dyn.x64.targets" target="build\Roaster.mkldnn-dev.v141.dyn.x64.targets" />
+    <file src="mkldnn\share\**\*"                       target="lib\native\" />
+    <file src="mkldnn\include\**\*"                     target="lib\native\include" />
+    <file src="mkldnn\lib\*.lib"                        target="lib\native\lib\Release\" />
+    <file src="mkldnn\lib\mkldnn.pdb"                   target="lib\native\lib\Release\" />
   </files>
 </package>

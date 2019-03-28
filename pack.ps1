@@ -80,15 +80,23 @@ Get-ChildItem ../nuget | Foreach-Object {
     {
         $prefix = "${Env:ProgramFiles}/Eigen3"
     }
-    elseif ($pkg -eq "mkldnn")
+    elseif ($pkg -eq "mkldnn" -or $pkg -eq "mkldnn-dev")
     {
         $prefix = "${Env:ProgramFiles}/Intel(R) MKL-DNN"
     }
-    elseif ($pkg -eq "ort")
+    elseif ($pkg -eq "caffe2" -or $pkg -eq "caffe2-dev")
+    {
+        $prefix = "${Env:ProgramFiles}/Caffe2"
+    }
+    elseif ($pkg -eq "cream" -or $pkg -eq "cream-dev")
+    {
+        $prefix = "${Env:ProgramFiles}/Cream"
+    }
+    elseif ($pkg -eq "ort" -or $pkg -eq "ort-dev")
     {
         $prefix = "${Env:ProgramFiles}/onnxruntime"
     }
-    elseif ($pkg -eq "daal" -or $pkg -eq "iomp" -or $pkg -eq "ipp" -or $pkg -eq "mkl" -or $pkg -eq "mpi" -or $pkg -eq "tbb")
+    elseif ($pkg -eq "daal" -or $pkg -eq "daal-dev" -or $pkg -eq "iomp" -or $pkg -eq "ipp" -or $pkg -eq "ipp-dev" -or $pkg -eq "mkl" -or $pkg -eq "mkl-dev" -or $pkg -eq "mpi" -or $pkg -eq "tbb")
     {
         $prefix = "${Env:ProgramFiles(x86)}/IntelSWTools"
     }
