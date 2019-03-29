@@ -22,5 +22,6 @@
   <files>
     <file src="Roaster.ort.v141.dyn.x64.targets"    target="build\Roaster.ort.v141.dyn.x64.targets" />
     <file src="ort\bin\**\*.dll"                    target="lib\native\lib\Release\" />
+    <file src="ort\bin\**\*.exe"                    target="lib\native\lib\Release\" />
   </files>
 </package>

@@ -16,11 +16,11 @@
     <copyright>Copyright 2017</copyright>
     <tags>mkl native C++ v141 dyn</tags>
     <dependencies>
-      <dependency id="Roaster.iomp.v141.dyn.x64" version="[$version$]" />
+      <dependency id="Roaster.iomp.v141.dyn.x64"    version="[$version$]" />
     </dependencies>
   </metadata>
   <files>
     <file src="Roaster.mkl.v141.dyn.x64.targets"                            target="build\Roaster.mkl.v141.dyn.x64.targets" />
-    <file src="mkl\compilers_and_libraries\windows\mkl\lib\intel64\**\*"    target="lib\native\lib\Release\" />
+    <file src="mkl\compilers_and_libraries\windows\redist\intel64\mkl\**\*" target="lib\native\lib\Release\" />
   </files>
 </package>

@@ -22,6 +22,6 @@
   <files>
     <file src="Roaster.mkl-dev.v141.dyn.x64.targets"                            target="build\Roaster.mkl-dev.v141.dyn.x64.targets" />
     <file src="mkl-dev\compilers_and_libraries\windows\mkl\include\**\*"        target="lib\native\include\" />
-    <file src="mkl-dev\compilers_and_libraries\windows\redist\intel64\mkl\**\*" target="lib\native\lib\Release\" />
+    <file src="mkl-dev\compilers_and_libraries\windows\mkl\lib\intel64\**\*"    target="lib\native\lib\Release\" />
   </files>
 </package>
