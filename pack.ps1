@@ -96,7 +96,11 @@ Get-ChildItem ../nuget | Foreach-Object {
     {
         $prefix = "${Env:ProgramFiles}/onnxruntime"
     }
-    elseif ($pkg -eq "daal" -or $pkg -eq "daal-dev" -or $pkg -eq "iomp" -or $pkg -eq "ipp" -or $pkg -eq "ipp-dev" -or $pkg -eq "mkl" -or $pkg -eq "mkl-dev" -or $pkg -eq "mpi" -or $pkg -eq "tbb")
+    elseif ($pkg -eq "mkl" -or $pkg -eq "mkl-vml" -or $pkg -eq "mkl-dev")
+    {
+        $prefix = "${Env:ProgramFiles(x86)}/IntelSWTools"
+    }
+    elseif ($pkg -eq "daal" -or $pkg -eq "daal-dev" -or $pkg -eq "iomp" -or $pkg -eq "ipp" -or $pkg -eq "ipp-dev" -or $pkg -eq "mpi" -or $pkg -eq "tbb")
     {
         $prefix = "${Env:ProgramFiles(x86)}/IntelSWTools"
     }

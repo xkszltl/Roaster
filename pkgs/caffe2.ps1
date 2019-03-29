@@ -107,6 +107,7 @@ $cxxflags               = "${cflags} ${gtest_silent_warning}"
 # ==========================================================================================
 cmake                                                                           `
     -DBLAS=MKL                                                                  `
+    -DBUILD_BINARY=ON                                                           `
     -DBUILD_CUSTOM_PROTOBUF=OFF                                                 `
     -DBUILD_PYTHON=ON                                                           `
     -DBUILD_SHARED_LIBS=ON                                                      `

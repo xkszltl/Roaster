@@ -21,10 +21,10 @@
   </metadata>
   <files>
     <file src="Roaster.cream-dev.v141.dyn.x64.targets"  target="build\Roaster.cream-dev.v141.dyn.x64.targets" />
-    <file src="cream\include\**\*"                      target="lib\native\include" />
-    <file src="cream\lib\**\*"                          target="lib\native\lib\Release\" />
-    <file src="cream\share\**\*"                        target="lib\native\cmake\" />
-    <file src="cream\bin\**\*.exe"                      target="lib\native\lib\Release\" />
-    <file src="cream\bin\**\*.pdb"                      target="lib\native\lib\Release\" />
+    <file src="cream-dev\include\**\*"                  target="lib\native\include" />
+    <file src="cream-dev\lib\**\*"                      target="lib\native\lib\Release\" />
+    <file src="cream-dev\share\**\*"                    target="lib\native\cmake\" />
+    <file src="cream-dev\bin\**\*.exe"                  target="lib\native\lib\Release\" />
+    <file src="cream-dev\bin\**\*.pdb"                  target="lib\native\lib\Release\" />
   </files>
 </package>
