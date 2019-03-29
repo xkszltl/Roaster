@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <id>Roaster.onnx.v141.dyn.x64</id>
+    <id>Roaster.onnx-dev.v141.dyn.x64</id>
     <version>$version$</version>
-    <title>Roaster.onnx.v141.dyn.x64</title>
+    <title>Roaster.onnx-dev.v141.dyn.x64</title>
     <authors>Facebook Inc, Microsoft Corporation</authors>
     <owners>Tongliang Liao</owners>
     <licenseUrl>https://github.com/onnx/onnx/blob/master/LICENSE</licenseUrl>
@@ -19,7 +19,10 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="Roaster.onnx.v141.dyn.x64.targets" target="build\Roaster.onnx.v141.dyn.x64.targets" />
-    <file src="onnx\lib\**\*.dll"                 target="lib\native\lib\Release\" />
+    <file src="Roaster.onnx-dev.v141.dyn.x64.targets" target="build\Roaster.onnx-dev.v141.dyn.x64.targets" />
+    <file src="onnx-dev\include\**\*"                 target="lib\native\include" />
+    <file src="onnx-dev\lib\**\*.lib"                 target="lib\native\lib\Release\" />
+    <file src="onnx-dev\lib\**\*.pdb"                 target="lib\native\lib\Release\" />
+    <file src="onnx-dev\share\cmake\**\*"             target="lib\native\cmake\" />
   </files>
 </package>
