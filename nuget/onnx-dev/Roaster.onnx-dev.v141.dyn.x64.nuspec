@@ -15,7 +15,8 @@
     <copyright>Copyright 2018</copyright>
     <tags>onnx native C++ v141 dyn</tags>
     <dependencies>
-      <dependency id="Roaster.protobuf.v141.dyn.x64" version="[$version$]" />
+      <dependency id="Roaster.onnx.v141.dyn.x64"            version="[$version$]" />
+      <dependency id="Roaster.protobuf-dev.v141.dyn.x64"    version="[$version$]" />
     </dependencies>
   </metadata>
   <files>

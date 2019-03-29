@@ -80,6 +80,10 @@ Get-ChildItem ../nuget | Foreach-Object {
     {
         $prefix = "${Env:ProgramFiles}/Eigen3"
     }
+    elseif ($pkg -eq "jsoncpp" -or $pkg -eq "jsoncpp-dev")
+    {
+        $prefix = "${Env:ProgramFiles}/jsoncpp"
+    }
     elseif ($pkg -eq "mkldnn" -or $pkg -eq "mkldnn-dev")
     {
         $prefix = "${Env:ProgramFiles}/Intel(R) MKL-DNN"
@@ -87,6 +91,14 @@ Get-ChildItem ../nuget | Foreach-Object {
     elseif ($pkg -eq "onnx" -or $pkg -eq "onnx-dev")
     {
         $prefix = "${Env:ProgramFiles}/ONNX"
+    }
+    elseif ($pkg -eq "protobuf" -or $pkg -eq "protobuf-dev")
+    {
+        $prefix = "${Env:ProgramFiles}/protobuf"
+    }
+    elseif ($pkg -eq "rocksdb" -or $pkg -eq "rocksdb-dev")
+    {
+        $prefix = "${Env:ProgramFiles}/rocksdb"
     }
     elseif ($pkg -eq "caffe2" -or $pkg -eq "caffe2-dev")
     {

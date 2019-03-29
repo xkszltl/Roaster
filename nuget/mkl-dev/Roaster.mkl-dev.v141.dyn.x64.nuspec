@@ -16,7 +16,6 @@
     <copyright>Copyright 2017</copyright>
     <tags>mkl native C++ v141 dyn</tags>
     <dependencies>
-      <dependency id="Roaster.iomp.v141.dyn.x64" version="[$version$]" />
       <dependency id="Roaster.mkl.v141.dyn.x64" version="[$version$]" />
     </dependencies>
   </metadata>

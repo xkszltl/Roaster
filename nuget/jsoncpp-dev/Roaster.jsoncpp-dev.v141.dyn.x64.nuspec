@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <id>Roaster.jsoncpp.v141.dyn.x64</id>
+    <id>Roaster.jsoncpp-dev.v141.dyn.x64</id>
     <version>$version$</version>
-    <title>Roaster.jsoncpp.v141.dyn.x64</title>
+    <title>Roaster.jsoncpp-dev.v141.dyn.x64</title>
     <authors>Baptiste Lepilleur, The JsonCpp Authors</authors>
     <owners>Tongliang Liao</owners>
     <licenseUrl>https://github.com/open-source-parsers/jsoncpp/blob/master/LICENSE</licenseUrl>
@@ -14,9 +14,14 @@
     <releaseNotes>https://github.com/open-source-parsers/jsoncpp</releaseNotes>
     <copyright>Copyright (c) 2007-2010</copyright>
     <tags>jsoncpp native C++ v141 dyn</tags>
+    <dependencies>
+      <dependency id="Roaster.jsoncpp.v141.dyn.x64" version="[$version$]" />
+    </dependencies>
   </metadata>
   <files>
-    <file src="Roaster.jsoncpp.v141.dyn.x64.targets"    target="build\Roaster.jsoncpp.v141.dyn.x64.targets" />
-    <file src="jsoncpp\bin\**\*.dll"                    target="lib\native\lib\Release\" />
+    <file src="Roaster.jsoncpp-dev.v141.dyn.x64.targets"    target="build\Roaster.jsoncpp-dev.v141.dyn.x64.targets" />
+    <file src="jsoncpp-dev\include\**\*"                    target="lib\native\include" />
+    <file src="jsoncpp-dev\lib\**\*"                        target="lib\native\lib\Release\" />
+    <file src="jsoncpp-dev\bin\**\*.pdb"                    target="lib\native\lib\Release\" />
   </files>
 </package>
