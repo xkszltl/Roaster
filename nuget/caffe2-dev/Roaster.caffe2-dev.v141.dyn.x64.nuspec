@@ -17,7 +17,6 @@
     <dependencies>
       <dependency id="Roaster.caffe2.v141.dyn.x64"        version="[$version$]" />
       <dependency id="Roaster.mkl-dev.v141.dyn.x64"       version="[$version$]" />
-      <dependency id="Roaster.mkldnn-dev.v141.dyn.x64"    version="[$version$]" />
       <dependency id="Roaster.onnx-dev.v141.dyn.x64"      version="[$version$]" />
       <dependency id="Roaster.protobuf-dev.v141.dyn.x64"  version="[$version$]" />
       <dependency id="Roaster.rocksdb-dev.v141.dyn.x64"   version="[$version$]" />
