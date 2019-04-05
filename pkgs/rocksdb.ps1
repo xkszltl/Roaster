@@ -88,5 +88,5 @@ Get-ChildItem "${Env:ProgramFiles}/rocksdb" -Filter *.dll -Recurse | Foreach-Obj
 
 popd
 popd
-# rm -Force -Recurse "$root"
+rm -Force -Recurse "$root"
 popd
