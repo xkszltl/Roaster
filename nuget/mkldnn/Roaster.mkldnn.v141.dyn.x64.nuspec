@@ -20,6 +20,6 @@
   </metadata>
   <files>
     <file src="Roaster.mkldnn.v141.dyn.x64.targets" target="build\Roaster.mkldnn.v141.dyn.x64.targets" />
-    <file src="mkldnn\lib\*.dll"                    target="lib\native\lib\Release\" />
+    <file src="mkldnn\bin\*.dll"                    target="lib\native\lib\Release\" />
   </files>
 </package>
