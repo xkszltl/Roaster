@@ -193,7 +193,7 @@ else
         -Donnxruntime_USE_PREINSTALLED_EIGEN=ON                                         `
         -Donnxruntime_USE_TRT=OFF                                                       `
         -Donnxruntime_USE_TVM=OFF                                                       `
-        -G"Visual Studio 15 2017"                                                       `
+        -G"Visual Studio 16 2019"                                                       `
         -T"host=x64"                                                                    `
         ../cmake
 
@@ -212,7 +212,7 @@ $model_path = "${Env:TMP}/onnxruntime_models.zip"
 rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${model_path}.downloading"
 if (-not $(Test-Path $model_path))
 {
-    & "${Env:ProgramFiles}/CURL/bin/curl.exe" -fkSL "https://onnxruntimetestdata.blob.core.windows.net/models/20181210.zip" -o "${model_path}.downloading"
+    & "${Env:ProgramFiles}/CURL/bin/curl.exe" -fkSL "https://onnxruntimetestdata.blob.core.windows.net/models/20190327.zip" -o "${model_path}.downloading"
     mv -Force "${model_path}.downloading" "${model_path}"
 }
 
