@@ -23,6 +23,9 @@ if (Test-Path "$root")
 # Use latest release.
 $latest_ver = 'v' + $($(git ls-remote --tags "$repo") -match '.*refs/tags/v[0-9\.]*$' -replace '.*refs/tags/v','' | sort {[Version]$_})[-1]
 
+# Temporary fix due to v0.3.1 regression.
+$latest_ver = 'v0.3.0'
+
 # Use latest release branch.
 # $latest_ver = 'rel-' + $($(git ls-remote --heads "$repo") -match '.*refs/heads/rel-[0-9\.]*$' -replace '.*refs/heads/rel-','' | sort {[Version]$_})[-1]
 
