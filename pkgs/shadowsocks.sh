@@ -28,8 +28,8 @@
         jq -n '
         {
             "server":           "0.0.0.0",
-            "server_port":      8388,
-            "password":         "sensitive_password_removed",
+            "server_port":      '"$CRED_USR_SS_PORT"',
+            "password":         "'"$CRED_USR_SS_PWD"'",
             "method":           "aes-256-gcm",
             "fast_open":        true
         }' > 'ssserver.json'
@@ -37,10 +37,10 @@
         jq -n '
         {
             "server":           "sensitive_url_removed",
-            "server_port":      8388,
+            "server_port":      '"$CRED_USR_SS_PORT"',
             "local_address":    "127.0.0.1",
             "local_port":       1080,
-            "password":         "sensitive_password_remove",
+            "password":         "'"$CRED_USR_SS_PWD"'",
             "method":           "aes-256-gcm",
             "fast_open":        true
         }' > 'sslocal.json'
@@ -144,7 +144,7 @@ EOF
 
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     cat << \EOF > "$INSTALL_ROOT/../fpm/post_install.sh"
-export SS_PORT='8388/tcp'
+export SS_PORT="$CRED_USR_SS_PORT/tcp"
 
 systemctl enable firewalld || $IS_CONTAINER
 systemctl status firewalld || systemctl start firewalld || $IS_CONTAINER

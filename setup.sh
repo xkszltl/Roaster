@@ -114,6 +114,7 @@ which ccache 2>/dev/null >/dev/null && ccache -z
 
 for i in $(echo "
     env-mirror
+    env-cred
     repo
     env-pkg
     font
