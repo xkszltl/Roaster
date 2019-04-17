@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Roaster.caffe2-dev.v141.dyn.x64</id>
+    <version>$version$</version>
+    <title>Roaster.caffe2-dev.v141.dyn.x64</title>
+    <authors>Facebook Inc</authors>
+    <owners>Tongliang Liao</owners>
+    <licenseUrl>https://github.com/pytorch/pytorch/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://pytorch.org/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>Caffe2 is a lightweight, modular, and scalable deep learning framework.</summary>
+    <description>Building on the original Caffe, Caffe2 is designed with expression, speed, and modularity in mind.</description>
+    <releaseNotes>https://pytorch.org/blog/</releaseNotes>
+    <copyright>Copyright 2001</copyright>
+    <tags>caffe2 native C++ v141 dyn</tags>
+    <dependencies>
+      <dependency id="Roaster.caffe2.v141.dyn.x64"        version="[$version$]" />
+      <dependency id="Roaster.mkl-dev.v141.dyn.x64"       version="[$version$]" />
+      <dependency id="Roaster.onnx-dev.v141.dyn.x64"      version="[$version$]" />
+      <dependency id="Roaster.protobuf-dev.v141.dyn.x64"  version="[$version$]" />
+      <dependency id="Roaster.rocksdb-dev.v141.dyn.x64"   version="[$version$]" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="Roaster.caffe2-dev.v141.dyn.x64.targets"   target="build\Roaster.caffe2-dev.v141.dyn.x64.targets" />
+    <file src="caffe2-dev\include\**\*"                   target="lib\native\include" />
+    <file src="caffe2-dev\lib\*.lib"                      target="lib\native\lib\Release\" />
+    <file src="caffe2-dev\lib\*.pdb"                      target="lib\native\lib\Release\" />
+    <file src="caffe2-dev\lib\site-packages\**\*"         target="lib\native\lib\Release\site-packages\" />
+    <file src="caffe2-dev\share\**\*"                     target="lib\native\cmake\" />
+    <file src="caffe2-dev\test\*"                         target="lib\native\lib\Release\" />
+  </files>
+</package>

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Roaster.jsoncpp.v141.dyn.x64</id>
+    <version>$version$</version>
+    <title>Roaster.jsoncpp.v141.dyn.x64</title>
+    <authors>Baptiste Lepilleur, The JsonCpp Authors</authors>
+    <owners>Tongliang Liao</owners>
+    <licenseUrl>https://github.com/open-source-parsers/jsoncpp/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/open-source-parsers/jsoncpp</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>JsonCpp is a C++ library that allows manipulating JSON values, including serialization and deserialization to and from strings.</summary>
+    <description>It can also preserve existing comment in unserialization/serialization steps, making it a convenient format to store user input files.</description>
+    <releaseNotes>https://github.com/open-source-parsers/jsoncpp</releaseNotes>
+    <copyright>Copyright (c) 2007-2010</copyright>
+    <tags>jsoncpp native C++ v141 dyn</tags>
+  </metadata>
+  <files>
+    <file src="Roaster.jsoncpp.v141.dyn.x64.targets"    target="build\Roaster.jsoncpp.v141.dyn.x64.targets" />
+    <file src="jsoncpp\bin\**\*.dll"                    target="lib\native\lib\Release\" />
+  </files>
+</package>

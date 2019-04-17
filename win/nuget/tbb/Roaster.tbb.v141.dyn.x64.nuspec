@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Roaster.tbb.v141.dyn.x64</id>
+    <version>$version$</version>
+    <title>Roaster.tbb.v141.dyn.x64</title>
+    <authors>Intel Corporation</authors>
+    <owners>Tongliang Liao</owners>
+    <licenseUrl>https://software.intel.com/articles/end-user-license-agreement</licenseUrl>
+    <projectUrl>https://software.intel.com/mkl</projectUrl>
+    <iconUrl>https://software.intel.com/sites/default/files/managed/cb/9f/GoogleSearch-icon.jpg</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>The Fastest and Most-Used Math Library for Intel®-Based Systems</summary>
+    <description>Intel® Math Kernel Library (Intel® MKL) optimizes code with minimal effort for future generations of Intel® processors. It is compatible with your choice of compilers, languages, operating systems, and linking and threading models.</description>
+    <releaseNotes>https://software.intel.com/release-notes-for-intel-performance-libraries-community-licensing</releaseNotes>
+    <copyright>Copyright 2017</copyright>
+    <tags>tbb native C++ v141 dyn</tags>
+    <dependencies>
+      <dependency id="Roaster.iomp.v141.dyn.x64" version="[$version$]" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="Roaster.tbb.v141.dyn.x64.targets"                                  target="build\Roaster.tbb.v141.dyn.x64.targets" />
+    <file src="tbb\compilers_and_libraries\windows\redist\intel64\tbb\vc_mt\**\*" target="lib\native\lib\Release" />
+    <file src="tbb\compilers_and_libraries\windows\tbb\lib\intel64\vc_mt\**\*"    target="lib\native\lib\Release" />
+  </files>
+</package>
