@@ -182,6 +182,7 @@ else
         -Donnxruntime_ENABLE_MICROSOFT_INTERNAL=OFF                                     `
         -Donnxruntime_ENABLE_PYTHON=ON                                                  `
         -Donnxruntime_RUN_ONNX_TESTS=ON                                                 `
+        -Donnxruntime_USE_BRAINSLICE=OFF                                                `
         -Donnxruntime_USE_CUDA=OFF                                                      `
         -Donnxruntime_USE_EIGEN_FOR_BLAS=ON                                             `
         -Donnxruntime_USE_FULL_PROTOBUF=ON                                              `
