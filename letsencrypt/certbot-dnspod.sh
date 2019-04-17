@@ -6,7 +6,9 @@ set -e
 # Configuration
 # ================================================================
 
-TokenDnspodCN='12345,1234567890abcdef0123456789abcdef'
+. "$(dirname "$0")/pkgs/env-cred.sh"
+
+TokenDnspodCN='$CRED_USR_DNSPOD_CN_LE_KEY,$CRED_USR_DNSPOD_CN_LE_SECRET'
 
 # ----------------------------------------------------------------
 
