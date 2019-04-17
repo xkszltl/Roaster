@@ -1,3 +1,6 @@
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
 stages:
   - init
   - repo
@@ -27,149 +30,83 @@ init:
     - until docker pull centos; do echo "Retry docker pull..."; done
     - gitlab-ci/build_stage.sh
 
-repo:
-  stage: repo
+.docker_build_stage_template: &docker_build_stage
   retry: 2
   tags:
     - docker
     - gpu
-  only:
-    - /^(build|resume)-(init|repo)$/
   except:
     - branches
   script:
     - gitlab-ci/build_stage.sh
+
+repo:
+  stage: repo
+  only:
+    - /^(build|resume)-(init|repo)$/
+  <<: *docker_build_stage
 
 font:
   stage: font
-  retry: 2
-  tags:
-    - docker
-    - gpu
   only:
     - /^(build|resume)-(init|repo|font)$/
-  except:
-    - branches
-  script:
-    - gitlab-ci/build_stage.sh
+  <<: *docker_build_stage
 
 pkg-skip:
   stage: pkg-skip
-  retry: 2
-  tags:
-    - docker
-    - gpu
   only:
     - /^(build|resume)-(init|repo|font|pkg-skip)$/
-  except:
-    - branches
-  script:
-    - gitlab-ci/build_stage.sh
+  <<: *docker_build_stage
 
 tex:
   stage: tex
-  retry: 2
-  tags:
-    - docker
-    - gpu
   only:
     - /^(build|resume)-(init|repo|font|pkg-(skip|all)|tex)$/
-  except:
-    - branches
-  script:
-    - gitlab-ci/build_stage.sh
+  <<: *docker_build_stage
 
 ss:
   stage: ss
-  retry: 2
-  tags:
-    - docker
-    - gpu
   only:
     - /^(build|resume)-(init|repo|font|pkg-(skip|all)|tex|ss)$/
-  except:
-    - branches
-  script:
-    - gitlab-ci/build_stage.sh
+  <<: *docker_build_stage
 
 infra:
   stage: infra
-  retry: 2
-  tags:
-    - docker
-    - gpu
   only:
     - /^(build|resume)-(init|repo|font|pkg-(skip|all)|ss|tex|infra)$/
-  except:
-    - branches
-  script:
-    - gitlab-ci/build_stage.sh
+  <<: *docker_build_stage
 
 llvm:
   stage: llvm
-  retry: 2
-  tags:
-    - docker
-    - gpu
   only:
     - /^(build|resume)-(init|repo|font|pkg-(skip|all)|ss|tex|infra|llvm)$/
-  except:
-    - branches
-  script:
-    - gitlab-ci/build_stage.sh
+  <<: *docker_build_stage
 
 util:
   stage: util
-  retry: 2
-  tags:
-    - docker
-    - gpu
   only:
     - /^(build|resume)-(init|repo|font|pkg-(skip|all)|ss|tex|infra|llvm|util)$/
-  except:
-    - branches
-  script:
-    - gitlab-ci/build_stage.sh
+  <<: *docker_build_stage
 
 misc:
   stage: misc
-  retry: 2
-  tags:
-    - docker
-    - gpu
   only:
     - /^(build|resume)-(init|repo|font|pkg-(skip|all)|ss|tex|infra|llvm|util|misc)$/
-  except:
-    - branches
-  script:
-    - gitlab-ci/build_stage.sh
+  <<: *docker_build_stage
 
 dl:
   stage: dl
-  retry: 2
-  tags:
-    - docker
-    - gpu
   only:
     - /^(build|resume)-(init|repo|font|pkg-(skip|all)|ss|tex|infra|llvm|util|misc|dl)$/
-  except:
-    - branches
-  script:
-    - gitlab-ci/build_stage.sh
-    - docker tag $CI_REGISTRY_IMAGE:stage-dl $CI_REGISTRY_IMAGE:stage-edit
+  <<: *docker_build_stage
 
 edit:
   stage: edit
-  retry: 2
-  tags:
-    - docker
-    - gpu
   only:
     - /^(build|resume)-edit$/
-  except:
-    - branches
-  script:
-    - gitlab-ci/build_stage.sh
+  before_script:
+    - docker tag $CI_REGISTRY_IMAGE:stage-dl $CI_REGISTRY_IMAGE:stage-edit
+  <<: *docker_build_stage
 
 finish:
   stage: finish

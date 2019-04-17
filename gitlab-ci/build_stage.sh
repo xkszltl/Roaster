@@ -20,6 +20,7 @@ if [ $GITLAB_CI ]; then
 		cat stage/$CI_JOB_STAGE > 'Dockerfile'
 	fi
 
+    sed -i "s/^FROM docker\.codingcafe\.org\/.*:/FROM $(sed 's/\([\\\/\.\-]\)/\\\1/g' <<< "$CI_REGISTRY_IMAGE"):/" 'Dockerfile'
     cat 'Dockerfile' > "stage/$CI_JOB_STAGE"
 
 	if [ "_$stage" = "_$CI_JOB_STAGE" ]; then
