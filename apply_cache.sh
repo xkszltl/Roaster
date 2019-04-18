@@ -10,12 +10,12 @@ if [ $# -le 0 ]; then
     exit $?
 fi
 
-export ROOT_DIR=$(cd $(dirname $0) && pwd)
+export ROOT_DIR="$(readlink -e "$(dirname $0)")"
 
-[ $RPM_CACHE_REPO ] || export RPM_CACHE_REPO=/etc/yum.repos.d/cache.repo
+[ "$RPM_CACHE_REPO" ] || export RPM_CACHE_REPO=/etc/yum.repos.d/cache.repo
 
-for i in $(ls $ROOT_DIR/repos/*.repo); do
-    [ -f /etc/yum.repos.d/$(basename $i) ] || sudo yum-config-manager --add-repo $i
+for i in $(ls "$ROOT_DIR/repos/"*.repo | grep -v "$([ -f "$RPM_CACHE_REPO" ] && echo '^$' || echo '\/cache\.repo$')"); do
+    [ -f "/etc/yum.repos.d/$(basename "$i")" ] || sudo yum-config-manager --add-repo $i
 done
 
 xargs -n1 <<<$@ | sed "s/^/--disable $([ -f $RPM_CACHE_REPO ] || echo cache-)/" | xargs sudo yum-config-manager
