@@ -43,7 +43,7 @@
 
     (
         set +xe
-        . scl_source enable devtoolset-8 rh-python36
+        . scl_source enable devtoolset-8
         . "/opt/intel/mkl/bin/mklvars.sh" intel64
         set -xe
 

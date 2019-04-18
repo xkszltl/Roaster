@@ -16,14 +16,8 @@ CACHE_VALID=false
 for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; do
     PKG_PATH="$(cut -d, -f1 <<< "$i,")"
     if grep '^[[:alnum:]]' <<< "$PKG_PATH" > /dev/null; then
-        if grep '/enum34' <<< "/$i" > /dev/null; then
-            echo "Cannot get $PKG because it uses hg. Install it from wheel instead."
-            URL="$PKG"
-            GIT_TAG_VER='_';
-        else
-            . "$ROOT_DIR/pkgs/utils/git/version.sh" "$i"
-            URL="git+$GIT_REPO@$GIT_TAG"
-        fi
+        . "$ROOT_DIR/pkgs/utils/git/version.sh" "$i"
+        URL="git+$GIT_REPO@$GIT_TAG"
     else
         URL="$(readlink -e $PKG_PATH)"
         [ -d "$URL" ]
@@ -43,7 +37,7 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
         echo "Cannot build $PKG from source. Install it from wheel instead."
         URL="$PKG"
     fi
-    for py in rh-python36,python; do
+    for py in ,python3 rh-python36,python; do
     (
         py="$py,"
 
@@ -51,23 +45,11 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
         . scl_source enable $(cut -d',' -f1 <<< "$py")
         set -e
 
-        if [ "_$URL" = "_enum34" ] && [ "_$(cut -d',' -f1 <<< "$py")" = "_rh-python36" ]; then
-            echo "enum34 is not compatible with python 3.6.1 or above. Skipped."
-            continue;
-        fi
-
         py="$(which "$(cut -d',' -f2 <<< "$py")")"
         # Not exactly correct since the actual package name is defined by "setup.py".
         until $CACHE_VALID; do
             CACHED_LIST="$("$py" -m pip freeze --all | tr '[:upper:]' '[:lower:]')"
             CACHE_VALID=true
-
-            # Always remove enum34.
-            if [ "$(grep '^enum34==' <<< "$CACHED_LIST")" ]; then
-                sudo "$py" -m pip uninstall -y 'enum34'
-                CACHE_VALID=false
-                continue
-            fi
         done
         if [ ! "$USE_LOCAL_GIT" ] && [ "$GIT_TAG_VER" ] && [ "_$(sed -n "s/^$(tr '[:upper:]' '[:lower:]' <<< "$PKG")==//p" <<< "$CACHED_LIST")" = "_$GIT_TAG_VER" ]; then
             echo "Package \"$PKG\" for \"$py\" is already up-to-date ($GIT_TAG_VER). Skip."

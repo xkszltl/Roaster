@@ -25,7 +25,7 @@ for i in pkg-{skip,all}; do
                 {gdb,gperf,gperftools,valgrind,perf,{l,s}trace}{,-*}
                 {make,ninja-build,cmake{,3},autoconf,libtool}{,-*}
                 {ant,maven}{,-*}
-                {git,sclo-git212,subversion,mercurial}{,-*}
+                {git,rh-git218,subversion,mercurial}{,-*}
                 valgrind{,-*}
                 doxygen{,-*}
                 pandoc{,-*}
@@ -139,11 +139,10 @@ for i in pkg-{skip,all}; do
                 anaconda{,-*}
                 libreoffice{,-*}
                 perl{,-*}
-                python{,34}{,-devel,-debug{,info}}
+                python{,36}{,-devel,-debug{,info}}
                 {python27,rh-python36}{,-python-{devel,debug{,info}}}
-                {python{2,34},{python27,rh-python36}-python}-pip
-                ruby{,-*}
-                rh-ruby25{,-*}
+                {python{2,36},{python27,rh-python36}-python}-pip
+                {ruby,rh-ruby25}{,-*}
                 lua{,-*}
 
                 *-fonts{,-*}
