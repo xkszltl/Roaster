@@ -1,0 +1,17 @@
+name: $(Date:yyyyMMdd).$(Rev:.r)
+
+stages:
+- stage: CentOS-7
+  dependsOn: []
+  jobs:
+    - job:
+      steps:
+      - bash: docker pull centos:7
+
+stages:
+- stage: Ubuntu-18.04
+  dependsOn: []
+  jobs:
+    - job:
+      steps:
+      - bash: docker pull ubuntu:18.04
