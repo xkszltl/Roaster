@@ -12,13 +12,10 @@ which sed > /dev/null 2> /dev/null || sudo yum install --skip-broken -y sed
 which paste > /dev/null 2> /dev/null || sudo yum install --skip-broken -y coreutils
 which xargs > /dev/null 2> /dev/null || sudo yum install --skip-broken -y findutils
 
-[ ! "$GIT_MIRROR" ]                                                         \
-&& sudo ping -nfc 10 localhost > /dev/null                                  \
-&& echo '----------------------------------------------------------------'  \
-&& echo '               Measure link quality to git mirrors              '  \
-&& echo '----------------------------------------------------------------'  \
-&& env | sed -n 's/^GIT_MIRROR_[^=]*=/| /p'                                 \
-&& export GIT_MIRROR=$(
+echo '----------------------------------------------------------------'
+echo '               Measure link quality to git mirrors              '
+echo '----------------------------------------------------------------'
+export LINK_QUALITY="$(
     export PING_ROUND=$(sudo ping -nfc 10 localhost > /dev/null && echo '-fc100' || echo '-i0.2 -c10')
     for i in $(env | sed -n 's/^GIT_MIRROR_[^=]*=//p'); do :
         sudo ping -W 1 -n $PING_ROUND $(sed 's/.*:\/\///' <<<"$i" | sed 's/\/.*//')         \
@@ -27,10 +24,15 @@ which xargs > /dev/null 2> /dev/null || sudo yum install --skip-broken -y findut
         | sed 's/.*ewma.*\/\([0-9\.]*\).*/\1/'                                              \
         | xargs                                                                             \
         | sed 's/\([0-9\.][0-9\.]*\).*[[:space:]]\([0-9\.][0-9\.]*\).*/\2\*\(\1\*10+1\)/'   \
+        | sed 's/^$/10\^20/'                                                                \
         | bc
         echo "$i"
-    done | paste - - | sort -n | head -n1 | xargs -n1 | tail -n1
-)
+    done | paste - - | sort -n | column -t
+)"
+
+sed 's/^/| /' <<< "$LINK_QUALITY"
+
+[ "$GIT_MIRROR" ] || GIT_MIRROR="$(head -n1 <<< "$LINK_QUALITY" | xargs -n1 | tail -n1)"
 echo '----------------------------------------------------------------'
 echo "| GIT_MIRROR | $GIT_MIRROR"
 echo '----------------------------------------------------------------'
