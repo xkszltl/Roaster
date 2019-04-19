@@ -36,7 +36,7 @@
 
         jq -n '
         {
-            "server":           "sensitive_url_removed",
+            "server":           "'"$CRED_USR_SS_ADDR"'",
             "server_port":      '"$CRED_USR_SS_PORT"',
             "local_address":    "127.0.0.1",
             "local_port":       1080,

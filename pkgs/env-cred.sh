@@ -6,8 +6,9 @@
 #     They are only place holders.
 ############################################################
 
-export CRED_DEF_SS_PWD="Default_random_password_@!$(sha1sum <<< "$RANDOM$RANDOM" | sed 's/[[:space:]].*//')"
+export CRED_DEF_SS_ADDR="example.org"
 export CRED_DEF_SS_PORT='8388'
+export CRED_DEF_SS_PWD="Default_random_password_@!$(sha1sum <<< "$RANDOM$RANDOM" | sed 's/[[:space:]].*//')"
 
 export CRED_DEF_DNSPOD_CN_LE_KEY='12345'
 export CRED_DEF_DNSPOD_CN_LE_SECRET='1234567890abcdef0123456789abcdef'
