@@ -5,7 +5,7 @@ set -xe
 # [ "$GITLAB_CI" ]
 [ "$CI_COMMIT_REF_NAME" ]
 [ "$CI_JOB_STAGE" ]
-[ "$CI_REGISTRY_IMAGE/centos" ]
+[ "$CI_REGISTRY_IMAGE" ]
 
 set +x
 if [ "$CI_REGISTRY" ] && [ "$CI_REGISTRY_USER" ] && [ "$CI_REGISTRY_PASSWORD" ]; then
