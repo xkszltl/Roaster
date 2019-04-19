@@ -14,6 +14,16 @@ trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 # Environment Configuration
 # ================================================================
 
+sed 's/^\(..*\)/export DISTRO_\1/' | source
+
+case "$DISTRO_ID" in
+"centos" | "fedora" | "rhel")
+    export RPM_CACHE_REPO=/etc/yum.repos.d/cache.repo
+    ;;
+esac
+
+# ----------------------------------------------------------------
+
 export IS_CONTAINER=$([ -e /proc/1/cgroup ] && [ $(sed -n 's/^[^:]*:[^:]*:\(..\)/\1/p' /proc/1/cgroup | wc -l) -gt 0 ] && echo true || echo false)
 
 if ! "$IS_CONTAINER" && [ "$(whoami)" = 'root' ]; then
@@ -24,14 +34,18 @@ fi
 # ----------------------------------------------------------------
 
 export ROOT_DIR=$(cd $(dirname $0) && pwd)
-if $IS_CONTAINER || [ ! -d /media/Scratch ]; then
-    export SCRATCH=/tmp/scratch
-else
-    export SCRATCH=$(mktemp -p /media/Scratch)
-fi
+
 export STAGE=/etc/roaster/stage
 
-export RPM_CACHE_REPO=/etc/yum.repos.d/cache.repo
+# ----------------------------------------------------------------
+
+export SCRATCH='/tmp/scratch'
+for candidate in '/media/Scratch'; do
+    if ! $IS_CONTAINER && [ -d "$candidate" ]; then
+        export SCRATCH="$(mktemp -p "$candidate")"
+        break
+    fi
+done
 
 # ================================================================
 # Infomation
@@ -68,12 +82,24 @@ echo
 # Cache sudo Credentials
 # ================================================================
 
-if ! rpm -q sudo > /dev/null; then
-    if [ "$(whoami)" == 'root' ]; then
-        yum install -y sudo
-    else
+if ! which sudo; then
+    if [ "$(whoami)" != 'root' ]; then
         echo 'Insufficient permission to bootstrap. Please install sudo manually or provide root access.'
+        exit 1
     fi
+
+    case "$DISTRO_ID" in
+    "centos" | "rhel")
+        yum install -y sudo
+        ;;
+    "fedora")
+        dnf install -y sudo
+        ;;
+    "debian" | "linuxmint" | "ubuntu")
+        apt-cache update
+        apt-get install -y sudo
+        ;;
+    esac
 fi
 
 . "$ROOT_DIR/pkgs/utils/sudo_ping_daemon.sh"
@@ -172,9 +198,20 @@ sudo ldconfig
 which ccache 2>/dev/null >/dev/null && ccache -s
 
 if $IS_CONTAINER; then
-    sudo yum autoremove -y
-    sudo yum clean all
-    sudo rm -rf /var/cache/yum
+    case "$DISTRO_ID" in
+    "centos" | "rhel")
+        sudo yum autoremove -y
+        sudo yum clean all
+        sudo rm -rf /var/cache/yum
+        ;;
+    "fedora")
+        sudo dnf autoremove -y
+        sudo dnf clean all --enablerepo='*'
+        ;;
+    "debian" | "linuxmint" | "ubuntu")
+        sudo apt-get clean
+        ;;
+    esac
 fi
 
 # ----------------------------------------------------------------
