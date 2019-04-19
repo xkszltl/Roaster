@@ -35,6 +35,18 @@
 
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
 
+        # --------------------------------------------------------
+        # Hack for protoc-gen-mypy bug:
+        #     https://github.com/onnx/onnx/issues/1952
+        # --------------------------------------------------------
+
+        if which python3; then
+            PY_DIR="$(readlink -f "$INSTALL_ROOT/../python")"
+            mkdir -p "$PY_DIR"
+            ln -sf "$(which python3)" "$PY_DIR/python"
+            export PATH="$PY_DIR:$PATH"
+        fi
+
         CMAKE_ARGS="$CMAKE_ARGS
             -DBUILD_SHARED_LIBS=ON
             -DCMAKE_BUILD_TYPE=Release
