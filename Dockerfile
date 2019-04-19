@@ -24,4 +24,4 @@ COPY ["pkgs", "/etc/codingcafe/pkgs"]
 COPY ["cache.repo", "/etc/yum.repos.d/"]
 VOLUME ["/var/log"]
 
-RUN cp -f /etc/hosts /tmp && echo 10.0.0.10 {git,proxy,repo}.codingcafe.org > /etc/hosts && /etc/codingcafe/setup.sh && cat /tmp/hosts > /etc/hosts && rm -f /tmp/hosts
+RUN cp -f /etc/hosts /tmp && echo 10.0.0.10 {proxy,repo}.codingcafe.org > /etc/hosts && /etc/codingcafe/setup.sh && cat /tmp/hosts > /etc/hosts && rm -f /tmp/hosts

@@ -2,4 +2,4 @@ FROM docker.codingcafe.org/sandbox/centos:stage-ss
 
 COPY [".", "/etc/codingcafe/scripts"]
 
-RUN cp -f /etc/hosts /tmp && echo 10.0.0.10 {git,proxy,repo}.codingcafe.org > /etc/hosts && /etc/codingcafe/scripts/setup.sh ccache cmake axel intel ipt ompi cuda && cat /tmp/hosts > /etc/hosts && rm -f /tmp/hosts
+RUN cp -f /etc/hosts /tmp && echo 10.0.0.10 {proxy,repo}.codingcafe.org > /etc/hosts && /etc/codingcafe/scripts/setup.sh ccache cmake axel intel ipt ompi cuda && cat /tmp/hosts > /etc/hosts && rm -f /tmp/hosts
