@@ -1,4 +1,4 @@
-# Build with "docker build --pull --no-cache -t docker.codingcafe.org/xkszltl/roaster git@git.codingcafe.org:xkszltl/roaster.git"
+# Build with "docker build --pull --no-cache -t docker.codingcafe.org/xkszltl/roaster/centos git@git.codingcafe.org:xkszltl/roaster.git"
 
 FROM centos
 

@@ -5,7 +5,7 @@ set -xe
 # [ "$GITLAB_CI" ]
 [ "$CI_COMMIT_REF_NAME" ]
 [ "$CI_JOB_STAGE" ]
-[ "$CI_REGISTRY_IMAGE" ]
+[ "$CI_REGISTRY_IMAGE/centos" ]
 
 set +x
 if [ "$CI_REGISTRY" ] && [ "$CI_REGISTRY_USER" ] && [ "$CI_REGISTRY_PASSWORD" ]; then
@@ -28,7 +28,7 @@ else
     cat stage/$CI_JOB_STAGE > 'Dockerfile'
 fi
 
-sed -i "s/^FROM docker\.codingcafe\.org\/.*:/FROM $(sed 's/\([\\\/\.\-]\)/\\\1/g' <<< "$CI_REGISTRY_IMAGE"):/" 'Dockerfile'
+sed -i "s/^FROM docker\.codingcafe\.org\/.*:/FROM $(sed 's/\([\\\/\.\-]\)/\\\1/g' <<< "$CI_REGISTRY_IMAGE/centos"):/" 'Dockerfile'
 cat 'Dockerfile' > "stage/$CI_JOB_STAGE"
 
 if [ "_$stage" = "_$CI_JOB_STAGE" ]; then
@@ -41,12 +41,12 @@ if time docker build                                \
     --cpu-shares 128                                \
     --no-cache                                      \
     --pull                                          \
-    --tag "$CI_REGISTRY_IMAGE:stage-$CI_JOB_STAGE"  \
+    --tag "$CI_REGISTRY_IMAGE/centos:stage-$CI_JOB_STAGE"  \
     .; then
-    time docker push "$CI_REGISTRY_IMAGE:stage-$CI_JOB_STAGE"
+    time docker push "$CI_REGISTRY_IMAGE/centos:stage-$CI_JOB_STAGE"
 else
     echo 'Docker build failed. Save breakpoint snapshot.' 1>&2
-    time docker commit "$(docker ps -alq)" "$CI_REGISTRY_IMAGE:breakpoint"
+    time docker commit "$(docker ps -alq)" "$CI_REGISTRY_IMAGE/centos:breakpoint"
     time docker push "$_"
     exit 1
 fi
