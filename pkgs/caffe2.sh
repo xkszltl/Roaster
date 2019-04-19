@@ -66,6 +66,7 @@
             -DCMAKE_VERBOSE_MAKEFILE=ON                     \
             -DCPUINFO_BUILD_TOOLS=ON                        \
             -DINSTALL_TEST=ON                               \
+            -DPYTHON_EXECUTABLE="$(which python3)"          \
             -DTORCH_CUDA_ARCH_LIST="Pascal;Volta"           \
             -DUSE_FBGEMM=ON                                 \
             -DUSE_GFLAGS=ON                                 \
