@@ -29,7 +29,7 @@ if $IS_CONTAINER || [ ! -d /media/Scratch ]; then
 else
     export SCRATCH=$(mktemp -p /media/Scratch)
 fi
-export STAGE=/etc/codingcafe/stage
+export STAGE=/etc/roaster/stage
 
 export RPM_CACHE_REPO=/etc/yum.repos.d/cache.repo
 

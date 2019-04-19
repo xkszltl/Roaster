@@ -1,5 +1,5 @@
 FROM docker.codingcafe.org/sandbox/centos:stage-pkg-skip
 
-COPY [".", "/etc/codingcafe/scripts"]
+COPY [".", "/etc/roaster/scripts"]
 
-RUN cp -f /etc/hosts /tmp && echo 10.0.0.10 {proxy,repo}.codingcafe.org > /etc/hosts && /etc/codingcafe/scripts/setup.sh auth tex && cat /tmp/hosts > /etc/hosts && rm -f /tmp/hosts
+RUN cp -f /etc/hosts /tmp && echo 10.0.0.10 {proxy,repo}.codingcafe.org > /etc/hosts && /etc/roaster/scripts/setup.sh auth tex && cat /tmp/hosts > /etc/hosts && rm -f /tmp/hosts

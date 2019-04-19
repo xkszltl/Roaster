@@ -34,7 +34,7 @@ cat 'Dockerfile' > "stage/$CI_JOB_STAGE"
 if [ "_$stage" = "_$CI_JOB_STAGE" ]; then
     cat "stage/$CI_JOB_STAGE" > 'Dockerfile'
 else
-    grep -v '"/etc/codingcafe/scripts"' "stage/$CI_JOB_STAGE" > 'Dockerfile'
+    grep -v '"/etc/roaster/scripts"' "stage/$CI_JOB_STAGE" > 'Dockerfile'
 fi
 
 if time docker build                                \

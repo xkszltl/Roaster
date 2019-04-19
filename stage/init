@@ -21,4 +21,4 @@ ENV NVIDIA_VISIBLE_DEVICES all
 
 VOLUME ["/var/log"]
 
-COPY [".", "/etc/codingcafe/scripts"]
+COPY [".", "/etc/roaster/scripts"]
