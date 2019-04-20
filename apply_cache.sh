@@ -18,8 +18,12 @@ for i in $(ls "$ROOT_DIR/repos/"*.repo | grep -v "$([ -f "$RPM_CACHE_REPO" ] && 
     [ -f "/etc/yum.repos.d/$(basename "$i")" ] || sudo yum-config-manager --add-repo $i
 done
 
-xargs -n1 <<<$@ | sed "s/^/--disable $([ -f $RPM_CACHE_REPO ] || echo cache-)/" | xargs sudo yum-config-manager
-xargs -n1 <<<$@ | sed "s/^/--enable  $([ -f $RPM_CACHE_REPO ] && echo cache-)/" | xargs sudo yum-config-manager
+[ "$RPM_PRIORITY" ] || RPM_PRIORITY=99
+
+xargs -n1 <<<$@ | sed 's/.*/\1 cache-\1/' | xargs -n1 | sed "s/\(.*\)/--save --setopt=\1\.priority=$RPM_PRIORITY/" | xargs sudo yum-config-manager
+xargs -n1 <<<$@ | sed "s/^/--disable $([ -f "$RPM_CACHE_REPO" ] || echo cache-)/" | xargs sudo yum-config-manager
+xargs -n1 <<<$@ | sed "s/^/--enable  $([ -f "$RPM_CACHE_REPO" ] && echo cache-)/" | xargs sudo yum-config-manager
+
 sync
 
 sudo yum repolist
