@@ -38,6 +38,10 @@ License
 
 We are using Apache License 2.0 for this entire repo.
 
+Each component we build may has its own license, and does not need to be compatible with our license.
+Users are responsible for maintaining proper licenses for all components used.
+This requirement also applies when using our release packages (containers, tarball, deb, rpm, ...).
+
 Contribution
 ====================
 
