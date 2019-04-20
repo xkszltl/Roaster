@@ -99,7 +99,7 @@
 
         time cmake --build . --target test || ! nvidia-smi
 
-        # python -m pytest --disable-warnings -v caffe2/python
+        # python3 -m pytest --disable-warnings -v caffe2/python
 
         # Exclude GTest/MKL-DNN/ONNX/Caffe files.
         pushd "$INSTALL_ROOT"
@@ -112,7 +112,7 @@
         # --------------------------------------------------------
         # Install python files
         # --------------------------------------------------------
-        # for ver in 2.7 3.4; do
+        # for ver in 3.6; do
         #     parallel --group -j0 'bash -c '"'"'
         #         set -e
         #         install -D {,"'"$INSTALL_ROOT/usr/local/lib/python$ver/"'"}"{}"
@@ -133,8 +133,9 @@
         # --------------------------------------------------------
         # Relocate site-package installation.
         # --------------------------------------------------------
-        mkdir -p "$(readlink -m "$INSTALL_ROOT/$(dirname "$(which python)")/../lib/python$(python --version 2>&1 | sed -n 's/^[^0-9]*\([0-9][0-9]*\.[0-9][0-9]*\).*/\1/p' | head -n1)/site-packages")"
-        mv -f {"$INSTALL_ABS","$(readlink -m "$INSTALL_ROOT/$(dirname "$(which python)")/..")"}"/lib/python$(python --version 2>&1 | sed -n 's/^[^0-9]*\([0-9][0-9]*\.[0-9][0-9]*\).*/\1/p' | head -n1)/site-packages/caffe2"
+        PY_SITE_PKGS_DIR="lib/python$(python3 --version 2>&1 | sed -n 's/^[^0-9]*\([0-9][0-9]*\.[0-9][0-9]*\).*/\1/p' | head -n1)/site-packages"
+        mkdir -p "$(readlink -m "$INSTALL_ROOT/$(dirname "$(which python3)")/../$PY_SITE_PKGS_DIR")"
+        mv -f {"$INSTALL_ABS","$(readlink -m "$INSTALL_ROOT/$(dirname "$(which python3)")/..")"}"/$PY_SITE_PKGS_DIR/caffe2"
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
