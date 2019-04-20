@@ -14,7 +14,7 @@ trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 # Environment Configuration
 # ================================================================
 
-sed 's/^\(..*\)/export DISTRO_\1/' | source
+. <(sed 's/^\(..*\)/export DISTRO_\1/' '/etc/os-release')
 
 case "$DISTRO_ID" in
 "centos" | "fedora" | "rhel")
