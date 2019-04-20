@@ -15,7 +15,7 @@ for i in llvm-{gcc,clang}; do
             [ "$PROJ" ]
             until git clone --depth 1 -b "'"$GIT_TAG"'" "'"$(sed 's/[^\/]*$//' <<< "$GIT_REPO")"'$PROJ.git" {}; do sleep 1; echo "Retrying"; done
             if [ "$PROJ" = "clang" ]; then
-                until git clone --depth 1 -b "'"$GIT_TAG"'" "'"$(sed 's/[^\/]*$//' <<< "$GIT_REPO")"'/$PROJ-tools-extra.git" "{}/tools/extra"; do sleep 1; echo "Retrying"; done
+                until git clone --depth 1 -b "'"$GIT_TAG"'" "'"$(sed 's/[^\/]*$//' <<< "$GIT_REPO")"'$PROJ-tools-extra.git" "{}/tools/extra"; do sleep 1; echo "Retrying"; done
             fi
         '"'" ::: projects/{compiler-rt,lib{cxx{,abi},unwind},openmp} tools/{clang,lldb,lld,polly}
 
