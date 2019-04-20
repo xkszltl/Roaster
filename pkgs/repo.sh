@@ -3,7 +3,7 @@
 # ================================================================
 
 [ -e $STAGE/repo ] && ( set -xe
-    until sudo yum install -y sed yum-utils; do echo 'Retrying'; done
+    until sudo yum install -y sed yum-{plugin-{fastestmirror,priorities},utils}; do echo 'Retrying'; done
 
     sudo yum-config-manager --setopt=tsflags= --save
     $IS_CONTAINER || sudo yum-config-manager --setopt=installonly_limit=3 --save
@@ -13,7 +13,7 @@
 
     RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" {base,updates,extras,centosplus}{,-source} base-debuginfo
 
-    until sudo yum install -y yum-plugin-{priorities,fastestmirror} bc {core,find,ip}utils curl kernel-headers; do echo 'Retrying'; done
+    until sudo yum install -y bc {core,find,ip}utils curl kernel-headers; do echo 'Retrying'; done
 
     until sudo yum install -y epel-release; do echo 'Retrying'; done
     RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" epel{,-source,-debuginfo}
