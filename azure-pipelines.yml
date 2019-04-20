@@ -6,12 +6,12 @@ stages:
   jobs:
     - job:
       steps:
-      - bash: docker pull centos:7
-
-stages:
+      - bash: |
+        docker pull centos:7
 - stage: Ubuntu-18.04
   dependsOn: []
   jobs:
     - job:
       steps:
-      - bash: docker pull ubuntu:18.04
+      - bash: |
+        docker pull ubuntu:18.04
