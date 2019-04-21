@@ -19,9 +19,13 @@ RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == system
 VOLUME [ "/sys/fs/cgroup" ]
 CMD ["/usr/sbin/init"]
 
-COPY ["setup.sh", "/etc/roaster/"]
-COPY ["pkgs", "/etc/roaster/pkgs"]
-COPY ["cache.repo", "/etc/yum.repos.d/"]
+# nvidia-docker
+ENV PATH /usr/local/nvidia/bin:/usr/local/cuda/bin:${PATH}
+ENV LD_LIBRARY_PATH /usr/local/nvidia/lib64:/usr/local/nvidia/lib:${LD_LIBRARY_PATH}
+ENV NVIDIA_VISIBLE_DEVICES all
+
 VOLUME ["/var/log"]
+
+COPY [".", "/etc/roaster/scripts"]
 
 RUN cp -f /etc/hosts /tmp && echo 10.0.0.10 {proxy,repo}.codingcafe.org > /etc/hosts && /etc/roaster/setup.sh && cat /tmp/hosts > /etc/hosts && rm -f /tmp/hosts
