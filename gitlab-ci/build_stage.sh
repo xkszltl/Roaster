@@ -9,7 +9,7 @@ set -xe
 
 set +x
 if [ "$CI_REGISTRY" ] && [ "$CI_REGISTRY_USER" ] && [ "$CI_REGISTRY_PASSWORD" ]; then
-    docker login                        \
+    sudo docker login                   \
         --password-stdin                \
         --username "$CI_REGISTRY_USER"  \
         "$CI_REGISTRY"                  \
@@ -37,16 +37,16 @@ else
     grep -v '"/etc/roaster/scripts"' "stage/$CI_JOB_STAGE" > 'Dockerfile'
 fi
 
-if time docker build                                \
+if time sudo docker build                           \
     --cpu-shares 128                                \
     --no-cache                                      \
     --pull                                          \
     --tag "$CI_REGISTRY_IMAGE/centos:stage-$CI_JOB_STAGE"  \
     .; then
-    time docker push "$CI_REGISTRY_IMAGE/centos:stage-$CI_JOB_STAGE"
+    time sudo docker push "$CI_REGISTRY_IMAGE/centos:stage-$CI_JOB_STAGE"
 else
     echo 'Docker build failed. Save breakpoint snapshot.' 1>&2
-    time docker commit "$(docker ps -alq)" "$CI_REGISTRY_IMAGE/centos:breakpoint"
-    time docker push "$_"
+    time sudo docker commit "$(sudo docker ps -alq)" "$CI_REGISTRY_IMAGE/centos:breakpoint"
+    time sudo docker push "$_"
     exit 1
 fi
