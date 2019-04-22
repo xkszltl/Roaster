@@ -64,6 +64,7 @@ ccache/ccache,\
 containerd/containerd,\
 cython/cython,\
 dmlc/{dlpack,dmlc-core,gluon-cv,gluon-nlp,HalideIR,tvm,xgboost},\
+docker/docker-ce,\
 dotnet/{cli,core{,-setup,clr,fx},standard},\
 eigenteam/eigen-git-mirror,\
 emil-e/rapidcheck,\
@@ -92,6 +93,7 @@ lutzroeder/netron,\
 madler/zlib,\
 Maratyszcza/{confu,cpuinfo,FP16,FXdiv,NNPACK,PeachPy,psimd,pthreadpool},\
 Microsoft/{dotnet,GSL,onnxruntime,TypeScript,vcpkg,vscode},\
+moby/moby,\
 nanopb/nanopb,\
 NervanaSystems/{coach,distiller,neon,ngraph},\
 nicolargo/glances,\
