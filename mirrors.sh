@@ -61,6 +61,7 @@ BVLC/caffe,\
 caffe2/{caffe2,models},\
 catchorg/{Catch2,Clara},\
 ccache/ccache,\
+containerd/containerd,\
 cython/cython,\
 dmlc/{dlpack,dmlc-core,gluon-cv,gluon-nlp,HalideIR,tvm,xgboost},\
 dotnet/{cli,core{,-setup,clr,fx},standard},\
