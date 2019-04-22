@@ -37,7 +37,7 @@
     # until sudo yum install -y 'https://developer.download.nvidia.com/compute/machine-learning/repos/rhel7/x86_64/nvidia-machine-learning-repo-rhel7-1.0.0-1.x86_64.rpm'; do echo 'Retrying'; done
 
     sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-    RPM_PRIORITY=2 "$ROOT_DIR/apply_cache.sh" docker-ce-stable{,-source,-debuginfo}
+    RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" docker-ce-stable{,-source,-debuginfo}
 
     curl -sSL https://packages.gitlab.com/install/repositories/runner/gitlab-ci-multi-runner/script.rpm.sh | sudo bash
     RPM_PRIORITY=2 "$ROOT_DIR/apply_cache.sh" runner_gitlab-ci-multi-runner{,-source}
