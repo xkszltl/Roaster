@@ -16,7 +16,7 @@ rm -rf "$INSTALL_ABS"
 # Identify package path
 # ----------------------------------------------------------------
 
-[ "$PKG_NAME" ] || export PKG_NAME="codingcafe-$(basename $(pwd) | tr '[:upper:]' '[:lower:]')"
+[ "$PKG_NAME" ] || export PKG_NAME="roaster-$(basename $(pwd) | tr '[:upper:]' '[:lower:]')"
 
 export PKG_PATH="$(find "$INSTALL_ROOT/.." -maxdepth 1 -type f -name "$PKG_NAME-*.rpm" | xargs readlink -e)"
 

@@ -82,7 +82,7 @@
             -DUSE_ROCKSDB=ON                                \
             -DUSE_SYSTEM_EIGEN_INSTALL=ON                   \
             -DUSE_SYSTEM_NCCL=ON                            \
-            -DUSE_TENSORRT=OFF                              \
+            -DUSE_TENSORRT=ON                               \
             -DUSE_ZMQ=ON                                    \
             -DUSE_ZSTD=OFF                                  \
             -DWITH_BLAS=mkl                                 \
@@ -104,8 +104,8 @@
         # Exclude GTest/MKL-DNN/ONNX/Caffe files.
         pushd "$INSTALL_ROOT"
         for i in gtest mkl-dnn onnx caffe; do
-            [ "$(rpm -qa "codingcafe-$i")" ] || continue
-            rpm -ql "codingcafe-$i" | sed -n 's/^\//\.\//p' | xargs rm -rf
+            [ "$(rpm -qa "roaster-$i")" ] || continue
+            rpm -ql "roaster-$i" | sed -n 's/^\//\.\//p' | xargs rm -rf
         done
         popd
 

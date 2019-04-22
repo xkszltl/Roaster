@@ -25,7 +25,7 @@ time fpm                                                                    \
     --exclude-file "$INSTALL_ROOT/../fpm/exclude.conf"                      \
     --input-type dir                                                        \
     --iteration "$(sed 's/.*\-\([0-9]*\)\-[[:alnum:]]*$/\1/' <<< "$DESC")"  \
-    --name "codingcafe-$(basename $(pwd) | tr '[:upper:]' '[:lower:]')"     \
+    --name "roaster-$(basename $(pwd) | tr '[:upper:]' '[:lower:]')"        \
     --output-type rpm                                                       \
     --package "$INSTALL_ROOT/.."                                            \
     --rpm-compression "$(false && echo xzmt || echo none)"                  \

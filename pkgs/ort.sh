@@ -111,8 +111,8 @@
 
         # Exclude MKL-DNN/ONNX files.
         pushd "$INSTALL_ROOT"
-        rpm -ql codingcafe-mkl-dnn | sed -n 's/^\//\.\//p' | xargs rm -rf
-        rpm -ql codingcafe-onnx | sed -n 's/^\//\.\//p' | xargs rm -rf
+        rpm -ql roaster-mkl-dnn | sed -n 's/^\//\.\//p' | xargs rm -rf
+        rpm -ql roaster-onnx | sed -n 's/^\//\.\//p' | xargs rm -rf
         popd
     )
 

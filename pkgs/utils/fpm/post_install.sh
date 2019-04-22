@@ -13,7 +13,7 @@ set -xe
 # ----------------------------------------------------------------
 
 pushd /etc/ld.so.conf.d
-[ -d 'codingcafe.conf.d' ] && echo 'include codingcafe.conf.d/*.conf' > /etc/ld.so.conf.d/codingcafe.conf || rm -f codingcafe.conf
+[ -d 'roaster.conf.d' ] && echo 'include roaster.conf.d/*.conf' > /etc/ld.so.conf.d/roaster.conf || rm -f roaster.conf
 popd
 
 # ----------------------------------------------------------------
