@@ -78,11 +78,11 @@
             -Donnxruntime_USE_LLVM=ON                       \
             -Donnxruntime_USE_MKLDNN=ON                     \
             -Donnxruntime_USE_MKLML=ON                      \
-            -Donnxruntime_USE_NSYNC=ON                      \
+            -Donnxruntime_USE_NSYNC=OFF                     \
             -Donnxruntime_USE_NUPHAR=OFF                    \
             -Donnxruntime_USE_OPENBLAS=ON                   \
             -Donnxruntime_USE_OPENMP=ON                     \
-            -Donnxruntime_USE_PREINSTALLED_EIGEN=ON         \
+            -Donnxruntime_USE_PREINSTALLED_EIGEN=OFF        \
             -Donnxruntime_USE_TENSORRT=OFF                  \
             -Donnxruntime_USE_TVM=OFF                       \
             -G"Ninja"                                       \
