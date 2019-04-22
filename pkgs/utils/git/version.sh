@@ -9,7 +9,7 @@ if [ ! "$ROOT_DIR" ]; then
     echo 'Set $ROOT_DIR to "'"$ROOT_DIR"'".'
 fi
 
-[ "$GIT_MIRROR" ] || . "$ROOT_DIR/pkgs/env-mirror.sh"
+[ "$GIT_MIRROR" ] || . "$ROOT_DIR/pkgs/env/mirror.sh"
 
 if [ "$1" ]; then
     export GIT_REPO="$GIT_MIRROR/$(cut -d, -f1 <<< "$1,").git"

@@ -18,7 +18,7 @@ trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
 case "$DISTRO_ID" in
 "centos" | "fedora" | "rhel")
-    export RPM_CACHE_REPO=/etc/yum.repos.d/cache.repo
+    export RPM_CACHE_REPO="/etc/yum.repos.d/cache.repo"
     ;;
 esac
 
@@ -33,9 +33,9 @@ fi
 
 # ----------------------------------------------------------------
 
-export ROOT_DIR=$(cd $(dirname $0) && pwd)
+export ROOT_DIR="$(readlink -e "$(dirname "$0")")"
 
-export STAGE=/etc/roaster/stage
+export STAGE='/etc/roaster/stage'
 
 # ----------------------------------------------------------------
 
@@ -83,7 +83,7 @@ echo
 # ================================================================
 
 if ! which sudo; then
-    if [ "$(whoami)" != 'root' ]; then
+    if [ "_$(whoami)" != '_root' ]; then
         echo 'Insufficient permission to bootstrap. Please install sudo manually or provide root access.'
         exit 1
     fi
@@ -117,32 +117,32 @@ sudo -llp "
 # Configure Scratch Directory
 # ================================================================
 
-rm -rvf $SCRATCH
-mkdir -p $SCRATCH
+rm -rvf "$SCRATCH"
+mkdir -p "$SCRATCH"
 # $IS_CONTAINER || mount -t tmpfs -o size=100% tmpfs $SCRATCH
-cd $SCRATCH
+cd "$SCRATCH"
 
 # ================================================================
 # Initialize Setup Stage
 # ================================================================
 
-[ -d $STAGE ] && [ $# -eq 0 ] || ( set -xe
-    sudo rm -rvf $STAGE
-    sudo mkdir -p $(dirname $STAGE)/.$(basename $STAGE)
+[ -d "$STAGE" ] && [ $# -eq 0 ] || ( set -xe
+    sudo rm -rvf "$STAGE"
+    sudo mkdir -p "$(dirname "$STAGE")/.$(basename "$STAGE")"
     cd $_
     [ $# -gt 0 ] && sudo touch $@ || sudo touch repo font pkg-skip auth tex ss ccache cmake axel intel ipt ompi cuda llvm-{gcc,clang} boost jemalloc eigen openblas gtest gflags glog snappy protobuf catch2 pybind libpng mkl-dnn halide opencv leveldb rocksdb lmdb onnx caffe2 ort
     sync || true
-    cd $SCRATCH
-    sudo mv -vf $(dirname $STAGE)/.$(basename $STAGE) $STAGE
+    cd "$SCRATCH"
+    sudo mv -vf "$(dirname "$STAGE")/.$(basename "$STAGE")" $STAGE
 )
 
 which ccache 2>/dev/null >/dev/null && ccache -z
 
 for i in $(echo "
-    env-mirror
-    env-cred
+    env/mirror
+    env/cred
     repo
-    env-pkg
+    env/pkg
     font
     pkg
     fpm
@@ -183,7 +183,7 @@ for i in $(echo "
     caffe2
     ort
 "); do
-    . $ROOT_DIR/pkgs/$i.sh
+    . "$ROOT_DIR/pkgs/$i.sh"
 done
 
 # ================================================================

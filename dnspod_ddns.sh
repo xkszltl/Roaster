@@ -6,7 +6,7 @@ set -e
 # Configuration
 # ================================================================
 
-. "$(dirname "$0")/pkgs/env-cred.sh"
+. "$(dirname "$0")/pkgs/env/cred.sh"
 
 TokenDnspodCN="$CRED_USR_DNSPOD_CN_KEY,$CRED_USR_DNSPOD_CN_SECRET"
 TokenDnspodIntl="$CRED_USR_DNSPOD_INTL_KEY,$CRED_USR_DNSPOD_INTL_SECRET"
