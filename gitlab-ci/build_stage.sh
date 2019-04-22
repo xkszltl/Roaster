@@ -37,8 +37,8 @@ else
     grep -v '"/etc/roaster/scripts"' "stage/$CI_JOB_STAGE" > 'Dockerfile'
 fi
 
+#     --cpu-shares 128
 if time sudo docker build                           \
-    --cpu-shares 128                                \
     --no-cache                                      \
     --pull                                          \
     --tag "$CI_REGISTRY_IMAGE/centos:stage-$CI_JOB_STAGE"  \
