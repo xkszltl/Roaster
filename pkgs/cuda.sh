@@ -23,7 +23,8 @@
 
         if [ "_$GIT_MIRROR" == "_$GIT_MIRROR_CODINGCAFE" ]; then
             TRT_REPO_URL_CODINGCAFE='https://repo.codingcafe.org/nvidia/tensorrt'
-            TRT_FILENAME_CODINGCAFE="$(curl -sSL "$TRT_REPO_URL"           \
+            TRT_FILENAME_CODINGCAFE="$(                     \
+                curl -sSL "$TRT_REPO_URL_CODINGCAFE"        \
                 | sed -n 's/^.*href="\([^"]*\)".*$/\1/p'    \
                 | grep 'rhel7'                              \
                 | grep 'repo'                               \
