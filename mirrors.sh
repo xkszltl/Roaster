@@ -78,7 +78,7 @@ giampaolo/psutil,\
 github/{git-lfs,gitignore},\
 goldmann/docker-squash,\
 google/{benchmark,snappy,gemmlowp,glog,googletest,leveldb,nsync,protobuf,re2},\
-grpc/{grpc{,-{dart,dotnet,go,java,node,php,proto,swift,web}}},\
+grpc/grpc{,-{dart,dotnet,go,java,node,php,proto,swift,web}},\
 halide/Halide,\
 HowardHinnant/date,\
 HypothesisWorks/hypothesis,\
