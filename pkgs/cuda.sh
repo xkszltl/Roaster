@@ -44,7 +44,7 @@
 
         sudo yum remove -y --skip-broken 'nv-tensorrt-repo-*' || true
         $RPM_INSTALL "$TRT_URL"
-        $RPM_INSTALL "tensorrt" || $RPM_UPDATE "tensorrt" || $RPM_REINSTALL "tensorrt"
+        $RPM_INSTALL --disableplugin=axelget "tensorrt" || $RPM_UPDATE --disableplugin=axelget "tensorrt" || $RPM_REINSTALL --disableplugin=axelget "tensorrt"
         $IS_CONTAINER && sudo yum remove -y --skip-broken 'nv-tensorrt-repo-*'
     )
 
