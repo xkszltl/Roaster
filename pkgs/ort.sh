@@ -103,10 +103,10 @@
 
         time cmake --build . --target test || ! nvidia-smi
 
-        python ../setup.py bdist_wheel
+        python3 ../setup.py bdist_wheel
         pushd dist
         ../../rename_manylinux.sh
-        sudo python -m pip install -IU ./*-manylinux1_*.whl
+        sudo python3 -m pip install -IU ./*-manylinux1_*.whl
         popd
 
         # Exclude MKL-DNN/ONNX files.
