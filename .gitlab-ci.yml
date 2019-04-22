@@ -105,7 +105,7 @@ edit:
   only:
     - /^(build|resume)-edit$/
   before_script:
-    - docker tag $CI_REGISTRY_IMAGE:stage-dl $CI_REGISTRY_IMAGE:stage-edit
+    - docker tag $CI_REGISTRY_IMAGE/centos:stage-dl $CI_REGISTRY_IMAGE/centos:stage-edit
   <<: *docker_build_stage
 
 finish:
@@ -120,6 +120,6 @@ finish:
     - branches
   script:
     - docker login --password-stdin --username $CI_REGISTRY_USER $CI_REGISTRY <<< "$CI_REGISTRY_PASSWORD"
-    - docker tag $CI_REGISTRY_IMAGE:stage-edit $CI_REGISTRY_IMAGE:latest
-    - time docker push $CI_REGISTRY_IMAGE:latest
+    - docker tag $CI_REGISTRY_IMAGE/centos:stage-edit $CI_REGISTRY_IMAGE/centos:latest
+    - time docker push $CI_REGISTRY_IMAGE/centos:latest
 
