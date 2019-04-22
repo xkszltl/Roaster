@@ -189,7 +189,7 @@ else
         -Donnxruntime_USE_JEMALLOC=OFF                                                  `
         -Donnxruntime_USE_LLVM=OFF                                                      `
         -Donnxruntime_USE_MKLDNN=OFF                                                    `
-        -Donnxruntime_USE_MKLML=ON                                                      `
+        -Donnxruntime_USE_MKLML=OFF                                                     `
         -Donnxruntime_USE_MLAS=ON                                                       `
         -Donnxruntime_USE_NUPHAR=OFF                                                    `
         -Donnxruntime_USE_OPENBLAS=OFF                                                  `
