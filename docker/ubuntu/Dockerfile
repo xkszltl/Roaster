@@ -4,8 +4,8 @@ SHELL ["/bin/bash", "-c"]
 
 RUN apt-get update -y \
     && apt-get upgrade -y \
-    && apt-get install -y apt-utils \
-    && apt-get install -y \
+    && apt-get install -y apt-utils sudo \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y \
         axel \ 
         bash-completion \ 
         bc \ 
@@ -37,6 +37,6 @@ RUN apt-get update -y \
         valgrind \
         vim \ 
         wget \
-        xz-utils pxz \ 
+        xz-utils pxz \
     && parallel --will-cite < /dev/null \
     && touch -s0 ~/.bash_history
