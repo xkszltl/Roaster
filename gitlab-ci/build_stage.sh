@@ -31,7 +31,7 @@ else
 fi
 
 sed -i "s/^FROM docker\.codingcafe\.org\/.*:/FROM $(sed 's/\([\\\/\.\-]\)/\\\1/g' <<< "$CI_REGISTRY_IMAGE/$BASE_DISTRO"):/" 'Dockerfile'
-cat 'Dockerfile' > "docekr/$BASE_DISTRO/$CI_JOB_STAGE"
+cat 'Dockerfile' > "docker/$BASE_DISTRO/$CI_JOB_STAGE"
 
 if [ "_$stage" = "_$CI_JOB_STAGE" ]; then
     cat "docker/$BASE_DISTRO/$CI_JOB_STAGE" > 'Dockerfile'

@@ -14,7 +14,7 @@ if [ ! "$LOG_FILE" ]; then
     exit 0
 fi
 
-export BASE_DISTRO=ubuntu 
+export BASE_DISTRO=ubuntu
 
 export CI_COMMIT_REF_NAME=build-init
 

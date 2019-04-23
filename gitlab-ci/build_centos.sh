@@ -14,6 +14,8 @@ if [ ! "$LOG_FILE" ]; then
     exit 0
 fi
 
+export BASE_DISTRO=centos
+
 export CI_COMMIT_REF_NAME=build-init
 
 for CI_JOB_STAGE in init repo font pkg-skip tex ss infra llvm util misc dl edit finish; do
@@ -22,13 +24,13 @@ for CI_JOB_STAGE in init repo font pkg-skip tex ss infra llvm util misc dl edit 
     case "$CI_JOB_STAGE" in
     edit)
         [ "$PREV_CI_JOB_STAGE" ]
-        sudo docker tag "$CI_REGISTRY_IMAGE/centos:stage-"{"$PREV_CI_JOB_STAGE","$CI_JOB_STAGE"}
-        sudo docker push "$CI_REGISTRY_IMAGE/centos:stage-$CI_JOB_STAGE"
+        sudo docker tag "$CI_REGISTRY_IMAGE/$BASE_DISTRO:stage-"{"$PREV_CI_JOB_STAGE","$CI_JOB_STAGE"}
+        sudo docker push "$CI_REGISTRY_IMAGE/$BASE_DISTRO:stage-$CI_JOB_STAGE"
         ;;
     finish)
         [ "$PREV_CI_JOB_STAGE" ]
-        sudo docker tag "$CI_REGISTRY_IMAGE/centos:"{"stage-$PREV_CI_JOB_STAGE",latest}
-        sudo docker push "$CI_REGISTRY_IMAGE/centos:latest"
+        sudo docker tag "$CI_REGISTRY_IMAGE/$BASE_DISTRO:"{"stage-$PREV_CI_JOB_STAGE",latest}
+        sudo docker push "$CI_REGISTRY_IMAGE/$BASE_DISTRO:latest"
         ;;
     *)
         gitlab-ci/build_stage.sh
