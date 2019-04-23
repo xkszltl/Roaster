@@ -17,7 +17,7 @@ RUN apt-get update -y \
         git{,-{extras,lfs}} \ 
         glances htop \ 
         'iputils-*' \
-        lib{asan{0,2,3,4,5},tsan,ubsan{0,1}} \
+        lib{asan{0,2,3,4,5},tsan0,ubsan{0,1}} \
         lib{boost-all,gflags,google-glog,grpc++,gtest,hwloc,jemalloc,leveldb,lmdb,opencv,pybind11,rocksdb,snappy,ssl}-dev \ 
         libpapi-dev papi-tools \ 
         libprotobuf-dev protobuf-compiler \ 
