@@ -39,4 +39,4 @@ RUN apt-get update -y \
         wget \
         xz-utils pxz \
     && parallel --will-cite < /dev/null \
-    && touch -s0 ~/.bash_history
+    && truncate -s0 ~/.bash_history
