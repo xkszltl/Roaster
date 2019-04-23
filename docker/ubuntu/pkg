@@ -12,6 +12,7 @@ RUN apt-get update -y \
         bash-completion \ 
         bc \ 
         binutils \
+        bsdmainutils \
         ccache \
         cmake \ 
         curl \
@@ -36,6 +37,7 @@ RUN apt-get update -y \
         strace \
         tmux \ 
         usbutils \
+        util-linux \
         valgrind \
         vim \ 
         wget \
