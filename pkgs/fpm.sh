@@ -14,9 +14,13 @@
     # ------------------------------------------------------------
 
     (
-        set +xe
-        . scl_source enable rh-ruby25
-        set -xe
+        case "$DISTRO_ID" in
+        'centos' | 'fedora' | 'rhel')
+            set +xe
+            . scl_source enable rh-ruby25
+            set -xe
+            ;;
+        esac
 
         gem build fpm.gemspec
         sudo gem install ./fpm-*.gem
