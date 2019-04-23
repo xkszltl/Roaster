@@ -41,6 +41,7 @@ RUN apt-get update -y \
         moreutils \
         mtr \
         ninja-build \
+        pandoc \
         parallel \
         pciutils \
         pv \
