@@ -47,6 +47,7 @@ RUN apt-get update -y \
         ruby-all-dev \
         strace \
         tar \
+        time \
         tmux \
         usbutils \
         util-linux \
