@@ -1,0 +1,3 @@
+FROM docker.codingcafe.org/xkszltl/roaster/ubuntu:stage-pkg
+
+COPY [".", "/etc/roaster/scripts"]

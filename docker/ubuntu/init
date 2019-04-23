@@ -1,0 +1,6 @@
+FROM ubuntu
+
+SHELL ["/bin/bash", "-c"]
+
+COPY [".", "/etc/roaster/scripts"]
+
