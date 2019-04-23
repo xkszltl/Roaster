@@ -15,7 +15,7 @@ if [ "$1" ]; then
     export GIT_REPO="$GIT_MIRROR/$(cut -d, -f1 <<< "$1,").git"
     export GIT_PREFIX="$(cut -d, -f2 <<< "$1,")"
     export GIT_PREFIX_ESC="$(sed 's/\([\&\\\/\.\-]\)/\\\1/g' <<< "$GIT_PREFIX")"
-    export GIT_TAG="$(git ls-remote --heads --tags "$GIT_REPO" | sed -n 's/.*[[:space:]]refs\/[[:alpha:]]*\/\('"$GIT_PREFIX_ESC"'[0-9\._\-]*\)[[:space:]]*$/\1/p' | grep -v "^$GIT_PREFIX_ESC[^0-9]" | sort -V | tail -n1)"
+    export GIT_TAG="$(git ls-remote --heads --tags "$GIT_REPO" | sed -n 's/.*[[:space:]]refs\/[[:alpha:]]*\/\('"$GIT_PREFIX_ESC"'[0-9]*[\._\-][0-9\._\-]*\)[[:space:]]*$/\1/p' | grep -v "^$GIT_PREFIX_ESC[^0-9]" | sort -V | tail -n1)"
     if [ "$GIT_TAG" ]; then
         echo "Found git version tag \"$GIT_TAG\" in \"$GIT_REPO\"."
     else
