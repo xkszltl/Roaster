@@ -16,7 +16,7 @@ fi
 
 export BASE_DISTRO=ubuntu
 
-export CI_COMMIT_REF_NAME=build-init
+[ "$CI_COMMIT_REF_NAME" ] || export CI_COMMIT_REF_NAME=build-init
 
 for CI_JOB_STAGE in init pkg infra edit finish; do
     export CI_JOB_STAGE
