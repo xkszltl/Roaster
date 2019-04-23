@@ -38,7 +38,7 @@ time fpm                                                                    \
     --input-type dir                                                        \
     --iteration "$(sed 's/.*\-\([0-9]*\)\-[[:alnum:]]*$/\1/' <<< "$DESC")"  \
     --name "roaster-$(basename $(pwd) | tr '[:upper:]' '[:lower:]')"        \
-    --output-type "$PKG_FORMAT"                                             \
+    --output-type "$PKG_TYPE"                                               \
     --package "$INSTALL_ROOT/.."                                            \
     --deb-compression xz                                                    \
     --rpm-compression "$(false && echo xzmt || echo none)"                  \
