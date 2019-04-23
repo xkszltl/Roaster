@@ -18,7 +18,7 @@ RUN apt-get update -y \
         glances htop \ 
         'iputils-*' \
         lib{asan{0,2,3,4,5},tsan0,ubsan{0,1}} \
-        lib{boost-all,gflags,google-glog,grpc++,gtest,hwloc,jemalloc,leveldb,lmdb,opencv,pybind11,rocksdb,snappy,ssl}-dev \ 
+        lib{boost-all,gflags,google-glog,grpc++,gtest,hwloc,jemalloc,leveldb,lmdb,opencv,rocksdb,snappy,ssl}-dev \ 
         libpapi-dev papi-tools \ 
         libprotobuf-dev protobuf-compiler \ 
         llvm-7{,-tools} \
@@ -28,6 +28,7 @@ RUN apt-get update -y \
         ninja-build \ 
         parallel \ 
         pciutils \
+        pybind11-dev \
         python3 \
         ruby \
         strace \
