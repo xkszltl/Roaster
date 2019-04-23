@@ -48,6 +48,8 @@
 
         export MPI_HOME=/usr/local/openmpi
 
+        # Enabling TensorRT causes crash during cmake generation.
+        #     https://github.com/pytorch/pytorch/issues/18524
         cmake                                               \
             -DATEN_NO_TEST=ON                               \
             -DBLAS=MKL                                      \
@@ -82,7 +84,7 @@
             -DUSE_ROCKSDB=ON                                \
             -DUSE_SYSTEM_EIGEN_INSTALL=ON                   \
             -DUSE_SYSTEM_NCCL=ON                            \
-            -DUSE_TENSORRT=ON                               \
+            -DUSE_TENSORRT=OFF                              \
             -DUSE_ZMQ=ON                                    \
             -DUSE_ZSTD=OFF                                  \
             -DWITH_BLAS=mkl                                 \
