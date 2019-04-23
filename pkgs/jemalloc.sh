@@ -26,7 +26,7 @@
             export CC="$(which gcc-8)" CXX="$(which g++-8)"
             ;;
         esac
-t 
+
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
 
         ./autogen.sh                    \
