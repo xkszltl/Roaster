@@ -33,7 +33,7 @@ RUN apt-get update -y \
         pciutils \
         pybind11-dev \
         python3 \
-        ruby \
+        ruby-all-dev \
         strace \
         tmux \ 
         usbutils \
@@ -42,5 +42,7 @@ RUN apt-get update -y \
         vim \ 
         wget \
         xz-utils pxz \
+    && apt-get autoremove -y \
+    && apt-get clean \
     && parallel --will-cite < /dev/null \
     && truncate -s0 ~/.bash_history
