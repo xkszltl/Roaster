@@ -6,19 +6,36 @@ RUN apt-get update -y \
     && apt-get upgrade -y \
     && apt-get install -y apt-utils \
     && apt-get install -y \
+        axel \ 
         bash-completion \ 
+        bc \ 
+        binutils \
+        ccache \
         cmake \ 
-        g++{,-4,-5,-6,-7,-8} \ 
+        curl \
+        g++{,-4,-5,-6,-7,-8} gdb \ 
         git{,-{extras,lfs}} \ 
         glances htop \ 
-        lib{boost-all,hwloc,leveldb,lmdb,opencv,rocksdb,ssl}-dev \ 
+        'iputils-*' \
+        lib{asan{0,2,3,4,5},tsan,ubsan{0,1}} \
+        lib{boost-all,gflags,google-glog,grpc++,gtest,hwloc,jemalloc,leveldb,lmdb,opencv,pybind11,rocksdb,snappy,ssl}-dev \ 
         libpapi-dev papi-tools \ 
+        libprotobuf-dev protobuf-compiler \ 
         llvm-7{,-tools} \
+        ltrace \
         moreutils \ 
+        mtr \
         ninja-build \ 
         parallel \ 
+        pciutils \
+        python3 \
+        ruby \
+        strace \
         tmux \ 
+        usbutils \
+        valgrind \
         vim \ 
+        wget \
         xz-utils pxz \ 
     && parallel --will-cite < /dev/null \
     && touch -s0 ~/.bash_history
