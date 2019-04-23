@@ -40,23 +40,27 @@
     # ------------------------------------------------------------
 
     # May fail at the first time in unprivileged docker due to domainname change.
-    for i in $($IS_CONTAINER && echo true) false; do :
-        sudo authconfig                                                                     \
-            --enable{sssd{,auth},ldap{,auth,tls},locauthorize,cachecreds,mkhomedir}         \
-            --disable{cache,md5,nis,rfc2307bis}                                             \
-            --ldapserver=ldap://ldap.codingcafe.org                                         \
-            --ldapbasedn=dc=codingcafe,dc=org                                               \
-            --passalgo=sha512                                                               \
-            --smbsecurity=user                                                              \
-            --update                                                                        \
-        || $i
-    done
+    case "$DISTRO_ID" in
+    'centos' | 'fedora' | 'rhel')
+        for i in $($IS_CONTAINER && echo true) false; do :
+            sudo authconfig                                                                     \
+                --enable{sssd{,auth},ldap{,auth,tls},locauthorize,cachecreds,mkhomedir}         \
+                --disable{cache,md5,nis,rfc2307bis}                                             \
+                --ldapserver=ldap://ldap.codingcafe.org                                         \
+                --ldapbasedn=dc=codingcafe,dc=org                                               \
+                --passalgo=sha512                                                               \
+                --smbsecurity=user                                                              \
+                --update                                                                        \
+            || $i
+        done
 
-    sudo systemctl daemon-reload || $IS_CONTAINER
-    for i in sssd; do :
-        sudo systemctl enable $i
-        sudo systemctl start $i || $IS_CONTAINER
-    done
+        sudo systemctl daemon-reload || $IS_CONTAINER
+        for i in sssd; do :
+            sudo systemctl enable $i
+            sudo systemctl start $i || $IS_CONTAINER
+        done
+        ;;
+    esac
 
     # ------------------------------------------------------------
 
