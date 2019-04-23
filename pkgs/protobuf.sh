@@ -20,9 +20,16 @@
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
     (
-        set +xe
-        . scl_source enable devtoolset-8
-        set -xe
+        case "$DISTRO_ID" in
+        'centos' | 'fedora' | 'rhel')
+            set +xe
+            . scl_source enable devtoolset-8
+            set -xe
+            ;;
+        'ubuntu')
+            export CC="$(which gcc-8)" CXX="$(which g++-8)"
+            ;;
+        esac
 
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
 
@@ -72,9 +79,18 @@
     (
         py="$py,"
 
-        set +xe
-        . scl_source enable devtoolset-8 $(cut -d',' -f1 <<< "$py")
-        set -xe
+        case "$DISTRO_ID" in
+        'centos' | 'fedora' | 'rhel')
+            set +xe
+            . scl_source enable devtoolset-8 "$(cut -d',' -f1 <<< "$py")"
+            set -xe
+            ;;
+        'ubuntu')
+            # Skip SCL Python.
+            [ "$(cut -d',' -f1 <<< "$py")" ] && continue
+            export CC="$(which gcc-8)" CXX="$(which g++-8)"
+            ;;
+        esac
 
         py="$(which "$(cut -d',' -f2 <<< "$py")")"
 

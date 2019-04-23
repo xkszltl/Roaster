@@ -41,9 +41,18 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
     (
         py="$py,"
 
-        set +e
-        . scl_source enable $(cut -d',' -f1 <<< "$py")
-        set -e
+        case "$DISTRO_ID" in
+        'centos' | 'fedora' | 'rhel')
+            set +e
+            . scl_source enable "$(cut -d',' -f1 <<< "$py")"
+            set -e
+            ;;
+        'ubuntu')
+            # Skip SCL Python.
+            [ "$(cut -d',' -f1 <<< "$py")" ] && continue
+            export CC="$(which gcc-8)" CXX="$(which g++-8)"
+            ;;
+        esac
 
         py="$(which "$(cut -d',' -f2 <<< "$py")")"
         # Not exactly correct since the actual package name is defined by "setup.py".
