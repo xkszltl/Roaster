@@ -93,6 +93,7 @@ case "$PKG_TYPE" in
         fi
         echo "[INFO] Does not succeed with \"apt-get $i\"."
     done
+    sudo apt-get install -fy
     ;;
 esac
 # ----------------------------------------------------------------
