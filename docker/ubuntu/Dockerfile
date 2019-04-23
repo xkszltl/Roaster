@@ -4,8 +4,8 @@ SHELL ["/bin/bash", "-c"]
 
 RUN apt-get update -y \
     && apt-get upgrade -y \
+    && apt-get install -y apt-utils \
     && apt-get install -y \
-        apt-utils \ 
         bash-completion \ 
         cmake \ 
         g++{,-4,-5,-6,-7,-8} \ 
@@ -20,5 +20,5 @@ RUN apt-get update -y \
         tmux \ 
         vim \ 
         xz-utils pxz \ 
-        parallel --will-cite < /dev/null \
+    && parallel --will-cite < /dev/null \
     && touch -s0 ~/.bash_history
