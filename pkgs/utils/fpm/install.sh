@@ -81,8 +81,18 @@ case "$PKG_TYPE" in
     done
     ;;
 "deb")
-    sudo apt-get remove -y "$PKG_NAME" || true
-    sudo apt-get install -y "$PKG_NAME"
+    PKG_APT_SEQ="install reinstall upgrade"
+
+    for i in $PKG_APT_SEQ _; do
+        [ "$i" != '_' ]
+        echo "[INFO] Trying with \"apt-get $i\"."
+        if [ "$i" = "reinstall" ]; then
+            sudo apt-get remove -y "$PKG_NAME" && sudo apt-get install -y "$PKG_PATH" && break
+        else
+            sudo apt-get "$i" -y "$PKG_PATH" && break
+        fi
+        echo "[INFO] Does not succeed with \"apt-get $i\"."
+    done
     ;;
 esac
 # ----------------------------------------------------------------
