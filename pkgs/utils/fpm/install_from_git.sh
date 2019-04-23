@@ -40,7 +40,7 @@ time fpm                                                                    \
     --name "roaster-$(basename $(pwd) | tr '[:upper:]' '[:lower:]')"        \
     --output-type "$PKG_TYPE"                                               \
     --package "$INSTALL_ROOT/.."                                            \
-    --deb-compression xz                                                    \
+    --deb-compression gz                                                    \
     --rpm-compression "$(false && echo xzmt || echo none)"                  \
     --rpm-digest sha512                                                     \
     --rpm-dist "g$(git rev-parse --short --verify HEAD)"                    \
