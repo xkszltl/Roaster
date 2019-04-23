@@ -18,7 +18,19 @@ rm -rf "$INSTALL_ABS"
 
 [ "$PKG_NAME" ] || export PKG_NAME="roaster-$(basename $(pwd) | tr '[:upper:]' '[:lower:]')"
 
-export PKG_PATH="$(find "$INSTALL_ROOT/.." -maxdepth 1 -type f -name "$PKG_NAME-*.rpm" | xargs readlink -e)"
+case "$DISTRO_ID" in
+"centos" | "fedora" | "rhel")
+    export PKG_TYPE=rpm
+    ;;
+"debian" | "ubuntu")
+    export PKG_TYPE=deb
+    ;;
+*)
+    export PKG_TYPE=sh
+    ;;
+esac
+
+export PKG_PATH="$(find "$INSTALL_ROOT/.." -maxdepth 1 -type f -name "$PKG_NAME-*.$PKG_TYPE" | xargs readlink -e)"
 
 if [ ! "$PKG_PATH" ]; then
     echo "[ERROR] No package file found for \"$PKG_NAME\"."
@@ -34,7 +46,16 @@ fi
 echo '----------------------------------------------------------------'
 echo " Package Summary"
 echo '----------------------------------------------------------------'
-rpm -qlp "$PKG_PATH" | sed 's/^/     /'
+
+case "$PKG_TYPE" in
+"rpm")
+    rpm -qlp "$PKG_PATH" | sed 's/^/     /'
+    ;;
+"deb")
+    dpkg -c "$PKG_PATH" | sed 's/^/     /'
+    ;;
+esac
+
 echo '----------------------------------------------------------------'
 ls -lh "$PKG_PATH" | sed 's/^/     /'
 echo '----------------------------------------------------------------'
@@ -43,23 +64,27 @@ echo '----------------------------------------------------------------'
 # Install
 # ----------------------------------------------------------------
 
-if rpm -q "$PKG_NAME"; then
-    export PKG_YUM_SEQ="install reinstall downgrade update"
-else
-    export PKG_YUM_SEQ="install"
-fi
+case "$PKG_TYPE" in
+"rpm")
+    PKG_YUM_SEQ="install reinstall downgrade update"
+    rpm -q "$PKG_NAME" || PKG_YUM_SEQ="install"
 
-for i in $PKG_YUM_SEQ _; do
-    [ "$i" != '_' ]
-    echo "[INFO] Trying with \"yum $i\"."
-    if [ "$i" = "reinstall" ]; then
-        sudo yum remove -y "$PKG_NAME" && sudo yum install -y "$PKG_PATH" && break
-    else
-        sudo yum "$i" -y "$PKG_PATH" && break
-    fi
-    echo "[INFO] Does not succeed with \"yum $i\"."
-done
-
+    for i in $PKG_YUM_SEQ _; do
+        [ "$i" != '_' ]
+        echo "[INFO] Trying with \"yum $i\"."
+        if [ "$i" = "reinstall" ]; then
+            sudo yum remove -y "$PKG_NAME" && sudo yum install -y "$PKG_PATH" && break
+        else
+            sudo yum "$i" -y "$PKG_PATH" && break
+        fi
+        echo "[INFO] Does not succeed with \"yum $i\"."
+    done
+    ;;
+"deb")
+    sudo apt-get remove -y "$PKG_NAME" || true
+    sudo apt-get install -y "$PKG_NAME"
+    ;;
+esac
 # ----------------------------------------------------------------
 # Publish
 # ----------------------------------------------------------------

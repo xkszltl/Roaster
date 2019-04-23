@@ -18,6 +18,18 @@ for i in {"$ROOT_DIR/pkgs/utils","$INSTALL_ROOT/.."}'/fpm/post_install.sh'; do
     echo
 done > "$INSTALL_ROOT/../fpm/post_install_gen.sh"
 
+case "$DISTRO_ID" in
+"centos" | "fedora" | "rhel")
+    export PKG_TYPE=rpm
+    ;;
+"debian" | "ubuntu")
+    export PKG_TYPE=deb
+    ;;
+*)
+    export PKG_TYPE=sh
+    ;;
+esac
+
 time fpm                                                                    \
     --after-install "$INSTALL_ROOT/../fpm/post_install_gen.sh"              \
     --after-remove "$INSTALL_ROOT/../fpm/post_install_gen.sh"               \
@@ -26,8 +38,9 @@ time fpm                                                                    \
     --input-type dir                                                        \
     --iteration "$(sed 's/.*\-\([0-9]*\)\-[[:alnum:]]*$/\1/' <<< "$DESC")"  \
     --name "roaster-$(basename $(pwd) | tr '[:upper:]' '[:lower:]')"        \
-    --output-type rpm                                                       \
+    --output-type "$PKG_FORMAT"                                             \
     --package "$INSTALL_ROOT/.."                                            \
+    --deb-compression xz                                                    \
     --rpm-compression "$(false && echo xzmt || echo none)"                  \
     --rpm-digest sha512                                                     \
     --rpm-dist "g$(git rev-parse --short --verify HEAD)"                    \

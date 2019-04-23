@@ -26,12 +26,17 @@ mkdir -p "$INSTALL_ROOT/../fpm"
 # List file to exclude
 # ----------------------------------------------------------------
 
-(
-    set -e
-    for i in filesystem; do
-        rpm -q "$i" > /dev/null && rpm -ql "$i" | sed 's/^\///' | sed 's/$/\//' >> "$INSTALL_ROOT/../fpm/exclude.conf"
-    done
-) &
+touch "$INSTALL_ROOT/../fpm/exclude.conf"
+case "$DISTRO_ID" in
+"centos" | "fedora" | "rhel")
+    (
+        set -e
+        for i in filesystem; do
+            rpm -q "$i" > /dev/null && rpm -ql "$i" | sed 's/^\///' | sed 's/$/\//' >> "$INSTALL_ROOT/../fpm/exclude.conf"
+        done
+    ) &
+    ;;
+esac
 
 # ----------------------------------------------------------------
 # Copy source code
