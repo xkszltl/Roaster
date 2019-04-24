@@ -49,7 +49,7 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
             ;;
         'ubuntu')
             # Skip SCL Python.
-            [ "$(cut -d',' -f1 <<< "$py")" ] && continue
+            [ "$(cut -d',' -f1 <<< "$py")" ] && exit 0 
             export CC="$(which gcc-8)" CXX="$(which g++-8)"
             ;;
         esac
