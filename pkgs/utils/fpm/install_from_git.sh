@@ -41,7 +41,7 @@ time fpm                                                                    \
     --output-type "$PKG_TYPE"                                               \
     --package "$INSTALL_ROOT/.."                                            \
     --deb-compression gz                                                    \
-    --rpm-compression "$(true && echo xzmt || echo none)"                   \
+    --rpm-compression "$(false && echo xzmt || echo none)"                  \
     --rpm-digest sha512                                                     \
     --rpm-dist "g$(git rev-parse --short --verify HEAD)"                    \
     --vendor "CodingCafe"                                                   \
