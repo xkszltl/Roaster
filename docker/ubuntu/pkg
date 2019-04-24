@@ -17,6 +17,7 @@ RUN apt-get update -y \
         bsdmainutils \
         bzip2 \
         ccache \
+        clang{,-{format,tidy,tools}}-7 \
         cmake \
         cpio \
         curl \
