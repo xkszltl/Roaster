@@ -22,6 +22,6 @@ set -xe
 # Refresh
 # ----------------------------------------------------------------
 
-systemctl daemon-reload || $IS_CONTAINER
+which systemctl && systemctl daemon-reload || $IS_CONTAINER
 ldconfig
 sysctl --system || $IS_CONTAINER
