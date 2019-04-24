@@ -117,8 +117,15 @@
         # Exclude GTest/MKL-DNN/ONNX/Caffe files.
         pushd "$INSTALL_ROOT"
         for i in gtest mkl-dnn onnx caffe; do
-            [ "$(rpm -qa "roaster-$i")" ] || continue
-            rpm -ql "roaster-$i" | sed -n 's/^\//\.\//p' | xargs rm -rf
+            case "$DISTRO_ID" in
+            'centos' | 'fedora' | 'rhel')
+                [ "$(rpm -qa "roaster-$i")" ] || continue
+                rpm -ql "roaster-$i" | sed -n 's/^\//\.\//p' | xargs rm -rf
+                ;;
+            'ubuntu')
+                dpkg -l "roaster-$i" && dpkg -L "roaster-$i" | xargs -n1 | xargs -i -n1 find {} -maxdepth 0 -not -type d | sed -n 's/^\//\.\//p' | xargs rm -rf
+                ;;
+            esac
         done
         popd
 
@@ -146,7 +153,14 @@
         # --------------------------------------------------------
         # Relocate site-package installation.
         # --------------------------------------------------------
-        PY_SITE_PKGS_DIR="lib/python$(python3 --version 2>&1 | sed -n 's/^[^0-9]*\([0-9][0-9]*\.[0-9][0-9]*\).*/\1/p' | head -n1)/site-packages"
+        case "$DISTRO_ID" in
+        'centos' | 'fedora' | 'rhel')
+            PY_SITE_PKGS_DIR="lib/python$(python3 --version 2>&1 | sed -n 's/^[^0-9]*\([0-9][0-9]*\.[0-9][0-9]*\).*/\1/p' | head -n1)/site-packages"
+            ;;
+        'ubuntu')
+            PY_SITE_PKGS_DIR="lib/python3/dist-packages"
+            ;;
+        esac
         mkdir -p "$(readlink -m "$INSTALL_ROOT/$(dirname "$(which python3)")/../$PY_SITE_PKGS_DIR")"
         mv -f {"$INSTALL_ABS","$(readlink -m "$INSTALL_ROOT/$(dirname "$(which python3)")/..")"}"/$PY_SITE_PKGS_DIR/caffe2"
     )
