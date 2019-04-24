@@ -46,7 +46,7 @@ RUN apt-get update -y \
         pciutils \
         pv \
         pybind11-dev \
-        python3 \
+        python3{,-pip} \
         rsync \
         ruby-all-dev \
         strace \
