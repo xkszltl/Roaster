@@ -25,6 +25,21 @@
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
     (
+        case "$DISTRO_ID" in
+        'centos' | 'fedora' | 'rhel')
+            # set +xe
+            # . scl_source enable llvm-toolset-7
+            # set -xe
+            export CC="clang" CXX="clang++"
+            ;;
+        'ubuntu')
+            export CC="clang-7" CXX="clang++-7"
+            ;;
+        *)
+            export CC="clang" CXX="clang++"
+            ;;
+        esac
+
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
 
         mkdir -p build
@@ -33,8 +48,8 @@
         cmake                                                   \
             -DCMAKE_{EXE,SHARED}_LINKER_FLAGS="-fuse-ld=lld"    \
             -DCMAKE_BUILD_TYPE=Release                          \
-            -DCMAKE_C_COMPILER=clang                            \
-            -DCMAKE_CXX_COMPILER=clang++                        \
+            -DCMAKE_C_COMPILER="$CC"                            \
+            -DCMAKE_CXX_COMPILER="$CXX"                         \
             -DCMAKE_{C,CXX,CUDA}_COMPILER_LAUNCHER=ccache       \
             -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"               \
