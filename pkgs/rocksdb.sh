@@ -18,10 +18,18 @@
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
     (
-        set +xe
-        . scl_source enable devtoolset-8
+        case "$DISTRO_ID" in
+        'centos' | 'fedora' | 'rhel')
+            set +xe
+            . scl_source enable devtoolset-8
+            set -xe
+            ;;
+        'ubuntu')
+            export CC="$(which gcc-8)" CXX="$(which g++-8)"
+            ;;
+        esac
+
         # . /opt/intel/tbb/bin/tbbvars.sh intel64
-        set -xe
 
         if false; then
             mkdir -p build

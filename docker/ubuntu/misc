@@ -1,0 +1,5 @@
+FROM docker.codingcafe.org/xkszltl/roaster/ubuntu:stage-util
+
+COPY [".", "/etc/roaster/scripts"]
+
+RUN /etc/roaster/scripts/setup.sh catch2 pybind libpng mkl-dnn halide opencv leveldb rocksdb lmdb

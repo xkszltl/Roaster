@@ -42,8 +42,18 @@
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
     (
+        case "$DISTRO_ID" in
+        'centos' | 'fedora' | 'rhel')
+            set +xe
+            . scl_source enable devtoolset-8
+            set -xe
+            ;;
+        'ubuntu')
+            export CC="$(which gcc-8)" CXX="$(which g++-8)"
+            ;;
+        esac
+
         set +xe
-        . scl_source enable devtoolset-8
         . "/opt/intel/mkl/bin/mklvars.sh" intel64
         set -xe
 
