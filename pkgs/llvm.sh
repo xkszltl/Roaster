@@ -29,9 +29,17 @@ for i in llvm-{gcc,clang}; do
         . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
         (
-            set +xe
-            . scl_source enable devtoolset-6
-            set -xe
+            case "$DISTRO_ID" in
+            'centos' | 'fedora' | 'rhel')
+                set +xe
+                . scl_source enable devtoolset-6
+                set -xe
+                export CC="gcc" CXX="g++"
+                ;;
+            'ubuntu')
+                export CC="gcc-6" CXX="g++-6"
+                ;;
+            esac
 
             mkdir -p build
             cd $_
@@ -79,8 +87,8 @@ for i in llvm-{gcc,clang}; do
             if [ $i = llvm-gcc ]; then
                 cmake                                       \
                     -DCMAKE_AR="$(which gcc-ar)"            \
-                    -DCMAKE_C_COMPILER=gcc                  \
-                    -DCMAKE_CXX_COMPILER=g++                \
+                    -DCMAKE_C_COMPILER="$CC"                \
+                    -DCMAKE_CXX_COMPILER="$CXX"             \
                     -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src'"   \
                     -DCMAKE_RANLIB="$(which gcc-ranlib)"    \
                     $LLVM_COMMON_ARGS

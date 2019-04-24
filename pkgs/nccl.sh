@@ -19,9 +19,17 @@
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
     (
-        set +xe
-        . scl_source enable devtoolset-8
-        set -xe
+        case "$DISTRO_ID" in
+        'centos' | 'fedora' | 'rhel')
+            set +xe
+            . scl_source enable devtoolset-8
+            set -xe
+            export CC="gcc" CXX="g++"
+            ;;
+        'ubuntu')
+            export CC="gcc-8" CXX="g++-8"
+            ;;
+        esac
 
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
 

@@ -25,17 +25,18 @@
             set +xe
             . scl_source enable devtoolset-8
             set -xe
+            export CC="gcc" CXX="g++"
             ;;
         'ubuntu')
-            export CC="$(which gcc-8)" CXX="$(which g++-8)"
+            export CC="gcc-8" CXX="g++-8"
             ;;
         esac
 
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
 
         if false; then
-            export CC="ccache gcc"
-            export CXX="ccache g++"
+            export CC="ccache $CC"
+            export CXX="ccache $CXX"
             export C{,XX}FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -fPIC -O3 -g" 
 
             ./autogen.sh
@@ -50,8 +51,8 @@
             cmake                                       \
                 -DBUILD_SHARED_LIBS=ON                  \
                 -DCMAKE_BUILD_TYPE=Release              \
-                -DCMAKE_C_COMPILER=gcc                  \
-                -DCMAKE_CXX_COMPILER=g++                \
+                -DCMAKE_C_COMPILER="$CC"                \
+                -DCMAKE_CXX_COMPILER="$CXX"             \
                 -DCMAKE_C{,XX}_COMPILER_LAUNCHER=ccache \
                 -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g -DPYTHON_PROTO2_CPP_IMPL_V2"   \
                 -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
@@ -84,19 +85,20 @@
             set +xe
             . scl_source enable devtoolset-8 "$(cut -d',' -f1 <<< "$py")"
             set -xe
+            export CC="gcc" CXX="g++"
             ;;
         'ubuntu')
             # Skip SCL Python.
             [ "$(cut -d',' -f1 <<< "$py")" ] && continue
-            export CC="$(which gcc-8)" CXX="$(which g++-8)"
+            export CC="gcc-8" CXX="g++-8"
             ;;
         esac
 
         py="$(which "$(cut -d',' -f2 <<< "$py")")"
 
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
-        export CC="$TOOLCHAIN/gcc"
-        export CXX="$TOOLCHAIN/g++"
+        export CC="$TOOLCHAIN/$CC"
+        export CXX="$TOOLCHAIN/$CXX"
         export LD="$TOOLCHAIN/ld"
 
         export PROTOC="$(readlink -e ./protoc)"

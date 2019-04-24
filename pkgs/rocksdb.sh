@@ -23,9 +23,11 @@
             set +xe
             . scl_source enable devtoolset-8
             set -xe
+            set -xe
+            export CC="gcc" CXX="g++"
             ;;
         'ubuntu')
-            export CC="$(which gcc-8)" CXX="$(which g++-8)"
+            export CC="gcc-8" CXX="g++-8"
             ;;
         esac
 
@@ -37,6 +39,9 @@
             # The NDEBUG in non-debug cmake build leads to test-related compile error.
             cmake                                       \
                 -DCMAKE_BUILD_TYPE=RelWithDebInfo       \
+                -DCMAKE_C_COMPILER="$CC"                \
+                -DCMAKE_CXX_COMPILER="$CXX"             \
+                -DCMAKE_C{,XX}_COMPILER_LAUNCHER=ccache \
                 -DCMAKE_C{,XX}_FLAGS="-O3 -g"           \
                 -DCMAKE_C{,XX}_FLAGS_RELWITHDEBINFO=""  \
                 -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \

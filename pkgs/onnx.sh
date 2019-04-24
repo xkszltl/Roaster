@@ -34,9 +34,10 @@
             set +xe
             . scl_source enable devtoolset-8
             set -xe
+            export CC="gcc" CXX="g++"
             ;;
         'ubuntu')
-            export CC="$(which gcc-8)" CXX="$(which g++-8)"
+            export CC="gcc-8" CXX="g++-8"
             ;;
         esac
 
@@ -57,9 +58,9 @@
         CMAKE_ARGS="$CMAKE_ARGS
             -DBUILD_SHARED_LIBS=ON
             -DCMAKE_BUILD_TYPE=Release
-            -DCMAKE_C_COMPILER=gcc
+            -DCMAKE_C_COMPILER='$CC'
             -DCMAKE_C_COMPILER_LAUNCHER=ccache
-            -DCMAKE_CXX_COMPILER=g++
+            -DCMAKE_CXX_COMPILER='$CXX'
             -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
             -DONNX_GEN_PB_TYPE_STUBS=ON
         " ONNX_ML=1 "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" .
@@ -72,8 +73,8 @@
             -DBUILD_ONNX_PYTHON=ON                  \
             -DBUILD_SHARED_LIBS=ON                  \
             -DCMAKE_BUILD_TYPE=Release              \
-            -DCMAKE_C_COMPILER=gcc                  \
-            -DCMAKE_CXX_COMPILER=g++                \
+            -DCMAKE_C_COMPILER="$CC"                \
+            -DCMAKE_CXX_COMPILER="$CXX"             \
             -DCMAKE_C{,XX}_COMPILER_LAUNCHER=ccache \
             -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \

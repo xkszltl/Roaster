@@ -19,9 +19,10 @@
             set +xe
             . scl_source enable devtoolset-8
             set -xe
+            export CC="gcc" CXX="g++"
             ;;
         'ubuntu')
-            export CC="$(which gcc-8)" CXX="$(which g++-8)"
+            export CC="gcc-8" CXX="g++-8"
             ;;
         esac
 

@@ -30,9 +30,10 @@
             set +xe
             . scl_source enable devtoolset-8
             set -xe
+            export CC="gcc" CXX="g++"
             ;;
         'ubuntu')
-            export CC="$(which gcc-8)" CXX="$(which g++-8)"
+            export CC="gcc-8" CXX="g++-8"
             ;;
         esac
 
@@ -43,8 +44,8 @@
 
         cmake                                               \
             -DCMAKE_BUILD_TYPE=Release                      \
-            -DCMAKE_C_COMPILER=gcc                          \
-            -DCMAKE_CXX_COMPILER=g++                        \
+            -DCMAKE_C_COMPILER="$CC"                        \
+            -DCMAKE_CXX_COMPILER="$CXX"                     \
             -DCMAKE_{C,CXX,CUDA}_COMPILER_LAUNCHER=ccache   \
             -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"           \

@@ -55,8 +55,19 @@
     (
         set -xe
 
+        case "$DISTRO_ID" in
+        'centos' | 'fedora' | 'rhel')
+            set +xe
+            . scl_source enable devtoolset-6
+            set -xe
+            export CC="gcc" CXX="g++"
+            ;;
+        'ubuntu')
+            export CC="gcc-6" CXX="g++-6"
+            ;;
+        esac
+
         cd /usr/local/cuda/samples
-        . scl_source enable devtoolset-6 || true
         export MPI_HOME=/usr/local/openmpi
         sudo make -j clean
         VERBOSE=1 time sudo make -j$(nproc)
