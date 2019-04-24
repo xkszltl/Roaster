@@ -17,7 +17,6 @@ RUN apt-get update -y \
         bsdmainutils \
         bzip2 \
         ccache \
-        clang{,-{format,tidy,tools}}-7 \
         cmake \
         cpio \
         curl \
@@ -35,7 +34,7 @@ RUN apt-get update -y \
         libpapi-dev papi-tools \
         libprotobuf-dev protobuf-compiler \
         libtool \
-        llvm-7{,-tools} \
+        {llvm-7{,-tools},clang{,-{format,tidy,tools}},lld,lldb}-7 lib{c++{,abi},omp}-7-dev \
         ltrace \
         m4 \
         make \
