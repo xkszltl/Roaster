@@ -11,6 +11,14 @@
 
     # ------------------------------------------------------------
 
+    git submodule add "../opencv_contrib.git" contrib
+    pushd contrib
+    git checkout "$GIT_TAG"
+    popd
+    git commit -am "Add opencv_contrib as submodule"
+
+    # ------------------------------------------------------------
+
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
     (
@@ -19,10 +27,10 @@
             set +xe
             . scl_source enable devtoolset-8
             set -xe
-            export CC="gcc" CXX="g++"
+            export CC="gcc" CXX="g++" AR="$(which gcc-ar)" RANLIB="$(which gcc-ranlib)"
             ;;
         'ubuntu')
-            export CC="gcc-8" CXX="g++-8"
+            export CC="gcc-8" CXX="g++-8" AR="$(which gcc-ar-8)" RANLIB="$(which gcc-ranlib-8)"
             ;;
         esac
 
@@ -43,13 +51,15 @@
             -DBUILD_PROTOBUF=OFF                            \
             -DBUILD_WITH_DEBUG_INFO=ON                      \
             -DBUILD_opencv_world=OFF                        \
-            -DBUILD_opencv_dnn=ON                           \
+            -DBUILD_opencv_dnn=OFF                          \
             -DCMAKE_BUILD_TYPE=Release                      \
+            -DCMAKE_AR="$AR"                                \
             -DCMAKE_C_COMPILER="$CC"                        \
             -DCMAKE_CXX_COMPILER="$CXX"                     \
             -DCMAKE_{C,CXX,CUDA}_COMPILER_LAUNCHER=ccache   \
             -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"           \
+            -DCMAKE_RANLIB="$RANLIB"                        \
             -DCMAKE_VERBOSE_MAKEFILE=ON                     \
             -DCPACK_BINARY_DEB=OFF                          \
             -DCPACK_BINARY_RPM=ON                           \
@@ -74,6 +84,7 @@
             -DINSTALL_TESTS=ON                              \
             -DMKL_WITH_OPENMP=ON                            \
             -DOPENCV_ENABLE_NONFREE=ON                      \
+            -DOPENCV_EXTRA_MODULES_PATH='../contrib/modules'\
             -DOpenGL_GL_PREFERENCE=GLVND                    \
             -DPROTOBUF_UPDATE_FILES=ON                      \
             -DWITH_HALIDE=ON                                \
