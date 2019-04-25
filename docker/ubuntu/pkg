@@ -27,6 +27,7 @@ RUN apt-get update -y \
         git{,-{extras,lfs}} \
         glances \
         gperf \
+        gstreamer1.0-tools libgstreamer1.0-dev \
         gzip \
         htop \
         'iputils-*' \
