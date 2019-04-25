@@ -69,6 +69,9 @@ case "$PKG_TYPE" in
     PKG_YUM_SEQ="install reinstall downgrade update"
     rpm -q "$PKG_NAME" || PKG_YUM_SEQ="install"
 
+    # Remove legacy.
+    sudo yum remove -y "$(sed 's/^[^\-]\-/codingcafe\-/' <<< "$PKG_NAME")" || true
+
     for i in $PKG_YUM_SEQ _; do
         [ "$i" != '_' ]
         echo "[INFO] Trying with \"yum $i\"."
@@ -82,6 +85,9 @@ case "$PKG_TYPE" in
     ;;
 "deb")
     PKG_APT_SEQ="install reinstall upgrade"
+
+    # Remove legacy.
+    sudo apt-get remove -y "$(sed 's/^[^\-]\-/codingcafe\-/' <<< "$PKG_NAME")" || true
 
     for i in $PKG_APT_SEQ _; do
         [ "$i" != '_' ]
