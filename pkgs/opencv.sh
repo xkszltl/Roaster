@@ -43,7 +43,7 @@
             -DBUILD_PROTOBUF=OFF                            \
             -DBUILD_WITH_DEBUG_INFO=ON                      \
             -DBUILD_opencv_world=OFF                        \
-            -DBUILD_opencv_dnn=OFF                          \
+            -DBUILD_opencv_dnn=ON                           \
             -DCMAKE_BUILD_TYPE=Release                      \
             -DCMAKE_C_COMPILER="$CC"                        \
             -DCMAKE_CXX_COMPILER="$CXX"                     \
