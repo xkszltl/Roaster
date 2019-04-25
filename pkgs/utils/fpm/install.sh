@@ -70,7 +70,7 @@ case "$PKG_TYPE" in
     rpm -q "$PKG_NAME" || PKG_YUM_SEQ="install"
 
     # Remove legacy.
-    sudo yum remove -y "$(sed 's/^[^\-]\-/codingcafe\-/' <<< "$PKG_NAME")" || true
+    sudo yum remove -y "$(sed 's/^[^\-]*\-/codingcafe\-/' <<< "$PKG_NAME")" || true
 
     for i in $PKG_YUM_SEQ _; do
         [ "$i" != '_' ]
