@@ -103,7 +103,7 @@ NVIDIA/{DALI,DIGITS,cnmem,libglvnd,nccl,nccl-tests,nvidia-{container-runtime,doc
 NVLabs/{cub,xmp},\
 onnx/{models,onnx{,-tensorrt,mltools},tutorials},\
 open-mpi/ompi,\
-opencv/opencv,\
+opencv/opencv{,_contrib},\
 openssl/openssl,\
 openwrt/{luci,openwrt,packages,targets,telephony,video},\
 PeachPy/enum34,\
