@@ -78,7 +78,7 @@
             -Donnxruntime_BUILD_SHARED_LIB=ON               \
             -Donnxruntime_CUDNN_HOME='/usr/lib64'           \
             -Donnxruntime_ENABLE_PYTHON=ON                  \
-            -Donnxruntime_ENABLE_LTO=ON                     \
+            -Donnxruntime_ENABLE_LTO=OFF                    \
             -Donnxruntime_RUN_ONNX_TESTS=ON                 \
             -Donnxruntime_USE_BRAINSLICE=OFF                \
             -Donnxruntime_USE_CUDA=OFF                      \
