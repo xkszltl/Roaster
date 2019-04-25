@@ -42,7 +42,7 @@
             -G"Ninja"                                       \
             -DBUILD_PROTOBUF=OFF                            \
             -DBUILD_WITH_DEBUG_INFO=ON                      \
-            -DBUILD_opencv_world=ON                         \
+            -DBUILD_opencv_world=OFF                        \
             -DBUILD_opencv_dnn=OFF                          \
             -DCMAKE_BUILD_TYPE=Release                      \
             -DCMAKE_C_COMPILER="$CC"                        \
@@ -69,9 +69,10 @@
             -DCUDA_SEPARABLE_COMPILATION=OFF                \
             -DENABLE_CCACHE=ON                              \
             -DENABLE_CXX11=ON                               \
-            -DENABLE_LTO=OFF                                \
+            -DENABLE_LTO=ON                                 \
             -DINSTALL_CREATE_DISTRIB=ON                     \
             -DINSTALL_TESTS=ON                              \
+            -DMKL_WITH_OPENMP=ON                            \
             -DOPENCV_ENABLE_NONFREE=ON                      \
             -DOpenGL_GL_PREFERENCE=GLVND                    \
             -DPROTOBUF_UPDATE_FILES=ON                      \
@@ -83,6 +84,7 @@
             -DWITH_OPENMP=ON                                \
             -DWITH_QT=ON                                    \
             -DWITH_UNICAP=ON                                \
+            -DWITH_VULKAN=ON                                \
             ..
 
         time cmake --build . --target install
