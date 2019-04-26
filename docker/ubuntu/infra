@@ -2,4 +2,4 @@ FROM docker.codingcafe.org/xkszltl/roaster/ubuntu:stage-auth
 
 COPY [".", "/etc/roaster/scripts"]
 
-RUN /etc/roaster/scripts/setup.sh ccache cmake axel intel ipt
+RUN /etc/roaster/scripts/setup.sh ccache cmake axel intel ipt ompi
