@@ -15,6 +15,7 @@ RUN apt-get update -y \
         bash-completion \
         bc \
         binutils \
+        bison \
         bsdmainutils \
         bzip2 \
         ccache \
@@ -22,6 +23,7 @@ RUN apt-get update -y \
         cpio \
         curl \
         default-jdk ant maven \
+        flex \
         g++{,-4,-5,-6,-7,-8} \
         gdb \
         gettext \
