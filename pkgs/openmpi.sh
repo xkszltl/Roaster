@@ -30,7 +30,7 @@
         ./configure                             \
             --enable-mpi-cxx                    \
             --enable-mpi-ext                    \
-            --enable-mpi-java                   \
+            "$(javac -version > /dev/null && echo '--enable-mpi-java')" \
             --enable-mpirun-prefix-by-default   \
             --enable-sparse-groups              \
             --enable-static                     \
