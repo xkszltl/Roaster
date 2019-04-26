@@ -35,7 +35,7 @@
             --enable-sparse-groups              \
             --enable-static                     \
             --prefix="$INSTALL_ABS/openmpi"     \
-            --with-cuda                         \
+            "$(/usr/local/cuda/bin/nvcc --version > /dev/null && echo '--with-cuda')"   \
             --with-sge                          \
             --with-slurm
 
