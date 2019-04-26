@@ -8,9 +8,14 @@ This project is for scriptizing daily IT work about Linux and Windows.
 Linux
 ----------
 
-Currently we only support CentOS 7 since it's my main working platform.
+Currently we only support CentOS 7 and Ubuntu 18.04 LTS
+CentOS 7 is my main working platform but it's also good to enjoy the speed of apt-get.
 I may add support for higher version when it comes out.
-But there's no plan for supporting pre-7 versions.
+But there's no plan for supporting earlier versions.
+
+Currently Ubuntu build only enables a subset of features.
+This is just due to my use case.
+There's no hard limit.
 
 Windows
 ----------
