@@ -13,6 +13,7 @@ echo '| After'
 echo '========================================'
 
 sudo cat '/etc/docker/daemon.json.bak'                                                                      \
+| jq -e '. |= . + {"data-root":"/media/Scratch/docker"}'                                                    \
 | jq -e '. |= . + {"default-runtime":"nvidia"}'                                                             \
 | jq -e '. |= . + {"experimental":true}'                                                                    \
 | jq -e '. |= . + {"max-concurrent-downloads":1024}'                                                        \
