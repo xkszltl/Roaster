@@ -1,0 +1,5 @@
+FROM docker.codingcafe.org/xkszltl/roaster/ubuntu:stage-infra
+
+COPY [".", "/etc/roaster/scripts"]
+
+RUN /etc/roaster/scripts/setup.sh llvm-gcc llvm-clang

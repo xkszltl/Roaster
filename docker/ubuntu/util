@@ -1,4 +1,4 @@
-FROM docker.codingcafe.org/xkszltl/roaster/ubuntu:stage-infra
+FROM docker.codingcafe.org/xkszltl/roaster/ubuntu:stage-llvm
 
 COPY [".", "/etc/roaster/scripts"]
 
