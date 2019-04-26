@@ -2,6 +2,8 @@
 
 set -e
 
+sudo echo 'Permission granted.'
+
 echo '========================================'
 echo '| Before'
 echo '========================================'
