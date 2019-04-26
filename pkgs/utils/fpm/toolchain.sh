@@ -17,3 +17,5 @@ for i in c{c,++} g{cc,++}{,-{3,4,5,6,7,8,9}} clang{,++}{,-{3,4,5,6,7,8,9}} nvcc 
     fi
 done
 
+export TOOLCHAIN_CPU_NATIVE="$([ "_$GIT_MIRROR" == "_$GIT_MIRROR_CODINGCAFE" ] && echo 'true' || echo 'false')"
+

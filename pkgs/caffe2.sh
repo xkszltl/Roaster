@@ -72,7 +72,7 @@
             -DCMAKE_C_COMPILER="$CC"                        \
             -DCMAKE_CXX_COMPILER="$CXX"                     \
             -DCMAKE_{C,CXX,CUDA}_COMPILER_LAUNCHER=ccache   \
-            -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
+            -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g $($TOOLCHAIN_CPU_NATIVE || echo '-march=haswell')" \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"           \
             -DCMAKE_POLICY_DEFAULT_CMP0003=NEW              \
             -DCMAKE_POLICY_DEFAULT_CMP0060=NEW              \
@@ -87,7 +87,7 @@
             -DUSE_LEVELDB=ON                                \
             -DUSE_LMDB=ON                                   \
             -DUSE_MKLDNN=ON                                 \
-            -DUSE_NATIVE_ARCH=ON                            \
+            -DUSE_NATIVE_ARCH="$($TOOLCHAIN_CPU_NATIVE && echo ON || echo OFF)" \
             -DUSE_OBSERVERS=ON                              \
             -DUSE_OPENCV=ON                                 \
             -DUSE_OPENMP=ON                                 \
