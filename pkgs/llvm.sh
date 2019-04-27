@@ -117,6 +117,9 @@ for i in llvm-{gcc,clang}; do
             # time cmake --build . --target dist-check
             # time cmake --build . --target rpm
             time cmake --build . --target install -- -k0
+
+            # Avoid shadowing gcc stack.
+            rm -f "$INSTALL_ABS/bin/"{ar,nm,ranlib}
         )
 
         "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
