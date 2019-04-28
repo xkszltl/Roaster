@@ -140,17 +140,6 @@
         # done
 
         # --------------------------------------------------------
-        # Tag with version detected from cmake cache
-        # --------------------------------------------------------
-
-        VER_FILE='../caffe2/VERSION_NUMBER'
-        if [ -e "$VER_FILE" ] && [ "$(sed -n '/^[[:space:]]*[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*/p' "$VER_FILE")" ]; then
-            sed -n 's/^[[:space:]]*\([0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\).*/\1/p' "$VER_FILE" | head -n1
-        else
-            sed -n 's/^set[[:space:]]*([[:space:]]*CAFFE2_VERSION_.....[[:space:]][[:space:]]*\([0-9]*\)[[:space:]]*).*/\1/p' ../CMakeLists.txt | paste -sd.
-        fi | xargs git tag -f
-
-        # --------------------------------------------------------
         # Relocate site-package installation.
         # --------------------------------------------------------
         case "$DISTRO_ID" in
