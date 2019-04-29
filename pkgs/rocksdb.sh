@@ -47,7 +47,7 @@
                 -DCMAKE_C_COMPILER="$CC"                \
                 -DCMAKE_CXX_COMPILER="$CXX"             \
                 -DCMAKE_C{,XX}_COMPILER_LAUNCHER=ccache \
-                -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
+                -DCMAKE_C{,XX}_FLAGS="-fPIC -fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g" \
                 -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
                 -DCMAKE_VERBOSE_MAKEFILE=ON             \
                 -DFAIL_ON_WARNINGS=OFF                  \
