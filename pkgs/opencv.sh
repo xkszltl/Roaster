@@ -75,6 +75,8 @@
             -DCPACK_SOURCE_TGZ=OFF                          \
             -DCPACK_SOURCE_TXZ=OFF                          \
             -DCPACK_SOURCE_ZIP=OFF                          \
+            "$($TOOLCHAIN_CPU_NATIVE || echo "-DCPU_BASELINE=AVX")"         \
+            "$($TOOLCHAIN_CPU_NATIVE || echo "-DCPU_DISPATCH='FP16;AVX2'")" \
             -DCUDA_NVCC_FLAGS='--expt-relaxed-constexpr'    \
             -DCUDA_SEPARABLE_COMPILATION=OFF                \
             -DENABLE_CCACHE=ON                              \
