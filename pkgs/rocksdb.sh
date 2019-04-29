@@ -74,9 +74,11 @@
             time cmake --build . --target install
         else
             . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
-            export CC="$TOOLCHAIN/cc"
-            export CXX="$TOOLCHAIN/c++"
+            export CC="$TOOLCHAIN/$CC"
+            export CXX="$TOOLCHAIN/$CXX"
             export LD="$TOOLCHAIN/ld"
+            $TOOLCHAIN_CPU_NATIVE || export PORTABLE=1
+            export USE_SSE=1
             time make DEBUG_LEVEL=0 -j$(nproc) {static,shared}_lib
             # time make -j$(nproc) package
             # time make -j$(nproc) check
