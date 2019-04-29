@@ -70,6 +70,7 @@ for i in pkg-{skip,all}; do
 
                 ncurses{,-*}
                 hwloc{,-*}
+                numa{ctl,d}{,-*}
                 icu{,-*}
                 {glibc{,-devel},libgcc}
                 {gmp,mpfr,libmpc}{,-*}
