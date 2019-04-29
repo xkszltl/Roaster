@@ -5,13 +5,17 @@
 [ -e $STAGE/rocksdb ] && ( set -xe
     cd $SCRATCH
 
-    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" Maratyszcza/{confu,PeachPy},master
-
     # ------------------------------------------------------------
 
     . "$ROOT_DIR/pkgs/utils/git/version.sh" facebook/rocksdb,v
-    until git clone --depth 1 --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
+    until git clone -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd rocksdb
+
+    # ------------------------------------------------------------
+
+    git remote add patch "$GIT_MIRROR_GITHUB/xkszltl/rocksdb.git"
+    git fetch patch
+    git cherry-pick patch/zlib
 
     # ------------------------------------------------------------
 
@@ -21,8 +25,7 @@
         case "$DISTRO_ID" in
         'centos' | 'fedora' | 'rhel')
             set +xe
-            . scl_source enable devtoolset-8
-            set -xe
+            . scl_source enable devtoolset-8 rh-git218
             set -xe
             export CC="gcc" CXX="g++"
             ;;
@@ -31,35 +34,43 @@
             ;;
         esac
 
+        . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
+
         # . /opt/intel/tbb/bin/tbbvars.sh intel64
 
-        if false; then
+        if true; then
             mkdir -p build
             cd $_
             # The NDEBUG in non-debug cmake build leads to test-related compile error.
             cmake                                       \
-                -DCMAKE_BUILD_TYPE=RelWithDebInfo       \
+                -DCMAKE_BUILD_TYPE=Release              \
                 -DCMAKE_C_COMPILER="$CC"                \
                 -DCMAKE_CXX_COMPILER="$CXX"             \
                 -DCMAKE_C{,XX}_COMPILER_LAUNCHER=ccache \
-                -DCMAKE_C{,XX}_FLAGS="-O3 -g"           \
-                -DCMAKE_C{,XX}_FLAGS_RELWITHDEBINFO=""  \
+                -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
                 -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
                 -DCMAKE_VERBOSE_MAKEFILE=ON             \
-                -FAIL_ON_WARNINGS=OFF                   \
-                -DUSE_RTTI=1                            \
+                -DFAIL_ON_WARNINGS=OFF                  \
+                -DFORCE_SSE42=ON                        \
+                "$($TOOLCHAIN_CPU_NATIVE || echo "-DPORTABLE=ON")"  \
+                -DUSE_RTTI=ON                           \
+                -DWITH_ASAN=OFF                         \
                 -DWITH_BZ2=ON                           \
                 -DWITH_JEMALLOC=OFF                     \
                 -DWITH_LIBRADOS=ON                      \
                 -DWITH_LZ4=ON                           \
+                -DWITH_NUMA=ON                          \
                 -DWITH_SNAPPY=ON                        \
                 -DWITH_TBB=OFF                          \
+                -DWITH_TESTS=OFF                        \
+                -DWITH_TSAN=OFF                         \
+                -DWITH_UBSAN=OFF                        \
                 -DWITH_ZLIB=ON                          \
                 -DWITH_ZSTD=ON                          \
                 -G"Ninja"                               \
                 ..
             time cmake --build .
-            time cmake --build . --target check
+            # time cmake --build . --target check
             time cmake --build . --target install
         else
             . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
