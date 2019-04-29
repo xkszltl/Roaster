@@ -17,7 +17,7 @@ RUN apt-get update -y \
         binutils \
         bison \
         bsdmainutils \
-        bzip2 \
+        bzip2 pbzip2 \
         ccache \
         cmake{,-curses-gui} \
         cpio \
@@ -49,6 +49,7 @@ RUN apt-get update -y \
         pandoc \
         parallel \
         pciutils \
+        pigz \
         pv \
         pybind11-dev \
         python3{,-pip} \

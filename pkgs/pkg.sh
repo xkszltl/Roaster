@@ -81,7 +81,7 @@ for i in pkg-{skip,all}; do
                 libunicap{,gtk}{,-*}
                 libglvnd{,-*}
                 lib{dc,raw}1394{,-*}
-                {bzip2,zlib,libzip,{,lib}zstd,lz4,{,p}xz,cpio,tar,snappy,unrar}{,-*}
+                {zlib,libzip,{,lib}zstd,lz4,{,p}{bzip2,xz},pigz,cpio,tar,snappy,unrar}{,-*}
                 lib{telnet,ssh{,2},curl,aio,ffi,edit,icu,xslt}{,-*}
                 boost{,-*}
                 {flex,cups,bison,antlr}{,-*}
