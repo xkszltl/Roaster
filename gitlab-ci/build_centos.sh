@@ -34,6 +34,7 @@ for CI_JOB_STAGE in init repo font pkg-skip tex ss infra llvm util misc dl edit 
         [ "$PREV_CI_JOB_STAGE" ]
         sudo docker tag "$CI_REGISTRY_IMAGE/$BASE_DISTRO:"{"stage-$PREV_CI_JOB_STAGE",latest}
         sudo docker push "$CI_REGISTRY_IMAGE/$BASE_DISTRO:latest"
+        sudo docker rmi "$CI_REGISTRY_IMAGE/$BASE_DISTRO:breakpoint" || true
         ;;
     *)
         gitlab-ci/build_stage.sh
