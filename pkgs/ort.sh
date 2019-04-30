@@ -74,7 +74,7 @@
             -DCMAKE_POLICY_DEFAULT_CMP0060=NEW              \
             -DCMAKE_VERBOSE_MAKEFILE=ON                     \
             -Deigen_SOURCE_PATH="/usr/local/include/eigen3" \
-            -Donnxruntime_BUILD_FOR_NATIVE_MACHINE=ON       \
+            -Donnxruntime_BUILD_FOR_NATIVE_MACHINE="$($TOOLCHAIN_CPU_NATIVE && echo 'ON' || echo 'OFF')"    \
             -Donnxruntime_BUILD_SHARED_LIB=ON               \
             -Donnxruntime_CUDNN_HOME='/usr/lib64'           \
             -Donnxruntime_ENABLE_PYTHON=ON                  \

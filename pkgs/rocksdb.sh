@@ -52,7 +52,7 @@
                 -DCMAKE_VERBOSE_MAKEFILE=ON             \
                 -DFAIL_ON_WARNINGS=OFF                  \
                 -DFORCE_SSE42=ON                        \
-                "$($TOOLCHAIN_CPU_NATIVE || echo "-DPORTABLE=ON")"  \
+                -DPORTABLE="$($TOOLCHAIN_CPU_NATIVE && echo 'OFF' || echo 'ON')"    \
                 -DUSE_RTTI=ON                           \
                 -DWITH_ASAN=OFF                         \
                 -DWITH_BZ2=ON                           \

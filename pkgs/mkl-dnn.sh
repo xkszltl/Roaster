@@ -46,6 +46,7 @@
             -DCMAKE_C{,XX}_COMPILER_LAUNCHER=ccache \
             -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
+            "$($TOOLCHAIN_CPU_NATIVE || echo "-DMKLDNN_ARCH_OPT_FLAGS='-march=haswell'")"   \
             -G"Ninja"                               \
             ..
 
