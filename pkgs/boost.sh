@@ -68,7 +68,7 @@
         ./bootstrap.sh --prefix="$INSTALL_ABS"
         ./b2 -aj$(nproc) install numa=on
 
-        # Boost 1.67.0 cannot find the correct include path with suffix ("python3.4m")
+        # Boost 1.67.0 cannot find the correct include path with suffix ("python3.6m")
         ./bootstrap.sh --prefix="$INSTALL_ABS" --with-python=python3
         ./b2 -aj$(nproc) install include="$(python3 -c 'import distutils.sysconfig as c; print(c.get_python_inc())')" numa=on
     )
