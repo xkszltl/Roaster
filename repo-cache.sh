@@ -91,20 +91,20 @@ parallel -j0 --line-buffer --bar 'bash -c '"'"'
 
     $DRY || wget $DRY_WGET -cq --bind-address='$ROUTE' $INTEL_URL/{}
 '"'" :::   \
-    15097/l_daal_2019.2.187.tgz     \
-    15096/l_ipp_2019.2.187.tgz      \
-    15095/l_mkl_2019.2.187.tgz      \
-    15040/l_mpi_2019.2.187.tgz      \
-    14876/l_tbb_2019.2.187.tgz      \
-    15108/m_daal_2019.2.184.dmg     \
-    15082/m_ipp_2019.2.184.dmg      \
-    15083/m_mkl_2019.2.184.dmg      \
-    14877/m_tbb_2019.2.184.dmg      \
-    15100/w_daal_2019.2.190.exe     \
-    15099/w_ipp_2019.2.190.exe      \
-    15098/w_mkl_2019.2.190.exe      \
-    15042/w_mpi_p_2019.2.190.exe    \
-    14878/w_tbb_2019.2.190.exe      \
+    15277/l_daal_2019.3.199.tgz     \
+    15276/l_ipp_2019.3.199.tgz      \
+    15275/l_mkl_2019.3.199.tgz      \
+    15260/l_mpi_2019.3.199.tgz      \
+    15283/l_tbb_2019.4.199.tgz      \
+    15288/m_daal_2019.3.199.dmg     \
+    15234/m_ipp_2019.3.199.dmg      \
+    15235/m_mkl_2019.3.199.dmg      \
+    15284/m_tbb_2019.4.199.dmg      \
+    15249/w_daal_2019.3.203.exe     \
+    15248/w_ipp_2019.3.203.exe      \
+    15247/w_mkl_2019.3.203.exe      \
+    15262/w_mpi_p_2019.3.203.exe    \
+    15285/w_tbb_2019.4.203.exe      \
 &
 
 # ----------------------------------------------------------------
@@ -169,8 +169,7 @@ for j in =$(uname -i)/$i -testing=$(uname -i)/$i/testing -source=Source/$i -debu
     {
         "repo":         "'"centos-sclo-$i$lhs"'",
         "path":         "'"centos/7/sclo/$rhs"'",
-        "retries":      '$DEF_RETRIES',
-        "sync_args":    "--delete"
+        "retries":      '$DEF_RETRIES'
     }')
 done
 done
