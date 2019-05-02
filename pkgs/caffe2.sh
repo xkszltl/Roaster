@@ -68,6 +68,7 @@
             -DBUILD_CUSTOM_PROTOBUF=OFF                     \
             -DBUILD_SHARED_LIBS=ON                          \
             -DBUILD_TEST=ON                                 \
+            -DBUILD_TORCH=ON                                \
             -DCMAKE_BUILD_TYPE=Release                      \
             -DCMAKE_C_COMPILER="$CC"                        \
             -DCMAKE_CXX_COMPILER="$CXX"                     \
