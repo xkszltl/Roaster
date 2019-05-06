@@ -1,8 +1,8 @@
 # ================================================================
-# Compile Caffe2
+# Compile PyTorch/Caffe2
 # ================================================================
 
-[ -e $STAGE/caffe2 ] && ( set -xe
+[ -e $STAGE/pytorch ] && ( set -xe
     cd $SCRATCH
 
     "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" python/typing numpy/numpy,v benjaminp/six yaml/pyyaml pytest-dev/pytest Frozenball/pytest-sugar,master
@@ -162,5 +162,5 @@
     cd
     rm -rf $SCRATCH/pytorch
 )
-sudo rm -vf $STAGE/caffe2
+sudo rm -vf $STAGE/pytorch
 sync || true

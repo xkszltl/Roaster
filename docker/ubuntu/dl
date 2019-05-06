@@ -2,4 +2,4 @@ FROM docker.codingcafe.org/xkszltl/roaster/ubuntu:stage-misc
 
 COPY [".", "/etc/roaster/scripts"]
 
-RUN /etc/roaster/scripts/setup.sh onnx caffe2 ort
+RUN /etc/roaster/scripts/setup.sh onnx pytorch ort
