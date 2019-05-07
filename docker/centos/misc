@@ -2,4 +2,4 @@ FROM docker.codingcafe.org/sandbox/centos:stage-util
 
 COPY [".", "/etc/roaster/scripts"]
 
-RUN cp -f /etc/hosts /tmp && echo 10.0.0.10 {proxy,repo}.codingcafe.org > /etc/hosts && /etc/roaster/scripts/setup.sh catch2 pybind libpng mkl-dnn halide opencv leveldb rocksdb lmdb && cat /tmp/hosts > /etc/hosts && rm -f /tmp/hosts
+RUN cp -f /etc/hosts /tmp && echo 10.0.0.10 {proxy,repo}.codingcafe.org > /etc/hosts && /etc/roaster/scripts/setup.sh catch2 pybind grpc libpng mkl-dnn halide opencv leveldb rocksdb lmdb && cat /tmp/hosts > /etc/hosts && rm -f /tmp/hosts

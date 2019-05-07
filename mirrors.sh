@@ -52,12 +52,15 @@ fi
 '"'" ::: {\
 https://github.com/\ /\ {\
 01org/{mkl-dnn,processor-trace,tbb},\
+abseil/abseil-{cpp,py},\
+aquynh/capstone,\
 ARM-software/{arm-trusted-firmware,ComputeLibrary,lisa},\
 aws/aws-{cli,sdk-{cpp,go,java,js,net,php,ruby}},\
 axel-download-accelerator/axel,\
 benjaminp/six,\
 boostorg/boost,\
 BVLC/caffe,\
+c-ares/c-ares,\
 caffe2/{caffe2,models},\
 catchorg/{Catch2,Clara},\
 ccache/ccache,\
@@ -68,6 +71,7 @@ docker/docker-ce,\
 dotnet/{cli,core{,-setup,clr,fx},standard},\
 eigenteam/eigen-git-mirror,\
 emil-e/rapidcheck,\
+envoyproxy/{data-plane-api,envoy,{go,java}-control-plane,nighthawk,protoc-gen-validate},\
 facebook/{rocksdb,zstd},\
 facebookincubator/gloo,\
 facebookresearch/{Detectron,fastText},\
@@ -77,7 +81,8 @@ gflags/gflags,\
 giampaolo/psutil,\
 github/{git-lfs,gitignore},\
 goldmann/docker-squash,\
-google/{benchmark,snappy,gemmlowp,glog,googletest,leveldb,nsync,protobuf,re2},\
+google/{benchmarki,bloaty,boringssl,gemmlowp,glog,googletest,leveldb,nsync,protobuf,re2,snappy,upb},\
+googleapis/googleapis,\
 grpc/grpc{,-{dart,dotnet,go,java,node,php,proto,swift,web}},\
 halide/Halide,\
 HowardHinnant/date,\
@@ -96,6 +101,7 @@ Microsoft/{dotnet,GSL,onnxruntime,TypeScript,vcpkg,vscode},\
 moby/moby,\
 nanopb/nanopb,\
 NervanaSystems/{coach,distiller,neon,ngraph},\
+nico/demumble,\
 nicolargo/glances,\
 ninja-build/ninja,\
 numpy/numpy{,doc},\
@@ -107,7 +113,7 @@ opencv/opencv{,_contrib},\
 openssl/openssl,\
 openwrt/{luci,openwrt,packages,targets,telephony,video},\
 PeachPy/enum34,\
-protocolbuffers/protobuf,\
+protocolbuffers/{protobuf,upb},\
 pybind/pybind11,\
 PythonCharmers/python-future,\
 pypa/{pip,pipenv,setuptools,virtualenv,warehouse,wheel},\
