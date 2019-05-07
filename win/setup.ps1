@@ -36,7 +36,7 @@ foreach ($pkg in @(
     "protobuf",
     "rocksdb",
     "onnx",
-    "caffe2",
+    "pytorch",
     "ort",
     "cream",
     ""))
