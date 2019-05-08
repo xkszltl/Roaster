@@ -35,8 +35,16 @@
         mkdir -p build
         cd $_
 
+        # --------------------------------------------------------
+        # Known issues:
+        #   - No unit tests available for run automatically.
+        #   - Build tests with shared lib causes "undefined reference" error.
+        #   - Tests are for internal use only.
+        #     Bazel if preferred and no enough CMake support.
+        #     See https://github.com/grpc/grpc/issues/18974
+        # --------------------------------------------------------
         cmake                                       \
-            -DBUILD_SHARED_LIBS=OFF                 \
+            -DBUILD_SHARED_LIBS=ON                  \
             -DCMAKE_BUILD_TYPE=Release              \
             -DCMAKE_C_COMPILER="$CC"                \
             -DCMAKE_CXX_COMPILER="$CXX"             \
@@ -44,7 +52,7 @@
             -DCMAKE_C{,XX}_FLAGS="-I'$(readlink -e "../third_party/upb")' -fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
             -DGFLAGS_USE_TARGET_NAMESPACE=ON        \
-            -DgRPC_BUILD_TESTS=ON                   \
+            -DgRPC_BUILD_TESTS=OFF                  \
             -DgRPC_BENCHMARK_PROVIDER=package       \
             -DgRPC_CARES_PROVIDER=package           \
             -DgRPC_GFLAGS_PROVIDER=package          \
