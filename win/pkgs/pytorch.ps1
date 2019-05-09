@@ -130,8 +130,10 @@ cmake                                                                           
     -DPROTOBUF_INCLUDE_DIRS="${Env:ProgramFiles}/protobuf/include"              `
     -DPROTOBUF_LIBRARIES="${Env:ProgramFiles}/protobuf/bin"                     `
     -DPROTOBUF_PROTOC_EXECUTABLE="${Env:ProgramFiles}/protobuf/bin/protoc.exe"  `
+    -DTHD_WITH_TESTS=ON                                                         `
     -DTORCH_CUDA_ARCH_LIST="Kepler;Maxwell;Pascal;Volta"                        `
     -DUSE_CUDA=OFF                                                              `
+    -DUSE_DISTRIBUTED=OFF                                                       `
     -DUSE_GFLAGS=ON                                                             `
     -DUSE_GLOG=ON                                                               `
     -DUSE_GLOO=OFF                                                              `
