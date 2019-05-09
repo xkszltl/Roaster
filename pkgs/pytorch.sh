@@ -81,7 +81,6 @@
             -DCPUINFO_BUILD_TOOLS=ON                        \
             -DINSTALL_TEST=ON                               \
             -DPYTHON_EXECUTABLE="$(which python3)"          \
-            -DTHD_WITH_TESTS=ON                             \
             -DTORCH_CUDA_ARCH_LIST="Pascal;Volta"           \
             -DUSE_FBGEMM=ON                                 \
             -DUSE_GFLAGS=ON                                 \
