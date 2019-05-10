@@ -117,11 +117,11 @@ cmake                                                                           
     -DCMAKE_C_FLAGS="/FS /GL /MP /Zi /arch:AVX2 ${cflags}"                      `
     -DCMAKE_CUDA_SEPARABLE_COMPILATION=ON                                       `
     -DCMAKE_CXX_FLAGS="/EHsc /FS /GL /MP /Zi /arch:AVX2 ${cxxflags}"            `
-    -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"                `
+    -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK"                                  `
     -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/Caffe2"                         `
     -DCMAKE_PDB_OUTPUT_DIRECTORY="${PWD}/pdb"                                   `
-    -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"             `
-    -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                             `
+    -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK"                               `
+    -DCMAKE_STATIC_LINKER_FLAGS=""                                              `
     -DCMAKE_VERBOSE_MAKEFILE=ON                                                 `
     -DCPUINFO_BUILD_TOOLS=ON                                                    `
     -DCUDA_NVCC_FLAGS="--expt-relaxed-constexpr"                                `
@@ -177,7 +177,8 @@ $ErrorActionPreference="Stop"
 cmd /c rmdir /S /Q "${Env:ProgramFiles}/Caffe2"
 cmd /c rmdir /S /Q "${Env:ProgramFiles}/torch"
 cmake --build . --target install
-mv -Force "${Env:ProgramFiles}/torch" "${Env:ProgramFiles}/Caffe2/include/"
+cmd /c xcopy /e /i /f /y "${Env:ProgramFiles}\torch" "${Env:ProgramFiles}\Caffe2\include\torch"
+cmd /c rmdir /S /Q "${Env:ProgramFiles}/torch"
 # cmd /c xcopy    /i /f /y "pdb\*.pdb" "${Env:ProgramFiles}\Caffe2\lib"
 Get-ChildItem "${Env:ProgramFiles}/Caffe2" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 
