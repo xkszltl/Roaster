@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Roaster.grpc.v141.sta.x64</id>
+    <version>$version$</version>
+    <title>Roaster.grpc.v141.dyn.x64</title>
+    <authors>Google Inc.</authors>
+    <owners>Tongliang Liao, Xiangyu Guo</owners>
+    <licenseUrl>https://github.com/grpc/grpc/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://grpc.io</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>gRPC is a modern open source high performance RPC framework that can run in any environment.</summary>
+    <description>gRPC can efficiently connect services in and across data centers with pluggable support for load balancing, tracing, health checking and authentication.</description>
+    <releaseNotes>https://grpc.io/blog/</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>grpc native C++ v141 sta</tags>
+    <dependencies>
+      <dependency id="Roaster.protobuf.v141.dyn.x64"      version="[$version$]" />
+      <dependency id="Roaster.protobuf-dev.v141.dyn.x64"  version="[$version$]" />
+      <dependency id="Roaster.cares.v141.dyn.x64"         version="[$version$]" />
+      <dependency id="Roaster.zlib.v141.dyn.x64"          version="[$version$]" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="Roaster.grpc.v141.dyn.x64.targets"   target="build\Roaster.grpc.v141.dyn.x64.targets" />
+    <file src="grpc\bin\*"                          target="lib\native\lib\Release\" />
+    <file src="grpc\bin\**\*.pdb"                   target="lib\native\lib\Release\" />
+    <file src="grpc\lib\*"                          target="lib\native\lib\Release\" />
+    <file src="grpc\share\**\*"                     target="lib\native\cmake" />
+  </files>
+</package>

@@ -1,7 +1,7 @@
 Get-Content "$PSScriptRoot/pkgs/utils/re-entry.ps1" -Raw | Invoke-Expression
 $ErrorActionPreference="Stop"
 
-pushd $PSScriptRoot
+Push-Location $PSScriptRoot
 
 $versionPrefix = 'v'
 
@@ -32,11 +32,11 @@ if (Test-Path build)
     cmd /c rmdir /Q /S build
 }
 mkdir build
-pushd build
+Push-Location build
 
 Write-Host "Create NuGet Packages"
 
-${Env:NUGET_HOME} = "$(Get-Command -Name nuget -ErrorAction SilentlyContinue | select -ExpandProperty Source | Split-Path -Parent)"
+${Env:NUGET_HOME} = "$(Get-Command -Name nuget -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source | Split-Path -Parent)"
 
 if (${Env:NUGET_HOME} -eq $null -or -not $(Test-Path ${Env:NUGET_HOME}/nuget.exe -ErrorAction SilentlyContinue))
 {
@@ -44,7 +44,7 @@ if (${Env:NUGET_HOME} -eq $null -or -not $(Test-Path ${Env:NUGET_HOME}/nuget.exe
 }
 
 # Download CredentialProviderBundle of Nuget.
-if (${Env:NUGET_HOME} -eq $null -or -not $(Test-Path ${Env:NUGET_HOME}/nuget.exe -ErrorAction SilentlyContinue))
+if ($null -eq ${Env:NUGET_HOME} -or -not $(Test-Path ${Env:NUGET_HOME}/nuget.exe -ErrorAction SilentlyContinue))
 {
     & "${Env:ProgramFiles}/CURL/bin/curl.exe" -fkSL "https://msazure.pkgs.visualstudio.com/_apis/public/nuget/client/CredentialProviderBundle.zip" -o "CredentialProviderBundle.zip"
     if (Get-Command -Name unzip -ErrorAction SilentlyContinue)
@@ -120,6 +120,14 @@ Get-ChildItem ../nuget | Foreach-Object {
     {
         $prefix = "${Env:ProgramFiles(x86)}/IntelSWTools"
     }
+    elseif ($pkg -eq "c-ares")
+    {
+        $prefix = "${Env:ProgramFiles(x86)}/c-ares"
+    }
+    elseif ($pkg -eq "grpc" -or $pkg -eq "grpc-dev")
+    {
+        $prefix = "${Env:ProgramFiles}/grpc"
+    }
     else
     {
         $prefix = "${Env:ProgramFiles}/$pkg"
@@ -173,10 +181,10 @@ Remove-Job *
 
 & ${Env:NUGET_HOME}/nuget.exe locals http-cache -clear
 
-popd
+Pop-Location
 
 Write-Host "Completed!"
 
 Write-Host "If you see `"Suggestion [3,General]: The command nuget was not found`" message below, please ignore."
 
-popd
+Pop-Location

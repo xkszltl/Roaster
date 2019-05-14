@@ -7,7 +7,7 @@
 Get-Content "$PSScriptRoot/pkgs/utils/re-entry.ps1" -Raw | Invoke-Expression
 $ErrorActionPreference="Stop"
 
-cd $PSScriptRoot
+Set-Location $PSScriptRoot
 
 . "pkgs/env/toolchain.ps1"
 
@@ -39,6 +39,9 @@ foreach ($pkg in @(
     "pytorch",
     "ort",
     "cream",
+    "c-ares",
+    "benchmark",
+    "grpc"
     ""))
 {
     if ($pkg -eq "")
