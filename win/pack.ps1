@@ -36,7 +36,7 @@ pushd build
 
 Write-Host "Create NuGet Packages"
 
-${Env:NUGET_HOME} = "$(Get-Command -Name nuget -ErrorAction SilentlyContinue | select -ExpandProperty Source | Split-Path -Parent)"
+${Env:NUGET_HOME} = "$(Get-Command -Name nuget -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source | Split-Path -Parent)"
 
 if (${Env:NUGET_HOME} -eq $null -or -not $(Test-Path ${Env:NUGET_HOME}/nuget.exe -ErrorAction SilentlyContinue))
 {
@@ -44,7 +44,7 @@ if (${Env:NUGET_HOME} -eq $null -or -not $(Test-Path ${Env:NUGET_HOME}/nuget.exe
 }
 
 # Download CredentialProviderBundle of Nuget.
-if (${Env:NUGET_HOME} -eq $null -or -not $(Test-Path ${Env:NUGET_HOME}/nuget.exe -ErrorAction SilentlyContinue))
+if ($null -eq ${Env:NUGET_HOME} -or -not $(Test-Path ${Env:NUGET_HOME}/nuget.exe -ErrorAction SilentlyContinue))
 {
     & "${Env:ProgramFiles}/CURL/bin/curl.exe" -fkSL "https://msazure.pkgs.visualstudio.com/_apis/public/nuget/client/CredentialProviderBundle.zip" -o "CredentialProviderBundle.zip"
     if (Get-Command -Name unzip -ErrorAction SilentlyContinue)
@@ -120,6 +120,18 @@ Get-ChildItem ../nuget | Foreach-Object {
     {
         $prefix = "${Env:ProgramFiles(x86)}/IntelSWTools"
     }
+    elseif ($pkg -eq "c-ares")
+    {
+        $prefix = "${Env:ProgramFiles(x86)}/c-ares"
+    }
+    elseif ($pkg -eq "grpc")
+    {
+        $prefix = "${Env:ProgramFiles(x86)}/grpc"
+    }
+    elseif ($pkg -eq "benchmark")
+    {
+        $prefix = "${Env:ProgramFiles(x86)}/benchmark"
+    }
     else
     {
         $prefix = "${Env:ProgramFiles}/$pkg"
@@ -129,7 +141,7 @@ Get-ChildItem ../nuget | Foreach-Object {
         Start-Job {
             param(${pkg}, ${prefix}, ${version})
 
-            Set-Location $using:PWD
+            cd $using:PWD
 
             Write-Host "Packaging ${pkg}..."
 
@@ -146,7 +158,7 @@ Get-ChildItem ../nuget | Foreach-Object {
                 Start-Job {
                     param(${nupkg}, ${feed})
 
-                    Set-Location $using:PWD
+                    cd $using:PWD
 
                     # Set 10 min timeout as the default (5 min) is not enough for MSAzure recently (Jan 2019).
                     & ${Env:NUGET_HOME}/nuget.exe push -Source ${feed} -ApiKey AzureDevOps ${nupkg} -Timeout 600
