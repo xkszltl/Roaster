@@ -7,7 +7,7 @@
 Get-Content "$PSScriptRoot/pkgs/utils/re-entry.ps1" -Raw | Invoke-Expression
 $ErrorActionPreference="Stop"
 
-Set-Location $PSScriptRoot
+cd $PSScriptRoot
 
 . "pkgs/env/toolchain.ps1"
 
@@ -19,6 +19,7 @@ foreach ($pkg in @(
     "cmake",
     "zlib",
     "openssl",
+    "c-ares",
     "curl",
     "cuda",
     "cudnn",
@@ -32,16 +33,15 @@ foreach ($pkg in @(
     "gflags",
     "glog",
     "gtest",
+    "benchmark",
     "snappy",
     "protobuf",
+    "grpc",
     "rocksdb",
     "onnx",
     "pytorch",
     "ort",
     "cream",
-    "c-ares",
-    "benchmark",
-    "grpc"
     ""))
 {
     if ($pkg -eq "")

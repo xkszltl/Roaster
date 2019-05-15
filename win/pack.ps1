@@ -1,7 +1,7 @@
 Get-Content "$PSScriptRoot/pkgs/utils/re-entry.ps1" -Raw | Invoke-Expression
 $ErrorActionPreference="Stop"
 
-Push-Location $PSScriptRoot
+pushd $PSScriptRoot
 
 $versionPrefix = 'v'
 
@@ -32,7 +32,7 @@ if (Test-Path build)
     cmd /c rmdir /Q /S build
 }
 mkdir build
-Push-Location build
+pushd build
 
 Write-Host "Create NuGet Packages"
 
@@ -122,7 +122,7 @@ Get-ChildItem ../nuget | Foreach-Object {
     }
     elseif ($pkg -eq "c-ares")
     {
-        $prefix = "${Env:ProgramFiles(x86)}/c-ares"
+        $prefix = "${Env:ProgramFiles}/c-ares"
     }
     elseif ($pkg -eq "grpc" -or $pkg -eq "grpc-dev")
     {
@@ -137,7 +137,7 @@ Get-ChildItem ../nuget | Foreach-Object {
         Start-Job {
             param(${pkg}, ${prefix}, ${version})
 
-            Set-Location $using:PWD
+            cd $using:PWD
 
             Write-Host "Packaging ${pkg}..."
 
@@ -154,7 +154,7 @@ Get-ChildItem ../nuget | Foreach-Object {
                 Start-Job {
                     param(${nupkg}, ${feed})
 
-                    Set-Location $using:PWD
+                    cd $using:PWD
 
                     # Set 10 min timeout as the default (5 min) is not enough for MSAzure recently (Jan 2019).
                     & ${Env:NUGET_HOME}/nuget.exe push -Source ${feed} -ApiKey AzureDevOps ${nupkg} -Timeout 600
@@ -181,10 +181,10 @@ Remove-Job *
 
 & ${Env:NUGET_HOME}/nuget.exe locals http-cache -clear
 
-Pop-Location
+popd
 
 Write-Host "Completed!"
 
 Write-Host "If you see `"Suggestion [3,General]: The command nuget was not found`" message below, please ignore."
 
-Pop-Location
+popd

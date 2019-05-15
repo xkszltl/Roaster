@@ -6,12 +6,12 @@ $ErrorActionPreference="Stop"
 . "$PSScriptRoot/env/mirror.ps1"
 . "$PSScriptRoot/env/toolchain.ps1"
 
-Push-Location ${Env:TMP}
+pushd ${Env:TMP}
 $repo="${Env:GIT_MIRROR}/google/benchmark.git"
 $proj="$($repo -replace '.*/','' -replace '.git$','')"
 $root="${Env:TMP}/$proj"
 
-Remove-Item -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "$root"
+rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "$root"
 if (Test-Path "$root")
 {
     Write-Output "Failed to remove `"$root`""
@@ -20,10 +20,10 @@ if (Test-Path "$root")
 
 $latest_ver='v' + $($(git ls-remote --tags "$repo") -match '.*refs/tags/v[0-9\.]*$' -replace '.*refs/tags/v','' | Sort-Object {[Version]$_})[-1]
 git clone --depth 1 --recursive --single-branch -b "$latest_ver" "$repo"
-Push-Location "$root"
+pushd "$root"
 
 mkdir build
-Push-Location build
+pushd build
 
 cmake                                                               `
     -DBUILD_SHARED_LIBS=OFF                                         `
@@ -35,6 +35,7 @@ cmake                                                               `
     -DCMAKE_PDB_OUTPUT_DIRECTORY="${PWD}/pdb"                       `
     -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental" `
     -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                 `
+    -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}\benchmark"          `
     -G"Ninja"                                                       `
     ..
 
@@ -49,12 +50,12 @@ if (-Not $?)
     exit 1
 }
 
-Remove-Item -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${Env:ProgramFiles}/benchmark"
+rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${Env:ProgramFiles}/benchmark"
 cmake --build . --target install
 cmd /c xcopy /i /f /y "pdb\*.pdb" "${Env:ProgramFiles}\benchmark\bin"
 Get-ChildItem "${Env:ProgramFiles}/benchmark" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 
-Pop-Location
-Pop-Location
-Remove-Item -Force -Recurse "$root"
-Pop-Location
+popd
+popd
+rm -Force -Recurse "$root"
+popd
