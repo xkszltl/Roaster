@@ -122,11 +122,15 @@ Get-ChildItem ../nuget | Foreach-Object {
     }
     elseif ($pkg -eq "c-ares")
     {
-        $prefix = "${Env:ProgramFiles}/c-ares"
+        $prefix = "${Env:ProgramFiles(x86)}/c-ares"
     }
-    elseif ($pkg -eq "grpc" -or $pkg -eq "grpc-dev")
+    elseif ($pkg -eq "grpc")
     {
-        $prefix = "${Env:ProgramFiles}/grpc"
+        $prefix = "${Env:ProgramFiles(x86)}/grpc"
+    }
+    elseif ($pkg -eq "benchmark")
+    {
+        $prefix = "${Env:ProgramFiles(x86)}/benchmark"
     }
     else
     {

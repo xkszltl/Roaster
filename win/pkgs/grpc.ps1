@@ -4,7 +4,7 @@ Get-Content "$PSScriptRoot/utils/re-entry.ps1" -Raw | Invoke-Expression
 $ErrorActionPreference="Stop"
 
 . "$PSScriptRoot/env/mirror.ps1"
-# . "$PSScriptRoot/env/toolchain.ps1"
+. "$PSScriptRoot/env/toolchain.ps1"
 
 pushd ${Env:TMP}
 
@@ -36,7 +36,6 @@ cmake                                                               `
     -DCMAKE_PDB_OUTPUT_DIRECTORY="${PWD}/pdb"                       `
     -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental" `
     -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                 `
-    -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}\grpc"               `
     -DgRPC_BENCHMARK_PROVIDER=package                               `
     -DgRPC_CARES_PROVIDER=package                                   `
     -DgRPC_GFLAGS_PROVIDER=package                                  `
@@ -59,10 +58,10 @@ if (-Not $?)
     exit 1
 }
 
-rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${Env:ProgramFiles}/grpc"
+rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${Env:ProgramFiles(x86)}/grpc"
 cmake --build . --target install
-cmd /c xcopy /i /f /y "pdb\*.pdb" "${Env:ProgramFiles}\grpc\bin"
-Get-ChildItem "${Env:ProgramFiles}/grpc" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
+cmd /c xcopy /i /f /y "pdb\*.pdb" "${Env:ProgramFiles(x86)}\grpc\bin"
+Get-ChildItem "${Env:ProgramFiles(x86)}/grpc" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 
 popd
 popd
