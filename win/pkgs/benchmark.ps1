@@ -26,8 +26,8 @@ mkdir build
 pushd build
 
 cmake                                                               `
-    -DBUILD_SHARED_LIBS=OFF                                         `
     -DBENCHMARK_ENABLE_GTEST_TESTS=OFF                              `
+    -DBUILD_SHARED_LIBS=OFF                                         `
     -DCMAKE_BUILD_TYPE=Release                                      `
     -DCMAKE_C_FLAGS="/GL /MP /Zi"                                   `
     -DCMAKE_CXX_FLAGS="/EHsc /GL /MP /Zi"                           `
