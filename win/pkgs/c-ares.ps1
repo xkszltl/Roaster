@@ -14,7 +14,7 @@ $root="${Env:TMP}/$proj"
 rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "$root"
 if (Test-Path "$root")
 {
-    Write-Output "Failed to remove `"$root`""
+    Write-Host "Failed to remove `"$root`""
     Exit 1
 }
 
@@ -42,9 +42,9 @@ cmake                                                               `
 cmake --build .
 if (-Not $?)
 {
-    Write-Output "Failed to build."
-    Write-Output "Retry with best-effort for logging."
-    Write-Output "You may Ctrl-C this if you don't need the log file."
+    Write-Host "Failed to build."
+    Write-Host "Retry with best-effort for logging."
+    Write-Host "You may Ctrl-C this if you don't need the log file."
     cmake --build . -- -k0
     cmake --build . 2>&1 | Tee-Object ${Env:TMP}/${proj}.log
     exit 1

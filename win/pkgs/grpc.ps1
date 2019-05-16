@@ -15,7 +15,7 @@ $root="${Env:TMP}/$proj"
 rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "$root"
 if (Test-Path "$root")
 {
-    Write-Output "Failed to remove `"$root`""
+    Write-Host "Failed to remove `"$root`""
     Exit 1
 }
 
@@ -29,7 +29,6 @@ pushd build-win
 cmake                                                               `
     -DBUILD_SHARED_LIBS=OFF                                         `
     -DCMAKE_BUILD_TYPE=Release                                      `
-    -DgRPC_BUILD_TESTS=OFF                                          `
     -DCMAKE_C_FLAGS="/DPROTOBUF_USE_DLLS /GL /MP /Zi"               `
     -DCMAKE_CXX_FLAGS="/DPROTOBUF_USE_DLLS /EHsc /GL /MP /Zi"       `
     -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"    `
@@ -37,6 +36,7 @@ cmake                                                               `
     -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental" `
     -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                 `
     -DgRPC_BENCHMARK_PROVIDER=package                               `
+    -DgRPC_BUILD_TESTS=OFF                                          `
     -DgRPC_CARES_PROVIDER=package                                   `
     -DgRPC_GFLAGS_PROVIDER=package                                  `
     -DgRPC_INSTALL=ON                                               `
@@ -50,9 +50,9 @@ cmake                                                               `
 cmake --build .
 if (-Not $?)
 {
-    Write-Output "Failed to build."
-    Write-Output "Retry with best-effort for logging."
-    Write-Output "You may Ctrl-C this if you don't need the log file."
+    Write-Host "Failed to build."
+    Write-Host "Retry with best-effort for logging."
+    Write-Host "You may Ctrl-C this if you don't need the log file."
     cmake --build . -- -k0
     cmake --build . 2>&1 | Tee-Object ${Env:TMP}/${proj}.log
     exit 1
