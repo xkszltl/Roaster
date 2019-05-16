@@ -53,19 +53,6 @@ git remote add patch https://github.com/xkszltl/onnxruntime.git
 git fetch patch
 
 # ================================================================================
-# LotusPlus
-# ================================================================================
-
-git remote add lotusplus https://msresearch.visualstudio.com/DefaultCollection/OneOCR/_git/LotusPlus
-git pull --no-edit lotusplus yaxliu/custom_domain
-
-if (-Not $?)
-{
-    echo "Failed to integrate LotusPlus"
-    exit 1
-}
-
-# ================================================================================
 # Update GTest
 # ================================================================================
 
@@ -191,7 +178,7 @@ else
         -Donnxruntime_USE_NUPHAR=OFF                                                    `
         -Donnxruntime_USE_OPENBLAS=OFF                                                  `
         -Donnxruntime_USE_OPENMP=OFF                                                    `
-        -Donnxruntime_USE_PREINSTALLED_EIGEN=ON                                         `
+        -Donnxruntime_USE_PREINSTALLED_EIGEN=OFF                                        `
         -Donnxruntime_USE_TRT=OFF                                                       `
         -Donnxruntime_USE_TVM=OFF                                                       `
         -G"Visual Studio 15 2017"                                                       `
