@@ -17,9 +17,8 @@
   </metadata>
   <files>
     <file src="Roaster.c-ares.v141.dyn.x64.targets"   target="build\Roaster.c-ares.v141.dyn.x64.targets" />
-    <file src="c-ares\bin\*"                          target="lib\native\lib\Release\" />
-    <file src="c-ares\bin\**\*.pdb"                   target="lib\native\lib\Release\" />
-    <file src="c-ares\lib\*"                          target="lib\native\lib\Release\" />
-    <file src="c-ares\include\*"                      target="lib\native\include\" />
+    <file src="c-ares\bin\**\*"                       target="lib\native\lib\Release\" />
+    <file src="c-ares\include\**\*"                   target="lib\native\include\" />
+    <file src="c-ares\lib\**\*"                       target="lib\native\lib\Release\" />
   </files>
 </package>
