@@ -33,6 +33,7 @@ RUN apt-get update -y \
         gstreamer1.0-tools libgstreamer1.0-dev \
         gzip \
         htop \
+        icu-devtools \
         'iputils-*' \
         lib{asan{0,2,3,4,5},tsan0,ubsan{0,1}} \
         lib{atlas-base,boost-all,bz2,edit,eigen3,gflags,gif,google-glog,grpc++,gtest,hwloc,jemalloc,jpeg,lapack,leveldb,lmdb,lzma,ncurses5,openblas,opencv,png,rados,rocksdb,snappy,ssl,tiff}-dev \
@@ -59,6 +60,7 @@ RUN apt-get update -y \
         rsync \
         ruby-all-dev \
         strace \
+        software-properties-common \
         subversion-tools \
         tar \
         time \
