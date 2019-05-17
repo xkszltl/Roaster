@@ -8,7 +8,7 @@ RUN apt-get update -y \
     && apt-get upgrade -y \
     && apt-get install -y apt-utils sudo \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-        apt-file \
+        apt-{file,transport-https} \
         asciidoc \
         autoconf automake autopoint \
         axel \
