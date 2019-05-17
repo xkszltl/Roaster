@@ -33,8 +33,10 @@ cmake                                                               `
     -DCMAKE_CXX_FLAGS="/DPROTOBUF_USE_DLLS /EHsc /GL /MP /Zi"       `
     -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"    `
     -DCMAKE_PDB_OUTPUT_DIRECTORY="${PWD}/pdb"                       `
+    -DCMAKE_POLICY_DEFAULT_CMP0074=NEW                              `
     -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental" `
     -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                 `
+    -Dc-ares_ROOT="${Env:ProgramFiles(x86)}/c-ares"                 `
     -DgRPC_BENCHMARK_PROVIDER=package                               `
     -DgRPC_BUILD_TESTS=OFF                                          `
     -DgRPC_CARES_PROVIDER=package                                   `
