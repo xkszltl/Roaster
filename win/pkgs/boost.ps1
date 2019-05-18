@@ -26,7 +26,7 @@ git clone --depth 1 --recursive --single-branch -b $latest_ver -j50 $repo
 
 pushd $root
 ./bootstrap
-./b2 -j"$Env:NUMBER_OF_PROCESSORS" link=shared --threading=multi address-model=64 numa=on runtime-link=shared
+./b2 -j"$Env:NUMBER_OF_PROCESSORS" link=shared --threading=multi address-model=64 runtime-link=shared
 if (-Not $?)
 {
     echo "Failed to build."
@@ -44,7 +44,7 @@ if (Test-Path $InstallationPath)
     }
 }
 
-./b2 --prefix=$InstallationPath -j"$Env:NUMBER_OF_PROCESSORS" link=shared --threading=multi address-model=64 numa=on runtime-link=shared install
+./b2 --prefix=$InstallationPath -j"$Env:NUMBER_OF_PROCESSORS" link=shared --threading=multi address-model=64 runtime-link=shared install
 if (-Not $?)
 {
     echo "Failed to build."

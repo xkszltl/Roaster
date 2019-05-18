@@ -18,10 +18,9 @@ if (Test-Path "$root")
     Exit 1
 }
 
-$latest_ver='cares-' + $($(git ls-remote --tags "$repo") -match '.*refs/tags/cares-[0-9_]*$' -replace '.*refs/tags/cares-','' -replace '_', '.' | Sort-Object {[Version]$_})[-1] -replace '\.','_'
+$latest_ver='cares-' + $($(git ls-remote --tags "$repo") -match '.*refs/tags/cares-[0-9_]*$' -replace '.*refs/tags/cares-','' -replace '_', '.' | sort {[Version]$_})[-1] -replace '\.','_'
 git clone --depth 1 --recursive --single-branch -b "$latest_ver" "$repo"
 pushd "$root"
-
 mkdir build
 pushd build
 

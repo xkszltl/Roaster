@@ -4,7 +4,7 @@ Get-Content "$PSScriptRoot/utils/re-entry.ps1" -Raw | Invoke-Expression
 $ErrorActionPreference="Stop"
 
 . "$PSScriptRoot/env/mirror.ps1"
- . "$PSScriptRoot/env/toolchain.ps1"
+. "$PSScriptRoot/env/toolchain.ps1"
 
 pushd ${Env:TMP}
 $repo="${Env:GIT_MIRROR}/google/benchmark.git"
@@ -18,10 +18,9 @@ if (Test-Path "$root")
     Exit 1
 }
 
-$latest_ver='v' + $($(git ls-remote --tags "$repo") -match '.*refs/tags/v[0-9\.]*$' -replace '.*refs/tags/v','' | Sort-Object {[Version]$_})[-1]
+$latest_ver='v' + $($(git ls-remote --tags "$repo") -match '.*refs/tags/v[0-9\.]*$' -replace '.*refs/tags/v','' | sort {[Version]$_})[-1]
 git clone --depth 1 --recursive --single-branch -b "$latest_ver" "$repo"
 pushd "$root"
-
 mkdir build
 pushd build
 
@@ -29,12 +28,11 @@ cmake                                                               `
     -DBENCHMARK_ENABLE_GTEST_TESTS=OFF                              `
     -DBUILD_SHARED_LIBS=OFF                                         `
     -DCMAKE_BUILD_TYPE=Release                                      `
-    -DCMAKE_C_FLAGS="/GL /MP /Zi"                                   `
-    -DCMAKE_CXX_FLAGS="/EHsc /GL /MP /Zi"                           `
-    -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"    `
+    -DCMAKE_C_FLAGS="/MP /Zi"                                       `
+    -DCMAKE_CXX_FLAGS="/EHsc /MP /Zi"                               `
+    -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK"                      `
     -DCMAKE_PDB_OUTPUT_DIRECTORY="${PWD}/pdb"                       `
-    -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental" `
-    -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                 `
+    -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK"                   `
     -G"Ninja"                                                       `
     ..
 

@@ -7,7 +7,6 @@ $ErrorActionPreference="Stop"
 . "$PSScriptRoot/env/toolchain.ps1"
 
 pushd ${Env:TMP}
-
 $repo="${Env:GIT_MIRROR}/grpc/grpc.git"
 $proj="$($repo -replace '.*/','' -replace '.git$','')"
 $root="${Env:TMP}/$proj"
@@ -19,23 +18,21 @@ if (Test-Path "$root")
     Exit 1
 }
 
-$latest_ver='v' + $($(git ls-remote --tags "$repo") -match '.*refs/tags/v[0-9\.]*$' -replace '.*refs/tags/v','' | Sort-Object {[Version]$_})[-1]
+$latest_ver='v' + $($(git ls-remote --tags "$repo") -match '.*refs/tags/v[0-9\.]*$' -replace '.*refs/tags/v','' | sort {[Version]$_})[-1]
 git clone --depth 1 --single-branch -b "$latest_ver" "$repo"
 pushd "$root"
-
 mkdir build-win
 pushd build-win
 
 cmake                                                               `
     -DBUILD_SHARED_LIBS=OFF                                         `
     -DCMAKE_BUILD_TYPE=Release                                      `
-    -DCMAKE_C_FLAGS="/DPROTOBUF_USE_DLLS /GL /MP /Zi"               `
-    -DCMAKE_CXX_FLAGS="/DPROTOBUF_USE_DLLS /EHsc /GL /MP /Zi"       `
-    -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"    `
+    -DCMAKE_C_FLAGS="/MP /Zi"                                       `
+    -DCMAKE_CXX_FLAGS="/EHsc /MP /Zi"                               `
+    -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK"                      `
     -DCMAKE_PDB_OUTPUT_DIRECTORY="${PWD}/pdb"                       `
     -DCMAKE_POLICY_DEFAULT_CMP0074=NEW                              `
-    -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental" `
-    -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                 `
+    -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK"                   `
     -Dc-ares_ROOT="${Env:ProgramFiles(x86)}/c-ares"                 `
     -DgRPC_BENCHMARK_PROVIDER=package                               `
     -DgRPC_BUILD_TESTS=OFF                                          `
