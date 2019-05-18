@@ -30,8 +30,12 @@ git fetch patch
 mkdir build-win
 pushd build-win
 
-# - Avoid DLLs due symbol export issues with inline functions.
-#   Keep happening and no good fix/test coverage from Google so far.
+# ================================================================================
+# Known issues:
+#   - Avoid DLLs due symbol export issues with inline functions.
+#     Keep happening and no good fix/test coverage from Google so far.
+# ================================================================================
+
 cmake                                                                   `
     -DBUILD_SHARED_LIBS=ON                                              `
     -DCMAKE_BUILD_TYPE=Release                                          `

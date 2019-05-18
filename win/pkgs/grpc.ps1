@@ -24,6 +24,11 @@ pushd "$root"
 mkdir build-win
 pushd build-win
 
+# ================================================================================
+# Known issues:
+#   - Set <PackageName>_ROOT or c-ares may be found under Windows git.
+# ================================================================================
+
 cmake                                                               `
     -DBUILD_SHARED_LIBS=OFF                                         `
     -DCMAKE_BUILD_TYPE=Release                                      `
@@ -33,7 +38,7 @@ cmake                                                               `
     -DCMAKE_PDB_OUTPUT_DIRECTORY="${PWD}/pdb"                       `
     -DCMAKE_POLICY_DEFAULT_CMP0074=NEW                              `
     -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK"                   `
-    -Dc-ares_ROOT="${Env:ProgramFiles(x86)}/c-ares"                 `
+    -Dc-ares_ROOT="${Env:ProgramFiles}/c-ares;${Env:ProgramFiles(x86)}/c-ares"  `
     -DgRPC_BENCHMARK_PROVIDER=package                               `
     -DgRPC_BUILD_TESTS=OFF                                          `
     -DgRPC_CARES_PROVIDER=package                                   `
