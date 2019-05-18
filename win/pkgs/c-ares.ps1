@@ -30,7 +30,7 @@ cmake                                                               `
     -DCARES_BUILD_TESTS=OFF                                         `
     -DCARES_BUILD_TOOLS=ON                                          `
     -DCMAKE_BUILD_TYPE=Release                                      `
-    -DCMAKE_C_FLAGS="/DWIN32 /GL /MP /Zi"                           `
+    -DCMAKE_C_FLAGS="/GL /MP /Zi"                                   `
     -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"    `
     -DCMAKE_PDB_OUTPUT_DIRECTORY="${PWD}/pdb"                       `
     -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental" `

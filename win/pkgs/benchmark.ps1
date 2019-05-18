@@ -25,7 +25,9 @@ mkdir build
 pushd build
 
 cmake                                                               `
+    -DBENCHMARK_ENABLE_ASSEMBLY_TESTS=OFF                           `
     -DBENCHMARK_ENABLE_GTEST_TESTS=OFF                              `
+    -DBENCHMARK_ENABLE_LTO=OFF                                      `
     -DBUILD_SHARED_LIBS=OFF                                         `
     -DCMAKE_BUILD_TYPE=Release                                      `
     -DCMAKE_C_FLAGS="/MP /Zi"                                       `
