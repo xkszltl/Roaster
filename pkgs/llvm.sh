@@ -103,7 +103,7 @@ for i in llvm-{gcc,clang}; do
                     -DLIBCXX_USE_COMPILER_RT=ON         \
                     -DLIBCXXABI_USE_COMPILER_RT=ON      \
                     -DLIBCXXABI_USE_LLVM_UNWINDER=ON    \
-                    -DLIBOMP_ENABLE_SHARED=OFF          \
+                    -DLIBOMP_ENABLE_SHARED=ON           \
                     -DLIBUNWIND_USE_COMPILER_RT=ON      \
                     -DLLVM_ENABLE_LIBCXX=ON             \
                     -DLLVM_ENABLE_LLD=ON                \
