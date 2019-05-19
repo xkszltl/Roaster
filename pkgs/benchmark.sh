@@ -32,6 +32,7 @@
         cd $_
 
         cmake                                       \
+            -DALLOW_DOWNLOADING_GOOGLETEST=ON       \
             -DBENCHMARK_ENABLE_ASSEMBLY_TESTS=OFF   \
             -DBENCHMARK_ENABLE_LTO=ON               \
             -DBUILD_SHARED_LIBS=ON                  \
@@ -41,6 +42,7 @@
             -DCMAKE_C{,XX}_COMPILER_LAUNCHER=ccache \
             -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
+            -DGOOGLETEST_PATH='/usr/local/src/gtest'\
             -G"Ninja"                               \
             ..
 
