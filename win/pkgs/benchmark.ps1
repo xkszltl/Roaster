@@ -25,6 +25,7 @@ mkdir build
 pushd build
 
 cmake                                                               `
+    -DALLOW_DOWNLOADING_GOOGLETEST=ON                               `
     -DBENCHMARK_ENABLE_ASSEMBLY_TESTS=OFF                           `
     -DBENCHMARK_ENABLE_GTEST_TESTS=OFF                              `
     -DBENCHMARK_ENABLE_LTO=OFF                                      `
