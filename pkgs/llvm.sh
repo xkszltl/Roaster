@@ -55,7 +55,9 @@ for i in llvm-{gcc,clang}; do
                 -DLIBCXX_CONFIGURE_IDE=ON
                 -DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=ON
                 -DLIBIPT_INCLUDE_PATH='/usr/local/include'
+                -DLIBOMP_ENABLE_SHARED=ON
                 -DLIBOMP_FORTRAN_MODULES=OFF
+                -DLIBOMP_INSTALL_ALIASES=OFF
                 -DLIBOMP_OMPT_SUPPORT=ON
                 -DLIBOMP_STATS=OFF
                 -DLIBOMP_TSAN_SUPPORT=ON
@@ -103,7 +105,6 @@ for i in llvm-{gcc,clang}; do
                     -DLIBCXX_USE_COMPILER_RT=ON         \
                     -DLIBCXXABI_USE_COMPILER_RT=ON      \
                     -DLIBCXXABI_USE_LLVM_UNWINDER=ON    \
-                    -DLIBOMP_ENABLE_SHARED=ON           \
                     -DLIBUNWIND_USE_COMPILER_RT=ON      \
                     -DLLVM_ENABLE_LIBCXX=ON             \
                     -DLLVM_ENABLE_LLD=ON                \
