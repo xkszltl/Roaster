@@ -13,10 +13,18 @@ for i in llvm-{gcc,clang}; do
             set -e
             export PROJ="$(basename "{}")"
             [ "$PROJ" ]
-            until git clone --depth 1 -b "'"$GIT_TAG"'" "'"$(sed 's/[^\/]*$//' <<< "$GIT_REPO")"'$PROJ.git" {}; do sleep 1; echo "Retrying"; done
-            if [ "$PROJ" = "clang" ]; then
-                until git clone --depth 1 -b "'"$GIT_TAG"'" "'"$(sed 's/[^\/]*$//' <<< "$GIT_REPO")"'$PROJ-tools-extra.git" "{}/tools/extra"; do sleep 1; echo "Retrying"; done
-            fi
+            case "$PROJ" in
+            "clang")
+                until git clone -b "'"$GIT_TAG"'" "'"$(sed 's/[^\/]*$//' <<< "$GIT_REPO")"'$PROJ.git" {}; do sleep 1; echo "Retrying"; done
+                pushd {}
+                git cherry-pick c3f675  # devtoolset-8 discovery.
+                until git clone --depth 1 -b "'"$GIT_TAG"'" "'"$(sed 's/[^\/]*$//' <<< "$GIT_REPO")"'$PROJ-tools-extra.git" "tools/extra"; do sleep 1; echo "Retrying"; done
+                popd
+                ;;
+            *)
+                until git clone --depth 1 -b "'"$GIT_TAG"'" "'"$(sed 's/[^\/]*$//' <<< "$GIT_REPO")"'$PROJ.git" {}; do sleep 1; echo "Retrying"; done
+                ;;
+            esac
         '"'" ::: projects/{compiler-rt,lib{cxx{,abi},unwind},openmp} tools/{clang,lldb,lld,polly}
 
         # LLVM repo uses branch instead of tag.
