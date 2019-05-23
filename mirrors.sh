@@ -81,7 +81,7 @@ gflags/gflags,\
 giampaolo/psutil,\
 github/{git-lfs,gitignore},\
 goldmann/docker-squash,\
-google/{benchmarki,bloaty,boringssl,gemmlowp,glog,googletest,leveldb,nsync,protobuf,re2,snappy,upb},\
+google/{benchmark,bloaty,boringssl,gemmlowp,glog,googletest,leveldb,nsync,protobuf,re2,snappy,upb},\
 googleapis/googleapis,\
 grpc/grpc{,-{dart,dotnet,go,java,node,php,proto,swift,web}},\
 halide/Halide,\
