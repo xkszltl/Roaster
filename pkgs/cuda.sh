@@ -18,8 +18,8 @@
     (
         set -e
 
-        TRT_REPO_URL='https://developer.nvidia.com/compute/machine-learning/tensorrt/5.1/rc/local_repos'
-        TRT_FILENAME="nv-tensorrt-repo-rhel7-cuda$CUDA_VER_MAJOR.$CUDA_VER_MINOR-trt5.1.2.2-rc-20190227-1-1.x86_64.rpm"
+        TRT_REPO_URL='https://developer.nvidia.com/compute/machine-learning/tensorrt/5.1/ga/local_repos'
+        TRT_FILENAME="nv-tensorrt-repo-rhel7-cuda$CUDA_VER_MAJOR.$CUDA_VER_MINOR-trt5.1.5.0-ga-20190427-1-1.x86_64.rpm"
 
         if [ "_$GIT_MIRROR" == "_$GIT_MIRROR_CODINGCAFE" ]; then
             TRT_REPO_URL_CODINGCAFE='https://repo.codingcafe.org/nvidia/tensorrt'
@@ -46,7 +46,7 @@
         sudo yum remove -y --skip-broken 'nv-tensorrt-repo-*' || true
         $RPM_INSTALL "$TRT_URL"
         $RPM_INSTALL --disableplugin=axelget "tensorrt" || $RPM_UPDATE --disableplugin=axelget "tensorrt" || $RPM_REINSTALL --disableplugin=axelget "tensorrt"
-        $IS_CONTAINER && sudo yum remove -y --skip-broken 'nv-tensorrt-repo-*'
+        $IS_CONTAINER && sudo yum remove -y --skip-broken 'nv-tensorrt-repo-*' || true
     )
 
     # ============================================================
