@@ -62,7 +62,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/ssserver -c /etc/shadowsocks/ssserver.json
+ExecStart=/usr/local/bin/ssserver -c /etc/shadowsocks/ssserver.json
 User=nobody
 
 [Install]
@@ -78,7 +78,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/sslocal -c /etc/shadowsocks/sslocal.json
+ExecStart=/usr/local/bin/sslocal -c /etc/shadowsocks/sslocal.json
 User=nobody
 
 [Install]
@@ -143,28 +143,28 @@ EOF
     # ------------------------------------------------------------
 
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    cat << \EOF > "$INSTALL_ROOT/../fpm/post_install.sh"
-export SS_PORT="$CRED_USR_SS_PORT/tcp"
+    echo > "$INSTALL_ROOT/../fpm/post_install.sh" "
+export SS_PORT='$CRED_USR_SS_PORT/tcp'
 
 systemctl enable firewalld || $IS_CONTAINER
 systemctl status firewalld || systemctl start firewalld || $IS_CONTAINER
-if [ -f "/etc/shadowsocks/ssserver.json" ]; then
-    firewall-cmd --permanent --add-port="$SS_PORT" || $IS_CONTAINER
+if [ -f '/etc/shadowsocks/ssserver.json' ]; then
+    firewall-cmd --permanent --add-port="\$SS_PORT" || $IS_CONTAINER
 else
-    firewall-cmd --permanent --remove-port="$SS_PORT" || $IS_CONTAINER
+    firewall-cmd --permanent --remove-port="\$SS_PORT" || $IS_CONTAINER
 fi
 firewall-cmd --reload || $IS_CONTAINER
 
 for i in shadowsocks{,-client}; do
-    if [ -f "/etc/shadowsocks/ssserver.json" ]; then
-        systemctl enable $i
-        systemctl start $i || $IS_CONTAINER
+    if [ -f '/etc/shadowsocks/ssserver.json' ]; then
+        systemctl enable \$i
+        systemctl start \$i || $IS_CONTAINER
     else
-        systemctl disable $i
-        systemctl stop $i || $IS_CONTAINER
+        systemctl disable \$i
+        systemctl stop \$i || $IS_CONTAINER
     fi
 done
-EOF
+"
     # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
