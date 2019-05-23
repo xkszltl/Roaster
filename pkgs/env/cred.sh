@@ -26,7 +26,7 @@ export CRED_DEF_DNSCOM_SECRET='123456789abcdef0123456789abcdef0'
 # Load User-defined Credentials
 ############################################################
 
-cred_usr="$(readlink -m "$(dirname "$0")/../../cred/env-cred-usr.sh")"
+cred_usr="$(readlink -m "$(dirname "$0")/cred/env-cred-usr.sh")"
 if [ -x "$cred_usr" ]; then
     echo "Load user-defined credential from \"$cred_usr\"."
     . "$cred_usr"
