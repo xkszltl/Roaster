@@ -103,9 +103,7 @@ dl:
 edit:
   stage: edit
   only:
-    - /^(build|resume)-edit$/
-  before_script:
-    - docker tag $CI_REGISTRY_IMAGE/centos:stage-dl $CI_REGISTRY_IMAGE/centos:stage-edit
+    - /^(build|resume)-(init|repo|font|pkg-(skip|all)|ss|tex|infra|llvm|util|misc|dl|edit)$/
   <<: *docker_build_stage
 
 finish:

@@ -1,5 +1,3 @@
-FROM docker.codingcafe.org/xkszltl/roaster/centos:stage-misc
+FROM docker.codingcafe.org/xkszltl/roaster/centos:stage-dl
 
 COPY [".", "/etc/roaster/scripts"]
-
-RUN cp -f /etc/hosts /tmp && echo 10.0.0.10 {proxy,git,repo}.codingcafe.org > /etc/hosts
