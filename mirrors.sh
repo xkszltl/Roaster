@@ -55,6 +55,7 @@ https://github.com/\ /\ {\
 abseil/abseil-{cpp,py},\
 aquynh/capstone,\
 ARM-software/{arm-trusted-firmware,ComputeLibrary,lisa},\
+asmjit/{asm{db,jit,tk},cult},\
 aws/aws-{cli,sdk-{cpp,go,java,js,net,php,ruby}},\
 axel-download-accelerator/axel,\
 benjaminp/six,\
@@ -120,7 +121,7 @@ pypa/{pip,pipenv,setuptools,virtualenv,warehouse,wheel},\
 pytest-dev/{pluggy,py,pytest},\
 python/typing,\
 python-attrs/attrs,\
-pytorch/{examples,FBGEMM,pytorch,QNNPACK,tutorials},\
+pytorch/{cpuinfo,examples,FBGEMM,glow,ignite,pytorch,QNNPACK,tutorials,vision,xla},\
 RadeonOpenCompute/{hcc,ROCm-Device-Libs,ROCR-Runtime},\
 RMerl/{am-toolchains,asuswrt-merlin.ng},\
 ROCm-Developer-Tools/HIP,\
