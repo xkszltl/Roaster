@@ -36,6 +36,7 @@ sed -i "s/^FROM docker\.codingcafe\.org\/.*:/FROM $(sed 's/\([\\\/\.\-]\)/\\\1/g
 
 #     --cpu-shares 128
 if time sudo DOCKER_BUILDKIT=1 docker build                     \
+    --add-host 'docker.codingcafe.org:10.0.0.10'                \
     --add-host 'repo.codingcafe.org:10.0.0.10'                  \
     --add-host 'proxy.codingcafe.org:10.0.0.10'                 \
     --no-cache                                                  \
