@@ -32,15 +32,15 @@ fi
 
 sed -i "s/^FROM docker\.codingcafe\.org\/.*:/FROM $(sed 's/\([\\\/\.\-]\)/\\\1/g' <<< "$CI_REGISTRY_IMAGE/$BASE_DISTRO"):/" 'Dockerfile'
 
-if [ "_$stage" != "_$CI_JOB_STAGE" ]; then
-    sed -in '/^[[:space:]]*COPY[[:space:]].*"\/etc\/roaster\/scripts"/p' 'Dockerfile'
-fi
+[ "_$stage" == "_$CI_JOB_STAGE" ] || sed -i 's/^[[:space:]]*COPY[[:space:]].*"\/etc\/roaster\/scripts".*//' 'Dockerfile'
 
 #     --cpu-shares 128
-if time sudo docker build                           \
-    --no-cache                                      \
-    --pull                                          \
-    --tag "$CI_REGISTRY_IMAGE/$BASE_DISTRO:stage-$CI_JOB_STAGE"  \
+if time sudo DOCKER_BUILDKIT=1 docker build                     \
+    --add-host 'repo.codingcafe.org:10.0.0.10'                  \
+    --add-host 'proxy.codingcafe.org:10.0.0.10'                 \
+    --no-cache                                                  \
+    --pull                                                      \
+    --tag "$CI_REGISTRY_IMAGE/$BASE_DISTRO:stage-$CI_JOB_STAGE" \
     .; then
     time sudo docker push "$CI_REGISTRY_IMAGE/$BASE_DISTRO:stage-$CI_JOB_STAGE"
 else
