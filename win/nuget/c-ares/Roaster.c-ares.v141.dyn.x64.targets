@@ -14,12 +14,24 @@
       <Link>acountry.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/acountry.pdb">
+      <Link>acountry.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/adig.exe">
       <Link>adig.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/adig.pdb">
+      <Link>adig.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/ahost.exe">
       <Link>ahost.exe</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/ahost.pdb">
+      <Link>ahost.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/cares.dll">
@@ -28,18 +40,6 @@
     </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/cares.pdb">
       <Link>cares.pdb</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/ahost.pdb">
-      <Link>ahost.pdb</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/adig.pdb">
-      <Link>adig.pdb</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/acountry.pdb">
-      <Link>acountry.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
