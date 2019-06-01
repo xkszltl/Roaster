@@ -181,7 +181,7 @@ else
         -Donnxruntime_USE_PREINSTALLED_EIGEN=OFF                                        `
         -Donnxruntime_USE_TRT=OFF                                                       `
         -Donnxruntime_USE_TVM=OFF                                                       `
-        -G"Visual Studio 15 2017"                                                       `
+        -G"Visual Studio 16 2019"                                                       `
         -T"host=x64"                                                                    `
         ../cmake
 
