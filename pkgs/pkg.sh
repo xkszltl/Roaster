@@ -152,7 +152,7 @@ for i in pkg-{stable,skip,all}; do
                 lua{,-*}
             " \
             | sed 's/^[[:space:]]*//' \
-            | sed "$([ "_$i" = '_pkg-stable' ] && echo 's/^\[!\].*//p' || echo 's/^//')" \
+            | sed "$([ "_$i" != '_pkg-stable' ] && echo 's/^\[!\].*//p' || echo 's/^//')" \
             | sed -n "$([ "_$i" = '_pkg-stable' ] && echo 's/^\[!\][[:space:]]*//p' || echo '/./p')" \
             | xargs -n10 echo "$RPM_INSTALL $([ "_$i" = '_pkg-skip' ] && echo --skip-broken)" \
             | bash \
