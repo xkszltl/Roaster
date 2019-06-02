@@ -18,7 +18,7 @@ trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
 case "$DISTRO_ID" in
 "centos" | "fedora" | "rhel")
-    export RPM_CACHE_REPO="/etc/yum.repos.d/cache.repo"
+    export RPM_CACHE_REPO="/etc/yum.repos.d/codingcafe-cache.repo"
     ;;
 esac
 
