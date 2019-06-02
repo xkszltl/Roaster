@@ -20,7 +20,7 @@ for i in pkg-{skip,all}; do
                 qpid-cpp-client{,-*}
                 {gcc,distcc,ccache}{,-*}
                 {openmpi,mpich-3.{0,2}}{,-devel,-doc,-debuginfo}
-                java-1.8.0-openjdk{,-*}
+                java-11-openjdk{,-*}
                 octave{,-*}
                 {gdb,gperf,gperftools,valgrind,perf,{l,s}trace}{,-*}
                 {make,ninja-build,cmake{,3},autoconf,libtool}{,-*}
