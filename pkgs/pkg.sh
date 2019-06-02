@@ -150,10 +150,9 @@ for i in pkg-{stable,skip,all}; do
                 {python{2,36},{python27,rh-python36}-python}-pip
                 {ruby,rh-ruby25}{,-*}
                 lua{,-*}
-
-                *-fonts{,-*}
             " \
             | sed 's/^[[:space:]]*//' \
+            | sed "$([ "_$i" = '_pkg-stable' ] && echo 's/^\[!\].*//p' || echo 's/^//')" \
             | sed -n "$([ "_$i" = '_pkg-stable' ] && echo 's/^\[!\][[:space:]]*//p' || echo '/./p')" \
             | xargs -n10 echo "$RPM_INSTALL $([ "_$i" = '_pkg-skip' ] && echo --skip-broken)" \
             | bash \
