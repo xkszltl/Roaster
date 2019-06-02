@@ -1,6 +1,9 @@
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
 
+image:
+  name: docker.codingcafe.org/xkszltl/roaster/centos
+
 stages:
   - init
   - repo
