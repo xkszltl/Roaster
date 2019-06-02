@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -xe
 
 if [ $# -le 0 ]; then
     $0                                                                              \
