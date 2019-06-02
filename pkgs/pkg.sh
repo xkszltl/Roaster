@@ -159,6 +159,7 @@ for i in pkg-{stable,skip,all}; do
             | sed "$([ "_$i" != '_pkg-stable' ] && echo 's/^\[!\].*//p' || echo 's/^//')" \
             | sed -n "$([ "_$i" = '_pkg-stable' ] && echo 's/^\[!\][[:space:]]*//p' || echo '/./p')" \
             | xargs -n10 echo "$RPM_INSTALL $([ "_$i" = '_pkg-skip' ] && echo --skip-broken)" \
+            | sed 's/^/set -xe; /' \
             | bash \
             && break
             echo "Retrying... $attempt chance(s) left."
