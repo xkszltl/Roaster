@@ -9,7 +9,7 @@
     $IS_CONTAINER || sudo yum-config-manager --setopt=installonly_limit=3 --save
 
     # Hack to skip repo caching.
-    [ "_$GIT_MIRROR" == "_$GIT_MIRROR_CODINGCAFE" ] || export RPM_CACHE_REPO="$ROOT_DIR/non-exist-file"
+    [ "_$GIT_MIRROR" = "_$GIT_MIRROR_CODINGCAFE" ] || export RPM_CACHE_REPO="$ROOT_DIR/non-exist-file"
 
     RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" {base,updates,extras,centosplus}{,-source} base-debuginfo
 

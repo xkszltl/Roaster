@@ -29,7 +29,7 @@ export RPM_BLACKLIST=$(echo "
     python2-s3transfer
 " | sed -n 's/^[[:space:]]*\([^[:space:]][^[:space:]]*\).*/--exclude \1/p' | paste -s - | xargs)
 
-export RPM_CACHE_ARGS=$([ -f $RPM_CACHE_REPO ] && echo "--disableplugin=axelget,fastestmirror")
+export RPM_CACHE_ARGS=$([ -f "$RPM_CACHE_REPO" ] && echo "--disableplugin=axelget,fastestmirror")
 
 export RPM_INSTALL="sudo yum install -y $RPM_CACHE_ARGS --nogpgcheck $RPM_BLACKLIST"
 export RPM_UPDATE="sudo yum update -y $RPM_CACHE_ARGS --nogpgcheck $RPM_BLACKLIST"

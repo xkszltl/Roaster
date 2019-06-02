@@ -21,7 +21,7 @@ export BASE_DISTRO=ubuntu
 for CI_JOB_STAGE in init pkg auth infra llvm util misc dl edit finish; do
     export CI_JOB_STAGE
 
-    [ "$FIRST_STAGE" ] || [ "_$(sed 's/^[^\-]*\-//' <<< "$CI_COMMIT_REF_NAME")" == "_$CI_JOB_STAGE" ] || continue
+    [ "$FIRST_STAGE" ] || [ "_$(sed 's/^[^\-]*\-//' <<< "$CI_COMMIT_REF_NAME")" = "_$CI_JOB_STAGE" ] || continue
     [ "$FIRST_STAGE" ] || FIRST_STAGE="$CI_JOB_STAGE"
 
     case "$CI_JOB_STAGE" in

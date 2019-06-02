@@ -22,7 +22,7 @@ set -x
 cmd="$(sed 's/-.*//' <<< "$CI_COMMIT_REF_NAME")";
 stage="$(sed 's/^[^\-]*-//' <<< "$CI_COMMIT_REF_NAME")";
 
-if [ "_$cmd" = "_resume" ] && [ "_$stage" == "_$CI_JOB_STAGE" ]; then
+if [ "_$cmd" = "_resume" ] && [ "_$stage" = "_$CI_JOB_STAGE" ]; then
     echo "Resume stage \"$CI_JOB_STAGE\"."
     cat "docker/$BASE_DISTRO/resume" > 'Dockerfile'
 else
@@ -32,7 +32,7 @@ fi
 
 sed -i "s/^FROM docker\.codingcafe\.org\/.*:/FROM $(sed 's/\([\\\/\.\-]\)/\\\1/g' <<< "$CI_REGISTRY_IMAGE/$BASE_DISTRO"):/" 'Dockerfile'
 
-[ "_$stage" == "_$CI_JOB_STAGE" ] || sed -i 's/^[[:space:]]*COPY[[:space:]].*"\/etc\/roaster\/scripts".*//' 'Dockerfile'
+[ "_$stage" = "_$CI_JOB_STAGE" ] || sed -i 's/^[[:space:]]*COPY[[:space:]].*"\/etc\/roaster\/scripts".*//' 'Dockerfile'
 
 #     --cpu-shares 128
 if time sudo DOCKER_BUILDKIT=1 docker build                     \

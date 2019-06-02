@@ -13,7 +13,7 @@
     export GIT_MIRROR="$_GIT_MIRROR"
     env -u _GIT_MIRROR
 
-    if [ "_$GIT_MIRROR" == "_$GIT_MIRROR_CODINGCAFE" ]; then
+    if [ "_$GIT_MIRROR" = "_$GIT_MIRROR_CODINGCAFE" ]; then
         until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     else
         until git clone --single-branch -b "$GIT_TAG" "git://git.code.sf.net/p/libpng/code" libpng; do echo 'Retrying'; done

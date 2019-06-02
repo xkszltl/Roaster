@@ -21,11 +21,11 @@ esac
         SUBMODULE_QUEUE="$(cut -d';' -f2- <<< "$SUBMODULE_QUEUE;" | sed 's/;*$//')"
 
         if [ -e .gitmodules ]; then
-            if [ "_$GIT_MIRROR" == "_$GIT_MIRROR_CODINGCAFE" ]; then
+            if [ "_$GIT_MIRROR" = "_$GIT_MIRROR_CODINGCAFE" ]; then
                 export HTTP_PROXY=proxy.codingcafe.org:8118
-                [ "$HTTP_PROXY" ] && export HTTPS_PROXY=$HTTP_PROXY
-                [ "$HTTP_PROXY" ] && export http_proxy=$HTTP_PROXY
-                [ "$HTTPS_PROXY" ] && export https_proxy=$HTTPS_PROXY
+                [ "$HTTP_PROXY" ] && export HTTPS_PROXY="$HTTP_PROXY"
+                [ "$HTTP_PROXY" ] && export http_proxy="$HTTP_PROXY"
+                [ "$HTTPS_PROXY" ] && export https_proxy="$HTTPS_PROXY"
                 for i in 01org/mkl-dnn=intel/mkl-dnn google/upb=protocolbuffers/upb lyft/protoc-gen-validate=envoyproxy/protoc-gen-validate philsquared/Catch=catchorg/Catch2; do
                     sed -i "s/$(sed 's/\([\/\.]\)/\\\1/g' <<< "$i" | tr '=' '/')/" .gitmodules
                 done

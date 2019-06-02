@@ -20,7 +20,7 @@
         else
             mkdir -p "{}"
             pushd $_
-            if [ '"_$GIT_MIRROR"' == '"_$GIT_MIRROR_CODINGCAFE"' ]; then
+            if [ '"_$GIT_MIRROR"' = '"_$GIT_MIRROR_CODINGCAFE"' ]; then
                 URL="'"$INTEL_REPO"'/$(curl -sSL '"$INTEL_REPO"'/ | sed -n "s/.*href=\"\([^\"]*l_{}[^\"]*\)\".*/\1/p" | sort -V | tail -n1)"
             else
                 URL="'"$INTEL_SITE"'/$(sed -n "s/.*[[:space:]]\([0-9]*\/l_{}_[^[:space:]]*\).*/\1/p" "'"$ROOT_DIR/repo-cache.sh"'")"
