@@ -12,8 +12,12 @@ for i in pkg-{stable,skip,all}; do
         done
         done
 
+        # ------------------------------------------------------------
         # Annotation:
-        #     [!] Stable. Change of them usually happens with distro-wide updates.
+        # [!] Stable.
+        #     These are low-level or very important packages.
+        #     Their changes usually happens with distro-wide updates and worth a rebuild.
+        # ------------------------------------------------------------
         for attempt in $(seq $RPM_MAX_ATTEMPT -1 0); do
             echo "
                 [!] devtoolset-{6,7,8}{,-*}
@@ -25,11 +29,11 @@ for i in pkg-{stable,skip,all}; do
                 {openmpi,mpich-3.{0,2}}{,-devel,-doc,-debuginfo}
                 java-11-openjdk{,-*}
                 octave{,-*}
-                {gdb,gperf,gperftools,valgrind,perf,{l,s}trace}{,-*}
+                [!] {gdb,{l,s}trace}{,-*}
+                {gperf,gperftools,valgrind,perf}{,-*}
                 {make,ninja-build,cmake{,3},autoconf,libtool}{,-*}
                 {ant,maven}{,-*}
                 {git,rh-git218,subversion,mercurial}{,-*}
-                valgrind{,-*}
                 doxygen{,-*}
                 pandoc{,-*}
                 swig{,-*}
@@ -52,10 +56,11 @@ for i in pkg-{stable,skip,all}; do
                 hping3{,-*}
                 [!] {traceroute,mtr,rsync,tcpdump,whois,net-snmp}{,-*}
                 torsocks{,-*}
-                {bridge-,core,crypto-,elf,find,ib,ip,pci,usb,yum-}utils{,-*}
+                [!] {core,elf,find,ib,ip,pci,usb,yum-}utils{,-*}
+                {bridge,crypto}-utils{,-*}
                 [!] util-linux{,-*}
                 [!] moreutils{,-debuginfo}
-                papi{,-*}
+                [!] papi{,-*}
                 rpmdevtools
                 rpm-build
                 cyrus-imapd{,-*}
@@ -63,10 +68,10 @@ for i in pkg-{stable,skip,all}; do
                 [!] {device-mapper,lvm2}{,-*}
                 {d,sys}stat{,-*}
                 {lm_sensors,hddtemp,smartmontools,lsscsi}{,-*}
-                {{e2fs,btrfs-,xfs,ntfs}progs,xfsdump,nfs-utils}{,-*}
-                fuse{,-devel,-libs}
+                [!] {{e2fs,btrfs-,xfs,ntfs}progs,xfsdump,nfs-utils}{,-*}
+                [!] fuse{,-devel,-libs}
                 dd{,_}rescue{,-*}
-                {docker-ce,container-selinux}{,-*}
+                [!] {docker-ce,container-selinux}{,-*}
                 createrepo{,_c}{,-*}
                 environment-modules{,-*}
                 munge{,-*}
@@ -74,24 +79,25 @@ for i in pkg-{stable,skip,all}; do
                 [!] scl-utils{,-*}
 
                 ncurses{,-*}
-                hwloc{,-*}
-                numa{ctl,d}{,-*}
+                [!] hwloc{,-*}
+                [!] numa{ctl,d}{,-*}
                 icu{,-*}
                 [!] {glibc{,-devel},libgcc}
-                {gmp,mpfr,libmpc}{,-*}
-                gperftools{,-*}
+                [!] {gmp,mpfr,libmpc}{,-*}
                 lib{asan{,3},tsan,ubsan}{,-*}
                 lib{exif,jpeg-turbo,tiff,png,gomp,gphoto2}{,-*}
                 OpenEXR{,-*}
                 {libv4l,v4l-utils}{,-*}
                 libunicap{,gtk}{,-*}
-                libglvnd{,-*}
+                [!] libglvnd{,-*}
                 lib{dc,raw}1394{,-*}
                 {zlib,libzip,{,lib}zstd,lz4,{,p}{bzip2,xz},pigz,cpio,tar,snappy,unrar}{,-*}
-                lib{telnet,ssh{,2},curl,aio,ffi,edit,icu,xslt}{,-*}
-                boost{,-*}
+                [!] libaio{,-*}
+                lib{telnet,ssh{,2},curl,ffi,edit,icu,xslt}{,-*}
+                [!] boost{,-*}
                 {flex,cups,bison,antlr}{,-*}
-                open{blas,cv,ldap,ni,ssh,ssl}{,-*}
+                [!] openssl{,-*}
+                open{blas,cv,ldap,ni,ssh}{,-*}
                 {atlas,eigen3}{,-*}
                 lapack{,64}{,-*}
                 {libsodium,mbedtls}{,-*}
@@ -104,16 +110,14 @@ for i in pkg-{stable,skip,all}; do
                 ImageMagick{,-*}
                 qt5-*
                 yasm{,-*}
-                gperf{,-*}
                 docbook{,5,2X}{,-*}
-                asciidoc{,-*}
                 txt2man
                 nagios{,-selinux,-devel,-debuginfo,-plugins-all}
                 {nrpe,nsca}
                 {collectd,rrdtool,pnp4nagios}{,-*}
-                cuda
-                libcudnn7{,-devel} libnccl{,-devel,-static}
-                nvidia-docker2
+                [!] cuda
+                [!] libcudnn7{,-devel} libnccl{,-devel,-static}
+                [!] nvidia-docker2
 
                 hdf5{,-*}
                 {leveldb,lmdb}{,-*}
@@ -122,8 +126,8 @@ for i in pkg-{stable,skip,all}; do
 
                 {fio,{file,sys}bench}{,-*}
 
-                {,pam_}krb5{,-*}
-                {sudo,nss,sssd,authconfig}{,-*}
+                [!] {,pam_}krb5{,-*}
+                [!] {sudo,nss,sssd,authconfig}{,-*}
 
                 gitlab-runner
 
@@ -133,10 +137,10 @@ for i in pkg-{stable,skip,all}; do
 
                 wine
 
-                libselinux{,-*}
-                policycoreutils{,-*}
-                se{troubleshoot,tools}{,-*}
-                selinux-policy{,-*}
+                [!] libselinux{,-*}
+                [!] policycoreutils{,-*}
+                [!] se{troubleshoot,tools}{,-*}
+                [!] selinux-policy{,-*}
 
                 mod_authnz_*
 
