@@ -1,4 +1,4 @@
-FROM docker.codingcafe.org/sandbox/centos:stage-font
+FROM docker.codingcafe.org/sandbox/centos:stage-pkg-stable
 
 COPY [".", "/etc/roaster/scripts"]
 

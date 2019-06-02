@@ -5,6 +5,7 @@ stages:
   - init
   - repo
   - font
+  - pkg-stable
   - pkg-skip
   - tex
   - ss
@@ -52,58 +53,64 @@ font:
     - /^(build|resume)-(init|repo|font)$/
   <<: *docker_build_stage
 
+pkg-stable:
+  stage: pkg-stable
+  only:
+    - /^(build|resume)-(init|repo|font|pkg-stable)$/
+  <<: *docker_build_stage
+
 pkg-skip:
   stage: pkg-skip
   only:
-    - /^(build|resume)-(init|repo|font|pkg-skip)$/
+    - /^(build|resume)-(init|repo|font|pkg-(stable|skip))$/
   <<: *docker_build_stage
 
 tex:
   stage: tex
   only:
-    - /^(build|resume)-(init|repo|font|pkg-(skip|all)|tex)$/
+    - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|tex)$/
   <<: *docker_build_stage
 
 ss:
   stage: ss
   only:
-    - /^(build|resume)-(init|repo|font|pkg-(skip|all)|tex|ss)$/
+    - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|tex|ss)$/
   <<: *docker_build_stage
 
 infra:
   stage: infra
   only:
-    - /^(build|resume)-(init|repo|font|pkg-(skip|all)|ss|tex|infra)$/
+    - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|ss|tex|infra)$/
   <<: *docker_build_stage
 
 llvm:
   stage: llvm
   only:
-    - /^(build|resume)-(init|repo|font|pkg-(skip|all)|ss|tex|infra|llvm)$/
+    - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|ss|tex|infra|llvm)$/
   <<: *docker_build_stage
 
 util:
   stage: util
   only:
-    - /^(build|resume)-(init|repo|font|pkg-(skip|all)|ss|tex|infra|llvm|util)$/
+    - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|ss|tex|infra|llvm|util)$/
   <<: *docker_build_stage
 
 misc:
   stage: misc
   only:
-    - /^(build|resume)-(init|repo|font|pkg-(skip|all)|ss|tex|infra|llvm|util|misc)$/
+    - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|ss|tex|infra|llvm|util|misc)$/
   <<: *docker_build_stage
 
 dl:
   stage: dl
   only:
-    - /^(build|resume)-(init|repo|font|pkg-(skip|all)|ss|tex|infra|llvm|util|misc|dl)$/
+    - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|ss|tex|infra|llvm|util|misc|dl)$/
   <<: *docker_build_stage
 
 edit:
   stage: edit
   only:
-    - /^(build|resume)-(init|repo|font|pkg-(skip|all)|ss|tex|infra|llvm|util|misc|dl|edit)$/
+    - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|ss|tex|infra|llvm|util|misc|dl|edit)$/
   <<: *docker_build_stage
 
 finish:
@@ -113,7 +120,7 @@ finish:
     - docker
     - gpu
   only:
-    - /^(build|resume)-(init|repo|font|pkg-(skip|all)|ss|tex|infra|llvm|util|misc|dl|edit|finish)$/
+    - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|ss|tex|infra|llvm|util|misc|dl|edit|finish)$/
   except:
     - branches
   script:

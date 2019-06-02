@@ -2,7 +2,7 @@
 # Install Packages
 # ================================================================
 
-for i in pkg-{skip,all}; do
+for i in pkg-{stable,skip,all}; do
     [ -e $STAGE/$i ] && ( set -xe
         for skip in true false; do
         for attempt in $(seq $RPM_MAX_ATTEMPT -1 0); do
@@ -12,13 +12,16 @@ for i in pkg-{skip,all}; do
         done
         done
 
+        # Annotation:
+        #     [!] Stable. Change of them usually happens with distro-wide updates.
         for attempt in $(seq $RPM_MAX_ATTEMPT -1 0); do
             echo "
-                devtoolset-{6,7,8}{,-*}
-                llvm-toolset-7{,-*}
+                [!] devtoolset-{6,7,8}{,-*}
+                [!] llvm-toolset-7{,-*}
 
                 qpid-cpp-client{,-*}
-                {gcc,distcc,ccache}{,-*}
+                [!] gcc{,-*}
+                {distcc,ccache}{,-*}
                 {openmpi,mpich-3.{0,2}}{,-devel,-doc,-debuginfo}
                 java-11-openjdk{,-*}
                 octave{,-*}
@@ -32,30 +35,32 @@ for i in pkg-{skip,all}; do
                 swig{,-*}
                 sphinx{,-*}
 
-                vim{,-*}
+                [!] vim{,-*}
                 dos2unix{,-*}
 
-                {bash,fish,zsh,mosh,tmux}{,-*}
-                {bc,sed,man,pv,time,which}{,-*}
-                {parallel,jq}{,-*}
-                {tree,whereami,mlocate,lsof}{,-*}
-                {ftp{,lib},telnet,tftp,rsh}{,-debuginfo}
+                [!] bash{,-*}
+                {fish,zsh,mosh,tmux}{,-*}
+                [!] {bc,sed,man,pv,time,which}{,-*}
+                [!] parallel{,-*}
+                jq{,-*}
+                [!] {tree,whereami,mlocate,lsof}{,-*}
+                [!] {ftp{,lib},telnet,tftp,rsh}{,-debuginfo}
                 {h,if,io,latency,power,tip}top{,-*}
                 procps-ng{,-*}
-                {wget,axel,curl,net-tools}{,-*}
+                [!] {wget,axel,curl,net-tools}{,-*}
                 {f,tc,dhc,libo,io}ping{,-*}
                 hping3{,-*}
-                {traceroute,mtr,rsync,tcpdump,whois,net-snmp}{,-*}
+                [!] {traceroute,mtr,rsync,tcpdump,whois,net-snmp}{,-*}
                 torsocks{,-*}
                 {bridge-,core,crypto-,elf,find,ib,ip,pci,usb,yum-}utils{,-*}
-                util-linux{,-*}
-                moreutils{,-debuginfo}
+                [!] util-linux{,-*}
+                [!] moreutils{,-debuginfo}
                 papi{,-*}
                 rpmdevtools
                 rpm-build
                 cyrus-imapd{,-*}
                 GeoIP{,-*}
-                {device-mapper,lvm2}{,-*}
+                [!] {device-mapper,lvm2}{,-*}
                 {d,sys}stat{,-*}
                 {lm_sensors,hddtemp,smartmontools,lsscsi}{,-*}
                 {{e2fs,btrfs-,xfs,ntfs}progs,xfsdump,nfs-utils}{,-*}
@@ -66,13 +71,13 @@ for i in pkg-{skip,all}; do
                 environment-modules{,-*}
                 munge{,-*}
 
-                scl-utils{,-*}
+                [!] scl-utils{,-*}
 
                 ncurses{,-*}
                 hwloc{,-*}
                 numa{ctl,d}{,-*}
                 icu{,-*}
-                {glibc{,-devel},libgcc}
+                [!] {glibc{,-devel},libgcc}
                 {gmp,mpfr,libmpc}{,-*}
                 gperftools{,-*}
                 lib{asan{,3},tsan,ubsan}{,-*}
@@ -147,20 +152,15 @@ for i in pkg-{skip,all}; do
                 lua{,-*}
 
                 *-fonts{,-*}
-            " | xargs -n10 echo "$RPM_INSTALL $([ $i = pkg-skip ] && echo --skip-broken)" | bash && break
+            " \
+            | sed 's/^[[:space:]]*//' \
+            | sed -n "$([ "_$i" = '_pkg-stable' ] && echo 's/^\[!\][[:space:]]*//p' || echo '/./p')" \
+            | xargs -n10 echo "$RPM_INSTALL $([ "_$i" = '_pkg-skip' ] && echo --skip-broken)" \
+            | bash \
+            && break
             echo "Retrying... $attempt chance(s) left."
             [ $attempt -gt 0 ] || exit 1
         done
-
-        which parallel 2>/dev/null && sudo parallel --will-cite < /dev/null
-
-        # ------------------------------------------------------------
-
-        # Remove suspicious python modules that can cause pip>=10 to crash.
-
-        find /usr/lib{,64}/python*/site-packages -name '*.dist-info' -type f -print0 | xargs -0r rpm -qf | grep -v ' ' | tr '\n' '\0' | xargs -0r yum remove -y
-
-        # ------------------------------------------------------------
 
         for attempt in $(seq $RPM_MAX_ATTEMPT -1 0); do
             $RPM_UPDATE --skip-broken && break
@@ -172,12 +172,24 @@ for i in pkg-{skip,all}; do
         sudo yum autoremove -y
 
         # ------------------------------------------------------------
-
-        "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" giampaolo/psutil,release- nicolargo/glances,v
-
+        # Cite parallel
         # ------------------------------------------------------------
 
-        sudo updatedb
+        which parallel 2>/dev/null && sudo parallel --will-cite < /dev/null
+
+        # ------------------------------------------------------------
+        # Remove suspicious python modules that can cause pip>=10 to crash.
+        # ------------------------------------------------------------
+
+        find /usr/lib{,64}/python*/site-packages -name '*.dist-info' -type f -print0 | xargs -0r rpm -qf | grep -v ' ' | tr '\n' '\0' | xargs -0r yum remove -y
+
+        # ------------------------------------------------------------
+        # Install python utilities.
+        # ------------------------------------------------------------
+
+        if [ "_$i" = '_pkg-skip' ] || [ "_$i" = '_pkg-all' ]; then
+            "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" giampaolo/psutil,release- nicolargo/glances,v
+        fi
     )
     sudo rm -vf $STAGE/$i
     sync || true

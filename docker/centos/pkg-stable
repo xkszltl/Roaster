@@ -1,0 +1,5 @@
+FROM docker.codingcafe.org/sandbox/centos:stage-font
+
+COPY [".", "/etc/roaster/scripts"]
+
+RUN /etc/roaster/scripts/setup.sh pkg-stable

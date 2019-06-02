@@ -18,18 +18,13 @@ export BASE_DISTRO=centos
 
 [ "$CI_COMMIT_REF_NAME" ] || export CI_COMMIT_REF_NAME=build-init
 
-for CI_JOB_STAGE in init repo font pkg-skip tex ss infra llvm util misc dl edit finish; do
+for CI_JOB_STAGE in init repo font pkg-{stable,skip} tex ss infra llvm util misc dl edit finish; do
     export CI_JOB_STAGE
 
     [ "$FIRST_STAGE" ] || [ "_$(sed 's/^[^\-]*\-//' <<< "$CI_COMMIT_REF_NAME")" == "_$CI_JOB_STAGE" ] || continue
     [ "$FIRST_STAGE" ] || FIRST_STAGE="$CI_JOB_STAGE"
 
     case "$CI_JOB_STAGE" in
-    edit)
-        [ "$PREV_CI_JOB_STAGE" ]
-        sudo docker tag "$CI_REGISTRY_IMAGE/$BASE_DISTRO:stage-"{"$PREV_CI_JOB_STAGE","$CI_JOB_STAGE"}
-        sudo docker push "$CI_REGISTRY_IMAGE/$BASE_DISTRO:stage-$CI_JOB_STAGE"
-        ;;
     finish)
         [ "$PREV_CI_JOB_STAGE" ]
         sudo docker tag "$CI_REGISTRY_IMAGE/$BASE_DISTRO:"{"stage-$PREV_CI_JOB_STAGE",latest}

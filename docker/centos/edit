@@ -1,3 +1,5 @@
 FROM docker.codingcafe.org/xkszltl/roaster/centos:stage-dl
 
 COPY [".", "/etc/roaster/scripts"]
+
+RUN updatedb
