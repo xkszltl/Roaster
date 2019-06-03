@@ -19,8 +19,13 @@ if (Test-Path "$root")
 }
 
 $latest_ver="v" + $($(git ls-remote --tags "$repo") -match '.*refs/tags/v[0-9\.]*$' -replace '.*refs/tags/v','' | sort {[Version]$_})[-1]
-git clone --depth 1 --recursive --single-branch -b "$latest_ver" "$repo"
+# git clone --depth 1 --recursive --single-branch -b "$latest_ver" "$repo"
+git clone --recursive -b "$latest_ver" "$repo"
 pushd "$root"
+
+# Hot-patch LNK2001 error for v0.19.
+# See discussion in https://github.com/intel/mkl-dnn/issues/482
+git cherry-pick d485a54
 
 # Copy MKL's environment variables from ".bat" file to PowerShell.
 Invoke-Expression $($(cmd /C "`"${Env:ProgramFiles(x86)}/IntelSWTools/compilers_and_libraries/windows/mkl/bin/mklvars.bat`" intel64 lp64 vs2017 & set") -Match '^MKL(_|ROOT)' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
