@@ -20,7 +20,6 @@ export RPM_MAX_ATTEMPT=10
 #
 export RPM_BLACKLIST=$(echo "
     *-debuginfo
-    gcc-x86_64-linux-gnu
     libasan2
     python-lexicon
     python2-ansible-runner
