@@ -21,7 +21,7 @@
     until sudo yum install -y yum-axelget; do echo 'Retrying'; done
 
     until sudo yum install -y centos-release-scl{,-rh}; do echo 'Retrying'; done
-    RPM_PRIORITY=2 "$ROOT_DIR/apply_cache.sh" centos-sclo-{sclo,rh}{,-source,-debuginfo}
+    RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" centos-sclo-{sclo,rh}{,-source,-debuginfo}
 
     until sudo yum update -y --skip-broken; do echo 'Retrying'; done
     sudo yum update -y || true
