@@ -35,6 +35,7 @@ cmake                                                                   `
     -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/jsoncpp"                `
     -DCMAKE_PDB_OUTPUT_DIRECTORY="${PWD}/pdb"                           `
     -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"     `
+    -DJSONCPP_WITH_CMAKE_PACKAGE=ON                                     `
     -G"Ninja"                                                           `
     ..
 

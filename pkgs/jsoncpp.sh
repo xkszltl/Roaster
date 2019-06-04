@@ -41,6 +41,7 @@
             -DCMAKE_C{,XX}_COMPILER_LAUNCHER=ccache \
             -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
+            -DJSONCPP_WITH_CMAKE_PACKAGE=ON         \
             -G"Ninja"                               \
             ..
 
