@@ -105,6 +105,7 @@ for i in pkg-{stable,skip,all}; do
                 {asciidoc,gettext,xmlto,c-ares,pcre{,2}}{,-*}
                 librados2{,-*}
                 {gflags,glog,gmock,gtest,protobuf}{,-*}
+                {jsoncpp,rapidjson}{,-*}
                 {redis,hiredis}{,-*}
                 zeromq{,-*}
                 ImageMagick{,-*}

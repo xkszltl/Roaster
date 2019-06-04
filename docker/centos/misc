@@ -2,4 +2,4 @@ FROM docker.codingcafe.org/sandbox/centos:stage-util
 
 COPY [".", "/etc/roaster/scripts"]
 
-RUN /etc/roaster/scripts/setup.sh catch2 pybind grpc libpng mkl-dnn halide opencv leveldb rocksdb lmdb
+RUN /etc/roaster/scripts/setup.sh catch2 jsoncpp rapidjson simdjson pybind grpc libpng mkl-dnn halide opencv leveldb rocksdb lmdb

@@ -93,6 +93,7 @@ intelxed/xed,\
 jemalloc/jemalloc,\
 jordansissel/fpm,\
 Kitware/{CMake,VTK},\
+lemire/simdjson,\
 llvm-mirror/{ll{vm,d,db,go},clang{,-tools-extra},polly,compiler-rt,openmp,lib{unwind,cxx{,abi}},test-suite},\
 LMDB/lmdb,\
 lutzroeder/netron,\
@@ -110,6 +111,7 @@ NVIDIA/{DALI,DIGITS,cnmem,libglvnd,nccl,nccl-tests,nvidia-{container-runtime,doc
 NVLabs/{cub,xmp},\
 onnx/{models,onnx{,-tensorrt,mltools},tutorials},\
 open-mpi/ompi,\
+open-source-parsers/jsoncpp,\
 opencv/opencv{,_contrib},\
 openssl/openssl,\
 openwrt/{luci,openwrt,packages,targets,telephony,video},\
@@ -129,6 +131,7 @@ SchedMD/slurm,\
 scipy/scipy{,-mathjax,-sphinx-theme},\
 shadowsocks/{ShadowsocksX-NG,libQtShadowsocks,shadowsocks{,-go,-libev,-manager,-windows}},\
 shibatch/sleef,\
+Tencent/rapidjson,\
 tensorflow/tensorflow,\
 torvalds/linux,\
 USCiLab/cereal,\
