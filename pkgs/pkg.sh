@@ -91,6 +91,7 @@ for i in pkg-{stable,skip,all}; do
                 libunicap{,gtk}{,-*}
                 [!] libglvnd{,-*}
                 lib{dc,raw}1394{,-*}
+                freetype{,-*}
                 {zlib,libzip,{,lib}zstd,lz4,{,p}{bzip2,xz},pigz,cpio,tar,snappy,unrar}{,-*}
                 [!] libaio{,-*}
                 lib{telnet,ssh{,2},curl,ffi,edit,icu,xslt}{,-*}
