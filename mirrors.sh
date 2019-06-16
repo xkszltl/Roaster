@@ -65,6 +65,7 @@ c-ares/c-ares,\
 caffe2/{caffe2,models},\
 catchorg/{Catch2,Clara},\
 ccache/ccache,\
+cocodataset/{cocoapi,panopticapi},\
 containerd/containerd,\
 cython/cython,\
 dmlc/{dlpack,dmlc-core,gluon-cv,gluon-nlp,HalideIR,tvm,xgboost},\
@@ -114,7 +115,7 @@ NVLabs/{cub,xmp},\
 onnx/{models,onnx{,-tensorrt,mltools},tutorials},\
 open-mpi/ompi,\
 open-source-parsers/jsoncpp,\
-opencv/opencv{,_contrib},\
+opencv/{cvat,dldt,open_model_zoo,opencv{,_{contrib,extra}},openvino_training_extensions},\
 openssl/openssl,\
 openwrt/{luci,openwrt,packages,targets,telephony,video},\
 PeachPy/enum34,\
@@ -134,7 +135,7 @@ scipy/scipy{,-mathjax,-sphinx-theme},\
 shadowsocks/{ShadowsocksX-NG,libQtShadowsocks,shadowsocks{,-go,-libev,-manager,-windows}},\
 shibatch/sleef,\
 Tencent/rapidjson,\
-tensorflow/tensorflow,\
+tensorflow/{agents,datasets,docs,io,models,tensorboard,tensorflow,transform},\
 torvalds/linux,\
 USCiLab/cereal,\
 wjakob/clang-cindex-python3,\
