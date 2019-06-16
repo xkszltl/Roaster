@@ -1,14 +1,10 @@
-FROM docker.codingcafe.org/xkszltl/roaster/ubuntu:stage-init
-
-SHELL ["/bin/bash", "-c"]
+FROM docker.codingcafe.org/xkszltl/roaster/ubuntu:stage-font
 
 COPY [".", "/etc/roaster/scripts"]
 
-RUN apt-get update -y \
-    && apt-get upgrade -y \
-    && apt-get install -y apt-utils sudo \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-        apt-{file,transport-https} \
+RUN sudo apt-get update -y \
+    && sudo apt-get upgrade -y \
+    && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
         asciidoc \
         autoconf{,-archive} automake autopoint \
         axel \
@@ -24,7 +20,6 @@ RUN apt-get update -y \
         curl \
         default-jdk ant maven \
         flex \
-        fonts-* \
         g++{,-4,-5,-6,-7,-8} \
         gdb \
         gettext \
@@ -76,10 +71,10 @@ RUN apt-get update -y \
         wget \
         xz-utils pxz \
         zstd libzstd-dev \
-    && apt-get autoremove -y \
-    && apt-get clean \
-    && update-alternatives --set libblas.so.3-x86_64-linux-gnu /usr/lib/x86_64-linux-gnu/atlas/libblas.so.3 \
-    && update-alternatives --set liblapack.so.3-x86_64-linux-gnu /usr/lib/x86_64-linux-gnu/atlas/liblapack.so.3 \
-    && parallel --will-cite < /dev/null \
+    && sudo apt-get autoremove -y \
+    && sudo apt-get clean \
+    && sudo update-alternatives --set libblas.so.3-x86_64-linux-gnu /usr/lib/x86_64-linux-gnu/atlas/libblas.so.3 \
+    && sudo update-alternatives --set liblapack.so.3-x86_64-linux-gnu /usr/lib/x86_64-linux-gnu/atlas/liblapack.so.3 \
+    && sudo parallel --will-cite < /dev/null \
     && truncate -s0 ~/.bash_history
 RUN /etc/roaster/scripts/setup.sh fpm
