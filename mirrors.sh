@@ -84,8 +84,10 @@ github/{git-lfs,gitignore},\
 goldmann/docker-squash,\
 google/{benchmark,bloaty,boringssl,gemmlowp,glog,googletest,leveldb,nsync,protobuf,re2,snappy,upb},\
 googleapis/googleapis,\
+googlefonts/{fontmake,noto-{cjk,emoji,fonts,sans-hebrew,source},nototools,robotoslab},\
 grpc/grpc{,-{dart,dotnet,go,java,node,php,proto,swift,web}},\
 halide/Halide,\
+harfbuzz/harfbuzz,\
 HowardHinnant/date,\
 HypothesisWorks/hypothesis,\
 intel/{ARM_NEON_2_x86_SSE,compute-runtime,ideep,mkl-dnn},\
