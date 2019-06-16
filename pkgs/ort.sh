@@ -102,6 +102,9 @@
         time cmake --build .
         time cmake --build . --target install
 
+        # Install MKLML
+        ldd libonnxruntime.so | sed -n 's/.*libmklml_.* => *\(.*\) (0x[0-9a-f]*) *$/\1/p' | xargs -rn1 install -t "$INSTALL_ABS/lib64"
+
         if [ "_$GIT_MIRROR" = "_$GIT_MIRROR_CODINGCAFE" ]; then
             curl -sSL 'https://repo.codingcafe.org/microsoft/onnxruntime/20181210.zip' > 'models.zip'
         else
