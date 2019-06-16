@@ -21,10 +21,10 @@
             set +xe
             . scl_source enable devtoolset-8
             set -xe
-            export CC="gcc" CXX="g++"
+            export CC="gcc" CXX="g++" FC="gfortran"
             ;;
         'ubuntu')
-            export CC="gcc-8" CXX="g++-8"
+            export CC="gcc-8" CXX="g++-8" FC="gfortran-8"
             ;;
         esac
 
