@@ -20,9 +20,10 @@ RUN sudo apt-get update -y \
         curl \
         default-jdk ant maven \
         flex \
-        g++{,-4,-5,-6,-7,-8} \
+        g++{,-{4,5,6,7,8}} \
         gdb \
         gettext \
+        gfortran{,-{5,6,7,8}} \
         git{,-{extras,lfs}} \
         glances \
         gperf \
