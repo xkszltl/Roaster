@@ -38,6 +38,42 @@ Features
 * Yum repositoies mirroring
 * DDns
 
+Bootstrap
+====================
+
+Officially we rely on CI system to build our image.
+If you'd like to build your own image, there's a very simple way to bootstrap without complicated setup.
+
+Dependency
+--------------------
+
+All you need is a docker to run `docker build`, and a few basic Linux tools available everywhere.
+
+* bash (>= 4.0)
+* coreutils
+* docker (>= 18.09)
+* sudo
+* which
+
+We will handle `docker build` and `docker push` for you,
+If you want to do it for a private docker registry, please `docker login` in advance.
+
+Build
+--------------------
+
+```
+docker login example.org -u your_user_name
+dist=centos     # Support centos/ubuntu.
+CI_REGISTRY_IMAGE=example.org/roaster CI_COMMIT_REF_NAME=build-init gitlab-ci/build_$dist.sh
+```
+
+`CI_REGISTRY_IMAGE` is mandatory and it should point to the base dir without `$dist`.
+Make sure your registry supports hierarchical path.
+
+`CI_COMMIT_REF_NAME` is optional.
+You can use it to emulate a git tag `build-xxx` in our CI system, which allows you to start build from a certain stsage.
+We also support `resume-xxx` it the previous build failed and a breakpoint image is created.
+
 License
 ====================
 
