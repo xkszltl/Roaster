@@ -111,7 +111,7 @@ nicolargo/glances,\
 ninja-build/ninja,\
 numpy/numpy{,doc},\
 NVIDIA/{DALI,DIGITS,cnmem,libglvnd,nccl,nccl-tests,nvidia-{container-runtime,docker,installer,modprobe,persistenced,settings,xconfig}},\
-NVLabs/{cub,xmp},\
+NVlabs/{cub,xmp},\
 onnx/{models,onnx{,-tensorrt,mltools},tutorials},\
 open-mpi/ompi,\
 open-source-parsers/jsoncpp,\
