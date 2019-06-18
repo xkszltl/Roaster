@@ -25,6 +25,9 @@ foreach ($pkg in @(
     "cudnn",
     "intel",
     "mklml",
+    "freetype",
+    "harfbuzz",
+    "freetype", # Loop dependency between HarfBuzz/FreeType.
     "boost",
     "jsoncpp",
     "eigen",

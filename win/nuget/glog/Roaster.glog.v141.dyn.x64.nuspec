@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/google/glog</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>C++ implementation of the Google logging module</summary>
-    <description>This repository contains a C++ implementation of the Google logging module. Documentation for the implementation is in doc/.</description>
+    <description>This repository contains a C++ implementation of the Google logging module. Documentation for the implementation is in doc.</description>
     <releaseNotes>https://github.com/google/glog/blob/master/ChangeLog</releaseNotes>
     <copyright>Copyright 2008</copyright>
     <tags>glog native C++ v141 dyn</tags>

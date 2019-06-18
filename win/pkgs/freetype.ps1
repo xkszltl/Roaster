@@ -7,7 +7,7 @@ $ErrorActionPreference="Stop"
 . "$PSScriptRoot/env/toolchain.ps1"
 
 pushd ${Env:TMP}
-$repo="${Env:GIT_MIRROR}/google/glog.git"
+$repo="https://git.savannah.gnu.org/git/freetype/freetype2.git"
 $proj="$($repo -replace '.*/','' -replace '.git$','')"
 $root="${Env:TMP}/$proj"
 
@@ -18,24 +18,26 @@ if (Test-Path "$root")
     Exit 1
 }
 
-$latest_ver='v' + $($(git ls-remote --tags "$repo") -match '.*refs/tags/v[0-9\.]*$' -replace '.*refs/tags/v','' | sort {[Version]$_})[-1]
+$latest_ver='VER-' + $($($(git ls-remote --tags "$repo") -match '.*refs/tags/VER\-[0-9\-]*$' -replace '.*refs/tags/VER\-','' -replace '\-','.' | sort {[Version]$_}) -replace '\.','-')[-1]
 git clone --depth 1 --single-branch -b "$latest_ver" "$repo"
 pushd "$root"
-mkdir build-win
-pushd build-win
+mkdir build
+pushd build
 
-# - Please ignore warning C4273 since it is by design and safe.
-#   dllexport in ".cc" will precedence over dllimport in ".h".
 cmake                                                               `
     -DBUILD_SHARED_LIBS=ON                                          `
     -DCMAKE_BUILD_TYPE=Release                                      `
     -DCMAKE_C_FLAGS="/GL /MP /Zi"                                   `
-    -DCMAKE_CXX_FLAGS="/EHsc /GL /MP /Zi"                           `
     -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"    `
-    -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/glog"               `
+    -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/freetype"           `
     -DCMAKE_PDB_OUTPUT_DIRECTORY="${PWD}/pdb"                       `
+    -DCMAKE_POLICY_DEFAULT_CMP0074=NEW                              `
     -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental" `
     -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                 `
+    -DFT_WITH_HARFBUZZ=ON                                           `
+    -DFT_WITH_PNG=OFF                                               `
+    -DFT_WITH_ZLIB=ON                                               `
+    -DHarfBuzz_ROOT="${Env:ProgramFiles}/harfbuzz"                  `
     -G"Ninja"                                                       `
     ..
 
@@ -50,22 +52,10 @@ if (-Not $?)
     exit 1
 }
 
-$ErrorActionPreference="SilentlyContinue"
-cmake --build . --target test
-if (-Not $?)
-{
-    echo "Check failed but we temporarily bypass it."
-}
-$ErrorActionPreference="Stop"
-
-rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${Env:ProgramFiles}/glog"
+rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${Env:ProgramFiles}/freetype"
 cmake --build . --target install
-cmd /c xcopy /i /f /y "pdb\*.pdb" "${Env:ProgramFiles}\glog\bin"
-Get-ChildItem "${Env:ProgramFiles}/glog" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
-
-# Alias to google-glog as it is the default name in CMake.
-cmd /c rmdir /S /Q "${Env:ProgramFiles}/google-glog"
-cmd /c mklink /D "${Env:ProgramFiles}/google-glog" "${Env:ProgramFiles}/glog"
+cmd /c xcopy /i /f /y "pdb\*.pdb" "${Env:ProgramFiles}\freetype\bin"
+Get-ChildItem "${Env:ProgramFiles}/freetype" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 
 popd
 popd
