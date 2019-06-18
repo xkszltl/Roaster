@@ -11,12 +11,12 @@ if (-not $(Test-Path $DownloadDir))
     Exit 1
 }
 
-$exe = "cuda_10.0.130_win10_network.exe"
+$exe = "cuda_10.1.168_win10_network.exe"
 if (-not $(Test-Path "${DownloadDir}/$exe"))
 {
     Write-Host "Downloading CUDA installation files..."
     $wc = [System.Net.WebClient]::new()
-    $wc.DownloadFile("https://developer.nvidia.com/compute/cuda/10.0/Prod/network_installers/$($exe.substring(0, $exe.IndexOf(".exe")))", "${DownloadDir}/${exe}.downloading")
+    $wc.DownloadFile("https://developer.nvidia.com/compute/cuda/10.1/Prod/network_installers/$($exe.substring(0, $exe.IndexOf(".exe")))", "${DownloadDir}/${exe}.downloading")
     mv -Force ${DownloadDir}/${exe}.downloading ${DownloadDir}/${exe}
 }
 
