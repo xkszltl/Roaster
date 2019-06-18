@@ -54,7 +54,6 @@
         # --------------------------------------------------------
 
         cmake                                               \
-            -G"Ninja"                                       \
             -DBUILD_PROTOBUF=OFF                            \
             -DBUILD_WITH_DEBUG_INFO=ON                      \
             -DBUILD_opencv_world=OFF                        \
@@ -90,6 +89,7 @@
             -DENABLE_CCACHE=ON                              \
             -DENABLE_CXX11=ON                               \
             -DENABLE_LTO=ON                                 \
+            -DENABLE_PRECOMPILED_HEADERS=ON                 \
             -DINSTALL_CREATE_DISTRIB=ON                     \
             -DINSTALL_TESTS=ON                              \
             -DMKL_WITH_OPENMP=ON                            \
@@ -106,6 +106,7 @@
             -DWITH_QT=ON                                    \
             -DWITH_UNICAP=ON                                \
             -DWITH_VULKAN=ON                                \
+            -G"Ninja"                                       \
             ..
 
         time cmake --build . --target install
