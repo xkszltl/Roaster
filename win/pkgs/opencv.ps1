@@ -46,6 +46,8 @@ Invoke-Expression $($(cmd /C "`"${Env:ProgramFiles(x86)}/IntelSWTools/compilers_
 
 # - Only "Release" and "Debug" are supported.
 #   Use "BUILD_WITH_DEBUG_INFO" for "RelWithDebInfo".
+
+${Env:FREETYPE_DIR}="${Env:ProgramFiles}/freetype"
 cmake                                                                   `
     -DBUILD_PROTOBUF=OFF                                                `
     -DBUILD_SHARED_LIBS=ON                                              `
@@ -59,6 +61,7 @@ cmake                                                                   `
     -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"        `
     -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/opencv"                 `
     -DCMAKE_PDB_OUTPUT_DIRECTORY="${PWD}/pdb"                           `
+    -DCMAKE_POLICY_DEFAULT_CMP0074=NEW                                  `
     -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"     `
     -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                     `
     -DCPU_BASELINE=AVX                                                  `
@@ -69,6 +72,13 @@ cmake                                                                   `
     -DENABLE_CXX11=ON                                                   `
     -DENABLE_LTO=ON                                                     `
     -DENABLE_PRECOMPILED_HEADERS=ON                                     `
+    -DFREETYPE_FOUND=ON                                                 `
+    -DFREETYPE_INCLUDE_DIRS="${Env:ProgramFiles}/freetype/include/freetype2"    `
+    -DFREETYPE_LIBRARIES="${Env:ProgramFiles}/freetype/lib/freetype.lib"`
+    -DHARFBUZZ_FOUND=ON                                                 `
+    -DHARFBUZZ_INCLUDE_DIRS="${Env:ProgramFiles}/harfbuzz/include/harfbuzz"     `
+    -DHARFBUZZ_LIBRARIES="${Env:ProgramFiles}/harfbuzz/lib/harfbuzz.lib"`
+    -DHarfBuzz_ROOT="${Env:ProgramFiles}/harfbuzz"                      `
     -DINSTALL_CREATE_DISTRIB=OFF                                        `
     -DINSTALL_TESTS=ON                                                  `
     -DMKL_WITH_OPENMP=ON                                                `
@@ -76,7 +86,7 @@ cmake                                                                   `
     -DOPENCV_EXTRA_MODULES_PATH='../contrib/modules'                    `
     -DOpenGL_GL_PREFERENCE=GLVND                                        `
     -DPROTOBUF_UPDATE_FILES=ON                                          `
-    -DWITH_CUDA=ON                                                      `
+    -DWITH_CUDA=OFF                                                     `
     -DWITH_HALIDE=OFF                                                   `
     -DWITH_MKL=ON                                                       `
     -DWITH_NVCUVID=ON                                                   `
@@ -100,7 +110,7 @@ if (-Not $?)
 }
 
 $ErrorActionPreference="SilentlyContinue"
-cmake --build . --target test
+ctest -j ${Env:NUMBER_OF_PROCESSORS}
 if (-Not $?)
 {
     echo "Check failed but we temporarily bypass it."
@@ -108,7 +118,7 @@ if (-Not $?)
 $ErrorActionPreference="Stop"
 
 rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${Env:ProgramFiles}/opencv"
-cmake --build . --config Release --target install -- -maxcpucount
+cmake --build . --target install
 Get-ChildItem "${Env:ProgramFiles}/opencv" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 
 popd
