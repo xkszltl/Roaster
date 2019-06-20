@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Roaster.opencv.v141.dyn.x64</id>
+    <version>$version$</version>
+    <title>Roaster.opencv.v141.dyn.x64</title>
+    <authors>OpenCV Team</authors>
+    <owners>Tongliang Liao</owners>
+    <licenseUrl>https://opencv.org/license/</licenseUrl>
+    <projectUrl>https://opencv.org</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>OpenCV (Open Source Computer Vision Library) is an open source computer vision and machine learning software library.</summary>
+    <description>OpenCV was built to provide a common infrastructure for computer vision applications and to accelerate the use of machine perception in the commercial products. Being a BSD-licensed product, OpenCV makes it easy for businesses to utilize and modify the code.</description>
+    <releaseNotes>https://github.com/opencv/opencv/wiki/ChangeLog</releaseNotes>
+    <copyright>Copyright 2000</copyright>
+    <tags>opencv opencv4 native C++ v141 dyn</tags>
+    <dependencies>
+      <dependency id="Roaster.freetype.v141.dyn.x64" version="[$version$]" />
+      <dependency id="Roaster.harfbuzz.v141.dyn.x64" version="[$version$]" />
+      <dependency id="Roaster.mkl.v141.dyn.x64"      version="[$version$]" />
+      <dependency id="Roaster.protobuf.v141.dyn.x64" version="[$version$]" />
+      <dependency id="Roaster.zlib.v141.dyn.x64"     version="[$version$]" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="Roaster.opencv.v141.dyn.x64.targets" target="build\Roaster.opencv.v141.dyn.x64.targets" />
+    <file src="opencv\*.cmake"                      target="lib\native\cmake\" />
+    <file src="opencv\LICENSE\**\*"                 target="lib\native\" />
+    <file src="opencv\bin\**\*.exe"                 target="lib\native\lib\Release\" />
+    <file src="opencv\bin\**\*.dll"                 target="lib\native\lib\Release\" />
+    <file src="opencv\etc\**\*"                     target="lib\native\etc\" />
+    <file src="opencv\x64\vc16\bin\*"               target="lib\native\lib\Release\" />
+  </files>
+</package>

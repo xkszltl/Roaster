@@ -40,6 +40,7 @@ foreach ($pkg in @(
     "snappy",
     "protobuf",
     "grpc",
+    'opencv'
     "rocksdb",
     "onnx",
     "pytorch",

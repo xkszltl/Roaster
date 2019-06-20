@@ -147,7 +147,7 @@ cmake                                                                           
     -DUSE_NUMA=OFF                                                              `
     -DUSE_OBSERVERS=ON                                                          `
     -DUSE_OPENMP=ON                                                             `
-    -DUSE_OPENCV=OFF                                                            `
+    -DUSE_OPENCV=ON                                                             `
     -DUSE_ROCKSDB=ON                                                            `
     -Dglog_DIR="${Env:ProgramFiles}/google-glog/lib/cmake/glog"                 `
     -Dgtest_force_shared_crt=ON                                                 `

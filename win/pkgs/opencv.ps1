@@ -116,6 +116,7 @@ $ErrorActionPreference="Stop"
 
 rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${Env:ProgramFiles}/opencv"
 cmake --build . --target install
+cmd /c xcopy /i /f /y "pdb\*.pdb" "${Env:ProgramFiles}\opencv\x64\vc16\bin"
 Get-ChildItem "${Env:ProgramFiles}/opencv" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 
 popd
