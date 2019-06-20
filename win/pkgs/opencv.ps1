@@ -107,11 +107,11 @@ if (-Not $?)
 }
 
 $ErrorActionPreference="SilentlyContinue"
-ctest -j ${Env:NUMBER_OF_PROCESSORS}
-if (-Not $?)
-{
-    echo "Check failed but we temporarily bypass it."
-}
+# ctest -j ${Env:NUMBER_OF_PROCESSORS}
+# if (-Not $?)
+# {
+#     echo "Check failed but we temporarily bypass it."
+# }
 $ErrorActionPreference="Stop"
 
 rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${Env:ProgramFiles}/opencv"
