@@ -47,7 +47,6 @@ Invoke-Expression $($(cmd /C "`"${Env:ProgramFiles(x86)}/IntelSWTools/compilers_
 # - Only "Release" and "Debug" are supported.
 #   Use "BUILD_WITH_DEBUG_INFO" for "RelWithDebInfo".
 
-${Env:FREETYPE_DIR}="${Env:ProgramFiles}/freetype"
 cmake                                                                   `
     -DBUILD_PROTOBUF=OFF                                                `
     -DBUILD_SHARED_LIBS=ON                                              `
@@ -61,7 +60,6 @@ cmake                                                                   `
     -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"        `
     -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/opencv"                 `
     -DCMAKE_PDB_OUTPUT_DIRECTORY="${PWD}/pdb"                           `
-    -DCMAKE_POLICY_DEFAULT_CMP0074=NEW                                  `
     -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"     `
     -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                     `
     -DCPU_BASELINE=AVX                                                  `
@@ -73,12 +71,11 @@ cmake                                                                   `
     -DENABLE_LTO=ON                                                     `
     -DENABLE_PRECOMPILED_HEADERS=ON                                     `
     -DFREETYPE_FOUND=ON                                                 `
-    -DFREETYPE_INCLUDE_DIRS="${Env:ProgramFiles}/freetype/include/freetype2"    `
-    -DFREETYPE_LIBRARIES="${Env:ProgramFiles}/freetype/lib/freetype.lib"`
+    -DFREETYPE_INCLUDE_DIRS="$(${Env:ProgramFiles} -replace '\\','/')/freetype/include/freetype2"   `
+    -DFREETYPE_LIBRARIES="$(${Env:ProgramFiles} -replace '\\','/')/freetype/lib/freetype.lib"       `
     -DHARFBUZZ_FOUND=ON                                                 `
-    -DHARFBUZZ_INCLUDE_DIRS="${Env:ProgramFiles}/harfbuzz/include/harfbuzz"     `
-    -DHARFBUZZ_LIBRARIES="${Env:ProgramFiles}/harfbuzz/lib/harfbuzz.lib"`
-    -DHarfBuzz_ROOT="${Env:ProgramFiles}/harfbuzz"                      `
+    -DHARFBUZZ_INCLUDE_DIRS="$(${Env:ProgramFiles} -replace '\\','/')/harfbuzz/include/harfbuzz"    `
+    -DHARFBUZZ_LIBRARIES="$(${Env:ProgramFiles} -replace '\\','/')/harfbuzz/lib/harfbuzz.lib"       `
     -DINSTALL_CREATE_DISTRIB=OFF                                        `
     -DINSTALL_TESTS=ON                                                  `
     -DMKL_WITH_OPENMP=ON                                                `
