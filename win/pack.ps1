@@ -92,6 +92,10 @@ Get-ChildItem ../nuget | Foreach-Object {
     {
         $prefix = "${Env:ProgramFiles}/ONNX"
     }
+    elseif ($pkg -eq "opencv" -or $pkg -eq "opencv-dev")
+    {
+        $prefix = "${Env:ProgramFiles}/opencv"
+    }
     elseif ($pkg -eq "protobuf" -or $pkg -eq "protobuf-dev")
     {
         $prefix = "${Env:ProgramFiles}/protobuf"
