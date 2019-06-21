@@ -112,7 +112,6 @@ cmake                                                                           
     -DBUILD_PYTHON=ON                                                           `
     -DBUILD_SHARED_LIBS=ON                                                      `
     -DBUILD_TEST=ON                                                             `
-    -DBUILD_TORCH=ON                                                            `
     -DCMAKE_BUILD_TYPE=Release                                                  `
     -DCMAKE_C_FLAGS="/FS /GL /MP /Zi /arch:AVX2 ${cflags}"                      `
     -DCMAKE_CUDA_SEPARABLE_COMPILATION=ON                                       `
