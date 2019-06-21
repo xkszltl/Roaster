@@ -5,10 +5,6 @@
       <Link>c10.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/caffe2.dll">
-      <Link>caffe2.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/caffe2_detectron_ops.dll">
       <Link>caffe2_detectron_ops.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
