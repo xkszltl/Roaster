@@ -107,12 +107,12 @@
         ldd libonnxruntime.so | sed -n 's/.*libmklml_.* => *\(.*\) (0x[0-9a-f]*) *$/\1/p' | xargs -rn1 install -t "$INSTALL_ABS/lib"
 
         if [ "_$GIT_MIRROR" = "_$GIT_MIRROR_CODINGCAFE" ]; then
-            curl -sSL 'https://repo.codingcafe.org/microsoft/onnxruntime/20181210.zip' > 'models.zip'
+            curl -sSL 'https://repo.codingcafe.org/microsoft/onnxruntime/20190419.zip' > 'models.zip'
         else
-            axel -n200 -o 'models.zip' 'https://onnxruntimetestdata.blob.core.windows.net/models/20181210.zip'
+            axel -n200 -o 'models.zip' 'https://onnxruntimetestdata.blob.core.windows.net/models/20190419.zip'
         fi
 
-        md5sum -c <<< 'a966def7447f4ff04f5665bca235b3f3 models.zip'
+        md5sum -c <<< '3f46c31ee02345dbe707210b339e31fe models.zip'
         unzip -o models.zip -d ../models
         rm -rf models.zip
 
