@@ -1,12 +1,9 @@
-FROM docker.codingcafe.org/xkszltl/roaster/ubuntu:stage-init
+FROM docker.codingcafe.org/xkszltl/roaster/ubuntu:stage-repo
 
 COPY [".", "/etc/roaster/scripts"]
 
 RUN apt-get update -y \
     && apt-get upgrade -y \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -y sudo \
-    && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y apt-{file,transport-https,utils} coreutils \
-    && sudo apt-get update -y \
     && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y $(apt-cache --names-only search '^fonts-*' | cut -d' ' -f1 | grep -v mathematica) \
     && sudo apt-get autoremove -y \
     && sudo apt-get clean \
