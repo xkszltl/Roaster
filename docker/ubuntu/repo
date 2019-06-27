@@ -2,19 +2,4 @@ FROM docker.codingcafe.org/xkszltl/roaster/ubuntu:stage-init
 
 COPY [".", "/etc/roaster/scripts"]
 
-RUN apt-get update -y \
-    && apt-get upgrade -y \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -y sudo \
-    && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
-        apt-{file,transport-https,utils} \
-        ca-certificates \
-        coreutils \
-        curl \
-        gnupg-agent \
-        software-properties-common \
-    && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - \
-    && sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" \
-    && sudo apt-get update -y \
-    && sudo apt-get autoremove -y \
-    && sudo apt-get clean \
-    && truncate -s0 ~/.bash_history
+RUN /etc/roaster/scripts/setup.sh repo

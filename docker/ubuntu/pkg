@@ -17,6 +17,7 @@ RUN sudo apt-get update -y \
         ccache \
         cmake{,-curses-gui} \
         cpio \
+        cuda lib{cudnn7,nccl,nvinfer}-dev \
         curl \
         default-jdk ant maven \
         docker-ce docker-ce-cli containerd.io \
