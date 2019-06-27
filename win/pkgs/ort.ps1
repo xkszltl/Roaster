@@ -27,7 +27,7 @@ $latest_ver = 'v' + $($(git ls-remote --tags "$repo") -match '.*refs/tags/v[0-9\
 # $latest_ver = 'rel-' + $($(git ls-remote --heads "$repo") -match '.*refs/heads/rel-[0-9\.]*$' -replace '.*refs/heads/rel-','' | sort {[Version]$_})[-1]
 
 # Use master.
-# $latest_ver = 'master'
+$latest_ver = 'master'
 
 git clone --recursive -b "$latest_ver" -j100 "$repo"
 pushd "$root"
@@ -200,7 +200,7 @@ $model_path = "${Env:TMP}/onnxruntime_models.zip"
 rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${model_path}.downloading"
 if (-not $(Test-Path $model_path))
 {
-    & "${Env:ProgramFiles}/CURL/bin/curl.exe" -fkSL "https://onnxruntimetestdata.blob.core.windows.net/models/20190327.zip" -o "${model_path}.downloading"
+    & "${Env:ProgramFiles}/CURL/bin/curl.exe" -fkSL "https://onnxruntimetestdata.blob.core.windows.net/models/20190419.zip" -o "${model_path}.downloading"
     mv -Force "${model_path}.downloading" "${model_path}"
 }
 
