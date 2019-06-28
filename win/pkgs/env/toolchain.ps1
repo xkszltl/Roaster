@@ -138,7 +138,7 @@ if (-Not $Env:ROASTER_TOOLCHAIN_COMMITED)
 
     if (${Env:NINJA_HOME} -eq $null -or -not $(Test-Path ${Env:NINJA_HOME}/ninja.exe -ErrorAction SilentlyContinue))
     {
-        $ninja_ver="1.8.2"
+        $ninja_ver="1.9.0"
         $DownloadURL = "https://github.com/ninja-build/ninja/releases/download/v${ninja_ver}/ninja-win.zip"
         $DownloadPath = "${Env:TMP}/ninja-win.zip"
         Write-Host "Downloading Ninja..."
