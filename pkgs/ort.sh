@@ -70,7 +70,6 @@
             -DCMAKE_{C,CXX,CUDA}_COMPILER_LAUNCHER=ccache   \
             -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"           \
-            -DCMAKE_POLICY_DEFAULT_CMP0003=NEW              \
             -DCMAKE_POLICY_DEFAULT_CMP0060=NEW              \
             -DCMAKE_VERBOSE_MAKEFILE=ON                     \
             -Deigen_SOURCE_PATH="/usr/local/include/eigen3" \
@@ -89,6 +88,7 @@
             -Donnxruntime_USE_LLVM=ON                       \
             -Donnxruntime_USE_MKLDNN=ON                     \
             -Donnxruntime_USE_MKLML=ON                      \
+            -Donnxruntime_USE_NGRAPH=OFF                    \
             -Donnxruntime_USE_NSYNC=OFF                     \
             -Donnxruntime_USE_NUPHAR=OFF                    \
             -Donnxruntime_USE_OPENBLAS=OFF                  \
