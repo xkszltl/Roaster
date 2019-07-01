@@ -81,7 +81,7 @@
             -Donnxruntime_ENABLE_LTO=OFF                    \
             -Donnxruntime_RUN_ONNX_TESTS=ON                 \
             -Donnxruntime_USE_BRAINSLICE=OFF                \
-            -Donnxruntime_USE_CUDA=OFF                      \
+            -Donnxruntime_USE_CUDA=ON                       \
             -Donnxruntime_USE_EIGEN_FOR_BLAS=ON             \
             -Donnxruntime_USE_EIGEN_THREADPOOL=OFF          \
             -Donnxruntime_USE_FULL_PROTOBUF=ON              \
