@@ -12,7 +12,7 @@ case "$DISTRO_ID" in
     sudo yum install -y bc coreutils findutils sed
     ;;
 'debian' | 'linuxmint' | "ubuntu")
-    sudo apt-get install -y bc coreutils findutils iputils-ping sed
+    sudo apt-get install -y bc bsdmainutils coreutils findutils iputils-ping sed
     ;;
 esac
 

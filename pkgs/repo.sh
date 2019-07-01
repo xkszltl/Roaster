@@ -76,10 +76,10 @@
             nvml_repo="$nvml_repo/$(curl -sSL "$nvml_repo" | sed -n "s/.*href='\(ubuntu$(sed 's/\.//g' <<< "$DISTRO_VERSION_ID")[^']*\)\/.*/\1/p" | sort -V | tail -n1)/x86_64"
             nvml_repo="$nvml_repo/$(curl -sSL "$nvml_repo" | sed -n "s/.*href='\(nvidia-machine-learning-repo-[^']*\).*/\1/p" | sort -V | tail -n1)"
             curl -SL "$cuda_repo" > "$(basename "$cuda_repo")"
-            sudo DEBIAN_FRONTEND=noninteractive apt-get install -y "$(basename "$cuda_repo")"
+            sudo DEBIAN_FRONTEND=noninteractive apt-get install -y "./$(basename "$cuda_repo")"
             rm -rf "$(basename "$cuda_repo")"
             curl -SL "$nvml_repo" > "$(basename "$nvml_repo")"
-            sudo DEBIAN_FRONTEND=noninteractive apt-get install -y "$(basename "$nvml_repo")"
+            sudo DEBIAN_FRONTEND=noninteractive apt-get install -y "./$(basename "$nvml_repo")"
             rm -rf "$(basename "$nvml_repo")"
         )
 
