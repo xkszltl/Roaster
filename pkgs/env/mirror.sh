@@ -9,10 +9,20 @@ export GIT_MIRROR_CODINGCAFE="10000,https://git.codingcafe.org/Mirrors"
 
 case "$DISTRO_ID" in
 'centos' | 'rhel')
-    sudo yum install -y bc coreutils findutils sed
+    which bc     > /dev/null 2> /dev/null || sudo yum install -y bc
+    which column > /dev/null 2> /dev/null || sudo yum install -y util-linux
+    which paste  > /dev/null 2> /dev/null || sudo yum install -y coreutils
+    which ping   > /dev/null 2> /dev/null || sudo yum install -y iputils
+    which sed    > /dev/null 2> /dev/null || sudo yum install -y sed
+    which xargs  > /dev/null 2> /dev/null || sudo yum install -y findutils
     ;;
 'debian' | 'linuxmint' | "ubuntu")
-    sudo apt-get install -y bc bsdmainutils coreutils findutils iputils-ping sed
+    which bc     > /dev/null 2> /dev/null || sudo apt-get install -y bc
+    which column > /dev/null 2> /dev/null || sudo apt-get install -y bsdmainutils 
+    which paste  > /dev/null 2> /dev/null || sudo apt-get install -y coreutils
+    which ping   > /dev/null 2> /dev/null || sudo apt-get install -y iputils-ping
+    which sed    > /dev/null 2> /dev/null || sudo apt-get install -y sed
+    which xargs  > /dev/null 2> /dev/null || sudo apt-get install -y findutils
     ;;
 esac
 
