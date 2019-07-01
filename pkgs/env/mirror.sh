@@ -7,10 +7,14 @@ export GIT_MIRROR_CODINGCAFE="10000,https://git.codingcafe.org/Mirrors"
 
 # ----------------------------------------------------------------
 
-which bc > /dev/null 2> /dev/null || sudo yum install --skip-broken -y bc
-which sed > /dev/null 2> /dev/null || sudo yum install --skip-broken -y sed
-which paste > /dev/null 2> /dev/null || sudo yum install --skip-broken -y coreutils
-which xargs > /dev/null 2> /dev/null || sudo yum install --skip-broken -y findutils
+case "$DISTRO_ID" in
+'centos' | 'rhel')
+    sudo yum install -y bc coreutils findutils sed
+    ;;
+'debian' | 'linuxmint' | "ubuntu")
+    sudo apt-get install -y bc coreutils findutils iputils-ping sed
+    ;;
+esac
 
 echo '----------------------------------------------------------------'
 echo '               Measure link quality to git mirrors              '

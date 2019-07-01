@@ -96,7 +96,7 @@ if ! which sudo; then
         dnf install -y sudo
         ;;
     "debian" | "linuxmint" | "ubuntu")
-        apt-cache update
+        apt-get update -y
         apt-get install -y sudo
         ;;
     esac

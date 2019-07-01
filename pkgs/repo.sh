@@ -68,7 +68,7 @@
             set -xe
             cd "$SCRATCH"
 
-            cuda_repo="https://developer.download.nvidia.com/compute/cuda/rep"
+            cuda_repo="https://developer.download.nvidia.com/compute/cuda/repos"
             cuda_repo="$cuda_repo/$(curl -sSL "$cuda_repo" | sed -n "s/.*href='\(ubuntu$(sed 's/\.//g' <<< "$DISTRO_VERSION_ID")[[^']*\)\/.*/\1/p" | sort -V | tail -n1)/x86_64"
             sudo apt-key adv --fetch-keys "$cuda_repo/$(curl -sSL "$cuda_repo" | sed -n "s/.*href='\([^']*\.pub\).*/\1/p" | sort -V | tail -n1)"
             cuda_repo="$cuda_repo/$(curl -sSL "$cuda_repo" | sed -n "s/.*href='\(cuda-repo-[^']*\).*/\1/p" | sort -V | tail -n1)"
