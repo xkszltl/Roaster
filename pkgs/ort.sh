@@ -9,7 +9,7 @@
 
     # ------------------------------------------------------------
 
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" Microsoft/onnxruntime,v
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" Microsoft/onnxruntime,master
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd onnxruntime
 
@@ -120,8 +120,9 @@
 
         python3 ../setup.py bdist_wheel
         pushd dist
-        ../../rename_manylinux.sh
-        sudo python3 -m pip install -IU ./*-manylinux1_*.whl
+        # ../../rename_manylinux.sh
+        # sudo python3 -m pip install -IU ./*-manylinux1_*.whl
+        sudo python3 -m pip install -IU ./onnxruntime-*-linux_*.whl
         popd
 
         # Exclude MKL-DNN/ONNX files.
