@@ -43,3 +43,5 @@ for CI_JOB_STAGE in init repo font pkg auth infra llvm util misc dl edit finish;
 
     PREV_CI_JOB_STAGE="$CI_JOB_STAGE"
 done
+
+echo "Image \"$CI_REGISTRY_IMAGE/$BASE_DISTRO\" is ready."
