@@ -2,6 +2,9 @@
 
 FROM centos
 
+ARG LABEL_BUILD_ID=Undefined
+LABEL BUILD_ID=$LABEL_BUILD_ID
+
 SHELL ["/bin/bash", "-c"]
 
 ENV PATH /usr/local/nvidia/bin:/usr/local/cuda/bin:${PATH}

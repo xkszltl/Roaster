@@ -1,5 +1,8 @@
 FROM docker.codingcafe.org/sandbox/centos:stage-tex
 
+ARG LABEL_BUILD_ID=Undefined
+LABEL BUILD_ID=$LABEL_BUILD_ID
+
 COPY [".", "/etc/roaster/scripts"]
 
 RUN /etc/roaster/scripts/setup.sh ss

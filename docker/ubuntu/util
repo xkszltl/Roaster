@@ -1,5 +1,8 @@
 FROM docker.codingcafe.org/xkszltl/roaster/ubuntu:stage-llvm
 
+ARG LABEL_BUILD_ID=Undefined
+LABEL BUILD_ID=$LABEL_BUILD_ID
+
 COPY [".", "/etc/roaster/scripts"]
 
 RUN /etc/roaster/scripts/setup.sh boost jemalloc eigen openblas gtest benchmark gflags glog snappy protobuf

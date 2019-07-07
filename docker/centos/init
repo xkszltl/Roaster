@@ -1,5 +1,8 @@
 FROM centos
 
+ARG LABEL_BUILD_ID=Undefined
+LABEL BUILD_ID=$LABEL_BUILD_ID
+
 SHELL ["/bin/bash", "-c"]
 
 # systemd
