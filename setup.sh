@@ -136,7 +136,11 @@ cd "$SCRATCH"
     sudo mv -vf "$(dirname "$STAGE")/.$(basename "$STAGE")" $STAGE
 )
 
-which ccache 2>/dev/null >/dev/null && ccache -z
+# Refer to "man ccache" for supported units.
+if which ccache 2>/dev/null >/dev/null; then
+    ! $IS_CONTAINER || ccache -M 128Gi
+    ccache -z
+fi
 
 for i in $(echo "
     env/mirror
