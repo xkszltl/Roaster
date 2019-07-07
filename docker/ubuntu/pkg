@@ -73,6 +73,7 @@ RUN sudo apt-get update -y \
         tmux \
         usbutils \
         util-linux \
+        uuid-{dev,runtime} \
         valgrind \
         vim \
         wget \
