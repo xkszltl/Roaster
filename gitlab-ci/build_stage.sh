@@ -22,17 +22,19 @@ set -x
 cmd="$(sed 's/-.*//' <<< "$CI_COMMIT_REF_NAME")";
 stage="$(sed 's/^[^\-]*-//' <<< "$CI_COMMIT_REF_NAME")";
 
+GENERATED_DOCKERFILE="$(mktemp Dockerfile.generated.XXXXXXXX)"
+
 if [ "_$cmd" = "_resume" ] && [ "_$stage" = "_$CI_JOB_STAGE" ]; then
     echo "Resume stage \"$CI_JOB_STAGE\"."
-    cat "docker/$BASE_DISTRO/resume" > 'Dockerfile'
+    cat "docker/$BASE_DISTRO/resume" > "$GENERATED_DOCKERFILE"
 else
     echo "Build stage \"$CI_JOB_STAGE\"."
-    cat "docker/$BASE_DISTRO/$CI_JOB_STAGE" > 'Dockerfile'
+    cat "docker/$BASE_DISTRO/$CI_JOB_STAGE" > "$GENERATED_DOCKERFILE"
 fi
 
-sed -i "s/^FROM docker\.codingcafe\.org\/.*:/FROM $(sed 's/\([\\\/\.\-]\)/\\\1/g' <<< "$CI_REGISTRY_IMAGE/$BASE_DISTRO"):/" 'Dockerfile'
+sed -i "s/^FROM docker\.codingcafe\.org\/.*:/FROM $(sed 's/\([\\\/\.\-]\)/\\\1/g' <<< "$CI_REGISTRY_IMAGE/$BASE_DISTRO"):/" "$GENERATED_DOCKERFILE"
 
-[ "_$stage" = "_$CI_JOB_STAGE" ] || sed -i 's/^[[:space:]]*COPY[[:space:]].*"\/etc\/roaster\/scripts".*//' 'Dockerfile'
+[ "_$stage" = "_$CI_JOB_STAGE" ] || sed -i 's/^[[:space:]]*COPY[[:space:]].*"\/etc\/roaster\/scripts".*//' "$GENERATED_DOCKERFILE"
 
 LABEL_BUILD_ID="$(uuidgen)"
 
@@ -42,13 +44,16 @@ if time sudo DOCKER_BUILDKIT=1 docker build                     \
     --add-host 'repo.codingcafe.org:10.0.0.10'                  \
     --add-host 'proxy.codingcafe.org:10.0.0.10'                 \
     --build-arg "LABEL_BUILD_ID=$LABEL_BUILD_ID"                \
+    --file "$GENERATED_DOCKERFILE"                              \
     --label "BUILD_TIME=$(date -u +'%Y-%m-%dT%H:%M:%SZ')"       \
     --no-cache                                                  \
     --pull                                                      \
     --tag "$CI_REGISTRY_IMAGE/$BASE_DISTRO:stage-$CI_JOB_STAGE" \
     .; then
+    rm -rf "$GENERATED_DOCKERFILE"
     time sudo docker push "$CI_REGISTRY_IMAGE/$BASE_DISTRO:stage-$CI_JOB_STAGE"
 else
+    rm -rf "$GENERATED_DOCKERFILE"
     echo 'Docker build failed. Save breakpoint snapshot.' 1>&2
     DUMP_ID="$(sudo docker ps -aq --filter="label=BUILD_ID=$LABEL_BUILD_ID" --filter="status=exited" | head -n1)"
     if [ "$DUMP_ID" ]; then
