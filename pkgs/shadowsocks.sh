@@ -98,7 +98,7 @@ EOF
         SS_CONF='90-shadowsocks.conf'
 
         touch "$SS_CONF"
-        for i in hybla htcp; do
+        for i in hybla; do
             if modprobe -a "tcp_$i"; then
                 echo $i >> "$SS_CONF"
             fi
@@ -133,7 +133,7 @@ net.ipv4.tcp_mtu_probing = 1
 EOF
         # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-        for i in hybla htcp; do
+        for i in hybla; do
             if modprobe -a "tcp_$i"; then
                 echo "net.ipv4.tcp_allowed_congestion_control = $(sysctl -n net.ipv4.tcp_allowed_congestion_control) $i" >> "$SS_CONF"
             fi
