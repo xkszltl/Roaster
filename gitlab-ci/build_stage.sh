@@ -22,7 +22,7 @@ set -x
 cmd="$(sed 's/-.*//' <<< "$CI_COMMIT_REF_NAME")";
 stage="$(sed 's/^[^\-]*-//' <<< "$CI_COMMIT_REF_NAME")";
 
-GENERATED_DOCKERFILE="$(mktemp Dockerfile.generated.XXXXXXXX)"
+GENERATED_DOCKERFILE="$(mktemp --tmpdir Dockerfile.generated.XXXXXXXX)"
 
 if [ "_$cmd" = "_resume" ] && [ "_$stage" = "_$CI_JOB_STAGE" ]; then
     echo "Resume stage \"$CI_JOB_STAGE\"."
