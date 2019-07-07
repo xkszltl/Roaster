@@ -248,7 +248,7 @@ id
 echo '----------------------------------------------------------------'
 if which ccache >/dev/null 2>/dev/null; then
     ccache -s | sed 's/^/| /'
-    $IS_CONTAINER && ccache -Cz >/dev/null 2>/dev/null
+    # $IS_CONTAINER && ccache -Cz >/dev/null 2>/dev/null
     echo '----------------------------------------------------------------'
 fi
 df -h --sync --output=target,fstype,size,used,avail,pcent,source | sed 's/^/| /'

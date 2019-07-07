@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:experimental
+
 FROM docker.codingcafe.org/xkszltl/roaster/ubuntu:stage-util
 
 ARG LABEL_BUILD_ID=Undefined
@@ -5,4 +7,4 @@ LABEL BUILD_ID=$LABEL_BUILD_ID
 
 COPY [".", "/etc/roaster/scripts"]
 
-RUN /etc/roaster/scripts/setup.sh catch2 jsoncpp rapidjson simdjson pybind grpc libpng mkl-dnn opencv leveldb rocksdb lmdb
+RUN --mount=type=cache,id=ccache,target=~/.ccache /etc/roaster/scripts/setup.sh catch2 jsoncpp rapidjson simdjson pybind grpc libpng mkl-dnn opencv leveldb rocksdb lmdb
