@@ -25,16 +25,11 @@ for CI_JOB_STAGE in init repo font pkg auth infra llvm util misc dl edit finish;
     [ "$FIRST_STAGE" ] || FIRST_STAGE="$CI_JOB_STAGE"
 
     case "$CI_JOB_STAGE" in
-    edit)
-        [ "$PREV_CI_JOB_STAGE" ]
-        sudo docker tag "$CI_REGISTRY_IMAGE/$BASE_DISTRO:stage-"{"$PREV_CI_JOB_STAGE","$CI_JOB_STAGE"}
-        sudo docker push "$CI_REGISTRY_IMAGE/$BASE_DISTRO:stage-$CI_JOB_STAGE"
-        ;;
     finish)
         [ "$PREV_CI_JOB_STAGE" ]
         sudo docker tag "$CI_REGISTRY_IMAGE/$BASE_DISTRO:"{"stage-$PREV_CI_JOB_STAGE",latest}
         sudo docker push "$CI_REGISTRY_IMAGE/$BASE_DISTRO:latest"
-        sudo docker rmi "$CI_REGISTRY_IMAGE/$BASE_DISTRO:breakpoint" || true
+        sudo docker rmi "$CI_REGISTRY_IMAGE/$BASE_DISTRO:breakpoint" 2>/dev/null || true
         ;;
     *)
         gitlab-ci/build_stage.sh

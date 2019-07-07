@@ -41,7 +41,7 @@ if time sudo DOCKER_BUILDKIT=1 docker build                     \
     --add-host 'docker.codingcafe.org:10.0.0.10'                \
     --add-host 'repo.codingcafe.org:10.0.0.10'                  \
     --add-host 'proxy.codingcafe.org:10.0.0.10'                 \
-    --build-arg "BUILD_ID=$LABEL_BUILD_ID"                      \
+    --build-arg "LABEL_BUILD_ID=$LABEL_BUILD_ID"                \
     --label "BUILD_TIME=$(date -u +'%Y-%m-%dT%H:%M:%SZ')"       \
     --no-cache                                                  \
     --pull                                                      \
