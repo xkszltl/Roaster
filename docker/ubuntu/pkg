@@ -48,6 +48,7 @@ RUN sudo apt-get update -y \
         libprotobuf-dev protobuf-compiler \
         libtool \
         llvm-7{,-tools} {clang{,-{format,tidy,tools}},lld,lldb}-7 lib{c++{,abi},omp}-7-dev \
+        locate \
         ltrace \
         m4 \
         make \
