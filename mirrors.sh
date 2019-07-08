@@ -104,7 +104,7 @@ LMDB/lmdb,\
 lutzroeder/netron,\
 madler/zlib,\
 Maratyszcza/{confu,cpuinfo,FP16,FXdiv,NNPACK,PeachPy,psimd,pthreadpool},\
-Microsoft/{dotnet,GSL,onnxruntime,Terminal,TypeScript,vcpkg,vscode,wil},\
+Microsoft/{dotnet,GSL,onnxruntime{,-tvm},Terminal,TypeScript,vcpkg,vscode,wil},\
 moby/{buildkit,moby},\
 nanopb/nanopb,\
 NervanaSystems/{coach,distiller,neon,ngraph},\
