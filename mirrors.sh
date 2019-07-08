@@ -79,11 +79,12 @@ facebookincubator/gloo,\
 facebookresearch/{Detectron,fastText},\
 frerich/clcache,\
 Frozenball/pytest-sugar,\
+gabime/spdlog,\
 gflags/gflags,\
 giampaolo/psutil,\
 github/{git-lfs,gitignore},\
 goldmann/docker-squash,\
-google/{benchmark,bloaty,boringssl,gemmlowp,glog,googletest,leveldb,nsync,protobuf,re2,snappy,upb},\
+google/{benchmark,bloaty,boringssl,flatbuffers,gemmlowp,glog,googletest,leveldb,nsync,protobuf,re2,snappy,upb},\
 googleapis/googleapis,\
 googlefonts/{fontmake,noto-{cjk,emoji,fonts,sans-hebrew,source},nototools,robotoslab},\
 grpc/grpc{,-{dart,dotnet,go,java,node,php,proto,swift,web}},\
@@ -93,6 +94,7 @@ HowardHinnant/date,\
 HypothesisWorks/hypothesis,\
 intel/{ARM_NEON_2_x86_SSE,compute-runtime,ideep,mkl-dnn},\
 intelxed/xed,\
+JDAI-CV/{dabnn{,-example},DCL,DNNLibrary},\
 jemalloc/jemalloc,\
 jordansissel/fpm,\
 Kitware/{CMake,VTK},\
