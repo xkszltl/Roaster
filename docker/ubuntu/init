@@ -5,8 +5,25 @@ LABEL BUILD_ID=$LABEL_BUILD_ID
 
 SHELL ["/bin/bash", "-c"]
 
+# systemd
+RUN set -xe; \
+    apt-get update -y; \
+    apt-get upgrade -y; \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y systemd; \
+    (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ "_$i" = '_systemd-tmpfiles-setup.service' ] || rm -f "$i"; done); \
+    rm -f /lib/systemd/system/multi-user.target.wants/*; \
+    rm -f /etc/systemd/system/*.wants/*; \
+    rm -f /lib/systemd/system/local-fs.target.wants/*; \
+    rm -f /lib/systemd/system/sockets.target.wants/*udev*; \
+    rm -f /lib/systemd/system/sockets.target.wants/*initctl*; \
+    rm -f /lib/systemd/system/basic.target.wants/*; \
+    rm -f /lib/systemd/system/anaconda.target.wants/*; \
+    apt-get autoremove -y; \
+    apt-get clean; \
+    truncate -s0 ~/.bash_history;
+
 VOLUME [ "/sys/fs/cgroup" ]
-CMD ["/usr/sbin/init"]
+CMD ["/sbin/init"]
 
 # nvidia-docker
 ENV PATH /usr/local/nvidia/bin:/usr/local/cuda/bin:${PATH}
