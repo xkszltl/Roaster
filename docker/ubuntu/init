@@ -24,7 +24,7 @@ RUN set -xe; \
     truncate -s0 ~/.bash_history;
 
 VOLUME [ "/sys/fs/cgroup" ]
-# CMD ["/sbin/init"]
+CMD ["/sbin/init"]
 
 # nvidia-docker
 ENV PATH /usr/local/nvidia/bin:/usr/local/cuda/bin:${PATH}
