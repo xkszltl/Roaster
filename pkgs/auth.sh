@@ -19,21 +19,29 @@
     # ------------------------------------------------------------
 
     if [ "_$GIT_MIRROR" = "_$GIT_MIRROR_CODINGCAFE" ]; then
-        cd '/etc/openldap'
-        for i in 'BASE' 'URI' 'TLS_CACERT' 'TLS_REQCERT'; do :
-            if [ "$(grep "^[[:space:]#]*$i[[:space:]]" 'ldap.conf' | wc -l)" -ne 1 ]; then
-                sed "s/^[[:space:]#]*$i[[:space:]].*//" 'ldap.conf' > "$SCRATCH/.ldap.conf"
-                sudo echo "# $i " >> "$SCRATCH/.ldap.conf"
-                sudo mv -f {"$SCRATCH/.",}'ldap.conf'
-            fi
-        done
-        sudo cat 'ldap.conf'                                                                                        \
-        | sed 's/^[[:space:]#]*\(BASE[[:space:]][[:space:]]*\).*/\1dc=codingcafe,dc=org/'                           \
-        | sed 's/^[[:space:]#]*\(URI[[:space:]][[:space:]]*\).*/\1ldap:\/\/ldap.codingcafe.org/'                    \
-        | sed 's/^[[:space:]#]*\(TLS_CACERT[[:space:]][[:space:]]*\).*/\1\/etc\/pki\/tls\/certs\/ca-bundle.crt/'    \
-        | sed 's/^[[:space:]#]*\(TLS_REQCERT[[:space:]][[:space:]]*\).*/\1demand/'                                  \
-        > "$SCRATCH/.ldap.conf"
-        sudo mv -f {"$SCRATCH/.",}'ldap.conf'
+        case "$DISTRO_ID" in
+        'centos' | 'fedora' | 'rhel')
+            pushd '/etc/openldap'
+            for i in 'BASE' 'URI' 'TLS_CACERT' 'TLS_REQCERT'; do :
+                if [ "$(grep "^[[:space:]#]*$i[[:space:]]" 'ldap.conf' | wc -l)" -ne 1 ]; then
+                    sed "s/^[[:space:]#]*$i[[:space:]].*//" 'ldap.conf' > "$SCRATCH/.ldap.conf"
+                    sudo echo "# $i " >> "$SCRATCH/.ldap.conf"
+                    sudo mv -f {"$SCRATCH/.",}'ldap.conf'
+                fi
+            done
+            sudo cat 'ldap.conf'                                                                                        \
+            | sed 's/^[[:space:]#]*\(BASE[[:space:]][[:space:]]*\).*/\1dc=codingcafe,dc=org/'                           \
+            | sed 's/^[[:space:]#]*\(URI[[:space:]][[:space:]]*\).*/\1ldap:\/\/ldap.codingcafe.org/'                    \
+            | sed 's/^[[:space:]#]*\(TLS_CACERT[[:space:]][[:space:]]*\).*/\1\/etc\/pki\/tls\/certs\/ca-bundle.crt/'    \
+            | sed 's/^[[:space:]#]*\(TLS_REQCERT[[:space:]][[:space:]]*\).*/\1demand/'                                  \
+            > "$SCRATCH/.ldap.conf"
+            sudo mv -f {"$SCRATCH/.",}'ldap.conf'
+            popd
+            ;;
+        *)
+            echo "Unsupported distro \"DISTRO_ID\" for ldap configuration, skipped."
+            ;;
+        esac
     fi
     cd "$SCRATCH"
 
