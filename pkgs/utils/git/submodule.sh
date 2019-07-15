@@ -30,7 +30,7 @@ esac
                     sed -i "s/$(sed 's/\([\/\.]\)/\\\1/g' <<< "$i" | tr '=' '/')/" .gitmodules
                 done
                 for i in $(sed -n 's/^\([[:alnum:]][^\/[:space:]]*\)\/[^\/[:space:]].*/\1/p' "$ROOT_DIR/mirrors.sh"); do
-                    sed -i "s/[^[:space:]]*:\/\/[^\/]*\(\/$i\/.*\)/$(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR")\1.git/" .gitmodules
+                    sed -i "s/[^[:space:]]*:\/\/[^\/]*\(\/$i\/.*[^\/]\)[\/]*/$(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR")\1.git/" .gitmodules
                     sed -i "s/\($(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR")\/$i\/.*\.git\)\.git[[:space:]]*$/\1/" .gitmodules
                 done
             fi
