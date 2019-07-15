@@ -48,6 +48,7 @@ if time sudo DOCKER_BUILDKIT=1 docker build                     \
     --label "BUILD_TIME=$(date -u +'%Y-%m-%dT%H:%M:%SZ')"       \
     --no-cache                                                  \
     --pull                                                      \
+    $([ ! -e 'cred/env-cred-usr.sh' ] ||  echo '--secret id=env-cred-usr,src=cred/env-cred-usr.sh') \
     --tag "$CI_REGISTRY_IMAGE/$BASE_DISTRO:stage-$CI_JOB_STAGE" \
     .; then
     rm -rf "$GENERATED_DOCKERFILE"
