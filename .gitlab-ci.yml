@@ -44,11 +44,32 @@ init:
   script:
     - gitlab-ci/build_stage.sh
 
+.docker_push_stage_template: &docker_push_stage
+  retry: 2
+  tags:
+    - docker
+  except:
+    - branches
+  script:
+    - gitlab-ci/push_stage.sh
+
+push-init:
+  stage: repo
+  only:
+    - /^(build|resume)-init$/
+  <<: *docker_push_stage
+
 repo:
   stage: repo
   only:
     - /^(build|resume)-(init|repo)$/
   <<: *docker_build_stage
+
+push-repo:
+  stage: font
+  only:
+    - /^(build|resume)-(init|repo)$/
+  <<: *docker_push_stage
 
 font:
   stage: font
@@ -56,11 +77,23 @@ font:
     - /^(build|resume)-(init|repo|font)$/
   <<: *docker_build_stage
 
+push-font:
+  stage: pkg-stable
+  only:
+    - /^(build|resume)-(init|repo|font)$/
+  <<: *docker_push_stage
+
 pkg-stable:
   stage: pkg-stable
   only:
     - /^(build|resume)-(init|repo|font|pkg-stable)$/
   <<: *docker_build_stage
+
+push-pkg-stable:
+  stage: pkg-skip
+  only:
+    - /^(build|resume)-(init|repo|font|pkg-stable)$/
+  <<: *docker_push_stage
 
 pkg-skip:
   stage: pkg-skip
@@ -68,11 +101,23 @@ pkg-skip:
     - /^(build|resume)-(init|repo|font|pkg-(stable|skip))$/
   <<: *docker_build_stage
 
+push-pkg-skip:
+  stage: tex
+  only:
+    - /^(build|resume)-(init|repo|font|pkg-(stable|skip))$/
+  <<: *docker_push_stage
+
 tex:
   stage: tex
   only:
     - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|tex)$/
   <<: *docker_build_stage
+
+push-tex:
+  stage: ss
+  only:
+    - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|tex)$/
+  <<: *docker_push_stage
 
 ss:
   stage: ss
@@ -80,11 +125,23 @@ ss:
     - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|tex|ss)$/
   <<: *docker_build_stage
 
+push-ss:
+  stage: infra
+  only:
+    - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|tex|ss)$/
+  <<: *docker_push_stage
+
 infra:
   stage: infra
   only:
     - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|ss|tex|infra)$/
   <<: *docker_build_stage
+
+push-infra:
+  stage: llvm
+  only:
+    - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|ss|tex|infra)$/
+  <<: *docker_push_stage
 
 llvm:
   stage: llvm
@@ -92,11 +149,23 @@ llvm:
     - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|ss|tex|infra|llvm)$/
   <<: *docker_build_stage
 
+push-llvm:
+  stage: util
+  only:
+    - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|ss|tex|infra|llvm)$/
+  <<: *docker_push_stage
+
 util:
   stage: util
   only:
     - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|ss|tex|infra|llvm|util)$/
   <<: *docker_build_stage
+
+push-util:
+  stage: misc
+  only:
+    - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|ss|tex|infra|llvm|util)$/
+  <<: *docker_push_stage
 
 misc:
   stage: misc
@@ -104,17 +173,35 @@ misc:
     - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|ss|tex|infra|llvm|util|misc)$/
   <<: *docker_build_stage
 
+push-misc:
+  stage: dl
+  only:
+    - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|ss|tex|infra|llvm|util|misc)$/
+  <<: *docker_push_stage
+
 dl:
   stage: dl
   only:
     - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|ss|tex|infra|llvm|util|misc|dl)$/
   <<: *docker_build_stage
 
+push-dl:
+  stage: edit
+  only:
+    - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|ss|tex|infra|llvm|util|misc|dl)$/
+  <<: *docker_dl_stage
+
 edit:
   stage: edit
   only:
     - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|ss|tex|infra|llvm|util|misc|dl|edit)$/
   <<: *docker_build_stage
+
+push-edit:
+  stage: finish
+  only:
+    - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|ss|tex|infra|llvm|util|misc|dl|edit)$/
+  <<: *docker_push_stage
 
 finish:
   stage: finish

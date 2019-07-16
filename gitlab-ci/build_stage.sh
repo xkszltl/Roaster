@@ -52,7 +52,6 @@ if time sudo DOCKER_BUILDKIT=1 docker build                     \
     --tag "$CI_REGISTRY_IMAGE/$BASE_DISTRO:stage-$CI_JOB_STAGE" \
     .; then
     rm -rf "$GENERATED_DOCKERFILE"
-    time sudo docker push "$CI_REGISTRY_IMAGE/$BASE_DISTRO:stage-$CI_JOB_STAGE"
 else
     rm -rf "$GENERATED_DOCKERFILE"
     echo 'Docker build failed. Save breakpoint snapshot.' 1>&2
