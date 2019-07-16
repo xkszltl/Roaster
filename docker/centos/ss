@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:experimental
+
 FROM docker.codingcafe.org/sandbox/centos:stage-tex
 
 ARG LABEL_BUILD_ID=Undefined
