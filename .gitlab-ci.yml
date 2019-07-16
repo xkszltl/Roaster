@@ -189,7 +189,7 @@ push-dl:
   stage: edit
   only:
     - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|ss|tex|infra|llvm|util|misc|dl)$/
-  <<: *docker_dl_stage
+  <<: *docker_push_stage
 
 edit:
   stage: edit
