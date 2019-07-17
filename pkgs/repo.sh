@@ -17,6 +17,9 @@
 
         until sudo yum install -y bc {core,find,ip}utils curl kernel-headers; do echo 'Retrying'; done
 
+        until sudo yum install -y centos-dotnet-release; do echo 'Retrying'; done
+        RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" dotnet
+
         until sudo yum install -y epel-release; do echo 'Retrying'; done
         RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" epel{,-source,-debuginfo}
 

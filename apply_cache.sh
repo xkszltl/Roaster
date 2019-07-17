@@ -6,6 +6,7 @@ if [ $# -le 0 ]; then
     $0                                                                              \
         {updates,extras,centosplus,runner_gitlab-runner,gitlab_gitlab-ce}{,-source} \
         {base,epel,centos-sclo-{sclo,rh},docker-ce-stable}{,-source,-debuginfo}     \
+        dotnet                                                                      \
         cuda nvidia-machine-learning
     exit $?
 fi

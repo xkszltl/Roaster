@@ -28,6 +28,7 @@ for i in pkg-{stable,skip,all}; do
                 {distcc,ccache}{,-*}
                 {openmpi,mpich-3.{0,2}}{,-devel,-doc,-debuginfo}
                 java-11-openjdk{,-*}
+                dotnet-2{0,1,2}
                 octave{,-*}
                 [!] {gdb,{l,s}trace}{,-*}
                 {gperf,gperftools,valgrind,perf}{,-*}
