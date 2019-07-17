@@ -18,4 +18,4 @@ if [ "$CI_REGISTRY" ] && [ "$CI_REGISTRY_USER" ] && [ "$CI_REGISTRY_PASSWORD" ];
 fi
 set -x
 
-time sudo docker push "$CI_REGISTRY_IMAGE/$BASE_DISTRO:stage-$(sed 's/^[^-]*-//' <<< "$CI_JOB_STAGE")"
+time sudo docker push "$CI_REGISTRY_IMAGE/$BASE_DISTRO:stage-$(sed 's/^[^\-]*\-//' <<< "$CI_JOB_STAGE")"
