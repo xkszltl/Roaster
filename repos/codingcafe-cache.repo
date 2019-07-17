@@ -79,6 +79,25 @@ priority=1
 enabled=0
 
 ################################################################################
+# Extras
+################################################################################
+
+[cache-dotnet]
+name=[Cache] CentOS-$releasever - DotNet
+baseurl=https://repo.codingcafe.org/centos/$releasever/dotnet/$basearch/
+gpgcheck=1
+enabled=0
+priority=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+
+[cache-dotnet-testing]
+name=[Cache] CentOS-$releasever - DotNet - Testing
+baseurl=https://repo.codingcafe.org/centos/$releasever/dotnet/Source
+gpgcheck=0
+priority=1
+enabled=0
+
+################################################################################
 # EPEL
 ################################################################################
 
