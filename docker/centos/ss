@@ -7,5 +7,5 @@ LABEL BUILD_ID=$LABEL_BUILD_ID
 
 COPY [".", "/etc/roaster/scripts"]
 
-RUN --mount=type=secret,id=env-cred-usr,target=/etc/roaster/scripts/cred/env-cred-usr.sh,mode=500,required=false \
+RUN --mount=type=secret,id=env-cred-usr,target=/etc/roaster/scripts/cred/env-cred-usr.sh,mode=500 \
     /etc/roaster/scripts/setup.sh ss
