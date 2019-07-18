@@ -31,8 +31,8 @@
     sudo ln -sf /usr/bin/{true,fc-cache}
 
     for attempt in $(seq $RPM_MAX_ATTEMPT -1 0); do
-        $RPM_INSTALL --skip-broken *-fonts{,-*} \
-        $RPM_INSTALL $MSFONTS_URL/$MSFONTS_VER  \
+        $RPM_INSTALL --skip-broken *-fonts{,-*}     \
+        && $RPM_INSTALL $MSFONTS_URL/$MSFONTS_VER   \
         && break
         echo "Retrying... $attempt chance(s) left."
         [ $attempt -gt 0 ] || exit 1
