@@ -37,6 +37,7 @@ sed -i "s/^FROM docker\.codingcafe\.org\/.*:/FROM $(sed 's/\([\\\/\.\-]\)/\\\1/g
 [ "_$stage" = "_$CI_JOB_STAGE" ] || sed -i 's/^[[:space:]]*COPY[[:space:]].*"\/etc\/roaster\/scripts".*//' "$GENERATED_DOCKERFILE"
 
 # Use latest buildkit frontend.
+# If buildkit doesn't work properly, try docker-ce-nightly and match it with nightly frontend.
 sed -i 's/^\([[:space:]]*#[[:space:]]*syntax=docker\/dockerfile\):\(experimental[[:space:]]*\)$/\1\-upstream:master\-\2/' "$GENERATED_DOCKERFILE"
 
 LABEL_BUILD_ID="$(uuidgen)"
