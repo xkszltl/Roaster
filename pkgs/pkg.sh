@@ -68,7 +68,9 @@ for i in pkg-{stable,skip,all}; do
                 GeoIP{,-*}
                 [!] {device-mapper,lvm2}{,-*}
                 {d,sys}stat{,-*}
+                [!]kernel-tools{,-*}
                 {lm_sensors,hddtemp,smartmontools,lsscsi}{,-*}
+                [!]tuned{,-*}
                 [!] {{e2fs,btrfs-,xfs,ntfs}progs,xfsdump,nfs-utils}{,-*}
                 [!] fuse{,-devel,-libs}
                 dd{,_}rescue{,-*}

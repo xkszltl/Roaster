@@ -60,6 +60,7 @@ RUN sudo apt-get update -y \
         parallel \
         pciutils \
         pigz \
+        powertop \
         pv \
         pybind11-dev \
         python3{,-pip} \
@@ -73,6 +74,7 @@ RUN sudo apt-get update -y \
         tar \
         time \
         tmux \
+        tuned{,'-*'} \
         txt2man \
         usbutils \
         util-linux \
