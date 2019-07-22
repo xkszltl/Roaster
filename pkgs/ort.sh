@@ -106,13 +106,21 @@
         mkdir -p "$INSTALL_ABS/lib"
         ldd libonnxruntime.so | sed -n 's/.*libmklml_.* => *\(.*\) (0x[0-9a-f]*) *$/\1/p' | xargs -rn1 install -t "$INSTALL_ABS/lib"
 
-        if [ "_$GIT_MIRROR" = "_$GIT_MIRROR_CODINGCAFE" ]; then
-            curl -sSL 'https://repo.codingcafe.org/microsoft/onnxruntime/20190419.zip' > 'models.zip'
-        else
-            axel -n200 -o 'models.zip' 'https://onnxruntimetestdata.blob.core.windows.net/models/20190419.zip'
-        fi
-
-        md5sum -c <<< '3f46c31ee02345dbe707210b339e31fe models.zip'
+        # Download from Azure Blob is not always correct.
+        for retry in $(seq 3 -1 0); do
+            if [ "$retry" -le 0 ]; then
+                echo "Failed to download test data."
+                exit 1
+            fi
+            rm -rf 'models.zip'
+            if [ "_$GIT_MIRROR" = "_$GIT_MIRROR_CODINGCAFE" ]; then
+                curl -sSL 'https://repo.codingcafe.org/microsoft/onnxruntime/20190419.zip' > 'models.zip' || continue
+            else
+                axel -n200 -o 'models.zip' 'https://onnxruntimetestdata.blob.core.windows.net/models/20190419.zip' || continue
+            fi
+            md5sum -c <<< '3f46c31ee02345dbe707210b339e31fe models.zip' || continue
+            break
+        done
         unzip -o models.zip -d ../models
         rm -rf models.zip
 
