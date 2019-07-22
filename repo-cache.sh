@@ -60,10 +60,11 @@ mkdir -p '/var/www/repos'
 cd "$_"
 
 # ----------------------------------------------------------------
-# CTAN Repository Mirroring
+# CTAN/GNU Repository Mirroring
 # ----------------------------------------------------------------
 
 parallel -j0 --line-buffer --bar 'bash -c '"'"'
+    [ "'"$#"'" -eq 0 ] || grep -i {} <<< "'"$@"'" || exit 0
     if false; then :
     elif ping -nfc 10 mirrors.tuna.tsinghua.edu.cn -I 10.0.0.12; then
         '"$DRY"' || rsync '"$DRY_RSYNC"' -aHSvPz --delete --address 10.0.0.12 "rsync://mirrors.tuna.tsinghua.edu.cn/{}/" "{}"
@@ -84,6 +85,7 @@ parallel -j0 --line-buffer --bar 'bash -c '"'"'
 # ----------------------------------------------------------------
 
 parallel -j0 --line-buffer --bar 'bash -c '"'"'
+    [ "'"$#"'" -eq 0 ] || grep -i intel <<< "'"$@"'" || exit 0
     export INTEL_URL="http://registrationcenter-download.intel.com/akdlm/irc_nas/tec"
 
     mkdir -p intel
@@ -210,6 +212,23 @@ for sub_repo in cuda,cuda nvidia-machine-learning,machine-learning; do
     }')
 done
 
+for i in libnvidia-container nvidia-{container-runtime,docker}; do
+    mkdir -p "nvidia/$i/centos7/$(uname -i)"
+    pushd "$_"
+    $DRY || wget $DRY_WGET -cq "https://nvidia.github.io/$i/gpgkey"
+    $DRY || rpm --import "gpgkey"
+    popd
+
+    export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
+    {
+        "repo":         "'"$i"'",
+        "path":         "'"nvidia/$i/centos7/$(uname -i)"'",
+        "retries":      10,
+        "use_proxy":    "'"false"'",
+        "sync_args":    "--delete --newest-only"
+    }')
+done
+
 # ----------------------------------------------------------------
 # Docker Repository Mirroring Task
 # ----------------------------------------------------------------
@@ -278,6 +297,7 @@ parallel -j0 --line-buffer --bar 'bash -c '"'"'
 
     export repo=$(jq -r ".repo" <<< "$JSON_OBJ")
     export path=$(jq -r ".path" <<< "$JSON_OBJ")
+    [ "'"$#"'" -eq 0 ] || grep -i "$repo" <<< "'"$@"'" || exit 0
     jq -e ".sync_args" <<< "$JSON_OBJ" > /dev/null && export sync_args=$(jq -r ".sync_args" <<< "$JSON_OBJ")
     export retries=1
     jq -e ".retries" <<< "$JSON_OBJ" > /dev/null && export retries=$(jq -r ".retries" <<< "$JSON_OBJ")

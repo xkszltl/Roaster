@@ -256,6 +256,36 @@ gpgkey=https://repo.codingcafe.org/nvidia/machine-learning/rhel$releasever/$base
 priority=1
 enabled=0
 
+[cache-libnvidia-container]
+name=[Cache] libnvidia-container
+baseurl=https://repo.codingcafe.org/nvidia/libnvidia-container/centos$releasever/$basearch
+repo_gpgcheck=1
+gpgcheck=0
+enabled=1
+gpgkey=https://nvidia.github.io/libnvidia-container/gpgkey
+sslverify=1
+sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+
+[cache-nvidia-container-runtime]
+name=[Cache] nvidia-container-runtime
+baseurl=https://repo.codingcafe.org/nvidia/nvidia-container-runtime/centos$releasever/$basearch
+repo_gpgcheck=1
+gpgcheck=0
+enabled=1
+gpgkey=https://nvidia.github.io/nvidia-container-runtime/gpgkey
+sslverify=1
+sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+
+[cache-nvidia-docker]
+name=[Cache] nvidia-docker
+baseurl=https://repo.codingcafe.org/nvidia/nvidia-docker/centos$releasever/$basearch
+repo_gpgcheck=1
+gpgcheck=0
+enabled=1
+gpgkey=https://nvidia.github.io/nvidia-docker/gpgkey
+sslverify=1
+sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+
 ################################################################################
 # Docker
 ################################################################################
