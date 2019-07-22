@@ -28,7 +28,7 @@ for i in pkg-{stable,skip,all}; do
                 {distcc,ccache}{,-*}
                 {openmpi,mpich-3.{0,2}}{,-devel,-doc,-debuginfo}
                 java-11-openjdk{,-*}
-                rh-dotnet2{0,1,2}
+                rh-dotnet2{1,2}{,-lttng-ust,-userspace-rcu}{,-devel,-debuginfo}
                 octave{,-*}
                 [!] {gdb,{l,s}trace}{,-*}
                 {gperf,gperftools,valgrind,perf}{,-*}
@@ -52,7 +52,7 @@ for i in pkg-{stable,skip,all}; do
                 [!] {ftp{,lib},telnet,tftp,rsh}{,-debuginfo}
                 {h,if,io,latency,power,tip}top{,-*}
                 procps-ng{,-*}
-                [!] {wget,axel,curl,net-tools}{,-*}
+                [!] {axel,curl,net-tools,wget}{,-*}
                 {f,tc,dhc,libo,io}ping{,-*}
                 hping3{,-*}
                 [!] {traceroute,mtr,rsync,tcpdump,whois,net-snmp}{,-*}
@@ -96,6 +96,7 @@ for i in pkg-{stable,skip,all}; do
                 {zlib,libzip,{,lib}zstd,lz4,{,p}{bzip2,xz},pigz,cpio,tar,snappy,unrar}{,-*}
                 [!] libaio{,-*}
                 lib{telnet,ssh{,2},curl,ffi,edit,icu,xslt}{,-*}
+                httpd24-libcurl{,-*}
                 [!] boost{,-*}
                 {flex,cups,bison,antlr}{,-*}
                 [!] openssl{,-*}
