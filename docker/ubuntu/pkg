@@ -73,6 +73,7 @@ RUN sudo apt-get update -y \
         tar \
         time \
         tmux \
+        txt2man \
         usbutils \
         util-linux \
         uuid-{dev,runtime} \
