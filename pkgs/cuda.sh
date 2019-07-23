@@ -12,9 +12,10 @@
     export CUDA_VER_BUILD="$(cut -d'.' -f3 <<< "$CUDA_VER")"
 
     # ============================================================
-    # TensorRT
+    # TensorRT (Hack deprecated)
     #     TODO: Detect newest version outside of CodingCafe.
     # ============================================================
+    if false; then
     (
         set -e
 
@@ -48,6 +49,7 @@
         $RPM_INSTALL --disableplugin=axelget "tensorrt" || $RPM_UPDATE --disableplugin=axelget "tensorrt" || $RPM_REINSTALL --disableplugin=axelget "tensorrt"
         $IS_CONTAINER && sudo yum remove -y --skip-broken 'nv-tensorrt-repo-*' || true
     )
+    fi
 
     # ============================================================
     # CUDA Samples
