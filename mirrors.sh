@@ -53,6 +53,7 @@ fi
 https://github.com/\ /\ {\
 01org/{mkl-dnn,processor-trace,tbb},\
 abseil/abseil-{cpp,py},\
+agauniyal/{rang,termdb},\
 aquynh/capstone,\
 ARM-software/{arm-trusted-firmware,ComputeLibrary,lisa},\
 asmjit/{asm{db,jit,tk},cult},\
