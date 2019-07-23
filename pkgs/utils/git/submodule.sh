@@ -30,8 +30,17 @@ esac
                     sed -i "s/$(sed 's/\([\/\.]\)/\\\1/g' <<< "$i" | tr '=' '/')/" .gitmodules
                 done
                 for i in $(sed -n 's/^\([[:alnum:]][^\/[:space:]]*\)\/[^\/[:space:]].*/\1/p' "$ROOT_DIR/mirrors.sh"); do
-                    sed -i "s/[^[:space:]]*:\/\/[^\/]*\(\/$i\/.*[^\/]\)[\/]*/$(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR")\1.git/" .gitmodules
-                    sed -i "s/\($(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR")\/$i\/.*\.git\)\.git[[:space:]]*$/\1/" .gitmodules
+                    # Case-insensitive with escape.
+                    Ii="$(paste -d' '                   \
+                            <(tr a-z A-Z <<< "$i" | sed 's/\(.\)/\1 /g' | xargs -n1)    \
+                            <(tr A-Z a-z <<< "$i" | sed 's/\(.\)/\1 /g' | xargs -n1)    \
+                        | sed 's/\(.\) \(.\)/\[\1\2\]/' \
+                        | sed 's/^\[[^A-Za-z]/\[/'      \
+                        | paste -sd' ' -                \
+                        | sed 's/ //g'                  \
+                        | sed 's/\([\/\.\-]\)/\\\1/g')"
+                    sed -i "s/[^[:space:]]*:\/\/[^\/]*\(\/$Ii\/.*[^\/]\)[\/]*/$(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR")\1.git/" .gitmodules
+                    sed -i "s/\($(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR")\/$Ii\/.*\.git\)\.git[[:space:]]*$/\1/" .gitmodules
                 done
             fi
 
