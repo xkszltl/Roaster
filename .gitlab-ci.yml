@@ -17,6 +17,7 @@ stages:
   - util
   - misc
   - dl
+  - ort
   - edit
   - finish
 
@@ -197,21 +198,33 @@ dl:
   <<: *docker_gpu_build_stage
 
 push-dl:
-  stage: edit
+  stage: ort
   only:
     - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|ss|tex|infra|llvm|util|misc|dl)$/
+  <<: *docker_push_stage
+
+ort:
+  stage: ort
+  only:
+    - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|ss|tex|infra|llvm|util|misc|dl|ort)$/
+  <<: *docker_gpu_build_stage
+
+push-ort:
+  stage: edit
+  only:
+    - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|ss|tex|infra|llvm|util|misc|dl|ort)$/
   <<: *docker_push_stage
 
 edit:
   stage: edit
   only:
-    - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|ss|tex|infra|llvm|util|misc|dl|edit)$/
+    - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|ss|tex|infra|llvm|util|misc|dl|ort|edit)$/
   <<: *docker_cpu_build_stage
 
 push-edit:
   stage: finish
   only:
-    - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|ss|tex|infra|llvm|util|misc|dl|edit)$/
+    - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|ss|tex|infra|llvm|util|misc|dl|ort|edit)$/
   <<: *docker_push_stage
 
 finish:
@@ -221,7 +234,7 @@ finish:
     - docker
     - cpu
   only:
-    - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|ss|tex|infra|llvm|util|misc|dl|edit|finish)$/
+    - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|ss|tex|infra|llvm|util|misc|dl|ort|edit|finish)$/
   except:
     - branches
   script:
