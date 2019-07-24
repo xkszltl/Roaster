@@ -33,7 +33,7 @@ for CI_JOB_STAGE in init repo font pkg-{stable,skip} tex ss infra llvm util misc
         ;;
     *)
         gitlab-ci/build_stage.sh
-        CI_JOB_STAGE="push-$CI_JOB_STAGE" gitlab-ci/push_stage.sh &
+        CI_JOB_NAME="push-$CI_JOB_STAGE" gitlab-ci/push_stage.sh &
         ;;
     esac
 
