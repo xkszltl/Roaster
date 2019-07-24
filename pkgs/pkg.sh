@@ -123,7 +123,7 @@ for i in pkg-{stable,skip,all}; do
                 {collectd,rrdtool,pnp4nagios}{,-*}
                 [!] cuda
                 [!] https://developer.download.nvidia.com/compute/machine-learning/repos/rhel7/x86_64/lib{cudnn7{,-devel}-7.6.1.34-1.,nccl{,-devel,-static}-2.4.7-1+,nvinfer{5,-devel}-5.1.5-1.}cuda10.1.x86_64.rpm
-                [!] libcudnn7{,-devel} libnccl{,-devel,-static} libnvinfer{5,-devel,-samples}
+                [!] lib{cudnn7{,-devel},nccl{,-devel,-static},nvinfer{5,-devel}}
                 [!] nvidia-docker2
 
                 hdf5{,-*}
