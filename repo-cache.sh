@@ -208,6 +208,7 @@ for sub_repo in cuda,cuda nvidia-machine-learning,machine-learning; do
         "path":         "'"nvidia/$dir/rhel7/$(uname -i)"'",
         "retries":      10,
         "use_proxy":    "'"false"'",
+        "sync_args":    "--delete"
     }')
 done
 
@@ -224,7 +225,7 @@ for i in libnvidia-container nvidia-{container-runtime,docker}; do
         "path":         "'"nvidia/$i/centos7/$(uname -i)"'",
         "retries":      10,
         "use_proxy":    "'"false"'",
-        "sync_args":    "--delete --newest-only"
+        "sync_args":    "--delete"
     }')
 done
 
