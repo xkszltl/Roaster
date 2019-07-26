@@ -40,12 +40,12 @@ for i in llvm-{gcc,clang}; do
             case "$DISTRO_ID" in
             'centos' | 'fedora' | 'rhel')
                 set +xe
-                . scl_source enable devtoolset-6
+                . scl_source enable devtoolset-8
                 set -xe
                 export CC="gcc" CXX="g++"
                 ;;
             'ubuntu')
-                export CC="gcc-6" CXX="g++-6"
+                export CC="gcc-8" CXX="g++-8"
                 ;;
             esac
 
