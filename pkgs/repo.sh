@@ -37,6 +37,7 @@
             | head -n1                                                              \
             | sed "s/.*\('.*developer.download.nvidia.com\/[^\']*\.rpm'\).*/\1/"
         )" || true
+        sudo sed -i 's/http:\/\//https:\/\//' '/etc/yum.repos.d/cuda.repo'
         RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" cuda
 
         (
@@ -47,6 +48,7 @@
             nvml_repo="$nvml_repo/$(curl -sSL --retry 5 "$nvml_repo" | sed -n "s/.*href='\(nvidia-machine-learning-repo-[^']*\).*/\1/p" | sort -V | tail -n1)"
             sudo yum install -y "$nvml_repo"
         )
+        sudo sed -i 's/http:\/\//https:\/\//' '/etc/yum.repos.d/nvidia-machine-learning.repo'
         RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" nvidia-machine-learning
 
         sudo yum-config-manager --add-repo "https://download.docker.com/linux/centos/docker-ce.repo"
@@ -92,15 +94,18 @@
             curl -SL --retry 5 "$cuda_repo" > "$(basename "$cuda_repo")"
             sudo DEBIAN_FRONTEND=noninteractive apt-get install -y "./$(basename "$cuda_repo")"
             rm -rf "$(basename "$cuda_repo")"
+            sudo sed -i 's/http:\/\//https:\/\//' '/etc/apt/sources.list.d/cuda.list'
             curl -SL --retry 5 "$nvml_repo" > "$(basename "$nvml_repo")"
             sudo DEBIAN_FRONTEND=noninteractive apt-get install -y "./$(basename "$nvml_repo")"
             rm -rf "$(basename "$nvml_repo")"
+            sudo sed -i 's/http:\/\//https:\/\//' '/etc/apt/sources.list.d/nvidia-machine-learning.list'
         )
 
         curl -sSL --retry 5 "https://download.docker.com/linux/$DISTRO_ID/gpg" | sudo apt-key add -
         sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/$DISTRO_ID $(lsb_release -cs) stable"
         curl -sSL --retry 5 "https://nvidia.github.io/nvidia-docker/gpgkey" | sudo apt-key add -
         curl -sSL --retry 5 "https://nvidia.github.io/nvidia-docker/$DISTRO_ID$DISTRO_VERSION_ID/nvidia-docker.list" | sudo tee "/etc/apt/sources.list.d/nvidia-docker.list"
+
         sudo apt-get update -y
         sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
         ;;
