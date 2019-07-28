@@ -13,8 +13,6 @@ export RPM_MAX_ATTEMPT=10
 #       python-lexicon conflict with python2-dns-lexicon
 #       file /usr/lib/python2.7/site-packages/test/__init__.pyc conflicts between attempted installs of python2-ansible-runner-1.0.1-1.el7.noarch and python2-neomodel-3.2.8-1.el7.noarch
 #
-#       Partial release of cudnn 7.6.2.24 is causing inconsistency within public nvidia-machine-learning repo.
-#       
 #       Python issues from CentOS 7.5:
 #           python2-azure-sdk conflict with python-azure-sdk
 #           python2-boto3 conflict with python-boto3
@@ -23,7 +21,6 @@ export RPM_MAX_ATTEMPT=10
 export RPM_BLACKLIST=$(echo "
     *-debuginfo
     libasan2
-    libcudnn7-7.6.2.24-1.cuda*.x86_64
     python-lexicon
     python2-ansible-runner
     python2-azure-sdk
