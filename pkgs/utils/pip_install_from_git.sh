@@ -44,7 +44,7 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
         case "$DISTRO_ID" in
         'centos' | 'fedora' | 'rhel')
             set +e
-            . scl_source enable "$(cut -d',' -f1 <<< "$py")"
+            . scl_source enable devtoolset-8 "$(cut -d',' -f1 <<< "$py")"
             set -e
             ;;
         'ubuntu')
