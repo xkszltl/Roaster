@@ -29,14 +29,13 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
         PKG="future"
     fi
 
-    if grep '/setuptools' <<< "/$i" > /dev/null; then
-        echo "Cannot build $PKG from source. Install it from wheel instead."
-        URL="$PKG"
-    fi
-    if grep '/protobuf' <<< "/$i" > /dev/null; then
-        echo "Cannot build $PKG from source. Install it from wheel instead."
-        URL="$PKG"
-    fi
+    for wheel_only in numpy protobuf setuptools; do
+        if grep -i '/$wheel_only' <<< "/$i" > /dev/null; then
+            echo "Cannot build $PKG from source. Install it from wheel instead."
+            URL="$PKG"
+            break
+        fi
+    done
     for py in ,python3 rh-python36,python; do
     (
         py="$py,"
