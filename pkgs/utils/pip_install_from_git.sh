@@ -29,7 +29,7 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
         PKG="future"
     fi
 
-    for wheel_only in numpy protobuf setuptools; do
+    for wheel_only in protobuf setuptools; do
         if grep -i "/$wheel_only" <<< "/$i" > /dev/null; then
             echo "Cannot build $PKG from source. Install it from wheel instead."
             URL="$PKG"
@@ -43,13 +43,12 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
         case "$DISTRO_ID" in
         'centos' | 'fedora' | 'rhel')
             set +e
-            . scl_source enable devtoolset-8 "$(cut -d',' -f1 <<< "$py")"
+            . scl_source enable $(cut -d',' -f1 <<< "$py")
             set -e
             ;;
         'ubuntu')
             # Skip SCL Python.
             [ "$(cut -d',' -f1 <<< "$py")" ] && exit 0 
-            export CC="$(which gcc-8)" CXX="$(which g++-8)"
             ;;
         esac
 
@@ -70,7 +69,18 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
             echo "Package \"$PKG\" for \"$py\" is already up-to-date ($GIT_TAG_VER). Skip."
             continue
         fi
-        sudo "$py" -m pip install -U "$URL" || sudo "$py" -m pip install -IU "$URL"
+        sudo bash -c "set -e
+            case '$DISTRO_ID' in
+            centos | fedora | rhel)
+                set +e
+                . scl_source enable devtoolset-8 $(cut -d',' -f1 <<< "$py")
+                set -e
+                ;;
+            ubuntu)
+                export CC='$(which gcc-8)' CXX='$(which g++-8)'
+                ;;
+            esac
+            '$py' -m pip install -U '$URL' || '$py' -m pip install -IU '$URL'"
         CACHE_VALID=false
     )
     done
