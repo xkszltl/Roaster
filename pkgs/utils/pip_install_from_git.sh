@@ -73,11 +73,11 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
             case '$DISTRO_ID' in
             centos | fedora | rhel)
                 set +e
-                . scl_source enable devtoolset-8 $(cut -d',' -f1 <<< "$py")
+                . scl_source enable devtoolset-8
                 set -e
                 ;;
             ubuntu)
-                export CC='$(which gcc-8)' CXX='$(which g++-8)'
+                export CC="'$(which gcc-8)'" CXX="'$(which g++-8)'"
                 ;;
             esac
             '$py' -m pip install -U '$URL' || '$py' -m pip install -IU '$URL'"
