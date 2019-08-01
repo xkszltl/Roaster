@@ -24,7 +24,7 @@ if (-Not $Env:ROASTER_TOOLCHAIN_COMMITED)
 
     if (${Env:PERL_HOME} -eq $null -or -not $(Test-Path ${Env:PERL_HOME}/perl.exe -ErrorAction SilentlyContinue))
     {
-        $perl_ver="5.26.3.2603-MSWin32-x64-a95bce075"
+        $perl_ver="5.28.1.2801-MSWin32-x64-24563874"
         $DownloadURL = "https://downloads.activestate.com/ActivePerl/releases/" + $(${perl_ver} -replace '-.*','') + "/ActivePerl-${perl_ver}.exe"
         $DownloadPath = "${Env:TMP}/ActivePerl-${perl_ver}.exe"
         Write-Host "Downloading ActivePerl..."
@@ -93,7 +93,7 @@ if (-Not $Env:ROASTER_TOOLCHAIN_COMMITED)
 
     if (${Env:PYTHONHOME} -eq $null -or -not $(Test-Path ${Env:PYTHONHOME}/python.exe -ErrorAction SilentlyContinue))
     {
-        $py_ver="3.7.2"
+        $py_ver="3.7.4"
         $DownloadURL = "https://www.python.org/ftp/python/${py_ver}/python-${py_ver}-amd64.exe"
         $DownloadPath = "${Env:TMP}/python-${py_ver}-amd64.exe"
         Write-Host "Downloading Python..."
