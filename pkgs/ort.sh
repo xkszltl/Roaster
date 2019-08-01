@@ -9,7 +9,7 @@
 
     # ------------------------------------------------------------
 
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" Microsoft/onnxruntime,master
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" Microsoft/onnxruntime,v
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd onnxruntime
 
