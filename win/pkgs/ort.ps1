@@ -27,7 +27,7 @@ $latest_ver = 'v' + $($(git ls-remote --tags "$repo") -match '.*refs/tags/v[0-9\
 # $latest_ver = 'rel-' + $($(git ls-remote --heads "$repo") -match '.*refs/heads/rel-[0-9\.]*$' -replace '.*refs/heads/rel-','' | sort {[Version]$_})[-1]
 
 # Use master.
-$latest_ver = 'master'
+# $latest_ver = 'master'
 
 git clone --recursive -b "$latest_ver" -j100 "$repo"
 pushd "$root"
