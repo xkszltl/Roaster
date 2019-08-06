@@ -15,7 +15,6 @@
 
     git remote add patch "$GIT_MIRROR_GITHUB/xkszltl/rocksdb.git"
     git fetch patch
-    git cherry-pick patch/zlib
 
     # ------------------------------------------------------------
 
