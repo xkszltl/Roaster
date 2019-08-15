@@ -13,7 +13,7 @@
         pytest-dev/pytest                           \
         Frozenball/pytest-sugar,master              \
         micheles/decorator                          \
-        networkx/networkx,v
+        networkx/networkx,networkx-
 
     # ------------------------------------------------------------
 
@@ -23,7 +23,7 @@
 
     git remote add patch https://github.com/xkszltl/pytorch.git
 
-    PATCHES="lstm"
+    PATCHES="lstm rnn_arg"
 
     git pull --no-edit patch $PATCHES
 
