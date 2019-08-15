@@ -89,12 +89,14 @@ for i in pkg-{stable,skip,all}; do
                 [!] {gmp,mpfr,libmpc}{,-*}
                 [!] lib{asan{,3},lsan,tsan,ubsan}{,-debuginfo}
                 lib{exif,jpeg-turbo,tiff,png,gomp,gphoto2}{,-*}
+                giflib{,-*}
                 OpenEXR{,-*}
                 {libv4l,v4l-utils}{,-*}
                 libunicap{,gtk}{,-*}
                 [!] libglvnd{,-*}
                 lib{dc,raw}1394{,-*}
-                freetype{,-*}
+                cairo{,-*}
+                {freetype,harfbuzz,pango}{,-*}
                 {zlib,libzip,{,lib}zstd,lz4,{,p}{bzip2,xz},pigz,cpio,tar,snappy,unrar}{,-*}
                 [!] libaio{,-*}
                 lib{telnet,ssh{,2},curl,ffi,edit,icu,xslt}{,-*}
