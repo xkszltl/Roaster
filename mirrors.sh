@@ -85,7 +85,7 @@ gflags/gflags,\
 giampaolo/psutil,\
 github/{git-lfs,gitignore},\
 goldmann/docker-squash,\
-google/{benchmark,bloaty,boringssl,flatbuffers,gemmlowp,glog,googletest,leveldb,nsync,protobuf,re2,snappy,upb},\
+google/{benchmark,bloaty,boringssl,flatbuffers,gemmlowp,glog,googletest,leveldb,nsync,protobuf,re2,skia,snappy,upb},\
 googleapis/googleapis,\
 googlefonts/{fontmake,noto-{cjk,emoji,fonts,sans-hebrew,source},nototools,robotoslab},\
 grpc/grpc{,-{dart,dotnet,go,java,node,php,proto,swift,web}},\
@@ -105,10 +105,13 @@ LMDB/lmdb,\
 lutzroeder/netron,\
 madler/zlib,\
 Maratyszcza/{confu,cpuinfo,FP16,FXdiv,NNPACK,PeachPy,psimd,pthreadpool},\
+micheles/{decorator,plac},\
 Microsoft/{dotnet,GSL,onnxruntime{,-tvm},Terminal,TypeScript,vcpkg,vscode,wil},\
 moby/{buildkit,moby},\
+mono/{libgdiplus,linker,mono{,-tools,develop,torrent}},\
 nanopb/nanopb,\
 NervanaSystems/{coach,distiller,neon,ngraph},\
+networkx/networkx,\
 nico/demumble,\
 nicolargo/glances,\
 ninja-build/ninja,\
