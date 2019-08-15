@@ -5,7 +5,11 @@
 [ -e $STAGE/ort ] && ( set -xe
     cd $SCRATCH
 
-    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" cython/cython numpy/numpy,v
+    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  \
+        cython/cython                               \
+        numpy/numpy,v                               \
+        benjaminp/six                               \
+        pytest-dev/pytest
 
     # ------------------------------------------------------------
 
