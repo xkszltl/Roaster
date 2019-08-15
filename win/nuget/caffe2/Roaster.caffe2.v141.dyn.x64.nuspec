@@ -26,6 +26,7 @@
   </metadata>
   <files>
     <file src="Roaster.caffe2.v141.dyn.x64.targets" target="build\Roaster.caffe2.v141.dyn.x64.targets" />
+    <file src="caffe2\bin\**\*.exe"                 target="lib\native\lib\Release\" />
     <file src="caffe2\lib\*.dll"                    target="lib\native\lib\Release\" />
   </files>
 </package>
