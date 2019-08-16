@@ -32,7 +32,7 @@
         sudo yum update -y || true
 
         sudo yum-config-manager --add-repo "https://developer.download.nvidia.com/compute/cuda/repos/rhel$DISTRO_VERSION_ID/x86_64/cuda-rhel$DISTRO_VERSION_ID.repo"
-        sudo sed -i 's/http:\/\//https:\/\//' '/etc/yum.repos.d/cuda-rhel$DISTRO_VERSION_ID.repo'
+        sudo sed -i 's/http:\/\//https:\/\//' "/etc/yum.repos.d/cuda-rhel$DISTRO_VERSION_ID.repo"
         RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" cuda
 
         (
