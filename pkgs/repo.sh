@@ -31,13 +31,8 @@
         until sudo yum update -y --skip-broken; do echo 'Retrying'; done
         sudo yum update -y || true
 
-        sudo rpm -i "$(
-            curl -sSL --retry 5 https://developer.nvidia.com/cuda-downloads         \
-            | grep 'Linux/x86_64/CentOS/7/rpm (network)'                            \
-            | head -n1                                                              \
-            | sed "s/.*\('.*developer.download.nvidia.com\/[^\']*\.rpm'\).*/\1/"
-        )" || true
-        sudo sed -i 's/http:\/\//https:\/\//' '/etc/yum.repos.d/cuda.repo'
+        sudo yum-config-manager --add-repo "https://developer.download.nvidia.com/compute/cuda/repos/rhel$DISTRO_VERSION_ID/x86_64/cuda-rhel$DISTRO_VERSION_ID.repo"
+        sudo sed -i 's/http:\/\//https:\/\//' '/etc/yum.repos.d/cuda-rhel$DISTRO_VERSION_ID.repo'
         RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" cuda
 
         (
