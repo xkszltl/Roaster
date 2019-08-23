@@ -22,5 +22,3 @@ if (-not $(Test-Path "${DownloadDir}/$exe"))
 
 Write-Host "Installing CUDA..."
 & "${DownloadDir}/${exe}" -s | Out-Null
-
-http://developer.download.nvidia.com/compute/cuda/10.1/Prod/network_installers/cuda_10.1.243_win10_network.exe
