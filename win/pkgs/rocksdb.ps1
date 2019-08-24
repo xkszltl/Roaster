@@ -19,8 +19,10 @@ if (Test-Path "$root")
 }
 
 $latest_ver='v' + $($(git ls-remote --tags "$repo") -match '.*refs/tags/v[0-9\.]*$' -replace '.*refs/tags/v','' | sort {[Version]$_})[-1]
-# Need "rocksdb-shared.lib" patch after v5.17.2
-$latest_ver='master'
+
+# RocksDB 6.2.2 has compile error: https://github.com/facebook/rocksdb/issues/5730
+$latest_ver='v' + $($(git ls-remote --tags "$repo") -match '.*refs/tags/v6\.1\.[0-9\.]*$' -replace '.*refs/tags/v','' | sort {[Version]$_})[-1]
+
 git clone --single-branch -b "$latest_ver" "$repo"
 
 pushd "$root"
