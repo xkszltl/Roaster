@@ -19,6 +19,10 @@ if (Test-Path "$root")
 }
 
 $latest_ver="$($(git ls-remote --tags "$repo") -match '.*refs/tags/[0-9\.]*$' -replace '.*refs/tags/','' | sort {[Version]$_} | tail -n1)"
+
+# OpenCV 4.1.1 has "error LNK2001: unresolved external symbol" with freetype/harfbuzz.
+$latest_ver="4.1.0"
+
 git clone --depth 1 --recursive --single-branch -b "$latest_ver" -j8 "$repo"
 pushd "$root"
 
