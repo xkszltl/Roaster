@@ -182,6 +182,7 @@ for i in $(echo "
     pybind
     grpc
     libpng
+    libgdiplus
     mkl-dnn
     halide
     opencv
