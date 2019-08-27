@@ -31,6 +31,10 @@
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
 
         export C{,XX}FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"
+
+        # For libpng.
+        export PKG_CONFIG_PATH="/usr/local/lib64/pkgconfig:/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
+
         ./autogen.sh                \
             --prefix="$INSTALL_ABS" \
             --with-pango
