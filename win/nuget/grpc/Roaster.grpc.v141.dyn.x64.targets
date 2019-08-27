@@ -26,10 +26,6 @@
       <Link>grpc++.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/grpc++_cronet.pdb">
-      <Link>grpc++_cronet.pdb</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/grpc++_error_details.pdb">
       <Link>grpc++_error_details.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -66,6 +62,30 @@
       <Link>grpc_csharp_ext.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/grpc_node_plugin.exe">
+      <Link>grpc_node_plugin.exe</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/grpc_node_plugin.pdb">
+      <Link>grpc_node_plugin.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/grpc_objective_c_plugin.exe">
+      <Link>grpc_objective_c_plugin.exe</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/grpc_objective_c_plugin.pdb">
+      <Link>grpc_objective_c_plugin.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/grpc_php_plugin.exe">
+      <Link>grpc_php_plugin.exe</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/grpc_php_plugin.pdb">
+      <Link>grpc_php_plugin.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/grpc_plugin_support.pdb">
       <Link>grpc_plugin_support.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -76,6 +96,14 @@
     </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/grpc_python_plugin.pdb">
       <Link>grpc_python_plugin.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/grpc_ruby_plugin.exe">
+      <Link>grpc_ruby_plugin.exe</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/grpc_ruby_plugin.pdb">
+      <Link>grpc_ruby_plugin.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/grpc_unsecure.pdb">
