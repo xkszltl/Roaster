@@ -143,7 +143,7 @@ for i in pkg-{stable,skip,all}; do
 
                 privoxy{,-*}
 
-                wine
+                XXXXXXXX_wine
 
                 [!] libselinux{,-*}
                 [!] policycoreutils{,-*}
