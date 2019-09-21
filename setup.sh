@@ -130,7 +130,7 @@ cd "$SCRATCH"
     sudo rm -rvf "$STAGE"
     sudo mkdir -p "$(dirname "$STAGE")/.$(basename "$STAGE")"
     cd $_
-    [ $# -gt 0 ] && sudo touch $@ || sudo touch repo font pkg-stable pkg-skip auth tex ss ccache cmake c-ares axel intel ipt ompi cuda llvm-{gcc,clang} boost jemalloc eigen openblas gtest benchmark gflags glog snappy protobuf grpc catch2 jsoncpp rapidjson simdjson pybind libpng mkl-dnn halide opencv leveldb rocksdb lmdb onnx pytorch ort
+    [ $# -gt 0 ] && sudo touch $@ || sudo touch repo font pkg-stable pkg-skip fpm auth tex ss ccache cmake c-ares axel intel ipt ompi cuda llvm-{gcc,clang} boost jemalloc eigen openblas gtest benchmark gflags glog snappy protobuf grpc catch2 jsoncpp rapidjson simdjson pybind libpng mkl-dnn halide opencv leveldb rocksdb lmdb onnx pytorch ort
     sync || true
     cd "$SCRATCH"
     sudo mv -vf "$(dirname "$STAGE")/.$(basename "$STAGE")" $STAGE
