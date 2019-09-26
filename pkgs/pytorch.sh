@@ -118,7 +118,9 @@
         # time cmake --build . --target
         time cmake --build . --target install
 
-        time cmake --build . --target test || ! nvidia-smi
+        time cmake --build . --target test -- -j$(nproc) || ! nvidia-smi
+
+	"$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" ..
 
         # python3 -m pytest --disable-warnings -v caffe2/python
 
