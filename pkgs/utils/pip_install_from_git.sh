@@ -9,6 +9,7 @@ if [ ! "$ROOT_DIR" ]; then
     until [ -x "$ROOT_DIR/setup.sh" ] && [ -d "$ROOT_DIR/pkgs" ]; do export ROOT_DIR=$(readlink -e "$ROOT_DIR/.."); done
     [ "_$ROOT_DIR" != "_$(readlink -f "$ROOT_DIR/..")" ]
     echo 'Set $ROOT_DIR to "'"$ROOT_DIR"'".'
+    . <(sed 's/^\(..*\)/export DISTRO_\1/' '/etc/os-release')
 fi
 
 CACHE_VALID=false
@@ -50,6 +51,10 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
             # Skip SCL Python.
             [ "$(cut -d',' -f1 <<< "$py")" ] && exit 0 
             ;;
+        *)
+            echo "Unknown DISTRO_ID \"$DISTRO_ID\"."
+            exit 1
+            ;;
         esac
 
         py="$(which "$(cut -d',' -f2 <<< "$py")")"
@@ -69,7 +74,7 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
             echo "Package \"$PKG\" for \"$py\" is already up-to-date ($GIT_TAG_VER). Skip."
             continue
         fi
-        sudo bash -c "set -e
+        bash -c "set -e
             case '$DISTRO_ID' in
             centos | fedora | rhel)
                 set +e
@@ -79,8 +84,12 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
             ubuntu)
                 export CC="'$(which gcc-8)'" CXX="'$(which g++-8)'"
                 ;;
+            *)
+                echo 'Unknown DISTRO_ID \"$DISTRO_ID\".'
+                exit 1
+                ;;
             esac
-            '$py' -m pip install -U '$URL' || '$py' -m pip install -IU '$URL'"
+            '$(which sudo)' '$py' -m pip install -U '$URL' || '$(which sudo)' '$py' -m pip install -IU '$URL'"
         CACHE_VALID=false
     )
     done
