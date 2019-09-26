@@ -17,7 +17,6 @@ for i in llvm-{gcc,clang}; do
             "clang")
                 until git clone -b "'"$GIT_TAG"'" "'"$(sed 's/[^\/]*$//' <<< "$GIT_REPO")"'$PROJ.git" {}; do sleep 1; echo "Retrying"; done
                 pushd {}
-                git cherry-pick c3f675  # devtoolset-8 discovery.
                 until git clone --depth 1 -b "'"$GIT_TAG"'" "'"$(sed 's/[^\/]*$//' <<< "$GIT_REPO")"'$PROJ-tools-extra.git" "tools/extra"; do sleep 1; echo "Retrying"; done
                 popd
                 ;;
