@@ -95,6 +95,7 @@ HowardHinnant/date,\
 HypothesisWorks/hypothesis,\
 intel/{ARM_NEON_2_x86_SSE,compute-runtime,ideep,mkl-dnn},\
 intelxed/xed,\
+IvanKobzarev/fbjni,\
 JDAI-CV/{dabnn{,-example},DCL,DNNLibrary},\
 jemalloc/jemalloc,\
 jordansissel/fpm,\
