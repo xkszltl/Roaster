@@ -65,7 +65,7 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
 
             # Always remove enum34.
             if [ "$(grep '^enum34==' <<< "$CACHED_LIST")" ]; then
-                sudo "$py" -m pip uninstall -y 'enum34'
+                /usr/bin/sudo "$py" -m pip uninstall -y 'enum34'
                 CACHE_VALID=false
                 continue
             fi
@@ -89,7 +89,8 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
                 exit 1
                 ;;
             esac
-            '$(which sudo)' '$py' -m pip install -U '$URL' || '$(which sudo)' '$py' -m pip install -IU '$URL'"
+            grep numpy <<< '$URL' && export CFLAGS='$CFLAGS -std=c11'
+            /usr/bin/sudo -E '$py' -m pip install -U '$URL' || /usr/bin/sudo -E '$py' -m pip install -IU '$URL'"
         CACHE_VALID=false
     )
     done
