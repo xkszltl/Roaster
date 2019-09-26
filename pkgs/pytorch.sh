@@ -118,7 +118,7 @@
         # time cmake --build . --target
         time cmake --build . --target install
 
-        time cmake --build . --target test -- -j$(nproc) || ! nvidia-smi
+        CTEST_PARALLEL_LEVEL="$(nproc)" time cmake --build . --target test || ! nvidia-smi
 
 	"$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" ..
 

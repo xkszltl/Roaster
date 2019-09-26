@@ -55,7 +55,7 @@
 
         time cmake --build . --target
         time cmake --build . --target install
-        time cmake --build . --target test
+        CTEST_PARALLEL_LEVEL="$(nproc)" time cmake --build . --target test
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"

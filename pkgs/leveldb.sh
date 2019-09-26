@@ -49,6 +49,7 @@
                 ..
 
             time cmake --build .
+            # Parallel test not fully supported.
             time cmake --build . --target test
             time cmake --build . --target install
             ./db_bench

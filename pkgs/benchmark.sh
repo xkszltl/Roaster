@@ -50,7 +50,7 @@
             ..
 
         time cmake --build .
-        time cmake --build . --target test
+        CTEST_PARALLEL_LEVEL="$(nproc)" time cmake --build . --target test
         time cmake --build . --target install
     )
 

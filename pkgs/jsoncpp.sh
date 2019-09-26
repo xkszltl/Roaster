@@ -46,6 +46,7 @@
             ..
 
         time cmake --build .
+        # Parallel test doesn't work.
         time cmake --build . --target test
         time cmake --build . --target install
     )
