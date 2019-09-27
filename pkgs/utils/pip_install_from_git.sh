@@ -74,23 +74,27 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
             echo "Package \"$PKG\" for \"$py\" is already up-to-date ($GIT_TAG_VER). Skip."
             continue
         fi
-        bash -c "set -e
-            case '$DISTRO_ID' in
-            centos | fedora | rhel)
+
+        (
+            set -e
+            case "$DISTRO_ID" in
+            'centos' | 'fedora' | 'rhel')
                 set +e
                 . scl_source enable devtoolset-8
                 set -e
+                export CC="$(which gcc)" CXX="$(which g++)"
                 ;;
-            ubuntu)
-                export CC="'$(which gcc-8)'" CXX="'$(which g++-8)'"
+            'ubuntu')
+                export CC="$(which gcc-8)" CXX="$(which g++-8)"
                 ;;
             *)
-                echo 'Unknown DISTRO_ID \"$DISTRO_ID\".'
+                echo "Unknown DISTRO_ID \"$DISTRO_ID\"."
                 exit 1
                 ;;
             esac
-            grep numpy <<< '$URL' && export CFLAGS='$CFLAGS -std=c11'
-            /usr/bin/sudo -E '$py' -m pip install -U '$URL' || /usr/bin/sudo -E '$py' -m pip install -IU '$URL'"
+            /usr/bin/sudo -E PATH="$PATH" "$py" -m pip install -U "$URL" || /usr/bin/sudo -E PATH="$PATH" "$py" -m pip install -IU "$URL"
+        )
+
         CACHE_VALID=false
     )
     done

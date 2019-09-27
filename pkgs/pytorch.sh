@@ -5,9 +5,10 @@
 [ -e $STAGE/pytorch ] && ( set -xe
     cd $SCRATCH
 
+    CFLAGS="$CFLAGS -std=c99" "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" numpy/numpy,v
+
     "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  \
         python/typing                               \
-        numpy/numpy,v                               \
         benjaminp/six                               \
         yaml/pyyaml                                 \
         pytest-dev/pytest                           \

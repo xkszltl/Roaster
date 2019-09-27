@@ -5,7 +5,8 @@
 [ -e $STAGE/onnx ] && ( set -xe
     cd $SCRATCH
 
-    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" python/typing cython/cython numpy/numpy,v benjaminp/six
+    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" python/typing cython/cython benjaminp/six
+    CFLAGS="$CFLAGS -std=c99" "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" numpy/numpy,v
 
     # ------------------------------------------------------------
 
@@ -58,9 +59,9 @@
         CMAKE_ARGS="$CMAKE_ARGS
             -DBUILD_SHARED_LIBS=ON
             -DCMAKE_BUILD_TYPE=Release
-            -DCMAKE_C_COMPILER='$CC'
+            -DCMAKE_C_COMPILER='$(which "$CC")'
             -DCMAKE_C_COMPILER_LAUNCHER=ccache
-            -DCMAKE_CXX_COMPILER='$CXX'
+            -DCMAKE_CXX_COMPILER='$(which "$CXX")'
             -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
             -DONNX_GEN_PB_TYPE_STUBS=ON
         " ONNX_ML=1 "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" .
