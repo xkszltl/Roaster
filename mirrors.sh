@@ -129,6 +129,7 @@ PeachPy/enum34,\
 protocolbuffers/{protobuf,upb},\
 pybind/pybind11,\
 PythonCharmers/python-future,\
+python-pillow/{Pillow,pillow-perf,Sane},\
 pypa/{pip,pipenv,setuptools,virtualenv,warehouse,wheel},\
 pytest-dev/{pluggy,py,pytest},\
 python/typing,\
@@ -144,6 +145,7 @@ shibatch/sleef,\
 Tencent/rapidjson,\
 tensorflow/{agents,datasets,docs,io,models,tensorboard,tensorflow,transform},\
 torvalds/linux,\
+uploadcare/pillow-simd,\
 USCiLab/cereal,\
 wjakob/clang-cindex-python3,\
 xianyi/OpenBLAS,\
