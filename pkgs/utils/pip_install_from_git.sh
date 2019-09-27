@@ -30,7 +30,7 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
         PKG="future"
     fi
 
-    for wheel_only in protobuf setuptools; do
+    for wheel_only in pillow protobuf setuptools; do
         if grep -i "/$wheel_only" <<< "/$i" > /dev/null; then
             echo "Cannot build $PKG from source. Install it from wheel instead."
             URL="$PKG"
