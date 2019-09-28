@@ -92,7 +92,7 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
                 exit 1
                 ;;
             esac
-            /usr/bin/sudo -E PATH="$PATH" "$py" -m pip install -U "$URL" || /usr/bin/sudo -E PATH="$PATH" "$py" -m pip install -IU "$URL"
+            /usr/bin/sudo -E PATH="$PATH" "$py" -m pip install -Uv "$URL" || /usr/bin/sudo -E PATH="$PATH" "$py" -m pip install -IUv "$URL"
         )
 
         CACHE_VALID=false
