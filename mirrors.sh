@@ -53,6 +53,7 @@ fi
 https://github.com/\ /\ {\
 01org/{mkl-dnn,processor-trace,tbb},\
 abseil/abseil-{cpp,py},\
+afq984/,\
 agauniyal/{rang,termdb},\
 aquynh/capstone,\
 ARM-software/{arm-trusted-firmware,ComputeLibrary,lisa},\
@@ -71,6 +72,7 @@ containerd/containerd,\
 cython/cython,\
 dmlc/{dlpack,dmlc-core,gluon-cv,gluon-nlp,HalideIR,tvm,xgboost},\
 docker/docker-ce,\
+docopt/docopt,\
 dotnet/{cli,core{,-setup,clr,fx},standard},\
 eigenteam/eigen-git-mirror,\
 emil-e/rapidcheck,\
@@ -108,6 +110,7 @@ llvm-mirror/{ll{vm,d,db,go},clang{,-tools-extra},polly,compiler-rt,openmp,lib{un
 LMDB/lmdb,\
 lutzroeder/netron,\
 madler/zlib,\
+matplotlib/{jupyter-matplotlib,matplotlib,mplcairo,pytest-mpl},\
 Maratyszcza/{confu,cpuinfo,FP16,FXdiv,NNPACK,PeachPy,psimd,pthreadpool},\
 micheles/{decorator,plac},\
 Microsoft/{dotnet,GSL,onnxruntime{,-tvm},Terminal,TypeScript,vcpkg,vscode,wil},\
@@ -148,6 +151,7 @@ shibatch/sleef,\
 Tencent/rapidjson,\
 tensorflow/{agents,datasets,docs,io,models,tensorboard,tensorflow,transform},\
 torvalds/linux,\
+tqdm/{py-make,tqdm},\
 uploadcare/pillow-simd,\
 USCiLab/cereal,\
 wjakob/clang-cindex-python3,\
