@@ -121,7 +121,7 @@
 
         CTEST_PARALLEL_LEVEL="$(nproc)" time cmake --build . --target test || ! nvidia-smi
 
-	"$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" ..
+        "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" ..
 
         # python3 -m pytest --disable-warnings -v caffe2/python
 
