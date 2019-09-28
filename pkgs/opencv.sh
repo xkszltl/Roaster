@@ -25,7 +25,7 @@
         case "$DISTRO_ID" in
         'centos' | 'fedora' | 'rhel')
             set +xe
-            . scl_source enable devtoolset-8
+            . scl_source enable devtoolset-8 rh-git218
             set -xe
             export CC="gcc" CXX="g++" AR="$(which gcc-ar)" RANLIB="$(which gcc-ranlib)"
             ;;
@@ -42,10 +42,11 @@
             [ "$HTTP_PROXY" ] && export http_proxy="$HTTP_PROXY"
             [ "$HTTPS_PROXY" ] && export https_proxy="$HTTPS_PROXY"
 
+            # Use mirrored download path in opencv cmake.
             (
                 set -xe
                 GITHUB_RAW='https://raw.githubusercontent.com'
-                git grep --name-only "$GITHUB_RAW" -- '*.cmake' \
+                git grep --name-only --recurse-submodules "$GITHUB_RAW" -- '*.cmake' '*/CMakeLists.txt' \
                 | xargs -n1 sed -i "s/$(sed 's/\([\\\/\.\-]\)/\\\1/g' <<< "$GITHUB_RAW")\(\/[^\/]*\/[^\/]*\)/$(sed 's/\([\\\/\.\-]\)/\\\1/g' <<< "$GIT_MIRROR")\1\/raw/"
             )
         fi
