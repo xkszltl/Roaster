@@ -43,7 +43,8 @@
             ..
 
         time cmake --build .
-        CTEST_PARALLEL_LEVEL="$(nproc)" time cmake --build . --target test
+        # Parallel test can fail.
+        time cmake --build . --target test
         time cmake --build . --target install
     )
 
