@@ -120,7 +120,7 @@ nico/demumble,\
 nicolargo/glances,\
 ninja-build/ninja,\
 numpy/numpy{,doc},\
-NVIDIA/{apex,DALI,DIGITS,cnmem,libglvnd,nccl,nccl-tests,nvidia-{container-runtime,docker,installer,modprobe,persistenced,settings,xconfig}},\
+NVIDIA/{apex,cnmem,cuda-samples,cutlass,DALI{,_extra},Dataset_Synthesizer,DeepLearningExamples,DIGITS,flownet2-pytorch,libglvnd,Megatron-LM,NeMo,nccl,nccl-tests,nvidia-{container-runtime,docker,installer,modprobe,persistenced,settings,xconfig},NvPipe,nvvl,open-gpu-doc,OpenSeq2Seq,pix2pixHD,tacotron2,TensorRT,tensorrt-inference-server,vid2vid,waveglow},\
 NVlabs/{cub,ffhq-dataset,pacnet,PWC-Net,SPADE,stylegan,xmp},\
 onnx/{models,onnx{,-tensorrt,mltools},tutorials},\
 open-mpi/ompi,\
