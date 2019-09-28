@@ -78,6 +78,7 @@ envoyproxy/{data-plane-api,envoy,{go,java}-control-plane,nighthawk,protoc-gen-va
 facebook/{rocksdb,zstd},\
 facebookincubator/gloo,\
 facebookresearch/{Detectron,fastText},\
+FFmpeg/FFmpeg,\
 frerich/clcache,\
 Frozenball/pytest-sugar,\
 gabime/spdlog,\
@@ -101,6 +102,7 @@ jemalloc/jemalloc,\
 jordansissel/fpm,\
 Kitware/{CMake,VTK},\
 lemire/simdjson,\
+libav/libav,\
 llvm-mirror/{ll{vm,d,db,go},clang{,-tools-extra},polly,compiler-rt,openmp,lib{unwind,cxx{,abi}},test-suite},\
 LMDB/lmdb,\
 lutzroeder/netron,\
