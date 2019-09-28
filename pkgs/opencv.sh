@@ -36,15 +36,22 @@
 
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
 
-        mkdir -p build
-        cd $_
-
         if [ "_$GIT_MIRROR" = "_$GIT_MIRROR_CODINGCAFE" ]; then
             export HTTP_PROXY=proxy.codingcafe.org:8118
             [ "$HTTP_PROXY" ] && export HTTPS_PROXY="$HTTP_PROXY"
             [ "$HTTP_PROXY" ] && export http_proxy="$HTTP_PROXY"
             [ "$HTTPS_PROXY" ] && export https_proxy="$HTTPS_PROXY"
+
+            (
+                set -xe
+                GITHUB_RAW='https://raw.githubusercontent.com'
+                git grep --name-only "$GITHUB_RAW" -- '*.cmake' \
+                | xargs -n1 sed -i "s/$(sed 's/\([\\\/\.\-]\)/\\\1/g' <<< "$GITHUB_RAW")\(\/[^\/]*\/[^\/]*\)/$(sed 's/\([\\\/\.\-]\)/\\\1/g' <<< "$GIT_MIRROR")\1\/raw/"
+            )
         fi
+
+        mkdir -p build
+        cd $_
 
         # --------------------------------------------------------
         # Known issues:
