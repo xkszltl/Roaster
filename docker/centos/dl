@@ -7,4 +7,4 @@ LABEL BUILD_ID=$LABEL_BUILD_ID
 
 COPY [".", "/etc/roaster/scripts"]
 
-RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh onnx pytorch
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh onnx pytorch torchvision
