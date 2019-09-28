@@ -92,6 +92,7 @@ googlefonts/{fontmake,noto-{cjk,emoji,fonts,sans-hebrew,source},nototools,roboto
 grpc/grpc{,-{dart,dotnet,go,java,node,php,proto,swift,web}},\
 halide/Halide,\
 harfbuzz/harfbuzz,\
+houseroad/foxi,\
 HowardHinnant/date,\
 HypothesisWorks/hypothesis,\
 intel/{ARM_NEON_2_x86_SSE,compute-runtime,ideep,mkl-dnn},\
