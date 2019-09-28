@@ -123,6 +123,18 @@
 
         "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" ..
 
+        # Dirty hack to fix torchvision build issues.
+        case "$DISTRO_ID" in
+        'centos' | 'fedora' | 'rhel')
+            for site in {"/usr/local","/opt/rh/rh-python36/root/usr"}"/lib64/python3.6/site-packages/torch"; do
+                for target in bin/torch_shm_manager include/torch; do
+                    sudo mkdir -p "$(dirname "$site/./$target")"
+                    sudo ln -sf {'/usr/local',"$site"}"/$target"
+                done
+            done
+            ;;
+        esac
+
         # python3 -m pytest --disable-warnings -v caffe2/python
 
         # Exclude GTest/MKL-DNN/ONNX/Caffe files.
