@@ -124,7 +124,7 @@ NVlabs/{cub,ffhq-dataset,pacnet,PWC-Net,SPADE,stylegan,xmp},\
 onnx/{models,onnx{,-tensorrt,mltools},tutorials},\
 open-mpi/ompi,\
 open-source-parsers/jsoncpp,\
-opencv/{cvat,dldt,open_model_zoo,opencv{,_{contrib,extra}},openvino_training_extensions},\
+opencv/{cvat,dldt,open_model_zoo,opencv{,_{3rdparty,contrib,extra}},openvino_training_extensions},\
 openssl/openssl,\
 openwrt/{luci,openwrt,packages,targets,telephony,video},\
 PeachPy/enum34,\
