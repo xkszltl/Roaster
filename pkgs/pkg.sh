@@ -124,7 +124,7 @@ for i in pkg-{stable,skip,all}; do
                 {nrpe,nsca}
                 {collectd,rrdtool,pnp4nagios}{,-*}
                 [!] cuda
-                [!] lib{cudnn7{,-devel},nccl{,-devel,-static},nvinfer{5,-devel}}
+                [!] lib{cudnn7{,-devel},nccl{,-devel,-static},nvinfer{6,-devel}}
                 [!] nvidia-docker2
 
                 hdf5{,-*}
