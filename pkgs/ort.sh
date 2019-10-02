@@ -119,19 +119,23 @@
                     echo "Failed to download test data."
                     exit 1
                 fi
-                rm -rf 'models.zip'
+                rm -rf 'models.zip'{,'.partial'}
                 if [ "_$GIT_MIRROR" = "_$GIT_MIRROR_CODINGCAFE" ]; then
-                    curl -sSL 'https://repo.codingcafe.org/microsoft/onnxruntime/20190419.zip' > 'models.zip' || continue
+                    curl -sSL 'https://repo.codingcafe.org/microsoft/onnxruntime/20190419.zip' > 'models.zip.partial' || continue
                 else
-                    axel -n200 -o 'models.zip' 'https://onnxruntimetestdata.blob.core.windows.net/models/20190419.zip' || continue
+                    axel -n200 -o 'models.zip.partial' 'https://onnxruntimetestdata.blob.core.windows.net/models/20190419.zip' || continue
                 fi
-                md5sum -c <<< '3f46c31ee02345dbe707210b339e31fe models.zip' || continue
+                md5sum -c <<< '3f46c31ee02345dbe707210b339e31fe models.zip.partial' || continue
+                mv -f 'models.zip'{'.partial',}
                 break
             done
-            unzip -o models.zip -d ../models
-            rm -rf models.zip
-
-            time cmake --build . --target test || ! nvidia-smi
+            rm -rf models.zip.partial
+            # Best effort since the zip is too large.
+            if [ -e 'models.zip' ]; then
+                unzip -o models.zip -d ../models
+                rm -rf models.zip
+                time cmake --build . --target test || ! nvidia-smi
+            fi
         fi
 
         python3 ../setup.py bdist_wheel
