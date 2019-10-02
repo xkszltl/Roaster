@@ -9,7 +9,7 @@
 
     until git clone --depth 1 --no-checkout --no-single-branch $GIT_MIRROR/google/leveldb.git; do echo 'Retrying'; done
     cd leveldb
-    # git checkout $(git tag | sed -n '/^v[0-9\.]*$/p' | sort -V | tail -n1)
+    # No new release for years.
     git checkout master
     git tag "$(git tag | sed -n '/^v[0-9\.]*$/p' | sort -V | tail -n1).1"
 
