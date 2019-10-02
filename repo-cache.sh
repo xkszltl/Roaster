@@ -93,20 +93,20 @@ parallel -j0 --line-buffer --bar 'bash -c '"'"'
 
     $DRY || wget $DRY_WGET -cq --bind-address='$ROUTE' $INTEL_URL/{}
 '"'" :::   \
-    15552/l_daal_2019.4.243.tgz     \
-    15541/l_ipp_2019.4.243.tgz      \
-    15540/l_mkl_2019.4.243.tgz      \
-    15553/l_mpi_2019.4.243.tgz      \
-    15562/l_tbb_2019.6.243.tgz      \
-    15572/m_daal_2019.4.233.dmg     \
-    15480/m_ipp_2019.4.233.dmg      \
-    15481/m_mkl_2019.4.233.dmg      \
-    15563/m_tbb_2019.6.233.dmg      \
-    15551/w_daal_2019.4.245.exe     \
-    15550/w_ipp_2019.4.245.exe      \
-    15549/w_mkl_2019.4.245.exe      \
-    15555/w_mpi_p_2019.4.245.exe    \
-    15564/w_tbb_2019.6.245.exe      \
+    15818/l_daal_2019.5.281.tgz     \
+    15817/l_ipp_2019.5.281.tgz      \
+    15816/l_mkl_2019.5.281.tgz      \
+    15838/l_mpi_2019.5.281.tgz      \
+    15851/l_tbb_2019.8.281.tgz      \
+    15858/m_daal_2019.5.281.dmg     \
+    15821/m_ipp_2019.5.281.dmg      \
+    15822/m_mkl_2019.5.281.dmg      \
+    15852/m_tbb_2019.8.281.dmg      \
+    15808/w_daal_2019.5.281.exe     \
+    15807/w_ipp_2019.5.281.exe      \
+    15806/w_mkl_2019.5.281.exe      \
+    15840/w_mpi_p_2019.5.281.exe    \
+    15853/w_tbb_2019.8.281.exe      \
 &
 
 # ----------------------------------------------------------------
@@ -194,18 +194,19 @@ done
 # ----------------------------------------------------------------
 
 for sub_repo in cuda,cuda nvidia-machine-learning,machine-learning; do
+for dist in rhel7; do
     name="$(cut -d',' -f1 <<< "$sub_repo,")"
     dir="$(cut -d',' -f2 <<< "$sub_repo,")"
-    mkdir -p "nvidia/$dir/rhel7/$(uname -i)"
+    mkdir -p "nvidia/$dir/$dist/$(uname -i)"
     pushd "$_"
-    $DRY || wget $DRY_WGET -cq "https://developer.download.nvidia.com/compute/$dir/repos/rhel7/$(uname -i)/7fa2af80.pub"
+    $DRY || wget $DRY_WGET -cq "https://developer.download.nvidia.com/compute/$dir/repos/$dist/$(uname -i)/7fa2af80.pub"
     $DRY || rpm --import "7fa2af80.pub"
     popd
 
     export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
     {
         "repo":         "'"$name"'",
-        "path":         "'"nvidia/$dir/rhel7/$(uname -i)"'",
+        "path":         "'"nvidia/$dir/$dist/$(uname -i)"'",
         "retries":      10,
         "use_proxy":    "'"false"'",
         "sync_args":    "--delete"
