@@ -87,6 +87,7 @@ gabime/spdlog,\
 gflags/gflags,\
 giampaolo/psutil,\
 github/{git-lfs,gitignore},\
+golang/{appengine,benchmarks,dep,example,freetype,glog,go{,frontend},groupcache,leveldb,mock,oauth2,protobuf,snappy,term,winstrap},\
 goldmann/docker-squash,\
 google/{benchmark,bloaty,boringssl,flatbuffers,gemmlowp,glog,googletest,leveldb,nsync,protobuf,re2,skia,snappy,upb},\
 googleapis/googleapis,\
@@ -154,6 +155,7 @@ torvalds/linux,\
 tqdm/{py-make,tqdm},\
 uploadcare/pillow-simd,\
 USCiLab/cereal,\
+v2ray/{dist,ext,geoip,homebrew-v2ray,v2ray-core,V2RayN},\
 wjakob/clang-cindex-python3,\
 xianyi/OpenBLAS,\
 yaml/pyyaml,\
