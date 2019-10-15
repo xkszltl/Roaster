@@ -74,7 +74,7 @@ for i in pkg-{stable,skip,all}; do
                 [!] {{e2fs,btrfs-,xfs,ntfs}progs,xfsdump,nfs-utils}{,-*}
                 [!] fuse{,-devel,-libs}
                 dd{,_}rescue{,-*}
-                [!] {docker-ce,container-selinux}{,-*}
+                [!] {docker-{ce,compose},container-selinux}{,-*}
                 createrepo{,_c}{,-*}
                 environment-modules{,-*}
                 munge{,-*}
