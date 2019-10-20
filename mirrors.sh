@@ -151,6 +151,7 @@ shadowsocks/{ShadowsocksX-NG,libQtShadowsocks,shadowsocks{,-go,-libev,-manager,-
 shibatch/sleef,\
 Tencent/rapidjson,\
 tensorflow/{agents,datasets,docs,io,models,tensorboard,tensorflow,transform},\
+thrust/thrust,\
 torvalds/linux,\
 tqdm/{py-make,tqdm},\
 uploadcare/pillow-simd,\
