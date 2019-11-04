@@ -149,6 +149,7 @@ SchedMD/slurm,\
 scipy/scipy{,-mathjax,-sphinx-theme},\
 shadowsocks/{ShadowsocksX-NG,libQtShadowsocks,shadowsocks{,-go,-libev,-manager,-windows},v2ray-plugin},\
 shibatch/sleef,\
+sivel/{go-speedtest,speedtest-cli},\
 Tencent/rapidjson,\
 tensorflow/{agents,datasets,docs,io,models,tensorboard,tensorflow,transform},\
 thrust/thrust,\
