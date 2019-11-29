@@ -11,6 +11,9 @@
     cd leveldb
     # No new release for years.
     git checkout master
+
+    . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
+
     git tag "$(git tag | sed -n '/^v[0-9\.]*$/p' | sort -V | tail -n1).1"
 
     # ------------------------------------------------------------
