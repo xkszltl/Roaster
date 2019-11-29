@@ -73,6 +73,20 @@
             popd
         fi
 
+        # Exclude GTest files.
+        pushd "$INSTALL_ROOT"
+        for i in gtest; do
+            case "$DISTRO_ID" in
+            'centos' | 'fedora' | 'rhel')
+                [ "$(rpm -qa "roaster-$i")" ] || continue
+                rpm -ql "roaster-$i" | sed -n 's/^\//\.\//p' | xargs rm -rf
+                ;;
+            'ubuntu')
+                dpkg -l "roaster-$i" && dpkg -L "roaster-$i" | xargs -n1 | xargs -i -n1 find {} -maxdepth 0 -not -type d | sed -n 's/^\//\.\//p' | xargs rm -rf
+                ;;
+            esac
+        done
+        popd
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
