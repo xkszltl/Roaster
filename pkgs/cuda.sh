@@ -72,7 +72,10 @@
         cd /usr/local/cuda/samples
         export MPI_HOME=/usr/local/openmpi
         sudo make -j clean
-        VERBOSE=1 time sudo make -j$(nproc)
+
+        # CUDA 10.2 does not build due to missing nvscibuf.
+        # See discussion in https://devtalk.nvidia.com/default/topic/1067000/where-is-quot-nvscibuf-h-quot-/?offset=13
+        VERBOSE=1 time sudo make -j$(nproc) -k || true
     )
 )
 sudo rm -vf $STAGE/cuda
