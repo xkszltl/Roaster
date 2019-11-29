@@ -64,6 +64,7 @@
                 ;;
             esac
         done
+        rm -rf ./usr/local/lib/libgtest*
         popd
     )
 
