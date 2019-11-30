@@ -142,7 +142,7 @@
 
         # Exclude GTest/MKL-DNN/ONNX/Caffe files.
         pushd "$INSTALL_ROOT"
-        for i in gtest mkl-dnn onnx caffe; do
+        for i in caffe gtest mkl-dnn onnx openblas; do
             case "$DISTRO_ID" in
             'centos' | 'fedora' | 'rhel')
                 [ "$(rpm -qa "roaster-$i")" ] || continue
