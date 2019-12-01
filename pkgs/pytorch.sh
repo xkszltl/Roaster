@@ -153,6 +153,8 @@
                 ;;
             esac
         done
+        rm -rf ./usr/local/lib*/libgtest*
+        rm -rf ./usr/local/include/gtest
         popd
 
         # --------------------------------------------------------
