@@ -5,4 +5,4 @@ LABEL BUILD_ID=$LABEL_BUILD_ID
 
 COPY [".", "/etc/roaster/scripts"]
 
-RUN /etc/roaster/scripts/setup.sh auth
+RUN /etc/roaster/scripts/setup.sh auth vim tmux
