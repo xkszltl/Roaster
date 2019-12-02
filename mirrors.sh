@@ -153,6 +153,7 @@ sivel/{go-speedtest,speedtest-cli},\
 Tencent/rapidjson,\
 tensorflow/{agents,datasets,docs,io,models,tensorboard,tensorflow,transform},\
 thrust/thrust,\
+tmux/tmux,\
 tmux-plugins/{tmux-{continuum,resurrect,sensible,test},tpm},\
 torvalds/linux,\
 tqdm/{py-make,tqdm},\

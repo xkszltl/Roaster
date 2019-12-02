@@ -109,6 +109,7 @@ for i in pkg-{stable,skip,all}; do
                 lapack{,64}{,-*}
                 {libsodium,mbedtls}{,-*}
                 libev{,-devel,-source,-debuginfo}
+                libevent{,-*}
                 {asciidoc,gettext,xmlto,c-ares,pcre{,2}}{,-*}
                 librados2{,-*}
                 {gflags,glog,gmock,gtest,protobuf}{,-*}

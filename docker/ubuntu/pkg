@@ -5,9 +5,17 @@ LABEL BUILD_ID=$LABEL_BUILD_ID
 
 COPY [".", "/etc/roaster/scripts"]
 
-RUN sudo apt-get update -y \
-    && sudo apt-get upgrade -y \
-    && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
+RUN set -e; \
+    sudo apt-get update -y; \
+    sudo apt-get upgrade -y; \
+    if false; then \
+        apt-cache show {cuda-drivers,{{,lib}nvidia-*,xserver-*-nvidia}-418}=418.87.* 2>&1 \
+        | sed -n 's/^Package:[[:space:]]*\(.*\)/\1=418\.87\.\*/p' \
+        | paste -s - \
+        | sudo DEBIAN_FRONTEND=noninteractive xargs -l apt-get install -y \
+        apt-mark hold cuda-drivers {{,lib}nvidia-*,xserver-*-nvidia}-*; \
+    fi; \
+    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
         asciidoc \
         autoconf{,-archive} automake autopoint \
         axel \
@@ -44,6 +52,7 @@ RUN sudo apt-get update -y \
         lib{asan{0,2,3,4,5},tsan0,ubsan{0,1}} \
         lib{atlas-base,boost-all,bz2,cairo2,edit,eigen3,gflags,gif,google-glog,grpc++,gtest,harfbuzz,hwloc,jemalloc,jpeg{,-turbo8},jsoncpp,lapack,leveldb,lmdb,lzma,ncurses5,openblas,opencv,pango1.0,png,rados,rocksdb,snappy,ssl,tiff}-dev \
         lib{cudnn7{,-dev},nccl{2,-dev},nv{infer{,-plugin},{,onnx}parsers}{6,-dev}} \
+        libevent-dev \
         libfreetype6{,-dev} \
         liblz4-dev liblz4-tool \
         libnuma-dev numactl numad \
@@ -87,11 +96,11 @@ RUN sudo apt-get update -y \
         vim \
         wget \
         xz-utils pxz \
-        zstd libzstd-dev \
-    && sudo apt-get autoremove -y \
-    && sudo apt-get clean \
-    && sudo update-alternatives --set libblas.so.3-x86_64-linux-gnu /usr/lib/x86_64-linux-gnu/atlas/libblas.so.3 \
-    && sudo update-alternatives --set liblapack.so.3-x86_64-linux-gnu /usr/lib/x86_64-linux-gnu/atlas/liblapack.so.3 \
-    && sudo parallel --will-cite < /dev/null \
-    && truncate -s0 ~/.bash_history
+        zstd libzstd-dev; \
+    sudo apt-get autoremove -y; \
+    sudo apt-get clean; \
+    sudo update-alternatives --set libblas.so.3-x86_64-linux-gnu /usr/lib/x86_64-linux-gnu/atlas/libblas.so.3; \
+    sudo update-alternatives --set liblapack.so.3-x86_64-linux-gnu /usr/lib/x86_64-linux-gnu/atlas/liblapack.so.3; \
+    sudo parallel --will-cite < /dev/null; \
+    truncate -s0 ~/.bash_history;
 RUN /etc/roaster/scripts/setup.sh fpm
