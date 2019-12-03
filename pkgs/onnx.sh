@@ -10,10 +10,14 @@
 
     # ------------------------------------------------------------
 
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" onnx/onnx,master
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" onnx/onnx,v
     until git clone -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
 
     cd onnx
+
+    git remote add patch https://github.com/xkszltl/onnx.git
+    git fetch patch
+    git cherry-pick patch/pyout
 
     . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
 
