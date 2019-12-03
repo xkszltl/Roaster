@@ -69,7 +69,7 @@ for i in pkg-{stable,skip,all}; do
                 [!] {device-mapper,lvm2}{,-*}
                 {d,sys}stat{,-*}
                 [!]kernel-tools{,-*}
-                {lm_sensors,hddtemp,smartmontools,lsscsi}{,-*}
+                {lm_sensors,hddtemp,smartmontools,lsscsi,bmon}{,-*}
                 [!]tuned{,-*}
                 [!] {{e2fs,btrfs-,xfs,ntfs}progs,xfsdump,nfs-utils}{,-*}
                 [!] fuse{,-devel,-libs}
@@ -112,6 +112,7 @@ for i in pkg-{stable,skip,all}; do
                 libevent{,-*}
                 {asciidoc,gettext,xmlto,c-ares,pcre{,2}}{,-*}
                 librados2{,-*}
+                libyaml{,-*}
                 {gflags,glog,gmock,gtest,protobuf}{,-*}
                 {jsoncpp,rapidjson}{,-*}
                 {redis,hiredis}{,-*}
