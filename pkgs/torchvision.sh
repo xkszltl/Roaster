@@ -18,6 +18,11 @@
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd vision
 
+    git remote add patch https://github.com/xkszltl/vision.git
+
+    # See https://github.com/pytorch/vision/pull/1635
+    git cherry-pick patch/c++14
+
     # ------------------------------------------------------------
 
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
