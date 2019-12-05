@@ -19,6 +19,7 @@
     cd vision
 
     git remote add patch https://github.com/xkszltl/vision.git
+    git fetch patch
 
     # See https://github.com/pytorch/vision/pull/1635
     git cherry-pick patch/c++14
