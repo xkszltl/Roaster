@@ -155,8 +155,6 @@
         done
         rm -rf ./usr/local/lib*/libgtest*
         rm -rf ./usr/local/include/gtest
-        # Force clean up due to https://github.com/pytorch/pytorch/issues/30627
-        find '/usr/local/include' -type f | sed 's/^/\./' | xargs -r rm -rf
         popd
 
         # --------------------------------------------------------
