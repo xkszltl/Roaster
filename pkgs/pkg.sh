@@ -31,6 +31,7 @@ for i in pkg-{stable,skip,all}; do
                 rh-dotnet2{1,2}{,-lttng-ust,-userspace-rcu}{,-devel,-debuginfo}
                 octave{,-*}
                 [!] {gdb,{l,s}trace}{,-*}
+                [!] {pax-utils,prelink}{,-*}
                 {gperf,gperftools,valgrind,perf}{,-*}
                 {make,ninja-build,cmake{,3},autoconf,libtool}{,-*}
                 {ant,maven}{,-*}

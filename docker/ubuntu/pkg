@@ -82,9 +82,11 @@ RUN set -e; \
         nvidia-docker2 \
         pandoc \
         parallel \
+        pax-utils \
         pciutils \
         pigz \
         powertop \
+        prelink \
         pv \
         pybind11-dev \
         python3{,-pip} \
