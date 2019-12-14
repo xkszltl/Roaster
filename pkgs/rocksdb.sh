@@ -7,7 +7,8 @@
 
     # ------------------------------------------------------------
 
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" facebook/rocksdb,v
+    # 6.5.2 triggers cmake error in pytorch: https://github.com/pytorch/pytorch/issues/31264
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" facebook/rocksdb,v6.4
     until git clone -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd rocksdb
 
