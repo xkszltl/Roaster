@@ -95,6 +95,7 @@ RUN set -e; \
         rapidjson-dev \
         rsync \
         ruby-all-dev \
+        {selinux-policy,policycoreutils}{,'-*'}
         strace \
         software-properties-common \
         subversion-tools \

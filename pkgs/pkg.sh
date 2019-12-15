@@ -150,9 +150,8 @@ for i in pkg-{stable,skip,all}; do
                 XXXXXXXX_wine
 
                 [!] libselinux{,-*}
-                [!] policycoreutils{,-*}
                 [!] se{troubleshoot,tools}{,-*}
-                [!] selinux-policy{,-*}
+                [!] {selinux-policy,policycoreutils}{,-*}
 
                 mod_authnz_*
 
