@@ -52,6 +52,7 @@ RUN set -e; \
         giflib-tools libgif-dev \
         git{,-{extras,lfs}} \
         glances \
+        gnome-keyring{,'-*'}
         gperf \
         gstreamer1.0-tools libgstreamer1.0-dev \
         gzip \

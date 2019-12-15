@@ -139,6 +139,7 @@ for i in pkg-{stable,skip,all}; do
 
                 [!] {,pam_}krb5{,-*}
                 [!] {sudo,nss,sssd,authconfig}{,-*}
+                gnome-keyring{,-*}
 
                 gitlab-runner
 
