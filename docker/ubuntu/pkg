@@ -83,6 +83,7 @@ RUN set -e; \
         nvidia-docker2 \
         pandoc \
         parallel \
+        pass \
         pax-utils \
         pciutils \
         pigz \
