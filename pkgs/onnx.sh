@@ -15,10 +15,6 @@
 
     cd onnx
 
-    git remote add patch https://github.com/xkszltl/onnx.git
-    git fetch patch
-    git cherry-pick patch/pyout
-
     . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
 
     # pushd third_party/pybind11
