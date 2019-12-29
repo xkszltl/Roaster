@@ -16,11 +16,11 @@ $DownloadDir = Join-Path "$Env:TMP" Intel
 New-Item -Path $DownloadDir -ItemType Directory -ErrorAction SilentlyContinue
 
 # Note: update files and URI suffixes as new version are released.
-$components = [System.Tuple]::Create("w_daal_2019.4.245.exe", "15551"),
-              [System.Tuple]::Create("w_ipp_2019.4.245.exe", "15550"),
-              [System.Tuple]::Create("w_mkl_2019.4.245.exe", "15549"),
-              [System.Tuple]::Create("w_mpi_p_2019.4.245.exe", "15555"),
-              [System.Tuple]::Create("w_tbb_2019.6.245.exe", "15564")
+$components = [System.Tuple]::Create("w_daal_2020.0.166.exe", "16224"),
+              [System.Tuple]::Create("w_ipp_2020.0.166.exe", "16223"),
+              [System.Tuple]::Create("w_mkl_2020.0.166.exe", "16222"),
+              [System.Tuple]::Create("w_mpi_p_2019.6.166.exe", "16272"),
+              [System.Tuple]::Create("w_tbb_2020.0.166.exe", "16271")
 
 foreach ($i in 0..($components.Length - 1))
 {
