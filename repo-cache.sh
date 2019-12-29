@@ -132,7 +132,7 @@ fi
 # ----------------------------------------------------------------
 
 for i in base updates extras centosplus dotnet; do
-for j in =$(uname -i) -source=Source $([ $i = base ] && echo -debuginfo=debug/$(uname -i)); do
+for j in =$(uname -i) -source=Source $([ "_$i" = '_base' ] && echo -debuginfo=debug/$(uname -i)); do
     export lhs=$(sed 's/=.*//' <<< $j)
     export rhs=$(sed 's/.*=//' <<< $j)
     export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
@@ -211,6 +211,7 @@ for dist in rhel7; do
         "use_proxy":    "'"false"'",
         "sync_args":    "--delete"
     }')
+done
 done
 
 for i in libnvidia-container nvidia-{container-runtime,docker}; do
