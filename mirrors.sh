@@ -130,6 +130,7 @@ onnx/{models,onnx{,-tensorrt,mltools},tutorials},\
 open-mpi/ompi,\
 open-source-parsers/jsoncpp,\
 opencv/{ade,cvat,dldt,open_model_zoo,opencv{,_{3rdparty,contrib,extra}},openvino_training_extensions},\
+OpenFOAM/{{OpenFOAM,ThirdParty}-{{2.{0,1,2,3,4},3.0,4,5}.x,6,7,dev},OpenFOAM-{Intel,Solidification},OpenQBMM},\
 openssl/openssl,\
 openwrt/{luci,openwrt,packages,targets,telephony,video},\
 PeachPy/enum34,\
