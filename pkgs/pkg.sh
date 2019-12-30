@@ -12,6 +12,15 @@ for i in pkg-{stable,skip,all}; do
         done
         done
 
+        CUDA_PKGS=cuda
+        if $IS_CONTAINER; then
+            CUDA_PKGS="$(yum list -q 'cuda-toolkit-[0-9\-]*'    \
+                | sed -n 's/^\(cuda-toolkit-[0-9\-]*\).*/\1/p'  \
+                | sort -Vu                                      \
+                | tail -n1                                      \
+            )"
+        fi
+
         # ------------------------------------------------------------
         # Annotation:
         # [!] Stable.
@@ -126,7 +135,7 @@ for i in pkg-{stable,skip,all}; do
                 nagios{,-selinux,-devel,-debuginfo,-plugins-all}
                 {nrpe,nsca}
                 {collectd,rrdtool,pnp4nagios}{,-*}
-                [!] cuda
+                [!] $CUDA_PKGS
                 [!] lib{cudnn7{,-devel},nccl{,-devel,-static},nv{infer{,-plugin},{,onnx}parsers}-devel}
                 [!] nvidia-docker2
 
@@ -187,10 +196,16 @@ for i in pkg-{stable,skip,all}; do
         sudo yum autoremove -y
 
         # ------------------------------------------------------------
-        # Cite parallel
+        # Cite parallel.
         # ------------------------------------------------------------
 
         which parallel 2>/dev/null && sudo parallel --will-cite < /dev/null
+
+        # ------------------------------------------------------------
+        # Manually symlink latest CUDA in docker.
+        # ------------------------------------------------------------
+
+        $IS_CONTAINER && ls -d /usr/local/cuda-*/ | sort -V | tail -n1 | sudo xargs -I{} ln -sf {} /usr/local/cuda
 
         # ------------------------------------------------------------
         # Remove suspicious python modules that can cause pip>=10 to crash.

@@ -8,25 +8,18 @@ COPY [".", "/etc/roaster/scripts"]
 RUN set -e; \
     sudo apt-get update -y; \
     sudo apt-get upgrade -y; \
-    if false; then \
-        apt-cache show {cuda-drivers,{{,lib}nvidia-*,xserver-*-nvidia}-418}=418.87.* 2>&1 \
-        | sed -n 's/^Package:[[:space:]]*\(.*\)/\1=418\.87\.\*/p' \
-        | paste -s - \
-        | sudo DEBIAN_FRONTEND=noninteractive xargs apt-get install -y; \
-        apt-mark hold cuda-drivers {{,lib}nvidia-*,xserver-*-nvidia}-*; \
-    fi; \
-    apt-cache show 'cuda-[0-9\-]*' \
-    | sed -n 's/^Package:[[:space:]]*cuda-//p' \
-    | sort -Vu \
-    | tail -n1 \
-    | xargs -I{} apt-cache show 'cuda-*-{}' \
-    | sed -n 's/^Package:[[:space:]]*//p' \
-    | grep -v '^cuda-demo-suite-' \
-    | grep -v '^cuda-runtime-' \
-    | paste -s - \
+    apt-cache show 'cuda-[0-9\-]*'              \
+    | sed -n 's/^Package:[[:space:]]*cuda-//p'  \
+    | sort -Vu                                  \
+    | tail -n1                                  \
+    | xargs -I{} apt-cache show 'cuda-*-{}'     \
+    | sed -n 's/^Package:[[:space:]]*//p'       \
+    | grep -v '^cuda-demo-suite-'               \
+    | grep -v '^cuda-runtime-'                  \
+    | paste -s -                                \
     | sudo DEBIAN_FRONTEND=noninteractive xargs apt-get install -y; \
     ! dpkg -l cuda-drivers; \
-    ls -d /usr/local/cuda-*/ | sort -V | tail -n1 | xargs -I{} ln -sf {} /usr/local/cuda; \
+    ls -d /usr/local/cuda-*/ | sort -V | tail -n1 | sudo xargs -I{} ln -sf {} /usr/local/cuda; \
     sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
         asciidoc \
         autoconf{,-archive} automake autopoint \
