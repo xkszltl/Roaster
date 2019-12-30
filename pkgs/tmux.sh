@@ -44,6 +44,7 @@
     cd
     rm -rf $SCRATCH/tmux
 
+    mkdir -p ~/.tmux/plugins
     rm -rf ~/.tmux/plugins/tpm
     git clone "$GIT_MIRROR/tmux-plugins/tpm" ~/.tmux/plugins/tpm
     cat << EOF > ~/.tmux.conf
