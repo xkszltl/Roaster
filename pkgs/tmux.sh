@@ -46,7 +46,7 @@
 
     mkdir -p ~/.tmux/plugins
     rm -rf ~/.tmux/plugins/tpm
-    git clone "$GIT_MIRROR/tmux-plugins/tpm" ~/.tmux/plugins/tpm
+    git clone "$GIT_MIRROR/tmux-plugins/tpm.git" ~/.tmux/plugins/tpm
     cat << EOF > ~/.tmux.conf
 set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'tmux-plugins/tmux-sensible'
