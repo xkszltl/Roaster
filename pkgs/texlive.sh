@@ -30,13 +30,8 @@
 
     export TEXLIVE_INSTALL_PREFIX="$INSTALL_ABS"
 
-    ./install-tl --repository $TEXLIVE_MIRROR --portable --profile <(
-    # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    cat << EOF
-selected_scheme scheme-full
-EOF
-    # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    )
+    echo 'selected_scheme scheme-full' > install_profile
+    ./install-tl --repository $TEXLIVE_MIRROR --portable --profile ./install_profile
 
     popd
 
