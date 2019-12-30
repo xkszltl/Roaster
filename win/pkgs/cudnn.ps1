@@ -40,9 +40,9 @@ for ($i=7; ($i -ge 7) -and (-not (Test-Path cudnn.zip)); $i--)
 {
     for ($j=6; ($j -ge 0) -and (-not (Test-Path cudnn.zip)); $j--)
     {
-        for ($k=2; ($k -ge 0) -and (-not (Test-Path cudnn.zip)); $k--)
+        for ($k=5; ($k -ge 0) -and (-not (Test-Path cudnn.zip)); $k--)
         {
-            for ($l=24; ($l -ge 0) -and (-not (Test-Path cudnn.zip)); $l--)
+            for ($l=32; ($l -ge 0) -and (-not (Test-Path cudnn.zip)); $l--)
             {
                 $cudnn_name="cudnn-$((nvcc --version) -match ' release ([0-9\.]*)' -replace '.* release ([0-9\.]*).*','${1}')-windows10-x64-v${i}.${j}.${k}.${l}.zip"
                 Write-Host -NoNewline '.'

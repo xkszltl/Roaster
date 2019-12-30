@@ -19,8 +19,8 @@
     (
         set -e
 
-        TRT_REPO_URL='https://developer.nvidia.com/compute/machine-learning/tensorrt/5.1/ga/local_repos'
-        TRT_FILENAME="nv-tensorrt-repo-rhel$DISTRO_VERSION_ID-cuda$CUDA_VER_MAJOR.$CUDA_VER_MINOR-trt5.1.5.0-ga-20190427-1-1.x86_64.rpm"
+        TRT_REPO_URL='https://developer.nvidia.com/compute/machine-learning/tensorrt/7.0/7.0.0.11/local_repos'
+        TRT_FILENAME="nv-tensorrt-repo-rhel$DISTRO_VERSION_ID-cuda$CUDA_VER_MAJOR.$CUDA_VER_MINOR-trt7.0.0.11-ga-20191216-1-1.x86_64.rpm"
 
         if [ "_$GIT_MIRROR" = "_$GIT_MIRROR_CODINGCAFE" ]; then
             TRT_REPO_URL_CODINGCAFE='https://repo.codingcafe.org/nvidia/tensorrt'
