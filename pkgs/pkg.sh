@@ -137,7 +137,7 @@ for i in pkg-{stable,skip,all}; do
                 {collectd,rrdtool,pnp4nagios}{,-*}
                 [!] $CUDA_PKGS
                 [!] lib{cudnn7{,-devel},nccl{,-devel,-static},nv{infer{,-plugin},{,onnx}parsers}-devel}
-                [!] nvidia-docker2
+                [!] nvidia-container-runtime
 
                 hdf5{,-*}
                 {leveldb,lmdb}{,-*}

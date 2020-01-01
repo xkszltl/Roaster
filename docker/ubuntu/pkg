@@ -73,7 +73,7 @@ RUN set -e; \
         moreutils \
         mtr \
         ninja-build \
-        nvidia-docker2 \
+        nvidia-container-runtime \
         pandoc \
         parallel \
         pass \
