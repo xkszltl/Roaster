@@ -68,7 +68,7 @@ for retry in $(seq 100 -1 0); do
             $([ -e 'cred/env-cred-usr.sh' ] &&  echo '--secret id=env-cred-usr,src=cred/env-cred-usr.sh') \
             --tag "$CI_REGISTRY_IMAGE/$BASE_DISTRO:stage-$CI_JOB_STAGE" \
             .
-        printf "\nExited with code %d.\n" "$_" > "$BUILD_LOG"
+        printf "\nExited with code %d.\n" "$?" > "$BUILD_LOG"
     ) 2>&1 | tee "$BUILD_LOG"
     DUMP_ID="$(sudo docker ps -aq --filter="label=BUILD_ID=$LABEL_BUILD_ID" --filter="status=exited" | head -n1)"
 
