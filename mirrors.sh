@@ -166,6 +166,7 @@ xianyi/OpenBLAS,\
 yaml/pyyaml,\
 Yangqing/ios-cmake,\
 zeromq/{cppzmq,libzmq,pyzmq},\
+zfsonlinux/{pkg-{spl,zfs},spl,zfs{,-auto-snapshot,-buildbot,-images}},\
 },\
 https://gitlab.com/\ /\ {\
 NVIDIA/cuda,\
