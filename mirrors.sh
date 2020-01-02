@@ -114,7 +114,7 @@ madler/zlib,\
 matplotlib/{jupyter-matplotlib,matplotlib,mplcairo,pytest-mpl},\
 Maratyszcza/{confu,cpuinfo,FP16,FXdiv,NNPACK,PeachPy,psimd,pthreadpool},\
 micheles/{decorator,plac},\
-Microsoft/{dotnet,GSL,onnxruntime{,-tvm},Terminal,TypeScript,vcpkg,vscode,wil},\
+Microsoft/{dotnet,GSL,mimalloc,onnxruntime{,-tvm},Terminal,TypeScript,vcpkg,vscode,wil},\
 moby/{buildkit,moby},\
 mono/{libgdiplus,linker,mono{,-tools,develop,torrent}},\
 nanopb/nanopb,\
@@ -123,6 +123,7 @@ networkx/networkx,\
 nico/demumble,\
 nicolargo/glances,\
 ninja-build/ninja,\
+nlohmann/json,\
 numpy/numpy{,doc},\
 NVIDIA/{apex,cnmem,cuda-samples,cutlass,DALI{,_extra},Dataset_Synthesizer,DeepLearningExamples,DIGITS,flownet2-pytorch,libglvnd,Megatron-LM,NeMo,nccl,nccl-tests,nvidia-{container-runtime,docker,installer,modprobe,persistenced,settings,xconfig},NvPipe,nvvl,open-gpu-doc,OpenSeq2Seq,pix2pixHD,tacotron2,TensorRT,tensorrt-inference-server,vid2vid,waveglow},\
 NVlabs/{cub,ffhq-dataset,pacnet,PWC-Net,SPADE,stylegan,xmp},\
