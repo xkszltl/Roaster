@@ -76,8 +76,6 @@ for i in llvm-{gcc,clang}; do
                 -DLLDB_DISABLE_PYTHON=ON
                 -DLLVM_BUILD_LLVM_DYLIB=ON
                 -DLLVM_CCACHE_BUILD=ON
-                -DLLVM_ENABLE_CXX1Y=ON
-                -DLLVM_ENABLE_CXX1Z=ON
                 -DLLVM_ENABLE_EH=ON
                 -DLLVM_ENABLE_FFI=ON
                 -DLLVM_ENABLE_RTTI=ON
