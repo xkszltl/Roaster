@@ -64,7 +64,6 @@ for retry in $(seq 100 -1 0); do
             --label "BUILD_TIME=$(date -u +'%Y-%m-%dT%H:%M:%SZ')"       \
             --no-cache                                                  \
             $([ "_$stage" = "_$CI_JOB_STAGE" ] && echo '--pull')        \
-            --rm=false                                                  \
             $([ -e 'cred/env-cred-usr.sh' ] &&  echo '--secret id=env-cred-usr,src=cred/env-cred-usr.sh') \
             --tag "$CI_REGISTRY_IMAGE/$BASE_DISTRO:stage-$CI_JOB_STAGE" \
             .
@@ -74,7 +73,7 @@ for retry in $(seq 100 -1 0); do
 
     # Success
     if [ "_$(tail -n1 "$BUILD_LOG")" = '_Exited with code 0.' ]; then
-        time sudo docker rm "$DUMP_ID"
+        [ "$DUMP_ID" ] && time sudo docker rm "$DUMP_ID"
         break
     fi
 
