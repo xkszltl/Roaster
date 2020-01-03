@@ -1,0 +1,11 @@
+jobs:
+- job: finish
+  dependsOn: edit
+  steps:
+  - bash: sudo docker tag "$CI_REGISTRY_IMAGE/$BASE_DISTRO:"{stage-edit,latest}
+  - task: Docker@2
+    inputs:
+      containerRegistry: $(REGISTRY_SERVICE_CONNECTION)
+      repository: $(CI_REGISTRY_IMAGE)/$(BASE_DISTRO)
+      command: 'push'
+      tags: latest

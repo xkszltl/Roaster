@@ -1,17 +1,162 @@
-name: $(Date:yyyyMMdd).$(Rev:.r)
+name: Docker Build
+
+variables:
+  CI_COMMIT_REF_NAME: build-init
+  CI_REGISTRY_IMAGE: roasterproject
+  REGISTRY_SERVICE_CONNECTION: 'Docker Hub'
+
+pool:
+  vmImage: ubuntu-latest
 
 stages:
-- stage: CentOS-7
-  dependsOn: []
+- stage: env
   jobs:
-    - job:
+    - job: sysinfo
       steps:
       - bash: |
-        docker pull centos:7
-- stage: Ubuntu-18.04
+          set -e
+          date
+          uname -a
+          whoami
+          lscpu || true
+          lsmem || true
+          df -hT
+          env
+          pwd
+          sudo docker info
+
+- stage: centos
+  variables:
+    BASE_DISTRO: $(System.StageName)
   dependsOn: []
   jobs:
-    - job:
+    - job: init
       steps:
-      - bash: |
-        docker pull ubuntu:18.04
+      - template: azure-pipelines/build_stage.yml
+    - job: repo
+      dependsOn: init
+      steps:
+      - template: azure-pipelines/build_stage.yml
+    - job: font
+      dependsOn: repo
+      timeoutInMinutes: 1440
+      steps:
+      - template: azure-pipelines/build_stage.yml
+    - job: pkg_stable
+      displayName: pkg-stable
+      dependsOn: font
+      timeoutInMinutes: 1440
+      steps:
+      - template: azure-pipelines/build_stage.yml
+    - job: pkg_skip
+      displayName: pkg-skip
+      dependsOn: pkg_stable
+      timeoutInMinutes: 1440
+      steps:
+      - template: azure-pipelines/build_stage.yml
+    - job: tex
+      dependsOn: pkg_skip
+      timeoutInMinutes: 1440
+      steps:
+      - template: azure-pipelines/build_stage.yml
+    - job: ss
+      dependsOn: tex
+      steps:
+      - template: azure-pipelines/build_stage.yml
+    - job: infra
+      dependsOn: ss
+      timeoutInMinutes: 1440
+      steps:
+      - template: azure-pipelines/build_stage.yml
+    - job: llvm
+      dependsOn: infra
+      timeoutInMinutes: 1440
+      steps:
+      - template: azure-pipelines/build_stage.yml
+    - job: util
+      dependsOn: llvm
+      timeoutInMinutes: 1440
+      steps:
+      - template: azure-pipelines/build_stage.yml
+    - job: misc
+      dependsOn: util
+      timeoutInMinutes: 1440
+      steps:
+      - template: azure-pipelines/build_stage.yml
+    - job: dl
+      dependsOn: misc
+      timeoutInMinutes: 1440
+      steps:
+      - template: azure-pipelines/build_stage.yml
+    - job: ort
+      dependsOn: dl
+      timeoutInMinutes: 1440
+      steps:
+      - template: azure-pipelines/build_stage.yml
+    - job: edit
+      dependsOn: ort
+      steps:
+      - template: azure-pipelines/build_stage.yml
+    - template: azure-pipelines/commit_image.yml
+
+- stage: ubuntu
+  variables:
+    BASE_DISTRO: $(System.StageName)
+  dependsOn: []
+  jobs:
+    - job: init
+      steps:
+      - template: azure-pipelines/build_stage.yml
+    - job: repo
+      dependsOn: init
+      steps:
+      - template: azure-pipelines/build_stage.yml
+    - job: font
+      dependsOn: repo
+      timeoutInMinutes: 1440
+      steps:
+      - template: azure-pipelines/build_stage.yml
+    - job: pkg
+      dependsOn: font
+      timeoutInMinutes: 1440
+      steps:
+      - template: azure-pipelines/build_stage.yml
+    - job: auth
+      dependsOn: pkg
+      steps:
+      - template: azure-pipelines/build_stage.yml
+    - job: infra
+      dependsOn: auth
+      timeoutInMinutes: 1440
+      steps:
+      - template: azure-pipelines/build_stage.yml
+    - job: llvm
+      dependsOn: infra
+      timeoutInMinutes: 1440
+      steps:
+      - template: azure-pipelines/build_stage.yml
+    - job: util
+      dependsOn: llvm
+      timeoutInMinutes: 1440
+      steps:
+      - template: azure-pipelines/build_stage.yml
+    - job: misc
+      dependsOn: util
+      timeoutInMinutes: 1440
+      steps:
+      - template: azure-pipelines/build_stage.yml
+    - job: dl
+      dependsOn: misc
+      timeoutInMinutes: 1440
+      steps:
+      - template: azure-pipelines/build_stage.yml
+    - job: ort
+      dependsOn: dl
+      timeoutInMinutes: 1440
+      steps:
+      - template: azure-pipelines/build_stage.yml
+    - job: edit
+      dependsOn: ort
+      steps:
+      - template: azure-pipelines/build_stage.yml
+    - template: azure-pipelines/commit_image.yml
