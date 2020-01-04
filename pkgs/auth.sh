@@ -14,6 +14,7 @@
         export BITS="$(sed '"'"'s/.*,//'"'"' <<< '"'"'{}'"'"')"
         ssh-keygen -qN "" -f "id_$ALGO" -t "$ALGO" -b "$BITS"
     '"'" ::: 'ecdsa,521' 'rsa,8192'
+    echo 'Pre-generated SSH keys should only be used for demo since the private key is well-known.'
     cd "$SCRATCH"
 
     # ------------------------------------------------------------
@@ -37,6 +38,25 @@
             > "$SCRATCH/.ldap.conf"
             sudo mv -f {"$SCRATCH/.",}'ldap.conf'
             popd
+
+            # May fail at the first time in unprivileged docker due to domainname change.
+            for i in $($IS_CONTAINER && echo true) false; do :
+                sudo authconfig                                                                     \
+                    --enable{sssd{,auth},ldap{,auth,tls},locauthorize,cachecreds,mkhomedir}         \
+                    --disable{cache,md5,nis,rfc2307bis}                                             \
+                    --ldapserver=ldap://ldap.codingcafe.org                                         \
+                    --ldapbasedn=dc=codingcafe,dc=org                                               \
+                    --passalgo=sha512                                                               \
+                    --smbsecurity=user                                                              \
+                    --update                                                                        \
+                || $i
+            done
+
+            sudo systemctl daemon-reload || $IS_CONTAINER
+            for i in sssd; do :
+                sudo systemctl enable $i
+                sudo systemctl start $i || $IS_CONTAINER
+            done
             ;;
         *)
             echo "Unsupported distro \"DISTRO_ID\" for ldap configuration, skipped."
@@ -47,34 +67,9 @@
 
     # ------------------------------------------------------------
 
-    # May fail at the first time in unprivileged docker due to domainname change.
-    case "$DISTRO_ID" in
-    'centos' | 'fedora' | 'rhel')
-        for i in $($IS_CONTAINER && echo true) false; do :
-            sudo authconfig                                                                     \
-                --enable{sssd{,auth},ldap{,auth,tls},locauthorize,cachecreds,mkhomedir}         \
-                --disable{cache,md5,nis,rfc2307bis}                                             \
-                --ldapserver=ldap://ldap.codingcafe.org                                         \
-                --ldapbasedn=dc=codingcafe,dc=org                                               \
-                --passalgo=sha512                                                               \
-                --smbsecurity=user                                                              \
-                --update                                                                        \
-            || $i
-        done
-
-        sudo systemctl daemon-reload || $IS_CONTAINER
-        for i in sssd; do :
-            sudo systemctl enable $i
-            sudo systemctl start $i || $IS_CONTAINER
-        done
-        ;;
-    esac
-
-    # ------------------------------------------------------------
-
     git config --global user.name       'Tongliang Liao'
     git config --global user.email      'xkszltl@gmail.com'
-    git config --global push.default    'matching'
+    git config --global push.default    'simple'
     git config --global core.editor     'vim'
 )
 sudo rm -vf $STAGE/auth
