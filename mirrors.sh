@@ -107,6 +107,7 @@ jordansissel/fpm,\
 Kitware/{CMake,VTK},\
 lemire/simdjson,\
 libav/libav,\
+llvm/{llvm-{archive,project,test-suite,www{,-pubs}}},\
 llvm-mirror/{ll{vm,d,db,go},clang{,-tools-extra},polly,compiler-rt,openmp,lib{unwind,cxx{,abi}},test-suite},\
 LMDB/lmdb,\
 lutzroeder/netron,\
@@ -114,7 +115,7 @@ madler/zlib,\
 matplotlib/{jupyter-matplotlib,matplotlib,mplcairo,pytest-mpl},\
 Maratyszcza/{confu,cpuinfo,FP16,FXdiv,NNPACK,PeachPy,psimd,pthreadpool},\
 micheles/{decorator,plac},\
-Microsoft/{dotnet,GSL,mimalloc,onnxruntime{,-tvm},Terminal,TypeScript,vcpkg,vscode,wil},\
+Microsoft/{azure-pipelines-yaml,BuildXL,calculator,cascadia-code,CNTK,cppwinrt,dotnet,GSL,LightGBM,mimalloc,msbuild,{,Delayed-Compensation-Asynchronous-Stochastic-Gradient-Descent-for-}Multiverso,nni,onnxruntime{,-tvm},STL,Terminal,TypeScript,vcpkg,VFSForGit,vscode,vstest,wil},\
 moby/{buildkit,moby},\
 mono/{libgdiplus,linker,mono{,-tools,develop,torrent}},\
 nanopb/nanopb,\
