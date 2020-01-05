@@ -14,7 +14,7 @@
         set -xe
         if [ "{}" = "_" ]; then
             if [ -d '/opt/intel' ] && rpm -qf '/opt/intel'; then
-                sudo yum remove -y $(rpm -qf '/opt/intel' | sed -n '/^intel-/p')
+                sudo dnf remove -y $(rpm -qf '/opt/intel' | sed -n '/^intel-/p')
             fi
             sudo rm -rf '/opt/intel'
         else

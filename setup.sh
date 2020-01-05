@@ -89,11 +89,8 @@ if ! which sudo; then
     fi
 
     case "$DISTRO_ID" in
-    "centos" | "rhel")
-        yum install -y sudo
-        ;;
-    "fedora")
-        dnf install -y sudo
+    "centos" | "fedora" | "rhel")
+        dnf install -y sudo || yum install -y sudo
         ;;
     "debian" | "linuxmint" | "ubuntu")
         apt-get update -y
@@ -214,14 +211,10 @@ which ccache 2>/dev/null >/dev/null && ccache -s
 
 if $IS_CONTAINER; then
     case "$DISTRO_ID" in
-    "centos" | "rhel")
-        sudo yum autoremove -y
-        sudo yum clean all
+    "centos" | "fedora" | "rhel")
+        sudo dnf autoremove -y || sudo yum autoremove -y
+        sudo dnf clean all --enablerepo='*' || sudo yum clean all
         sudo rm -rf /var/cache/yum
-        ;;
-    "fedora")
-        sudo dnf autoremove -y
-        sudo dnf clean all --enablerepo='*'
         ;;
     "debian" | "linuxmint" | "ubuntu")
         sudo apt-get clean

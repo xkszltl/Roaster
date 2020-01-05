@@ -10,7 +10,7 @@
     cd slurm
     git checkout $(git tag | sed -n '/^slurm-[0-9\-]*$/p' | sort -V | tail -n1)
 
-    . scl_source enable devtoolset-6 || true
+    . scl_source enable devtoolset-8 || true
 
     for i in $(sed -n 's/^[[:space:]]*\(.*:\).* META .*/\1/p' slurm.spec); do
         sed -i "s/^\([[:space:]]*$i[[:space:]]*\).* META .*/\1"$(sed -n "s/[[:space:]]*$i[[:space:]]*\(.*\)/\1/p" META | head -n1)"/" slurm.spec
@@ -34,7 +34,7 @@
 
     rm -rf $SCRATCH/slurm*
 
-    yum install $HOME/rpmbuild/RPMS/$(uname -i)/slurm{,-*}.rpm
+    dnf install $HOME/rpmbuild/RPMS/$(uname -i)/slurm{,-*}.rpm
     rm -rf $HOME/rpmbuild
 )
 sudo rm -vf $STAGE/slurm

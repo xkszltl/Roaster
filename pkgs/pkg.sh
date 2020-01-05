@@ -14,7 +14,7 @@ for i in pkg-{stable,skip,all}; do
 
         CUDA_PKGS=cuda
         if $IS_CONTAINER; then
-            CUDA_PKGS="$(yum list -q 'cuda-toolkit-[0-9\-]*'    \
+            CUDA_PKGS="$(dnf list -q 'cuda-toolkit-[0-9\-]*'    \
                 | sed -n 's/^\(cuda-toolkit-[0-9\-]*\).*/\1/p'  \
                 | sort -Vu                                      \
                 | tail -n1                                      \
@@ -193,7 +193,7 @@ for i in pkg-{stable,skip,all}; do
         done
 
         $IS_CONTAINER || sudo package-cleanup --oldkernels --count=3
-        sudo yum autoremove -y
+        sudo dnf autoremove -y
 
         # ------------------------------------------------------------
         # Cite parallel.
@@ -211,7 +211,7 @@ for i in pkg-{stable,skip,all}; do
         # Remove suspicious python modules that can cause pip>=10 to crash.
         # ------------------------------------------------------------
 
-        find /usr/lib{,64}/python*/site-packages -name '*.dist-info' -type f -print0 | xargs -0r rpm -qf | grep -v ' ' | tr '\n' '\0' | xargs -0r yum remove -y
+        find /usr/lib{,64}/python*/site-packages -name '*.dist-info' -type f -print0 | xargs -0r rpm -qf | grep -v ' ' | tr '\n' '\0' | xargs -0r dnf remove -y
 
         # ------------------------------------------------------------
         # Install python utilities.

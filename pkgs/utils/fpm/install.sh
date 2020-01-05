@@ -70,17 +70,17 @@ case "$PKG_TYPE" in
     rpm -q "$PKG_NAME" || PKG_YUM_SEQ="install"
 
     # Remove legacy.
-    sudo yum remove -y "$(sed 's/^[^\-]*\-/codingcafe\-/' <<< "$PKG_NAME")" || true
+    sudo dnf remove -y "$(sed 's/^[^\-]*\-/codingcafe\-/' <<< "$PKG_NAME")" || true
 
     for i in $PKG_YUM_SEQ _; do
         [ "$i" != '_' ]
-        echo "[INFO] Trying with \"yum $i\"."
+        echo "[INFO] Trying with \"dnf $i\"."
         if [ "$i" = "reinstall" ]; then
-            sudo yum remove -y "$PKG_NAME" && sudo yum install -y "$PKG_PATH" && break
+            sudo dnf remove -y "$PKG_NAME" && sudo dnf install -y "$PKG_PATH" && break
         else
-            sudo yum "$i" -y "$PKG_PATH" && break
+            sudo dnf "$i" -y "$PKG_PATH" && break
         fi
-        echo "[INFO] Does not succeed with \"yum $i\"."
+        echo "[INFO] Does not succeed with \"dnf $i\"."
     done
     ;;
 "deb")

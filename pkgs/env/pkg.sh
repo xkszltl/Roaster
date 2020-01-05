@@ -30,6 +30,6 @@ export RPM_BLACKLIST=$(echo "
 
 export RPM_CACHE_ARGS=$([ -f "$RPM_CACHE_REPO" ] && echo "--disableplugin=axelget,fastestmirror")
 
-export RPM_INSTALL="sudo yum install -y $RPM_CACHE_ARGS --nogpgcheck $RPM_BLACKLIST"
-export RPM_UPDATE="sudo yum update -y $RPM_CACHE_ARGS --nogpgcheck $RPM_BLACKLIST"
-export RPM_REINSTALL="sudo yum reinstall -y $RPM_CACHE_ARGS --nogpgcheck $RPM_BLACKLIST"
+export RPM_INSTALL="sudo dnf install -y $RPM_CACHE_ARGS --nogpgcheck $RPM_BLACKLIST"
+export RPM_UPDATE="sudo dnf update -y $RPM_CACHE_ARGS --nogpgcheck $RPM_BLACKLIST"
+export RPM_REINSTALL="sudo dnf reinstall -y $RPM_CACHE_ARGS --nogpgcheck $RPM_BLACKLIST"

@@ -44,7 +44,7 @@
 
     sudo fc-cache -fv
 
-    sudo yum autoremove -y
+    sudo dnf autoremove -y
 )
 sudo rm -vf $STAGE/font
 sync || true

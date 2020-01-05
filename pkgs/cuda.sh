@@ -44,10 +44,10 @@
 
         TRT_URL="$TRT_REPO_URL/$TRT_FILENAME"
 
-        sudo yum remove -y --skip-broken 'nv-tensorrt-repo-*' || true
+        sudo dnf remove -y --skip-broken 'nv-tensorrt-repo-*' || true
         $RPM_INSTALL "$TRT_URL"
         $RPM_INSTALL --disableplugin=axelget "tensorrt" || $RPM_UPDATE --disableplugin=axelget "tensorrt" || $RPM_REINSTALL --disableplugin=axelget "tensorrt"
-        $IS_CONTAINER && sudo yum remove -y --skip-broken 'nv-tensorrt-repo-*' || true
+        $IS_CONTAINER && sudo dnf remove -y --skip-broken 'nv-tensorrt-repo-*' || true
     )
     fi
 

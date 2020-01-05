@@ -5,6 +5,7 @@
 [ -e $STAGE/repo ] && ( set -xe
     case "$DISTRO_ID" in
     "centos" | "rhel")
+        until sudo yum makecache -y; do echo 'Retrying'; done
         until sudo yum install -y sed yum-{plugin-{fastestmirror,priorities},utils}; do echo 'Retrying'; done
 
         sudo yum-config-manager --setopt=tsflags= --save
@@ -15,21 +16,24 @@
 
         RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" {base,updates,extras,centosplus}{,-source} base-debuginfo
 
-        until sudo yum install -y bc {core,find,ip}utils curl kernel-headers; do echo 'Retrying'; done
+        until sudo yum install -y nextgen-yum4 dnf-plugins-core; do echo 'Retrying'; done
 
-        until sudo yum install -y centos-release-dotnet; do echo 'Retrying'; done
+        until sudo dnf makecache -y; do echo 'Retrying'; done
+        until sudo dnf install -y bc {core,find,ip}utils curl kernel-headers; do echo 'Retrying'; done
+
+        until sudo dnf install -y centos-release-dotnet; do echo 'Retrying'; done
         RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" dotnet
 
-        until sudo yum install -y epel-release; do echo 'Retrying'; done
+        until sudo dnf install -y epel-release; do echo 'Retrying'; done
         RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" epel{,-source,-debuginfo}
 
-        until sudo yum install -y yum-axelget; do echo 'Retrying'; done
+        until sudo dnf install -y yum-axelget; do echo 'Retrying'; done
 
-        until sudo yum install -y centos-release-scl{,-rh}; do echo 'Retrying'; done
+        until sudo dnf install -y centos-release-scl{,-rh}; do echo 'Retrying'; done
         RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" centos-sclo-{sclo,rh}{,-source,-debuginfo}
 
-        until sudo yum update -y --skip-broken; do echo 'Retrying'; done
-        sudo yum update -y || true
+        until sudo dnf update -y --skip-broken; do echo 'Retrying'; done
+        sudo dnf update -y || true
 
         sudo yum-config-manager --add-repo "https://developer.download.nvidia.com/compute/cuda/repos/rhel$DISTRO_VERSION_ID/x86_64/cuda-rhel$DISTRO_VERSION_ID.repo"
         sudo sed -i 's/http:\/\//https:\/\//' "/etc/yum.repos.d/cuda-rhel$DISTRO_VERSION_ID.repo"
@@ -41,7 +45,7 @@
             nvml_repo="https://developer.download.nvidia.com/compute/machine-learning/repos"
             nvml_repo="$nvml_repo/$(curl -sSL --retry 5 "$nvml_repo" | sed -n "s/.*href='\($(sed 's/\.//g' <<< "rhel$DISTRO_VERSION_ID")[^']*\)\/.*/\1/p" | sort -V | tail -n1)/x86_64"
             nvml_repo="$nvml_repo/$(curl -sSL --retry 5 "$nvml_repo" | sed -n "s/.*href='\(nvidia-machine-learning-repo-[^']*\).*/\1/p" | sort -V | tail -n1)"
-            sudo yum install -y "$nvml_repo"
+            sudo dnf install -y "$nvml_repo"
         )
         sudo sed -i 's/http:\/\//https:\/\//' '/etc/yum.repos.d/nvidia-machine-learning.repo'
         RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" nvidia-machine-learning
@@ -59,10 +63,10 @@
         curl -sSL --retry 5 "https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh" | sudo bash
         RPM_PRIORITY=2 "$ROOT_DIR/apply_cache.sh" gitlab_gitlab-ce{,-source}
 
-        until sudo yum install -y bc ping pv which; do echo 'Retrying'; done
+        until sudo dnf install -y bc iputils pv which; do echo 'Retrying'; done
 
-        until sudo yum update -y --skip-broken; do echo 'Retrying'; done
-        sudo yum update -y || true
+        until sudo dnf update -y --skip-broken; do echo 'Retrying'; done
+        sudo dnf update -y || true
         ;;
     "debian" | "linuxmint" | "ubuntu")
         sudo apt-get update -y

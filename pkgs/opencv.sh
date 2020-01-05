@@ -119,7 +119,7 @@
 
         time cmake --build . --target install
         # time cmake --build . --target package
-        # sudo yum install -y ./OpenCV*.rpm || sudo yum update -y ./OpenCV*.rpm || sudo rpm -ivh --nodeps ./OpenCV*.rpm || sudo rpm -Uvh --nodeps ./OpenCV*.rpm
+        # sudo dnf install -y ./OpenCV*.rpm || sudo dnf update -y ./OpenCV*.rpm || sudo rpm -ivh --nodeps ./OpenCV*.rpm || sudo rpm -Uvh --nodeps ./OpenCV*.rpm
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
