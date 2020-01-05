@@ -32,7 +32,14 @@ case "$DISTRO_ID" in
     (
         set -e
         for i in filesystem; do
-            rpm -q "$i" > /dev/null && rpm -ql "$i" | sed 's/^\///' | sed 's/$/\//' >> "$INSTALL_ROOT/../fpm/exclude.conf"
+            # Too many files in "/usr/share/{locale,man}" (~14k currently) causes performance issue.
+            # See https://github.com/jordansissel/fpm/issues/1674
+            rpm -q "$i" > /dev/null && rpm -ql "$i" \
+            | grep -v '^/usr/share/locale/*[^/]'    \
+            | grep -v '^/usr/share/man/*[^/]'       \
+            | sed 's/^\///'                         \
+            | sed 's/$/\//'                         \
+            >> "$INSTALL_ROOT/../fpm/exclude.conf"
         done
     ) &
     ;;
