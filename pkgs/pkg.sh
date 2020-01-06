@@ -68,6 +68,8 @@ for i in pkg-{stable,skip,all}; do
                 [!] {traceroute,mtr,rsync,tcpdump,whois,net-snmp}{,-*}
                 torsocks{,-*}
                 [!] {core,elf,find,ib,ip,pci,usb,yum-}utils{,-*}
+                nextgen-yum4{,-*}
+                dnf-plugins-core{,-*}
                 {bridge,crypto}-utils{,-*}
                 [!] util-linux{,-*}
                 [!] moreutils{,-debuginfo}

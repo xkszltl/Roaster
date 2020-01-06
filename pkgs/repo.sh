@@ -35,7 +35,7 @@
         until sudo dnf update -y; do echo 'Retrying'; done
         sudo dnf update -y || true
 
-        sudo yum-config-manager --add-repo "https://developer.download.nvidia.com/compute/cuda/repos/rhel$DISTRO_VERSION_ID/x86_64/cuda-rhel$DISTRO_VERSION_ID.repo"
+        sudo dnf config-manager --add-repo "https://developer.download.nvidia.com/compute/cuda/repos/rhel$DISTRO_VERSION_ID/x86_64/cuda-rhel$DISTRO_VERSION_ID.repo"
         sudo sed -i 's/http:\/\//https:\/\//' "/etc/yum.repos.d/cuda-rhel$DISTRO_VERSION_ID.repo"
         RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" cuda
 
@@ -50,10 +50,10 @@
         sudo sed -i 's/http:\/\//https:\/\//' '/etc/yum.repos.d/nvidia-machine-learning.repo'
         RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" nvidia-machine-learning
 
-        sudo yum-config-manager --add-repo "https://download.docker.com/linux/centos/docker-ce.repo"
+        sudo dnf config-manager --add-repo "https://download.docker.com/linux/centos/docker-ce.repo"
         RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" docker-ce-stable{,-source,-debuginfo}
 
-        sudo yum-config-manager --add-repo "https://nvidia.github.io/nvidia-docker/$DISTRO_ID$DISTRO_VERSION_ID/nvidia-docker.repo"
+        sudo dnf config-manager --add-repo "https://nvidia.github.io/nvidia-docker/$DISTRO_ID$DISTRO_VERSION_ID/nvidia-docker.repo"
         RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" libnvidia-container nvidia-{container-runtime,docker}
 
         curl -sSL --retry 5 "https://packages.gitlab.com/install/repositories/runner/gitlab-ci-multi-runner/script.rpm.sh" | sudo bash
