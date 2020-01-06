@@ -6,7 +6,7 @@ for i in pkg-{stable,skip,all}; do
     [ -e $STAGE/$i ] && ( set -xe
         for skip in true false; do
         for attempt in $(seq $RPM_MAX_ATTEMPT -1 0); do
-            $RPM_UPDATE $($skip && echo --skip-broken) && break
+            $RPM_UPDATE $($skip && echo --setopt=strict=0) && break
             echo "Retrying... $attempt chance(s) left."
             [ $attempt -gt 0 ] || exit 1
         done
@@ -178,7 +178,7 @@ for i in pkg-{stable,skip,all}; do
             | sed 's/^[[:space:]]*//' \
             | sed "$([ "_$i" != '_pkg-stable' ] && echo 's/^\[!\].*//p' || echo 's/^//')" \
             | sed -n "$([ "_$i" = '_pkg-stable' ] && echo 's/^\[!\][[:space:]]*//p' || echo '/./p')" \
-            | xargs -n10 echo "$RPM_INSTALL $([ "_$i" = '_pkg-skip' ] && echo --skip-broken)" \
+            | xargs -n10 echo "$RPM_INSTALL $([ "_$i" = '_pkg-skip' ] && echo --setopt=strict=0)" \
             | sed 's/^/set -xe; /' \
             | bash \
             && break
@@ -187,7 +187,7 @@ for i in pkg-{stable,skip,all}; do
         done
 
         for attempt in $(seq $RPM_MAX_ATTEMPT -1 0); do
-            $RPM_UPDATE --skip-broken && break
+            $RPM_UPDATE --setopt=strict=0 && break
             echo "Retrying... $attempt chance(s) left."
             [ $attempt -gt 0 ] || exit 1
         done
