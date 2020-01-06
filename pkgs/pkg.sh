@@ -6,7 +6,7 @@ for i in pkg-{stable,skip,all}; do
     [ -e $STAGE/$i ] && ( set -xe
         for skip in true false; do
         for attempt in $(seq $RPM_MAX_ATTEMPT -1 0); do
-            $RPM_UPDATE $($skip && echo --setopt=strict=0) && break
+            $RPM_UPDATE && break
             echo "Retrying... $attempt chance(s) left."
             [ $attempt -gt 0 ] || exit 1
         done
@@ -187,7 +187,7 @@ for i in pkg-{stable,skip,all}; do
         done
 
         for attempt in $(seq $RPM_MAX_ATTEMPT -1 0); do
-            $RPM_UPDATE --setopt=strict=0 && break
+            $RPM_UPDATE && break
             echo "Retrying... $attempt chance(s) left."
             [ $attempt -gt 0 ] || exit 1
         done

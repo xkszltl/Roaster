@@ -32,7 +32,7 @@
         until sudo dnf install -y centos-release-scl{,-rh}; do echo 'Retrying'; done
         RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" centos-sclo-{sclo,rh}{,-source,-debuginfo}
 
-        until sudo dnf update -y --setopt=strict=0; do echo 'Retrying'; done
+        until sudo dnf update -y; do echo 'Retrying'; done
         sudo dnf update -y || true
 
         sudo yum-config-manager --add-repo "https://developer.download.nvidia.com/compute/cuda/repos/rhel$DISTRO_VERSION_ID/x86_64/cuda-rhel$DISTRO_VERSION_ID.repo"
@@ -65,7 +65,7 @@
 
         until sudo dnf install -y bc iputils pv which; do echo 'Retrying'; done
 
-        until sudo dnf update -y --setopt=strict=0; do echo 'Retrying'; done
+        until sudo dnf update -y; do echo 'Retrying'; done
         sudo dnf update -y || true
         ;;
     "debian" | "linuxmint" | "ubuntu")
