@@ -16,7 +16,7 @@ if (-not $(Test-Path "${DownloadDir}/$exe"))
 {
     Write-Host "Downloading CUDA installation files..."
     $wc = [System.Net.WebClient]::new()
-    $wc.DownloadFile("https://developer.download.nvidia.com/compute/cuda/10.1/Prod/network_installers/${exe}", "${DownloadDir}/${exe}.downloading")
+    $wc.DownloadFile("https://developer.download.nvidia.com/compute/cuda/10.2/Prod/network_installers/${exe}", "${DownloadDir}/${exe}.downloading")
     mv -Force ${DownloadDir}/${exe}.downloading ${DownloadDir}/${exe}
 }
 
