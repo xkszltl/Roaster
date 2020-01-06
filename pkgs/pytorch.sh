@@ -71,6 +71,12 @@
 
         export MPI_HOME=/usr/local/openmpi
 
+        # PyTorch still uses "FindCUDA.cmake" so CMAKE_CUDA_COMPILER_LAUNCHER does not work.
+        # And seems only env var works based on the following code:
+        #     https://github.com/Kitware/CMake/blob/512ab500f06d6c645985cc8014c5e6291b9a059f/Modules/FindCUDA.cmake#L756-L769
+        # Note this may conflict with CMAKE_CUDA_COMPILER_LAUNCHER when PyTorch switch to that.
+        export CUDA_NVCC_EXECUTABLE="$TOOLCHAIN/nvcc"
+
         # Enabling TensorRT causes crash during cmake generation.
         #     https://github.com/pytorch/pytorch/issues/18524
         cmake                                               \
