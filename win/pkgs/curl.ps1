@@ -43,7 +43,7 @@ cmake                                                               `
     -DCMAKE_USE_OPENSSL=ON                                          `
     -DCURL_CA_FALLBACK=ON                                           `
     -DENABLE_ARES=OFF                                               `
-    -G"Visual Studio 15 2017"                                       `
+    -G"Visual Studio 16 2019"                                       `
     -T"host=x64"                                                    `
     ..
 
