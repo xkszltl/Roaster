@@ -82,6 +82,8 @@
             -Donnxruntime_BUILD_SHARED_LIB=ON               \
             -Donnxruntime_CUDNN_HOME='/usr/lib64'           \
             -Donnxruntime_ENABLE_PYTHON=ON                  \
+            -DPython_ADDITIONAL_VERSIONS='3.6 3.7 3.8 3.9'  \
+            -Donnxruntime_ENABLE_LANGUAGE_INTEROP_OPS=ON    \
             -Donnxruntime_ENABLE_LTO=OFF                    \
             -Donnxruntime_RUN_ONNX_TESTS=ON                 \
             -Donnxruntime_USE_BRAINSLICE=OFF                \
