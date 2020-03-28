@@ -136,7 +136,15 @@
         case "$DISTRO_ID" in
         'centos' | 'fedora' | 'rhel')
             for site in {"/usr/local","/opt/rh/rh-python36/root/usr"}"/lib64/python3.6/site-packages/torch"; do
-                for target in bin/torch_shm_manager include/torch; do
+                for target in bin/torch_shm_manager; do
+                    sudo mkdir -p "$(dirname "$site/./$target")"
+                    sudo ln -sf {'/usr/local',"$site"}"/$target"
+                done
+            done
+            ;;
+        'ubuntu')
+            for site in "/usr/local/lib/python3.6/dist-packages/torch"; do
+                for target in bin/torch_shm_manager include/torch lib; do
                     sudo mkdir -p "$(dirname "$site/./$target")"
                     sudo ln -sf {'/usr/local',"$site"}"/$target"
                 done
