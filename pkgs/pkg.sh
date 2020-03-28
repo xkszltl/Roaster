@@ -124,6 +124,7 @@ for i in pkg-{stable,skip,all}; do
                 libevent{,-*}
                 {asciidoc,gettext,xmlto,c-ares,pcre{,2}}{,-*}
                 librados2{,-*}
+                pugixml{,-*}
                 libyaml{,-*}
                 {gflags,glog,gmock,gtest,protobuf}{,-*}
                 {jsoncpp,rapidjson}{,-*}

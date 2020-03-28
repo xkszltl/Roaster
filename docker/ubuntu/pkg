@@ -65,6 +65,7 @@ RUN set -e; \
         libnuma-dev numactl numad \
         libpapi-dev papi-tools \
         libprotobuf-dev protobuf-compiler \
+        libpugixml-dev pugixml-doc\
         libtool \
         llvm-7{,-tools} {clang{,-{format,tidy,tools}},lld,lldb}-7 lib{c++{,abi},omp}-7-dev \
         locate \
