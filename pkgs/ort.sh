@@ -77,12 +77,12 @@
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"           \
             -DCMAKE_POLICY_DEFAULT_CMP0060=NEW              \
             -DCMAKE_VERBOSE_MAKEFILE=ON                     \
+            -DPython_ADDITIONAL_VERSIONS="$(python3 --version | sed -n 's/^Python[[:space:]]*\([0-9]*\.[0-9]*\)\..*/\1/p')" \
             -Deigen_SOURCE_PATH="/usr/local/include/eigen3" \
             -Donnxruntime_BUILD_FOR_NATIVE_MACHINE="$($TOOLCHAIN_CPU_NATIVE && echo 'ON' || echo 'OFF')"    \
             -Donnxruntime_BUILD_SHARED_LIB=ON               \
             -Donnxruntime_CUDNN_HOME='/usr/lib64'           \
             -Donnxruntime_ENABLE_PYTHON=ON                  \
-            -DPython_ADDITIONAL_VERSIONS='3.6 3.7 3.8 3.9'  \
             -Donnxruntime_ENABLE_LANGUAGE_INTEROP_OPS=ON    \
             -Donnxruntime_ENABLE_LTO=OFF                    \
             -Donnxruntime_RUN_ONNX_TESTS=ON                 \
