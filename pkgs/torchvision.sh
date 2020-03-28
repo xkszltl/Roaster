@@ -55,7 +55,12 @@
         time cmake --build . --target
         time cmake --build . --target install
 
-        FORCE_CUDA=1 "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" ../
+        (
+            set -xe
+            export FORCE_CUDA=1
+            export TORCH_CUDA_ARCH_LIST="Pascal;Volta"
+            "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" ../
+        )
 
         # Exclude GTest/MKL-DNN/ONNX/Caffe files.
         pushd "$INSTALL_ROOT"
