@@ -7,7 +7,7 @@
     
     # ------------------------------------------------------------
 
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" Kitware/CMake,v3.16.
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" Kitware/CMake,v3.16.4
     until git clone --depth 1 --single-branch -b "$GIT_TAG" "$GIT_REPO" cmake; do echo 'Retrying'; done
     cd cmake
 
