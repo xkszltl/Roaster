@@ -79,7 +79,7 @@ emil-e/rapidcheck,\
 envoyproxy/{data-plane-api,envoy,{go,java}-control-plane,nighthawk,protoc-gen-validate},\
 facebook/{rocksdb,zstd},\
 facebookincubator/{fbjni,gloo},\
-facebookresearch/{Detectron,dlrm,faiss,fastText,habitat-sim,ImageNet-Adversarial-Training,maskrcnn-benchmark,ParlAI,pytext,pythia,PyTorch-BigGraph,ResNeXt,wav2letter},\
+facebookresearch/{Detectron,detectron2,dlrm,faiss,fastText,fvcore,habitat-sim,ImageNet-Adversarial-Training,maskrcnn-benchmark,ParlAI,pytext,pythia,PyTorch-BigGraph,ResNeXt,wav2letter},\
 FFmpeg/FFmpeg,\
 frerich/clcache,\
 Frozenball/pytest-sugar,\
