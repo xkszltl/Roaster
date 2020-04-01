@@ -107,7 +107,7 @@ jordansissel/fpm,\
 Kitware/{CMake,VTK},\
 lemire/simdjson,\
 libav/libav,\
-llvm/{llvm-{archive,project,test-suite,www{,-pubs}}},\
+llvm/llvm-{archive,project,test-suite,www{,-pubs}},\
 llvm-mirror/{ll{vm,d,db,go},clang{,-tools-extra},polly,compiler-rt,openmp,lib{unwind,cxx{,abi}},test-suite},\
 LMDB/lmdb,\
 lutzroeder/netron,\
