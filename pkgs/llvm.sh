@@ -6,30 +6,9 @@ for i in llvm-{gcc,clang}; do
     [ -e $STAGE/$i ] && ( set -xe
         cd $SCRATCH
 
-        . "$ROOT_DIR/pkgs/utils/git/version.sh" llvm-mirror/llvm,release_
-        until git clone --depth 1 -b "$GIT_TAG" "$GIT_REPO"; do sleep 1; echo "Retrying"; done
+        . "$ROOT_DIR/pkgs/utils/git/version.sh" llvm/llvm-project,llvmorg-
+        until git clone --depth 1 -b "$GIT_TAG" "$GIT_REPO" llvm; do sleep 1; echo "Retrying"; done
         cd llvm
-        parallel -j0 --bar --line-buffer 'bash -c '"'"'
-            set -e
-            export PROJ="$(basename "{}")"
-            [ "$PROJ" ]
-            case "$PROJ" in
-            "clang")
-                until git clone -b "'"$GIT_TAG"'" "'"$(sed 's/[^\/]*$//' <<< "$GIT_REPO")"'$PROJ.git" {}; do sleep 1; echo "Retrying"; done
-                pushd {}
-                until git clone --depth 1 -b "'"$GIT_TAG"'" "'"$(sed 's/[^\/]*$//' <<< "$GIT_REPO")"'$PROJ-tools-extra.git" "tools/extra"; do sleep 1; echo "Retrying"; done
-                popd
-                ;;
-            *)
-                until git clone --depth 1 -b "'"$GIT_TAG"'" "'"$(sed 's/[^\/]*$//' <<< "$GIT_REPO")"'$PROJ.git" {}; do sleep 1; echo "Retrying"; done
-                ;;
-            esac
-        '"'" ::: projects/{compiler-rt,lib{cxx{,abi},unwind},openmp} tools/{clang,lldb,lld,polly}
-
-        # LLVM repo uses branch instead of tag.
-        for i in 'MAJOR' 'MINOR' 'PATCH'; do
-            sed -n "s/.*set[[:space:]]*([[:space:]]*LLVM_VERSION_$i[[:space:]][[:space:]]*\([0-9][0-9]*\)[[:space:]]*).*/\1/p" CMakeLists.txt | head -n1
-        done | paste -sd. - | xargs git tag
 
         # ------------------------------------------------------------
 
@@ -54,12 +33,16 @@ for i in llvm-{gcc,clang}; do
             # TODO: Enable OpenMP for fortran when ninja supports it.
             export LLVM_COMMON_ARGS="
                 -DCLANG_DEFAULT_CXX_STDLIB=libc++
+                -DCLANG_DEFAULT_LINKER=lld
+                -DCLANG_DEFAULT_OBJCOPY=llvm-objcopy
                 -DCLANG_ENABLE_PROTO_FUZZER=OFF
+                -DCLANG_OPENMP_NVPTX_DEFAULT_ARCH='sm_61'
                 -DCMAKE_BUILD_TYPE=Release
                 -DCMAKE_INSTALL_PREFIX='$INSTALL_ABS'
                 -DCMAKE_VERBOSE_MAKEFILE=ON
                 -DLIBCLANG_BUILD_STATIC=ON
                 -DLIBCXX_CONFIGURE_IDE=ON
+                -DLIBCXX_ENABLE_PARALLEL_ALGORITHMS=ON
                 -DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=ON
                 -DLIBIPT_INCLUDE_PATH='/usr/local/include'
                 -DLIBOMP_ENABLE_SHARED=ON
@@ -71,21 +54,24 @@ for i in llvm-{gcc,clang}; do
                 -DLIBOMP_USE_HIER_SCHED=ON
                 -DLIBOMP_USE_HWLOC=ON
                 -DLIBOMP_USE_STDCPPLIB=ON
+                -DLIBOMPTARGET_NVPTX_COMPUTE_CAPABILITIES='35,37,52,60,61,70,75'
                 -DLIBUNWIND_ENABLE_CROSS_UNWINDING=ON
                 -DLLDB_BUILD_INTEL_PT=ON
-                -DLLDB_DISABLE_PYTHON=ON
+                -DLLDB_ENABLE_PYTHON=OFF
                 -DLLVM_BUILD_LLVM_DYLIB=ON
                 -DLLVM_CCACHE_BUILD=ON
                 -DLLVM_ENABLE_EH=ON
                 -DLLVM_ENABLE_FFI=ON
+                -DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;compiler-rt;libc;libclc;libcxx;libcxxabi;libunwind;lld;lldb;openmp;parallel-libs;polly;pstl'
                 -DLLVM_ENABLE_RTTI=ON
                 -DLLVM_INSTALL_BINUTILS_SYMLINKS=ON
                 -DLLVM_INSTALL_UTILS=ON
                 -DLLVM_LINK_LLVM_DYLIB=ON
                 -DLLVM_OPTIMIZED_TABLEGEN=ON
+                -DLLVM_USE_PERF=ON
                 -DPOLLY_ENABLE_GPGPU_CODEGEN=ON
                 -G Ninja
-                .."
+                ../llvm"
             
             # GCC only takes plugin processed static lib for LTO.
             # Need to use ar/ranlib wrapper.
@@ -106,10 +92,12 @@ for i in llvm-{gcc,clang}; do
                     -DCMAKE_C_COMPILER=clang            \
                     -DCMAKE_CXX_COMPILER=clang++        \
                     -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src'"   \
+                    -DCMAKE_LINKER=ld.lld               \
                     -DENABLE_X86_RELAX_RELOCATIONS=ON   \
                     -DLIBCXX_USE_COMPILER_RT=ON         \
                     -DLIBCXXABI_USE_COMPILER_RT=ON      \
                     -DLIBCXXABI_USE_LLVM_UNWINDER=ON    \
+                    -DLIBOMPTARGET_NVPTX_ENABLE_BCLIB=ON\
                     -DLIBUNWIND_USE_COMPILER_RT=ON      \
                     -DLLVM_ENABLE_LIBCXX=ON             \
                     -DLLVM_ENABLE_LLD=ON                \
