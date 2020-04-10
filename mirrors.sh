@@ -98,6 +98,7 @@ harfbuzz/harfbuzz,\
 houseroad/foxi,\
 HowardHinnant/date,\
 HypothesisWorks/hypothesis,\
+iina/{iina{,-plugin-definition,-website},plugin-ytdl},\
 intel/{ARM_NEON_2_x86_SSE,compute-runtime,ideep,mkl-dnn},\
 intelxed/xed,\
 IvanKobzarev/fbjni,\
