@@ -61,6 +61,7 @@ for i in pkg-{stable,skip,all}; do
                 [!] {tree,whereami,mlocate,lsof}{,-*}
                 [!] {ftp{,lib},telnet,tftp,rsh}{,-debuginfo}
                 {h,if,io,latency,power,tip}top{,-*}
+                {ibutils,infiniband-diags}{,-*}
                 lshw{,-*}
                 procps-ng{,-*}
                 [!] {axel,curl,net-tools,wget}{,-*}
