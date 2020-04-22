@@ -69,11 +69,13 @@ RUN set -e; \
         libtool \
         llvm-7{,-tools} {clang{,-{format,tidy,tools}},lld,lldb}-7 lib{c++{,abi},omp}-7-dev \
         locate \
+        lshw \
         ltrace \
         m4 \
         make \
         moreutils \
         mtr \
+        net-tools \
         ninja-build \
         nvidia-container-runtime \
         pandoc \
