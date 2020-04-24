@@ -71,6 +71,7 @@ RUN set -e; \
         llvm-7{,-tools} {clang{,-{format,tidy,tools}},lld,lldb}-7 lib{c++{,abi},omp}-7-dev \
         locate \
         lshw \
+        lsof \
         ltrace \
         m4 \
         make \
