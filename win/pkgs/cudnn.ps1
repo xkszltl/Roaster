@@ -25,7 +25,20 @@ if (Test-Path "$root")
 mkdir "$root"
 pushd "$root"
 
-$CUDA_HOME="$(Split-Path (Get-Command nvcc).Source -Parent)/.."
+${Env:Path} = [System.Environment]::GetEnvironmentVariable("Path","Machine")
+
+if (${Env:CUDA_PATH} -ne $null)
+{
+    $CUDA_HOME=${Env:CUDA_PATH}
+}
+elseif ([System.Environment]::GetEnvironmentVariable("CUDA_PATH","Machine") -ne $null)
+{
+    $CUDA_HOME=[System.Environment]::GetEnvironmentVariable("CUDA_PATH","Machine")
+}
+else
+{
+    $CUDA_HOME="$(Split-Path (Get-Command nvcc).Source -Parent)/.."
+}
 Write-Host "Found CUDA ${CUDA_HOME}."
 $cudnn_url="https://developer.download.nvidia.com/compute/redist/cudnn"
 
