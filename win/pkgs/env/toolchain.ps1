@@ -87,12 +87,12 @@ if (-Not $Env:ROASTER_TOOLCHAIN_COMMITED)
 
     if (${Env:PYTHONHOME} -eq $null -or -not $(Test-Path ${Env:PYTHONHOME}/python.exe -ErrorAction SilentlyContinue))
     {
-        ${Env:PYTHONHOME} = Join-Path ${Env:ProgramFiles} Python37
+        ${Env:PYTHONHOME} = Join-Path ${Env:ProgramFiles} Python38
     }
 
     if (${Env:PYTHONHOME} -eq $null -or -not $(Test-Path ${Env:PYTHONHOME}/python.exe -ErrorAction SilentlyContinue))
     {
-        $py_ver="3.7.4"
+        $py_ver="3.8.2"
         $DownloadURL = "https://www.python.org/ftp/python/${py_ver}/python-${py_ver}-amd64.exe"
         $DownloadPath = "${Env:TMP}/python-${py_ver}-amd64.exe"
         Write-Host "Downloading Python..."
