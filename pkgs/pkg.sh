@@ -125,6 +125,7 @@ for i in pkg-{stable,skip,all}; do
                 {libsodium,mbedtls}{,-*}
                 libev{,-devel,-source,-debuginfo}
                 libevent{,-*}
+                utf8proc{,-*}
                 {asciidoc,gettext,xmlto,c-ares,pcre{,2}}{,-*}
                 librados2{,-*}
                 pugixml{,-*}
