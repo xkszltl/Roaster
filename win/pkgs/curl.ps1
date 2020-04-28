@@ -43,6 +43,7 @@ cmake                                                               `
     -DCMAKE_USE_OPENSSL=ON                                          `
     -DCURL_CA_FALLBACK=ON                                           `
     -DENABLE_ARES=OFF                                               `
+    -DOPENSSL_ROOT_DIR="${Env:ProgramFiles}/OpenSSL"                `
     -G"Visual Studio 16 2019"                                       `
     -T"host=x64"                                                    `
     ..
