@@ -39,6 +39,7 @@ foreach ($i in 0..($components.Length - 1))
     $setup = Join-Path $f.substring(0, $f.IndexOf(".exe")) install.exe
     Write-Host "Invoking $setup"
     dir $InstallationDir
+    Write-Host "Make sure Visual Studio (including background processes) is not running or installer may hang."
     & $(Join-Path $DownloadDir $setup) install --output="$DownloadDir/$f_output_log.txt" --eula=accept | Out-Null
 }
 
