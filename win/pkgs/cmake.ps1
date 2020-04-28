@@ -26,7 +26,14 @@ if (-not $(Test-Path "$cmake_name"))
 {
     $uri = "$cmake_url/$cmake_name"
     Write-Host "Downloading `"$uri`""
-    & "${Env:ProgramFiles}/CURL/bin/curl.exe" -fkSL $uri -o "${cmake_name}.downloading"
+    if ($(Test-Path "${Env:ProgramFiles}/CURL/bin/curl.exe" -ErrorAction SilentlyContinue))
+    {
+        & "${Env:ProgramFiles}/CURL/bin/curl.exe" -fkSL $uri -o "${cmake_name}.downloading"
+    }
+    else
+    {
+        Invoke-WebRequest -Uri $uri -OutFile "${cmake_name}.downloading"
+    }
     mv -Force "${cmake_name}.downloading" ${cmake_name}
 }
 
