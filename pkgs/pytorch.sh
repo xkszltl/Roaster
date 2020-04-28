@@ -42,6 +42,15 @@
         ln -sf '/usr/local/src/mkl-dnn' third_party/ideep/mkl-dnn
     fi
 
+    # Use latest NCCL since it is referenced regardless of USE_SYSTEM_NCCL.
+    (
+        set -xe
+        pushd third_party/nccl/nccl
+        . "$ROOT_DIR/pkgs/utils/git/version.sh" NVIDIA/nccl,v
+        git checkout "$GIT_TAG"
+        popd
+    )
+
     # ------------------------------------------------------------
 
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
