@@ -3,6 +3,12 @@
 if (-Not $Env:ROASTER_TOOLCHAIN_COMMITED)
 {
     # ================================================================================
+    # Restore system default PATH, including potential updates.
+    # ================================================================================
+#
+    ${Env:PATH}=[System.Environment]::GetEnvironmentVariable("PATH","Machine")
+
+    # ================================================================================
     # Path longer than 260 may resolve to some obscure errors.
     # Fix in registry.
     # ================================================================================
