@@ -99,9 +99,9 @@ if (-Not $Env:ROASTER_TOOLCHAIN_COMMITED)
         Invoke-WebRequest -Uri $DownloadURL -OutFile $DownloadPath
         Write-Host "Installing Python..."
         & $DownloadPath /passive InstallAllUsers=1 PrependPath=1 | Out-Null
-        if ($(Test-Path ${Env:ProgramFiles}/Python37/python.exe -ErrorAction SilentlyContinue))
+        if ($(Test-Path ${Env:ProgramFiles}/Python38/python.exe -ErrorAction SilentlyContinue))
         {
-            ${Env:PYTHONHOME} = Join-Path ${Env:ProgramFiles} Python37
+            ${Env:PYTHONHOME} = Join-Path ${Env:ProgramFiles} Python38
             Write-Host "Python installed successfully."
         }
         else
