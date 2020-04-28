@@ -29,7 +29,7 @@ Visual Studio
 ----------
 
 Latest version is preferred.
-Currently it's Visual Studio 2017, latest subversion preferred.
+Currently it's Visual Studio 2019, latest subversion preferred.
 Please install all versions of WinSDK and VC toolchains (XP is not needed...).
 
 Git
@@ -136,10 +136,14 @@ Usage
 
 Method 1
 --------
-Run `install.ps1` from a Powershell command prompt with admin.
+Run `setup.ps1` from a Powershell command prompt with admin.
 It calls all packages in a topo-sorted order for dependency graph.
 
-If this is the first time, please do the same thing manually, because you'll have to restart powershell / reboot in the middle.
+Because sometimes installation changes environment variables, you may need to restart powershell / reboot in the middle.
+We tried to avoid that as much as we can but it is still not perfect.
+
+If this is the first time, you may need to run `${ROASTER_ROOT}/setup.ps1 cmake` once before `${ROASTER_ROOT}/setup.ps1`.
+
 See Method 2 for details.
 
 Method 2
@@ -147,6 +151,12 @@ Method 2
 Open a PowerShell (`Run as Administrator` required) and call script for the package you want.
 
 Here's an example:
+```
+${ROASTER_ROOT}/setup.ps1 caffe2
+```
+
+or
+
 ```
 & ${ROASTER_ROOT}/pkgs/caffe2
 ```
