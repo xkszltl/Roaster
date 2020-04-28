@@ -7,7 +7,7 @@ $ErrorActionPreference="Stop"
 . "$PSScriptRoot/env/toolchain.ps1"
 
 pushd ${Env:TMP}
-$repo="${Env:GIT_MIRROR}/intel/mkl-dnn.git"
+$repo="${Env:GIT_MIRROR}/oneapi-src/oneDNN.git"
 $proj="$($repo -replace '.*/','' -replace '.git$','')"
 $root="${Env:TMP}/$proj"
 

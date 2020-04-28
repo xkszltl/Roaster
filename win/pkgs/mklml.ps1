@@ -7,7 +7,7 @@ $ErrorActionPreference="Stop"
 . "$PSScriptRoot/env/toolchain.ps1"
 
 pushd ${Env:TMP}
-$repo="${Env:GIT_MIRROR}/intel/mkl-dnn.git"
+$repo="${Env:GIT_MIRROR}/oneapi-src/oneDNN.git"
 $proj="$($repo -replace '.*/','' -replace '.git$','')"
 $root="${Env:TMP}/$proj"
 
@@ -18,7 +18,8 @@ if (Test-Path "$root")
     Exit 1
 }
 
-$latest_ver="v" + $($(git ls-remote --tags "$repo") -match '.*refs/tags/v[0-9\.]*$' -replace '.*refs/tags/v','' | sort {[Version]$_})[-1]
+# MKLML has been removed in v1.0 since MKL dependency is dropped.
+$latest_ver="v" + $($(git ls-remote --tags "$repo") -match '.*refs/tags/v0\.[0-9\.]*$' -replace '.*refs/tags/v','' | sort {[Version]$_})[-1]
 git clone --depth 1 --recursive --single-branch -b "$latest_ver" "$repo"
 pushd "$root"
 
