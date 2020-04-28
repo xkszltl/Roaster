@@ -105,6 +105,7 @@ IvanKobzarev/fbjni,\
 JDAI-CV/{dabnn{,-example},DCL,DNNLibrary},\
 jemalloc/jemalloc,\
 jordansissel/fpm,\
+JuliaStrings/utf8proc,\
 Kitware/{CMake,VTK},\
 lemire/simdjson,\
 libav/libav,\
