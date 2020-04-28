@@ -45,7 +45,6 @@ foreach ($pkg in @(
     "onnx",
     "pytorch",
     "ort",
-    "cream",
     ""))
 {
     if ($pkg -eq "")
