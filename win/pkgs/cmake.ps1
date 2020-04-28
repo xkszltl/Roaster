@@ -37,7 +37,7 @@ if (-not $(Test-Path "$cmake_name"))
     mv -Force "${cmake_name}.downloading" ${cmake_name}
 }
 
-msiexec /i ${cmake_name} /norestart /passive | Out-Null
+msiexec /i ${cmake_name} /norestart /passive ADD_CMAKE_TO_PATH=System | Out-Null
 if (-Not $?)
 {
     echo "Failed to install."
