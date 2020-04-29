@@ -19,8 +19,13 @@ if (Test-Path "$root")
 }
 
 $latest_ver=$($(git ls-remote --tags "$repo") -match '.*refs/tags/[0-9\.]*$' -replace '.*refs/tags/','' | sort {[Version]$_})[-1]
-git clone --depth 1 --single-branch -b "$latest_ver" "$repo"
+git clone --single-branch -b "$latest_ver" "$repo"
 pushd "$root"
+
+git remote add patch https://github.com/xkszltl/jsoncpp.git
+git fetch patch
+git cherry-pick patch/dll-1.9.2
+
 mkdir build
 pushd build
 
