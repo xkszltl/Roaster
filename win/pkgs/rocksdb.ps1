@@ -20,9 +20,6 @@ if (Test-Path "$root")
 
 $latest_ver='v' + $($(git ls-remote --tags "$repo") -match '.*refs/tags/v[0-9\.]*$' -replace '.*refs/tags/v','' | sort {[Version]$_})[-1]
 
-# RocksDB 6.2.2 has compile error: https://github.com/facebook/rocksdb/issues/5730
-$latest_ver='v' + $($(git ls-remote --tags "$repo") -match '.*refs/tags/v6\.1\.[0-9\.]*$' -replace '.*refs/tags/v','' | sort {[Version]$_})[-1]
-
 git clone --single-branch -b "$latest_ver" "$repo"
 
 pushd "$root"
@@ -46,6 +43,7 @@ ${Env:ZLIB_LIB_RELEASE} = "${Env:ProgramFiles}/zlib/lib/zlib.lib"
 # Known issues:
 #   - Tests are not supported in CMake Release build.
 #   - /Zi hard-coded.
+#   - Benchmark requires testharness: https://github.com/facebook/rocksdb/issues/6769
 cmake                                                               `
     -DCMAKE_BUILD_TYPE=Release                                      `
     -DCMAKE_C_FLAGS="/GL /MP"                                       `
@@ -56,6 +54,7 @@ cmake                                                               `
     -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                 `
     -DFAIL_ON_WARNINGS=OFF                                          `
     -DROCKSDB_INSTALL_ON_WINDOWS=ON                                 `
+    -DWITH_BENCHMARK_TOOLS=OFF                                      `
     -DWITH_GFLAGS=ON                                                `
     -DWITH_SNAPPY=ON                                                `
     -DWITH_TESTS=OFF                                                `
