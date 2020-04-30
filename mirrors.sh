@@ -79,7 +79,7 @@ emil-e/rapidcheck,\
 envoyproxy/{data-plane-api,envoy,{go,java}-control-plane,nighthawk,protoc-gen-validate},\
 facebook/{rocksdb,zstd},\
 facebookincubator/{fbjni,gloo},\
-facebookresearch/{Detectron,detectron2,dlrm,faiss,fastText,fvcore,habitat-sim,ImageNet-Adversarial-Training,maskrcnn-benchmark,ParlAI,pytext,pythia,PyTorch-BigGraph,ResNeXt,wav2letter},\
+facebookresearch/{ClassyVision,CrypTen,Detectron,detectron2,dlrm,DrQA,faiss,fastMRI,fastText,flashlight,fvcore,habitat-sim,ImageNet-Adversarial-Training,maskrcnn-benchmark,ParlAI,pycls,pytext,pythia,PyTorch-BigGraph,pytorch-dp,pytorch3d,SentEval,ResNeXt,wav2letter,XLM},\
 FFmpeg/FFmpeg,\
 fmtlib/{fmt,format-benchmark},\
 frerich/clcache,\
@@ -98,6 +98,7 @@ halide/Halide,\
 harfbuzz/harfbuzz,\
 houseroad/foxi,\
 HowardHinnant/date,\
+huggingface/{knockknock,Mongoku,neuralcoref,pytorch-{openai-transformer-lm,pretrained-BigGAN},swift-coreml-transformers,tflite-android-transformers,tokenizers,torchMoji,transformers},\
 HypothesisWorks/hypothesis,\
 iina/{iina{,-plugin-definition,-website},plugin-ytdl},\
 intel/{ARM_NEON_2_x86_SSE,compute-runtime,ideep,mkl-dnn},\
@@ -110,6 +111,7 @@ JuliaStrings/utf8proc,\
 Kitware/{CMake,VTK},\
 lemire/simdjson,\
 libav/libav,\
+libuv/libuv,\
 llvm/llvm-{archive,project,test-suite,www{,-pubs}},\
 llvm-mirror/{ll{vm,d,db,go},clang{,-tools-extra},polly,compiler-rt,openmp,lib{unwind,cxx{,abi}},test-suite},\
 LMDB/lmdb,\
@@ -148,7 +150,7 @@ pypa/{pip,pipenv,setuptools,virtualenv,warehouse,wheel},\
 pytest-dev/{pluggy,py,pytest},\
 python/typing,\
 python-attrs/attrs,\
-pytorch/{cpuinfo,examples,FBGEMM,glow,ignite,pytorch,QNNPACK,tutorials,vision,xla},\
+pytorch/{audio,botorch,captum,cppdocs,cpuinfo,elastic,examples,fairseq,FBGEMM,glow,ignite,pytorch,QNNPACK,serve,tensorpipe,text,translate,tutorials,vision,xla},\
 RadeonOpenCompute/{hcc,ROCm-Device-Libs,ROCR-Runtime},\
 RMerl/{am-toolchains,asuswrt-merlin.ng},\
 ROCm-Developer-Tools/HIP,\
