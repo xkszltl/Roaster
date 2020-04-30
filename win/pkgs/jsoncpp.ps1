@@ -21,7 +21,7 @@ if (Test-Path "$root")
 $latest_ver=$($(git ls-remote --tags "$repo") -match '.*refs/tags/[0-9\.]*$' -replace '.*refs/tags/','' | sort {[Version]$_})[-1]
 
 # Use master until patch released: https://github.com/open-source-parsers/jsoncpp/commit/a4fb5db54389e618a4968a3feb7f20d5ce853232
-latest_ver="master"
+$latest_ver="master"
 
 git clone --single-branch -b "$latest_ver" "$repo"
 pushd "$root"
