@@ -81,6 +81,7 @@ facebook/{rocksdb,zstd},\
 facebookincubator/{fbjni,gloo},\
 facebookresearch/{Detectron,detectron2,dlrm,faiss,fastText,fvcore,habitat-sim,ImageNet-Adversarial-Training,maskrcnn-benchmark,ParlAI,pytext,pythia,PyTorch-BigGraph,ResNeXt,wav2letter},\
 FFmpeg/FFmpeg,\
+fmtlib/{fmt,format-benchmark},\
 frerich/clcache,\
 Frozenball/pytest-sugar,\
 gabime/spdlog,\
