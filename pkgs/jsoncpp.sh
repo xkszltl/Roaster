@@ -7,9 +7,13 @@
     
     # ------------------------------------------------------------
 
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" open-source-parsers/jsoncpp,
-    until git clone --depth 1 --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
+    # Use master until patch released: https://github.com/open-source-parsers/jsoncpp/commit/a4fb5db54389e618a4968a3feb7f20d5ce853232
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" open-source-parsers/jsoncpp,master
+    until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd jsoncpp
+
+    git remote add patch "https://github.com/xkszltl/jsoncpp.git"
+    git fetch patch
 
     # ------------------------------------------------------------
 
