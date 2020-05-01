@@ -26,6 +26,9 @@ pushd "$root"
 
 git remote add patch https://github.com/xkszltl/rocksdb.git
 git fetch patch
+git cherry-pick "patch/export"
+git cherry-pick "patch/find"
+git cherry-pick "patch/snappy"
 
 mkdir build
 pushd build

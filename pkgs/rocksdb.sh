@@ -7,8 +7,8 @@
 
     # ------------------------------------------------------------
 
-    # 6.5.2 triggers cmake error in pytorch: https://github.com/pytorch/pytorch/issues/31264
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" facebook/rocksdb,v6.4
+    # . "$ROOT_DIR/pkgs/utils/git/version.sh" facebook/rocksdb,v
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" facebook/rocksdb,master
     until git clone -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd rocksdb
 
@@ -16,6 +16,9 @@
 
     git remote add patch "$GIT_MIRROR_GITHUB/xkszltl/rocksdb.git"
     git fetch patch
+    for i in export find snappy; do
+        git cherry-pick "patch/$i"
+    done
 
     # ------------------------------------------------------------
 
@@ -42,6 +45,7 @@
             mkdir -p build
             cd $_
             # The NDEBUG in non-debug cmake build leads to test-related compile error.
+            # Benchmark requires testharness: https://github.com/facebook/rocksdb/issues/6769
             cmake                                       \
                 -DCMAKE_BUILD_TYPE=Release              \
                 -DCMAKE_C_COMPILER="$CC"                \
@@ -55,6 +59,7 @@
                 -DPORTABLE="$($TOOLCHAIN_CPU_NATIVE && echo 'OFF' || echo 'ON')"    \
                 -DUSE_RTTI=ON                           \
                 -DWITH_ASAN=OFF                         \
+                -DWITH_BENCHMARK_TOOLS=OFF              \
                 -DWITH_BZ2=ON                           \
                 -DWITH_JEMALLOC=OFF                     \
                 -DWITH_LIBRADOS=ON                      \
