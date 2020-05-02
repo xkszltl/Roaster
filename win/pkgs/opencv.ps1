@@ -50,7 +50,10 @@ Invoke-Expression $($(cmd /C "`"${Env:ProgramFiles(x86)}/IntelSWTools/compilers_
 
 # - Only "Release" and "Debug" are supported.
 #   Use "BUILD_WITH_DEBUG_INFO" for "RelWithDebInfo".
-
+# - Starting from 4.1.1, OpenCV FreeType module changes to ocv_check_modules() with ony pkg-config support.
+#   <PKG>_LIBRARIES is be overwritten in this approach.
+#   Use <PKG>_LINK_LIBRARIES and <PKG>_LINK_LIBRARIES_XXXXX to help with injection according to:
+#     * https://github.com/opencv/opencv/blob/01b2c5a77ca6dbef3baef24ebc0a5984579231d9/cmake/OpenCVUtils.cmake#L823-L825
 cmake                                                                   `
     -DBUILD_PROTOBUF=OFF                                                `
     -DBUILD_SHARED_LIBS=ON                                              `
@@ -77,9 +80,13 @@ cmake                                                                   `
     -DFREETYPE_FOUND=ON                                                 `
     -DFREETYPE_INCLUDE_DIRS="$(${Env:ProgramFiles} -replace '\\','/')/freetype/include/freetype2"   `
     -DFREETYPE_LIBRARIES="$(${Env:ProgramFiles} -replace '\\','/')/freetype/lib/freetype.lib"       `
+    -DFREETYPE_LINK_LIBRARIES="$(${Env:ProgramFiles} -replace '\\','/')/freetype/lib/freetype.lib"  `
+    -DFREETYPE_LINK_LIBRARIES_XXXXX=ON                                  `
     -DHARFBUZZ_FOUND=ON                                                 `
     -DHARFBUZZ_INCLUDE_DIRS="$(${Env:ProgramFiles} -replace '\\','/')/harfbuzz/include/harfbuzz"    `
     -DHARFBUZZ_LIBRARIES="$(${Env:ProgramFiles} -replace '\\','/')/harfbuzz/lib/harfbuzz.lib"       `
+    -DHARFBUZZ_LINK_LIBRARIES="$(${Env:ProgramFiles} -replace '\\','/')/harfbuzz/lib/harfbuzz.lib"  `
+    -DHARFBUZZ_LINK_LIBRARIES_XXXXX=ON                                  `
     -DINSTALL_CREATE_DISTRIB=OFF                                        `
     -DINSTALL_TESTS=ON                                                  `
     -DMKL_WITH_OPENMP=ON                                                `
