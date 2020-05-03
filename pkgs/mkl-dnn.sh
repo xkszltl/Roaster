@@ -5,7 +5,7 @@
 [ -e $STAGE/mkl-dnn ] && ( set -xe
     cd $SCRATCH
 
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" oneapi-src/oneDNN,v0.21
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" oneapi-src/oneDNN,v
     # until git clone --depth 1 -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     until git clone -b "$GIT_TAG" "$GIT_REPO" mkl-dnn; do echo 'Retrying'; done
     cd mkl-dnn
