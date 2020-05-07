@@ -25,6 +25,10 @@
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd pytorch
 
+    # Remove once channel_shuffle() issue in torchvision is fixed.
+    # See https://github.com/pytorch/vision/issues/2193
+    git checkout 1510bdd
+
     git remote add patch https://github.com/xkszltl/pytorch.git
 
     PATCHES="lstm rnn_arg"
