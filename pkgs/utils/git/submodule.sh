@@ -2,15 +2,15 @@
 
 set +x
 
-case "$DISTRO_ID" in
-'centos' | 'fedora' | 'rhel')
-    set +e
-    . scl_source enable rh-git218
-    set -e
-    ;;
-esac
-
 (
+    case "$DISTRO_ID" in
+    'centos' | 'fedora' | 'rhel')
+        set +e
+        . scl_source enable rh-git218
+        set -e
+        ;;
+    esac
+
     set -e
 
     SUBMODULE_QUEUE='.'
