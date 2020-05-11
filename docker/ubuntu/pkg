@@ -81,6 +81,7 @@ RUN set -e; \
         net-tools \
         ninja-build \
         nvidia-container-runtime \
+        openssh-{client,server} \
         pandoc \
         parallel \
         pass \
