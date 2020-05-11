@@ -18,6 +18,9 @@
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd vision
 
+    git remote add patch "https://github.com/xkszltl/vision.git"
+    git cherry-pick patch/namespace
+
     # ------------------------------------------------------------
 
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
