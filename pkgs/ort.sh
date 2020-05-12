@@ -18,6 +18,10 @@
     until git clone -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd onnxruntime
 
+    # Backport CMake 3.17 CUDA fix until it is released:
+    # https://github.com/microsoft/onnxruntime/commit/355f39ddee885237bf6fde9b587c7a5f80d22c53
+    git cherry-pick 355f39dd
+
     git remote add patch https://github.com/xkszltl/onnxruntime.git
 
     PATCHES=""
