@@ -20,7 +20,6 @@
 
     git remote add patch "https://github.com/xkszltl/vision.git"
     git fetch patch
-    git cherry-pick patch/namespace
 
     # ------------------------------------------------------------
 
