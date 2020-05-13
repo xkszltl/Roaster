@@ -144,7 +144,8 @@
         # Dirty hack to fix torchvision build issues.
         case "$DISTRO_ID" in
         'centos' | 'fedora' | 'rhel')
-            for site in {"/usr/local","/opt/rh/rh-python36/root/usr"}"/lib64/python3.6/site-packages/torch"; do
+            # for site in {"/usr/local","/opt/rh/rh-python36/root/usr"}"/lib64/python3.6/site-packages/torch"; do
+            for site in "/usr/local/lib64/python3.6/site-packages/torch"; do
                 for target in bin/torch_shm_manager; do
                     sudo mkdir -p "$(dirname "$site/./$target")"
                     sudo ln -sf {'/usr/local',"$site"}"/$target"
