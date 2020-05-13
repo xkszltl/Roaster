@@ -14,11 +14,11 @@
 
     # ------------------------------------------------------------
 
-    git remote add patch "$GIT_MIRROR_GITHUB/xkszltl/rocksdb.git"
-    git fetch patch
-    for i in export find; do
-        git cherry-pick "patch/$i"
-    done
+    # git remote add patch "$GIT_MIRROR_GITHUB/xkszltl/rocksdb.git"
+    # git fetch patch
+    # for i in; do
+    #     git cherry-pick "patch/$i"
+    # done
 
     # ------------------------------------------------------------
 
