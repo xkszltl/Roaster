@@ -54,6 +54,7 @@ RUN set -e; \
         htop \
         ibutils infiniband-diags \
         icu-devtools \
+        iftop \
         iproute2{,-doc} \
         'iputils-*' \
         jq \
