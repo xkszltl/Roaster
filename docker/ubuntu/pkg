@@ -114,6 +114,7 @@ RUN set -e; \
         valgrind \
         vim \
         wget \
+        whois \
         xz-utils pxz \
         zstd libzstd-dev; \
     sudo apt-get autoremove -y; \
