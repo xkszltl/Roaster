@@ -30,6 +30,7 @@ foreach ($pkg in @(
     "freetype", # Loop dependency between HarfBuzz/FreeType.
     "boost",
     "jsoncpp",
+    "utf8proc",
     "eigen",
     "pybind11",
     "mkl-dnn",
