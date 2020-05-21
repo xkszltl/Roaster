@@ -45,6 +45,7 @@ foreach ($pkg in @(
     "onnx",
     "pytorch",
     "ort",
+    "utf8proc",
     ""))
 {
     if ($pkg -eq "")
