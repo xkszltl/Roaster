@@ -39,11 +39,11 @@
             -DCMAKE_C{,XX}_COMPILER_LAUNCHER=ccache \
             -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
+            -DUTF8PROC_ENABLE_TESTING=ON            \
             -G"Ninja"                               \
             ..
 
         time cmake --build .
-        # One test randomly failed on Ubuntu recently (Sep 28, 2019).
         CTEST_PARALLEL_LEVEL="$(nproc)" time cmake --build . --target test || true
         time cmake --build . --target install
     )

@@ -31,6 +31,7 @@ foreach ($pkg in @(
     "boost",
     "jsoncpp",
     "eigen",
+    "utf8proc",
     "pybind11",
     "mkl-dnn",
     "gflags",
@@ -45,7 +46,6 @@ foreach ($pkg in @(
     "onnx",
     "pytorch",
     "ort",
-    "utf8proc",
     ""))
 {
     if ($pkg -eq "")

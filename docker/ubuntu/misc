@@ -7,4 +7,4 @@ LABEL BUILD_ID=$LABEL_BUILD_ID
 
 COPY [".", "/etc/roaster/scripts"]
 
-RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh catch2 jsoncpp rapidjson simdjson pybind grpc libpng libgdiplus mkl-dnn opencv leveldb rocksdb lmdb utf8proc
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh catch2 jsoncpp rapidjson simdjson utf8proc pybind grpc libpng libgdiplus mkl-dnn opencv leveldb rocksdb lmdb

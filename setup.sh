@@ -127,7 +127,7 @@ cd "$SCRATCH"
     sudo rm -rvf "$STAGE"
     sudo mkdir -p "$(dirname "$STAGE")/.$(basename "$STAGE")"
     cd $_
-    [ $# -gt 0 ] && sudo touch $@ || sudo touch repo font pkg-stable pkg-skip fpm auth vim tmux tex ss ccache cmake c-ares axel intel ipt ompi cuda llvm-{gcc,clang} boost jemalloc eigen openblas gtest benchmark gflags glog snappy protobuf grpc catch2 jsoncpp rapidjson simdjson pybind libpng mkl-dnn halide opencv leveldb rocksdb lmdb onnx pytorch torchvision apex ort utf8proc
+    [ $# -gt 0 ] && sudo touch $@ || sudo touch repo font pkg-stable pkg-skip fpm auth vim tmux tex ss ccache cmake c-ares axel intel ipt ompi cuda llvm-{gcc,clang} boost jemalloc eigen openblas gtest benchmark gflags glog snappy protobuf grpc catch2 jsoncpp rapidjson simdjson utf8proc pybind libpng mkl-dnn halide opencv leveldb rocksdb lmdb onnx pytorch torchvision apex ort
     sync || true
     cd "$SCRATCH"
     sudo mv -vf "$(dirname "$STAGE")/.$(basename "$STAGE")" $STAGE
@@ -178,6 +178,7 @@ for i in $(echo "
     jsoncpp
     rapidjson
     simdjson
+    utf8proc
     pybind
     grpc
     libpng
@@ -194,7 +195,6 @@ for i in $(echo "
     torchvision
     apex
     ort
-    utf8proc
 "); do
     . "$ROOT_DIR/pkgs/$i.sh"
 done

@@ -3,7 +3,6 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)/../lib/native/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>UTF8PROC_IS_A_DLL=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)/../lib/native/lib/Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>

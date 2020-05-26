@@ -9,10 +9,10 @@
     <licenseUrl>https://github.com/JuliaStrings/utf8proc/blob/master/LICENSE.md</licenseUrl>
     <projectUrl>https://github.com/JuliaStrings/utf8proc</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <summary>The utf8proc package contains a C/C++ library that implements Unicode processing of UTF-8 strings.</summary>
-    <description>The utf8proc package contains a C/C++ library providing Unicode normalization, case-folding, and other operations for strings in the UTF-8 encoding, supporting up-to-date Unicode versions. Online documentation available at: https://juliastrings.github.io/utf8proc/doc/</description>
+    <summary>utf8proc is a small, clean C library that supports Unicode processing of UTF-8 data.</summary>
+    <description>utf8proc is a small, clean C library that provides Unicode normalization, case-folding, and other operations for data in the UTF-8 encoding, supporting Unicode version 13.</description>
     <releaseNotes>https://juliastrings.github.io/utf8proc/releases/</releaseNotes>
-    <copyright>Copyright 2009</copyright>
+    <copyright>Copyright 2014-2019</copyright>
     <tags>utf8proc native C++ v141 dyn</tags>
   </metadata>
   <files>
