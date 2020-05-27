@@ -49,7 +49,6 @@ if (-Not $?)
     exit 1
 }
 
-$ErrorActionPreference="SilentlyContinue"
 cmake --build . --target test
 
 rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${Env:ProgramFiles}/utf8proc"
