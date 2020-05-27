@@ -19,6 +19,10 @@ if (Test-Path "$root")
 }
 
 $latest_ver='v' + $($(git ls-remote --tags "$repo") -match '.*refs/tags/v[0-9\.]*$' -replace '.*refs/tags/v','' | sort {[Version]$_})[-1]
+
+# Pin to 3.11 due to https://github.com/protocolbuffers/protobuf/issues/7567
+$latest_ver='v' + $($(git ls-remote --tags "$repo") -match '.*refs/tags/v3\.11\.[0-9\.]*$' -replace '.*refs/tags/v','' | sort {[Version]$_})[-1]
+
 git clone --depth 1 --recursive --single-branch -b "$latest_ver" -j8 "$repo"
 pushd "$root"
 
