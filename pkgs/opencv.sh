@@ -9,6 +9,9 @@
     until git clone --depth 1 --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd opencv
 
+    # Fix B/W TIFF: https://github.com/opencv/opencv/pull/17275
+    git cherry-pick 4e97c697
+
     # ------------------------------------------------------------
 
     git submodule add "../opencv_contrib.git" contrib

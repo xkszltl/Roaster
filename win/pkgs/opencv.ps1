@@ -22,6 +22,9 @@ $latest_ver=$($(git ls-remote --tags "$repo") -match '.*refs/tags/[0-9\.]*$' -re
 git clone --depth 1 --recursive --single-branch -b "$latest_ver" -j8 "$repo"
 pushd "$root"
 
+# Fix B/W TIFF: https://github.com/opencv/opencv/pull/17275
+git cherry-pick 4e97c697
+
 # ------------------------------------------------------------
 
 git submodule add "../opencv_contrib.git" contrib
