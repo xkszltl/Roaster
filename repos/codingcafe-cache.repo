@@ -375,7 +375,10 @@ baseurl=https://repo.codingcafe.org/gitlab/gitlab-runner/el/$releasever/$basearc
 repo_gpgcheck=1
 gpgcheck=0
 gpgkey=https://packages.gitlab.com/runner/gitlab-runner/gpgkey
+       https://packages.gitlab.com/runner/gitlab-runner/gpgkey/runner-gitlab-runner-366915F31B487241.pub.gpg
 sslverify=1
+sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+metadata_expire=300
 priority=2
 enabled=0
 
@@ -385,7 +388,10 @@ baseurl=https://repo.codingcafe.org/gitlab/gitlab-runner/el/$releasever/SRPMS
 repo_gpgcheck=1
 gpgcheck=0
 gpgkey=https://packages.gitlab.com/runner/gitlab-runner/gpgkey
+       https://packages.gitlab.com/runner/gitlab-runner/gpgkey/runner-gitlab-runner-366915F31B487241.pub.gpg
 sslverify=1
+sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+metadata_expire=300
 priority=2
 enabled=0
 
