@@ -4,7 +4,7 @@
 
 [ -e $STAGE/font ] && ( set -xe
     if [ "_$GIT_MIRROR" = "_$GIT_MIRROR_CODINGCAFE" ]; then
-        export HTTP_PROXY=proxy.codingcafe.org:8118
+        # export HTTP_PROXY=proxy.codingcafe.org:8118
         [ "$HTTP_PROXY" ] && export HTTPS_PROXY="$HTTP_PROXY"
         [ "$HTTP_PROXY" ] && export http_proxy="$HTTP_PROXY"
         [ "$HTTPS_PROXY" ] && export https_proxy="$HTTPS_PROXY"
