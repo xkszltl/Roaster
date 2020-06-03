@@ -179,7 +179,7 @@ for i in pkg-{stable,skip,all}; do
                 python{,36}{,-devel,-debug{,info}}
                 {python27,rh-python36}{,-python-{devel,debug{,info}}}
                 {python{2,36},{python27,rh-python36}-python}-pip
-                {ruby,rh-ruby25}{,-*}
+                {ruby,rh-ruby26}{,-*}
                 lua{,-*}
             " \
             | sed 's/^[[:space:]]*//' \

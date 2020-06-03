@@ -17,7 +17,7 @@
         case "$DISTRO_ID" in
         'centos' | 'fedora' | 'rhel')
             set +xe
-            . scl_source enable rh-ruby25
+            . scl_source enable rh-ruby26
             set -xe
             ;;
         esac
