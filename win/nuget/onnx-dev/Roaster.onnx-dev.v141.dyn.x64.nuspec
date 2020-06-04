@@ -24,6 +24,6 @@
     <file src="onnx-dev\include\**\*"                 target="lib\native\include" />
     <file src="onnx-dev\lib\**\*.lib"                 target="lib\native\lib\Release\" />
     <file src="onnx-dev\lib\**\*.pdb"                 target="lib\native\lib\Release\" />
-    <file src="onnx-dev\share\cmake\**\*"             target="lib\native\cmake\" />
+    <file src="onnx-dev\lib\cmake\**\*"               target="lib\native\cmake\" />
   </files>
 </package>
