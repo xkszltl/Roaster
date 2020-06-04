@@ -7,7 +7,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)/../lib/native/lib/Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>c10.lib;caffe2_detectron_ops.lib;caffe2_module_test_dynamic.lib;caffe2_observers.lib;caffe2_rocksdb.lib;cpuinfo.lib;shm.lib;torch.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>asmjit.lib;c10.lib;caffe2_detectron_ops.lib;caffe2_module_test_dynamic.lib;caffe2_observers.lib;caffe2_rocksdb.lib;cpuinfo.lib;fbgemm.lib;shm.lib;torch.lib;torch_cpu.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -37,10 +37,6 @@
     </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/shm.pdb">
       <Link>shm.pdb</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/torch.pdb">
-      <Link>torch.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/torch_cpu.pdb">
