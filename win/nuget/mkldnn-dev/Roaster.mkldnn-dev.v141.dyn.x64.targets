@@ -6,12 +6,12 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)/../lib/native/lib/Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>mkldnn.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>dnnl.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/mkldnn.pdb">
-      <Link>mkldnn.pdb</Link>
+      <Link>dnnl.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

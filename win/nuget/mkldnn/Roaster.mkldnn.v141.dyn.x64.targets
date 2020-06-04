@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" >
   <ItemGroup>
     <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/mkldnn.dll">
-      <Link>mkldnn.dll</Link>
+      <Link>dnnl.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
