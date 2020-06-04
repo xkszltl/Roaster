@@ -104,7 +104,7 @@ Get-ChildItem ../nuget | Foreach-Object {
     {
         $prefix = "${Env:ProgramFiles}/rocksdb"
     }
-    elseif ($pkg -eq "caffe2" -or $pkg -eq "caffe2-dev")
+    elseif ($pkg -eq "caffe2" -or $pkg -eq "caffe2-dev" -or $pkg -eq "caffe2-debuginfo")
     {
         $prefix = "${Env:ProgramFiles}/Caffe2"
     }
