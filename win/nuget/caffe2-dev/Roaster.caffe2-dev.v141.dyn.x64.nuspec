@@ -25,10 +25,8 @@
   </metadata>
   <files>
     <file src="Roaster.caffe2-dev.v141.dyn.x64.targets"   target="build\Roaster.caffe2-dev.v141.dyn.x64.targets" />
-    <file src="caffe2-dev\bin\**\*.pdb"                   target="lib\native\lib\Release\" />
     <file src="caffe2-dev\include\**\*"                   target="lib\native\include" />
     <file src="caffe2-dev\lib\*.lib"                      target="lib\native\lib\Release\" />
-    <file src="caffe2-dev\lib\*.pdb"                      target="lib\native\lib\Release\" />
     <file src="caffe2-dev\lib\site-packages\**\*"         target="lib\native\lib\Release\site-packages\" />
     <file src="caffe2-dev\share\**\*"                     target="lib\native\cmake\" />
     <file src="caffe2-dev\test\*"                         target="lib\native\lib\Release\" />
