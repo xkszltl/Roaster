@@ -22,5 +22,6 @@
     <file src="Roaster.caffe2-debuginfo.v141.dyn.x64.targets" target="build\Roaster.caffe2-debuginfo.v141.dyn.x64.targets" />
     <file src="caffe2-debuginfo\bin\**\*.pdb"                 target="lib\native\lib\Release\" />
     <file src="caffe2-debuginfo\lib\*.pdb"                    target="lib\native\lib\Release\" />
+    <file src="caffe2-debuginfo\test\**\*.pdb"                target="lib\native\lib\Release\" />
   </files>
 </package>

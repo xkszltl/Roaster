@@ -29,6 +29,6 @@
     <file src="caffe2-dev\lib\*.lib"                      target="lib\native\lib\Release\" />
     <file src="caffe2-dev\lib\site-packages\**\*"         target="lib\native\lib\Release\site-packages\" />
     <file src="caffe2-dev\share\**\*"                     target="lib\native\cmake\" />
-    <file src="caffe2-dev\test\*"                         target="lib\native\lib\Release\" />
+    <file src="caffe2-dev\test\**\*.exe"                  target="lib\native\lib\Release\" />
   </files>
 </package>
