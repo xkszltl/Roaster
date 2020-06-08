@@ -20,9 +20,6 @@ if (Test-Path "$root")
 
 $latest_ver='v' + $($(git ls-remote --tags "$repo") -match '.*refs/tags/v[0-9\.]*$' -replace '.*refs/tags/v','' | sort {[Version]$_})[-1]
 
-# Cannot build GRPC 1.26 due to "Missing ares.h" error: https://github.com/grpc/grpc/issues/22816
-$latest_ver='v1.25.0'
-
 git clone --depth 1 --recursive --single-branch -b "$latest_ver" "$repo"
 pushd "$root"
 mkdir build-win
