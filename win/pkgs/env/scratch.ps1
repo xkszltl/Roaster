@@ -4,6 +4,6 @@
 # Create scratch dir.
 # ================================================================================
 
-${Env:SCRATCH}=${Env:TMP}/roaster-scratch
+${Env:SCRATCH}="${Env:TMP}/roaster-scratch"
 
 mkdir ${Env:SCRATCH}
