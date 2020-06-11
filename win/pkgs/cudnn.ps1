@@ -11,9 +11,9 @@
 Get-Content "$PSScriptRoot/utils/re-entry.ps1" -Raw | Invoke-Expression
 $ErrorActionPreference="Stop"
 
-pushd ${Env:TMP}
+pushd ${Env:SCRATCH}
 $proj="cudnn"
-$root="${Env:TMP}/$proj"
+$root="${Env:SCRATCH}/$proj"
 
 rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "$root"
 if (Test-Path "$root")

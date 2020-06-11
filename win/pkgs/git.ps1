@@ -6,7 +6,7 @@
 Get-Content "$PSScriptRoot/utils/re-entry.ps1" -Raw | Invoke-Expression
 $ErrorActionPreference="Stop"
 
-$DownloadDir = "$Env:TMP/Git"
+$DownloadDir = "${Env:SCRATCH}/Git"
 New-Item -Path $DownloadDir -Type Directory -ErrorAction SilentlyContinue
 if (-not $(Test-Path $DownloadDir))
 {
@@ -22,7 +22,7 @@ if (-not $(Test-Path "$DownloadDir/$exe"))
     [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
     $wc = [System.Net.WebClient]::new()
     # TODO: Incorporate $exe variable in web client file download arguments
-    $wc.DownloadFile("https://github.com/git-for-windows/git/releases/download/v2.19.1.windows.1/Git-2.19.1-64-bit.exe", "$Env:TMP/Git/Git-2.19.1.64-bit.exe")
+    $wc.DownloadFile("https://github.com/git-for-windows/git/releases/download/v2.19.1.windows.1/Git-2.19.1-64-bit.exe", "${Env:SCRATCH}/Git/Git-2.19.1.64-bit.exe")
 }
 
 Write-Host "Installing Git..."

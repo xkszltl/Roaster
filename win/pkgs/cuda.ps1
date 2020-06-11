@@ -3,7 +3,7 @@
 Get-Content "$PSScriptRoot/utils/re-entry.ps1" -Raw | Invoke-Expression
 $ErrorActionPreference="Stop"
 
-$DownloadDir = "${Env:TMP}/CUDA"
+$DownloadDir = "${Env:SCRATCH}/CUDA"
 New-Item -Path $DownloadDir -Type Directory -ErrorAction SilentlyContinue
 if (-not $(Test-Path $DownloadDir))
 {

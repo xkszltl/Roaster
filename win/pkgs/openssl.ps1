@@ -8,10 +8,10 @@ $ErrorActionPreference="Stop"
 
 ${Env:Path}="${Env:ProgramFiles}/NASM;${Env:Path}"
 
-pushd ${Env:TMP}
+pushd ${Env:SCRATCH}
 $repo="${Env:GIT_MIRROR}/openssl/openssl.git"
 $proj="$($repo -replace '.*/','' -replace '.git$','')"
-$root="${Env:TMP}/$proj"
+$root="${Env:SCRATCH}/$proj"
 
 rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "\\?\$root"
 if (Test-Path "$root")

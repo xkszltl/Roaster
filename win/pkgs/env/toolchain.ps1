@@ -32,7 +32,7 @@ if (-Not $Env:ROASTER_TOOLCHAIN_COMMITED)
     {
         $perl_ver="5.28.1.2801-MSWin32-x64-24563874"
         $DownloadURL = "https://downloads.activestate.com/ActivePerl/releases/" + $(${perl_ver} -replace '-.*','') + "/ActivePerl-${perl_ver}.exe"
-        $DownloadPath = "${Env:TMP}/ActivePerl-${perl_ver}.exe"
+        $DownloadPath = "${Env:SCRATCH}/ActivePerl-${perl_ver}.exe"
         Write-Host "Downloading ActivePerl..."
         Invoke-WebRequest -Uri $DownloadURL -OutFile $DownloadPath
         Write-Host "Installing ActivePerl..."
@@ -66,7 +66,7 @@ if (-Not $Env:ROASTER_TOOLCHAIN_COMMITED)
     {
         $nasm_ver="2.14.02"
         $DownloadURL = "https://www.nasm.us/pub/nasm/releasebuilds/${nasm_ver}/win64/nasm-${nasm_ver}-installer-x64.exe"
-        $DownloadPath = "${Env:TMP}/nasm-${nasm_ver}-installer-x64.exe"
+        $DownloadPath = "${Env:SCRATCH}/nasm-${nasm_ver}-installer-x64.exe"
         Write-Host "Downloading NASM..."
         Invoke-WebRequest -Uri $DownloadURL -OutFile $DownloadPath
         Write-Host "Installing NASM..."
@@ -100,7 +100,7 @@ if (-Not $Env:ROASTER_TOOLCHAIN_COMMITED)
     {
         $py_ver="3.8.3"
         $DownloadURL = "https://www.python.org/ftp/python/${py_ver}/python-${py_ver}-amd64.exe"
-        $DownloadPath = "${Env:TMP}/python-${py_ver}-amd64.exe"
+        $DownloadPath = "${Env:SCRATCH}/python-${py_ver}-amd64.exe"
         Write-Host "Downloading Python..."
         Invoke-WebRequest -Uri $DownloadURL -OutFile $DownloadPath
         Write-Host "Installing Python..."
@@ -145,7 +145,7 @@ if (-Not $Env:ROASTER_TOOLCHAIN_COMMITED)
     {
         $ninja_ver="1.9.0"
         $DownloadURL = "https://github.com/ninja-build/ninja/releases/download/v${ninja_ver}/ninja-win.zip"
-        $DownloadPath = "${Env:TMP}/ninja-win.zip"
+        $DownloadPath = "${Env:SCRATCH}/ninja-win.zip"
         Write-Host "Downloading Ninja..."
         Invoke-WebRequest -Uri $DownloadURL -OutFile $DownloadPath
         Expand-Archive ${DownloadPath} ${Env:ProgramFiles}/Ninja

@@ -9,6 +9,7 @@ $ErrorActionPreference="Stop"
 
 cd $PSScriptRoot
 
+. "pkgs/env/scratch.ps1"
 . "pkgs/env/toolchain.ps1"
 
 # ================================================================================

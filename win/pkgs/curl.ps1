@@ -6,10 +6,10 @@ $ErrorActionPreference="Stop"
 . "$PSScriptRoot/env/mirror.ps1"
 . "$PSScriptRoot/env/toolchain.ps1"
 
-pushd ${Env:TMP}
+pushd ${Env:SCRATCH}
 $repo="${Env:GIT_MIRROR}/curl/curl.git"
 $proj="$($repo -replace '.*/','' -replace '.git$','')"
-$root= Join-Path "${Env:TMP}" "$proj"
+$root= Join-Path "${Env:SCRATCH}" "$proj"
 
 cmd /c rmdir /S /Q "$root"
 if (Test-Path "$root")

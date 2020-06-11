@@ -6,10 +6,10 @@ $ErrorActionPreference="Stop"
 . "$PSScriptRoot/env/mirror.ps1"
 . "$PSScriptRoot/env/toolchain.ps1"
 
-pushd ${Env:TMP}
+pushd ${Env:SCRATCH}
 $repo="${Env:GIT_MIRROR}/lmdb/lmdb.git"
 $proj="$($repo -replace '.*/','' -replace '.git$','')"
-$root="${Env:TMP}/$proj"
+$root="${Env:SCRATCH}/$proj"
 
 rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "$root"
 if (Test-Path "$root")

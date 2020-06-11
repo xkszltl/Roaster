@@ -8,10 +8,10 @@ $ErrorActionPreference="Stop"
 
 & "${Env:PYTHONHOME}/python.exe" -m pip install -U numpy | Out-Null
 
-pushd ${Env:TMP}
+pushd ${Env:SCRATCH}
 $repo="${Env:GIT_MIRROR}/microsoft/onnxruntime.git"
 $proj="$($repo -replace '.*/','' -replace '.git$','')"
-$root= Join-Path "${Env:TMP}" "$proj"
+$root= Join-Path "${Env:SCRATCH}" "$proj"
 
 cmd /c rmdir /S /Q "$root"
 if (Test-Path "$root")
@@ -191,12 +191,12 @@ else
         echo "Failed to build."
         echo "Retry with single thread for logging."
         echo "You may Ctrl-C this if you don't need the log file."
-        cmake --build . --config Release 2>&1 | tee ${Env:TMP}/${proj}.log
+        cmake --build . --config Release 2>&1 | tee ${Env:SCRATCH}/${proj}.log
         exit 1
     }
 }
 
-$model_path = "${Env:TMP}/onnxruntime_models.zip"
+$model_path = "${Env:SCRATCH}/onnxruntime_models.zip"
 rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${model_path}.downloading"
 if (-not $(Test-Path $model_path))
 {

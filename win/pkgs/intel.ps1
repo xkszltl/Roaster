@@ -12,7 +12,7 @@ Get-Content "$PSScriptRoot/utils/re-entry.ps1" -Raw | Invoke-Expression
 $ErrorActionPreference="Stop"
 
 $intel_url = "http://registrationcenter-download.intel.com/akdlm/irc_nas/tec"
-$DownloadDir = Join-Path "$Env:TMP" Intel
+$DownloadDir = Join-Path "${Env:SCRATCH}" Intel
 New-Item -Path $DownloadDir -ItemType Directory -ErrorAction SilentlyContinue
 
 # Note: update files and URI suffixes as new version are released.

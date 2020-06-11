@@ -6,10 +6,10 @@ $ErrorActionPreference="Stop"
 . "$PSScriptRoot/env/mirror.ps1"
 . "$PSScriptRoot/env/toolchain.ps1"
 
-pushd ${Env:TMP}
+pushd ${Env:SCRATCH}
 $repo="${Env:GIT_MIRROR}/c-ares/c-ares.git"
 $proj="$($repo -replace '.*/','' -replace '.git$','')"
-$root="${Env:TMP}/$proj"
+$root="${Env:SCRATCH}/$proj"
 
 rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "$root"
 if (Test-Path "$root")
@@ -45,7 +45,7 @@ if (-Not $?)
     Write-Host "Retry with best-effort for logging."
     Write-Host "You may Ctrl-C this if you don't need the log file."
     cmake --build . -- -k0
-    cmake --build . 2>&1 | Tee-Object ${Env:TMP}/${proj}.log
+    cmake --build . 2>&1 | Tee-Object ${Env:SCRATCH}/${proj}.log
     exit 1
 }
 

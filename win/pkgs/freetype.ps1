@@ -6,10 +6,10 @@ $ErrorActionPreference="Stop"
 . "$PSScriptRoot/env/mirror.ps1"
 . "$PSScriptRoot/env/toolchain.ps1"
 
-pushd ${Env:TMP}
+pushd ${Env:SCRATCH}
 $repo="https://git.savannah.gnu.org/git/freetype/freetype2.git"
 $proj="$($repo -replace '.*/','' -replace '.git$','')"
-$root="${Env:TMP}/$proj"
+$root="${Env:SCRATCH}/$proj"
 
 rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "$root"
 if (Test-Path "$root")
@@ -48,7 +48,7 @@ if (-Not $?)
     echo "Retry with best-effort for logging."
     echo "You may Ctrl-C this if you don't need the log file."
     cmake --build . -- -k0
-    cmake --build . 2>&1 | tee ${Env:TMP}/${proj}.log
+    cmake --build . 2>&1 | tee ${Env:SCRATCH}/${proj}.log
     exit 1
 }
 

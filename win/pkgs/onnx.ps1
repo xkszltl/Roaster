@@ -8,10 +8,10 @@ $ErrorActionPreference="Stop"
 
 & "${Env:PYTHONHOME}/python.exe" -m pip install -U numpy | Out-Null
 
-pushd ${Env:TMP}
+pushd ${Env:SCRATCH}
 $repo="${Env:GIT_MIRROR}/onnx/onnx.git"
 $proj="$($repo -replace '.*/','' -replace '.git$','')"
-$root= Join-Path "${Env:TMP}" "$proj"
+$root= Join-Path "${Env:SCRATCH}" "$proj"
 
 cmd /c rmdir /S /Q "$root"
 if (Test-Path "$root")
@@ -83,7 +83,7 @@ if (-Not $?)
     echo "Retry with best-effort for logging."
     echo "You may Ctrl-C this if you don't need the log file."
     cmake --build . -- -k0
-    cmake --build . 2>&1 | tee ${Env:TMP}/${proj}.log
+    cmake --build . 2>&1 | tee ${Env:SCRATCH}/${proj}.log
     exit 1
 }
 
