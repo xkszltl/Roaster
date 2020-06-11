@@ -5,7 +5,7 @@ if (-Not $Env:ROASTER_TOOLCHAIN_COMMITED)
     # ================================================================================
     # Restore system default PATH, including potential updates.
     # ================================================================================
-#
+
     ${Env:PATH}=[System.Environment]::GetEnvironmentVariable("PATH","Machine")
 
     # ================================================================================
@@ -98,7 +98,7 @@ if (-Not $Env:ROASTER_TOOLCHAIN_COMMITED)
 
     if (${Env:PYTHONHOME} -eq $null -or -not $(Test-Path ${Env:PYTHONHOME}/python.exe -ErrorAction SilentlyContinue))
     {
-        $py_ver="3.8.2"
+        $py_ver="3.8.3"
         $DownloadURL = "https://www.python.org/ftp/python/${py_ver}/python-${py_ver}-amd64.exe"
         $DownloadPath = "${Env:TMP}/python-${py_ver}-amd64.exe"
         Write-Host "Downloading Python..."
