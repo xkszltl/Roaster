@@ -6,4 +6,5 @@
 
 ${Env:SCRATCH}="${Env:TMP}/roaster-scratch"
 
-mkdir ${Env:SCRATCH}
+rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${Env:SCRATCH}"
+mkdir "${Env:SCRATCH}"

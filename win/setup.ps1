@@ -81,4 +81,5 @@ foreach ($pkg in @(
     }
 }
 
+rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${Env:SCRATCH}"
 Write-Host "Completed."
