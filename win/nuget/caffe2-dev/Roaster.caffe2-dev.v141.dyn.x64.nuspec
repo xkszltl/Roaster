@@ -19,4 +19,5 @@
       <dependency id="Roaster.pytorch-dev.v141.dyn.x64" version="[$version$]" />
     </dependencies>
   </metadata>
+  <files />
 </package>
