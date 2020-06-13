@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Roaster.pytorch.v141.dyn.x64</id>
+    <version>$version$</version>
+    <title>Roaster.pytorch.v141.dyn.x64</title>
+    <authors>Facebook Inc</authors>
+    <owners>Tongliang Liao</owners>
+    <licenseUrl>https://github.com/pytorch/pytorch/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://pytorch.org/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>PyTorch is a Python package that provides two high-level features: Tensor computation (like NumPy) with strong GPU acceleration; Deep neural networks built on a tape-based autograd system.</summary>
+    <description>Usually PyTorch is used either as: a replacement for NumPy to use the power of GPUs; a deep learning research platform that provides maximum flexibility and speed.</description>
+    <releaseNotes>https://pytorch.org/blog/</releaseNotes>
+    <copyright>Copyright 2001</copyright>
+    <tags>pytorch native C++ v141 dyn</tags>
+    <dependencies>
+      <dependency id="Roaster.eigen.v141.dyn.x64"       version="[$version$]" />
+      <dependency id="Roaster.gflags.v141.dyn.x64"      version="[$version$]" />
+      <dependency id="Roaster.glog.v141.dyn.x64"        version="[$version$]" />
+      <dependency id="Roaster.onnx.v141.dyn.x64"        version="[$version$]" />
+      <dependency id="Roaster.opencv.v141.dyn.x64"      version="[$version$]" />
+      <dependency id="Roaster.protobuf.v141.dyn.x64"    version="[$version$]" />
+      <dependency id="Roaster.rocksdb.v141.dyn.x64"     version="[$version$]" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="Roaster.pytorch.v141.dyn.x64.targets"    target="build\Roaster.pytorch.v141.dyn.x64.targets" />
+    <file src="pytorch\bin\**\*.exe"                    target="lib\native\lib\Release\" />
+    <file src="pytorch\lib\*.dll"                       target="lib\native\lib\Release\" />
+  </files>
+</package>

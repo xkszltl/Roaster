@@ -108,6 +108,10 @@ Get-ChildItem ../nuget | Foreach-Object {
     {
         $prefix = "${Env:ProgramFiles}/Caffe2"
     }
+    elseif ($pkg -eq "pytorch" -or $pkg -eq "pytorch-dev" -or $pkg -eq "pytorch-debuginfo")
+    {
+        $prefix = "${Env:ProgramFiles}/Caffe2"
+    }
     elseif ($pkg -eq "cream" -or $pkg -eq "cream-dev")
     {
         $prefix = "${Env:ProgramFiles}/Cream"
