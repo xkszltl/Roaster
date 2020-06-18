@@ -47,6 +47,7 @@ RUN set -e; \
         git{,-{extras,lfs}} \
         glances \
         gnome-keyring{,'-*'} \
+        gnuplot \
         gperf \
         gstreamer1.0-tools libgstreamer1.0-dev \
         gzip \

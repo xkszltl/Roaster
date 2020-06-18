@@ -111,6 +111,7 @@ for i in pkg-{stable,skip,all}; do
                 [!] libglvnd{,-*}
                 lib{dc,raw}1394{,-*}
                 cairo{,-*}
+                gnuplot{,-debuginfo,-doc}
                 {freetype,harfbuzz,pango}{,-*}
                 {zlib,libzip,{,lib}zstd,lz4,{,p}{bzip2,xz},pigz,cpio,tar,snappy,unrar}{,-*}
                 [!] libaio{,-*}
