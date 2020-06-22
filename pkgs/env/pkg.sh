@@ -17,6 +17,8 @@ export RPM_MAX_ATTEMPT=10
 #           python2-azure-sdk conflict with python-azure-sdk
 #           python2-boto3 conflict with python-boto3
 #           python2-s3transfer conflict with python-s3transfer
+#
+#       rh-ruby26-rubygem-bundler-doc has version mismatch between 1.16/1.17.
 
 export RPM_BLACKLIST=$(echo "
     *-debuginfo
@@ -26,6 +28,7 @@ export RPM_BLACKLIST=$(echo "
     python2-azure-sdk
     python2-boto3
     python2-s3transfer
+    rh-ruby26-rubygem-bundler-doc
 " | sed -n 's/^[[:space:]]*\([^[:space:]][^[:space:]]*\).*/--exclude \1/p' | paste -s - | xargs)
 
 export RPM_CACHE_ARGS=$([ -f "$RPM_CACHE_REPO" ] && echo "--disableplugin=axelget,fastestmirror")
