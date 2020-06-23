@@ -16,14 +16,14 @@
     (
         case "$DISTRO_ID" in
         'centos' | 'fedora' | 'rhel')
-            set +xe
-            . scl_source enable rh-ruby26
-            set -xe
+            scl enable rh-ruby26 'gem build fpm.gemspec'
+            sudo scl enable rh-ruby26 'gem install ./fpm-*.gem'
+            ;;
+        *)
+            gem build fpm.gemspec
+            sudo gem install ./fpm-*.gem
             ;;
         esac
-
-        gem build fpm.gemspec
-        sudo gem install ./fpm-*.gem
     )
 
     # ------------------------------------------------------------
