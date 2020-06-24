@@ -7,9 +7,12 @@
     
     # ------------------------------------------------------------
 
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" lemire/simdjson,v
+    # Pin to 0.3 due to git issue: https://github.com/simdjson/simdjson/issues/977
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" simdjson/simdjson,v0.3.
     until git clone --depth 1 --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd simdjson
+
+    . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
 
     # ------------------------------------------------------------
 
@@ -19,7 +22,7 @@
         case "$DISTRO_ID" in
         'centos' | 'fedora' | 'rhel')
             set +xe
-            . scl_source enable devtoolset-8
+            . scl_source enable devtoolset-8 rh-git218
             set -xe
             export CC="gcc" CXX="g++"
             ;;
