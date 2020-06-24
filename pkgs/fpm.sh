@@ -18,8 +18,7 @@
         'centos' | 'fedora' | 'rhel')
             scl enable rh-ruby26 'gem build fpm.gemspec'
             # Document of childprocess failed to build with rh-ruby26.
-            sudo scl enable rh-ruby26 'gem install --no-document childprocess'
-            sudo scl enable rh-ruby26 'gem install ./fpm-*.gem'
+            sudo scl enable rh-ruby26 'gem install --no-document ./fpm-*.gem'
             ;;
         *)
             gem build fpm.gemspec
