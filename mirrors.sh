@@ -67,16 +67,20 @@ c-ares/c-ares,\
 caffe2/{caffe2,models},\
 catchorg/{Catch2,Clara},\
 ccache/ccache,\
+chadaustin/sajson,\
 cocodataset/{cocoapi,panopticapi},\
 containerd/containerd,\
 cython/cython,\
+DaveGamble/cJSON,\
 dmlc/{dlpack,dmlc-core,gluon-cv,gluon-nlp,HalideIR,tvm,xgboost},\
 docker/docker-ce,\
 docopt/docopt,\
 dotnet/{cli,core{,-setup,clr,fx},standard},\
+dropbox/json11,\
 eigenteam/eigen-git-mirror,\
 emil-e/rapidcheck,\
 envoyproxy/{data-plane-api,envoy,{go,java}-control-plane,nighthawk,protoc-gen-validate},\
+esnme/ujson4c,\
 facebook/{rocksdb,zstd},\
 facebookincubator/{fbjni,gloo},\
 facebookresearch/{ClassyVision,CrypTen,Detectron,detectron2,dlrm,DrQA,faiss,fastMRI,fastText,flashlight,fvcore,habitat-sim,ImageNet-Adversarial-Training,maskrcnn-benchmark,ParlAI,pycls,pytext,pythia,PyTorch-BigGraph,pytorch-dp,pytorch3d,SentEval,ResNeXt,wav2letter,XLM},\
@@ -104,12 +108,12 @@ iina/{iina{,-plugin-definition,-website},plugin-ytdl},\
 intel/{ARM_NEON_2_x86_SSE,compute-runtime,ideep,mkl-dnn},\
 intelxed/xed,\
 IvanKobzarev/fbjni,\
+jarro2783/cxxopts,\
 JDAI-CV/{dabnn{,-example},DCL,DNNLibrary},\
 jemalloc/jemalloc,\
 jordansissel/fpm,\
 JuliaStrings/utf8proc,\
 Kitware/{CMake,VTK},\
-lemire/simdjson,\
 libav/libav,\
 libuv/libuv,\
 llvm/llvm-{archive,project,test-suite,www{,-pubs}},\
@@ -121,6 +125,7 @@ matplotlib/{jupyter-matplotlib,matplotlib,mplcairo,pytest-mpl},\
 Maratyszcza/{confu,cpuinfo,FP16,FXdiv,NNPACK,PeachPy,psimd,pthreadpool},\
 micheles/{decorator,plac},\
 Microsoft/{azure-pipelines-yaml,BuildXL,calculator,cascadia-code,CNTK,cppwinrt,dotnet,GSL,LightGBM,mimalloc,msbuild,{,Delayed-Compensation-Asynchronous-Stochastic-Gradient-Descent-for-}Multiverso,nni,onnxruntime{,-tvm},STL,Terminal,TypeScript,vcpkg,VFSForGit,vscode,vstest,wil},\
+mikeando/fastjson,\
 moby/{buildkit,moby},\
 mono/{libgdiplus,linker,mono{,-tools,develop,torrent}},\
 nanopb/nanopb,\
@@ -158,6 +163,7 @@ SchedMD/slurm,\
 scipy/scipy{,-mathjax,-sphinx-theme},\
 shadowsocks/{ShadowsocksX-NG,libQtShadowsocks,shadowsocks{,-go,-libev,-manager,-windows},v2ray-plugin},\
 shibatch/sleef,\
+simdjson/simdjson,\
 sivel/{go-speedtest,speedtest-cli},\
 Tencent/rapidjson,\
 tensorflow/{agents,datasets,docs,io,models,tensorboard,tensorflow,transform},\
@@ -169,6 +175,7 @@ tqdm/{py-make,tqdm},\
 uploadcare/pillow-simd,\
 USCiLab/cereal,\
 v2ray/{dist,ext,geoip,homebrew-v2ray,v2ray-core,V2RayN},\
+vivkin/gason,\
 wjakob/clang-cindex-python3,\
 xianyi/OpenBLAS,\
 yaml/pyyaml,\
@@ -176,6 +183,7 @@ Yangqing/ios-cmake,\
 zeromq/{cppzmq,libzmq,pyzmq},\
 zeux/{meshoptimizer,pugixml},\
 zfsonlinux/{pkg-{spl,zfs},spl,zfs{,-auto-snapshot,-buildbot,-images}},\
+zserge/jsmn,\
 },\
 https://gitlab.com/\ /\ {\
 NVIDIA/cuda,\
