@@ -19,6 +19,8 @@
             scl enable rh-ruby26 'gem build fpm.gemspec'
             # Document of childprocess failed to build with rh-ruby26.
             sudo scl enable rh-ruby26 'gem install --no-document ./fpm-*.gem'
+            # Dependency ffi-1.13 requires ruby 2.3 while stock version is 2.0.
+            sudo gem install 'ffi:<1.13'
             sudo gem install --no-document ./fpm-*.gem
             ;;
         *)
