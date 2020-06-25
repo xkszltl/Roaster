@@ -61,7 +61,7 @@ asmjit/{asm{db,jit,tk},cult},\
 aws/aws-{cli,sdk-{cpp,go,java,js,net,php,ruby}},\
 axel-download-accelerator/axel,\
 benjaminp/six,\
-boostorg/boost,\
+boostorg/{accumulators,algorithm,align,any,array,asio,assert,assign,atomic,auto_index,beast,bimap,bind,boost{,_install,-ci,book,dep},bcp,bpm,build,callable_traits,check_build,chrono,circular_buffer,cmake,compatibility,compute,concept_check,config,container{,_hash},context,contract,conversion,convert,core,coroutine{,2},crc,date_time,detail,disjoint_sets,dll,docca,dynamic_bitset,endian,exception,fiber,filesystem,flyweight,foreach,format,function{,_types},functional,fusion,geometry,gil,graph{,_parallel},hana,headers,heap,histogram,hof,icl,inspect,integer,interprocess,interval,intrusive,io,iostreams,iterator,lambda,lexical_cast,litre,local_function,locale,lockfree,log,logic,math,metaparse,mincmake,more,move,mp11,mpi,mpl,msm,multi_array,multi_index,multiprecision,nowide,numeric_conversion,odeint,optional,outcome,parameter{,_python},phoenix,poly_collection,pool,predef,preprocessor,process,program_options,proto,property_{map,tree},ptr_container,python,quickbook,qvm,random,range,ratio,rational,regex,regression,release-tools,safe_numerics,scope_exit,serialization,signals{,2},smart_ptr,sort,spirit,stacktrace,statechart,static_assert,static_string,stl_interfaces,sync,system,test,thread,throw_exception,timer,tokenizer,tti,tr1,tuple,type_{erasure,index,traits},typeof,ublas,units,unordered,utility,uuid,variant{,2},vmd,wave,website,winapi,xpressive,yap},\
 BVLC/caffe,\
 c-ares/c-ares,\
 caffe2/{caffe2,models},\
@@ -79,6 +79,7 @@ docopt/docopt,\
 dotnet/{cli,core{,-setup,clr,fx},standard},\
 dropbox/json11,\
 eigenteam/eigen-git-mirror,\
+elnormous/{HTTPRequest,ouzel,OuzelShadingLanguage,SoftwareRenderer},\
 emil-e/rapidcheck,\
 envoyproxy/{data-plane-api,envoy,{go,java}-control-plane,nighthawk,protoc-gen-validate},\
 esnme/ujson4c,\
@@ -101,6 +102,7 @@ googlefonts/{fontmake,noto-{cjk,emoji,fonts,sans-hebrew,source},nototools,roboto
 grpc/grpc{,-{dart,dotnet,go,java,node,php,proto,swift,web}},\
 halide/Halide,\
 harfbuzz/harfbuzz,\
+horovod/{artwork,horovod,tutorials},\
 houseroad/foxi,\
 HowardHinnant/date,\
 huggingface/{knockknock,Mongoku,neuralcoref,pytorch-{openai-transformer-lm,pretrained-BigGAN},swift-coreml-transformers,tflite-android-transformers,tokenizers,torchMoji,transformers},\
@@ -181,6 +183,7 @@ wjakob/clang-cindex-python3,\
 xianyi/OpenBLAS,\
 yaml/pyyaml,\
 Yangqing/ios-cmake,\
+yixuan/{LBFGSpp,MiniDNN,recosystem,spectra},\
 zeromq/{cppzmq,libzmq,pyzmq},\
 zeux/{meshoptimizer,pugixml},\
 zfsonlinux/{pkg-{spl,zfs},spl,zfs{,-auto-snapshot,-buildbot,-images}},\
