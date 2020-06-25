@@ -7,10 +7,13 @@
     
     # ------------------------------------------------------------
 
-    # Pin to 0.3 due to git issue: https://github.com/simdjson/simdjson/issues/977
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" simdjson/simdjson,v0.3.
-    until git clone --depth 1 --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" simdjson/simdjson,v
+    until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd simdjson
+
+    # Patch for https://github.com/simdjson/simdjson/issues/977
+    git fetch origin master
+    git merge 4ec5648
 
     . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
 
@@ -36,6 +39,7 @@
         mkdir -p build
         cd $_
 
+        # Ninja build is partially broken: https://github.com/simdjson/simdjson/issues/977
         cmake                                       \
             -DCMAKE_BUILD_TYPE=Release              \
             -DCMAKE_C_COMPILER="$CC"                \
@@ -44,12 +48,12 @@
             -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
             -DSIMDJSON_BUILD_STATIC=OFF             \
-            -G"Ninja"                               \
+            -G"Unix Makefiles"                      \
             ..
 
-        time cmake --build .
+        time cmake --build . -- -j"$(nproc)"
         CTEST_PARALLEL_LEVEL="$(nproc)" time cmake --build . --target test
-        time cmake --build . --target install
+        time cmake --build . --target install -- -j
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
