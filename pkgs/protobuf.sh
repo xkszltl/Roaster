@@ -76,7 +76,7 @@
         popd
     fi
 
-    # for py in ,python3 rh-python36,python; do
+    # for py in ,python3 rh-python38,python; do
     for py in ,python3; do
     (
         py="$py,"

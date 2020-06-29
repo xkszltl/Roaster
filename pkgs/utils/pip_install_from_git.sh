@@ -39,7 +39,7 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
     done
     # SCL python throws FileNotFound error in PyTorch pip build,
     # Not sure why but disable for now since stock version is already 3.6.8 (SCL version 3.6.9).
-    # for py in ,python3 rh-python36,python; do
+    # for py in ,python3 rh-python38,python; do
     for py in ,python3; do
     (
         py="$py,"

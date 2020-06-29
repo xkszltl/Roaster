@@ -178,7 +178,7 @@ for i in pkg-{stable,skip,all}; do
                 libreoffice{,-*}
                 perl{,-*}
                 python{,36}{,-devel,-debug{,info}}
-                {python27,rh-python36}{,-python-{devel,debug{,info}}}
+                {python27,rh-python38}{,-python-{devel,debug{,info}}}
                 {python{2,36},{python27,rh-python36}-python}-pip
                 {ruby,rh-ruby26}{,-*}
                 lua{,-*}
