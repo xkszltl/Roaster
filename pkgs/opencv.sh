@@ -6,11 +6,8 @@
     cd $SCRATCH
 
     . "$ROOT_DIR/pkgs/utils/git/version.sh" opencv/opencv,
-    until git clone -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
+    until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd opencv
-
-    # Fix B/W TIFF: https://github.com/opencv/opencv/pull/17275
-    git cherry-pick 4e97c697
 
     # ------------------------------------------------------------
 

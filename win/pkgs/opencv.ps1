@@ -19,11 +19,8 @@ if (Test-Path "$root")
 }
 
 $latest_ver=$($(git ls-remote --tags "$repo") -match '.*refs/tags/[0-9\.]*$' -replace '.*refs/tags/','' | sort {[Version]$_})[-1]
-git clone -b "$latest_ver" -j8 "$repo"
+git clone --single-branch -b "$latest_ver" -j8 "$repo"
 pushd "$root"
-
-# Fix B/W TIFF: https://github.com/opencv/opencv/pull/17275
-git cherry-pick 4e97c697
 
 # ------------------------------------------------------------
 
