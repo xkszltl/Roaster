@@ -106,8 +106,7 @@
             -DCMAKE_VERBOSE_MAKEFILE=ON                     \
             -DCPUINFO_BUILD_TOOLS=ON                        \
             -DINSTALL_TEST=ON                               \
-            -DNCCL_INCLUDE_DIR="$(readlink -e "$(ldconfig -p | sed -n 's/^[[:space:]]*libnccl\.so[[:space:]].*=>[[:space:]]*//p' | xargs -n1 dirname | head -n1)/../include")"  \
-            -DNCCL_LIB_DIR="$(    readlink -e "$(ldconfig -p | sed -n 's/^[[:space:]]*libnccl\.so[[:space:]].*=>[[:space:]]*//p' | xargs -n1 dirname | head -n1)"           )"  \
+            -DNCCL_ROOT='/usr/'                             \
             -DPYTHON_EXECUTABLE="$(which python3)"          \
             -DTORCH_CUDA_ARCH_LIST="Pascal;Volta"           \
             -DUSE_FBGEMM=ON                                 \
@@ -141,7 +140,7 @@
 
         CTEST_PARALLEL_LEVEL="$(nproc)" time cmake --build . --target test || ! nvidia-smi
 
-        "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" ..
+        NCCL_ROOT_DIR='/usr/' "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" ..
 
         # Dirty hack to fix torchvision build issues.
         case "$DISTRO_ID" in
