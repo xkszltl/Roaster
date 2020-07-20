@@ -88,6 +88,7 @@
 
         # Enabling TensorRT causes crash during cmake generation.
         #     https://github.com/pytorch/pytorch/issues/18524
+        NCCL_ROOT_DIR='/usr'                                \
         cmake                                               \
             -DATEN_NO_TEST=ON                               \
             -DBLAS=MKL                                      \
