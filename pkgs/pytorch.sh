@@ -106,6 +106,8 @@
             -DCMAKE_VERBOSE_MAKEFILE=ON                     \
             -DCPUINFO_BUILD_TOOLS=ON                        \
             -DINSTALL_TEST=ON                               \
+            -DNCCL_INCLUDE_DIR="$(readlink -e "$(ldconfig -p | sed -n 's/^[[:space:]]*libnccl\.so[[:space:]].*=>[[:space:]]*//p' | xargs -n1 dirname | head -n1)/../include")"  \
+            -DNCCL_LIB_DIR="$(    readlink -e "$(ldconfig -p | sed -n 's/^[[:space:]]*libnccl\.so[[:space:]].*=>[[:space:]]*//p' | xargs -n1 dirname | head -n1)"           )"  \
             -DPYTHON_EXECUTABLE="$(which python3)"          \
             -DTORCH_CUDA_ARCH_LIST="Pascal;Volta"           \
             -DUSE_FBGEMM=ON                                 \
