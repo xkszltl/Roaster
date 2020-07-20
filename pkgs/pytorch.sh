@@ -107,6 +107,7 @@
             -DCPUINFO_BUILD_TOOLS=ON                        \
             -DINSTALL_TEST=ON                               \
             -DNCCL_ROOT='/usr/'                             \
+            -DNCCL_ROOT_DIR='/usr/'                         \
             -DPYTHON_EXECUTABLE="$(which python3)"          \
             -DTORCH_CUDA_ARCH_LIST="Pascal;Volta"           \
             -DUSE_FBGEMM=ON                                 \
