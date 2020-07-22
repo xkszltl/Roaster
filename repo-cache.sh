@@ -32,6 +32,7 @@ export REPOSYNC='reposync
     --downloadcomps
     '"$($REPO_GPG && echo --gpgcheck)"'
     --norepopath
+    --plugins
     --source
     -r
 '
