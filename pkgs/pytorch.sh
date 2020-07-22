@@ -86,8 +86,10 @@
         # Note this may conflict with CMAKE_CUDA_COMPILER_LAUNCHER when PyTorch switch to that.
         export CUDA_NVCC_EXECUTABLE="$TOOLCHAIN/nvcc"
 
-        # Enabling TensorRT causes crash during cmake generation.
+        # Known issues:
+        #   - Enabling TensorRT causes crash during cmake generation.
         #     https://github.com/pytorch/pytorch/issues/18524
+        #   - Somehow gloo fails to detect NCCL without NCCL_INCLUDE_DIR.
         NCCL_ROOT_DIR='/usr'                                \
         cmake                                               \
             -DATEN_NO_TEST=ON                               \
@@ -107,6 +109,7 @@
             -DCMAKE_VERBOSE_MAKEFILE=ON                     \
             -DCPUINFO_BUILD_TOOLS=ON                        \
             -DINSTALL_TEST=ON                               \
+            -DNCCL_INCLUDE_DIR='/usr/include'               \
             -DNCCL_ROOT='/usr/'                             \
             -DNCCL_ROOT_DIR='/usr/'                         \
             -DPYTHON_EXECUTABLE="$(which python3)"          \
