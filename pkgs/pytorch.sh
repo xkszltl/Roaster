@@ -142,7 +142,9 @@
 
         CTEST_PARALLEL_LEVEL="$(nproc)" time cmake --build . --target test || ! nvidia-smi
 
-        NCCL_ROOT_DIR='/usr/' "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" ..
+        # Known issues:
+        #   - Set LDFLAGS for "-ltorch_python", or pip will fail with build_ext and restart, deleting all cached CMake options.
+        LDFLAGS="-L'$(pwd)/lib'" NCCL_ROOT_DIR='/usr/' "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" ..
 
         # Dirty hack to fix torchvision build issues.
         case "$DISTRO_ID" in
