@@ -11,9 +11,20 @@
     # ------------------------------------------------------------
 
     . "$ROOT_DIR/pkgs/utils/git/version.sh" pybind/pybind11,v
-    until git clone --depth 1 --recursive --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
+    until git clone --depth 1 --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
 
     cd pybind11
+
+    # Known issue:
+    #   - Missing ".git" suffix in submodule URL: https://github.com/pybind/pybind11/issues/2318
+    git remote add patch 'https://github.com/xkszltl/pybind11.git'
+    for i in url; do
+        git fetch patch "$i"
+        git cherry-pick 'FETCH_HEAD'
+    done
+
+    git submodule init
+    git submodule update --recursive
 
     # ------------------------------------------------------------
 
