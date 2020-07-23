@@ -8,9 +8,8 @@
     "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  \
         cython/cython                               \
         benjaminp/six                               \
-        pytest-dev/pytest
-
-    CFLAGS="$CFLAGS -std=c99" "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" numpy/numpy,v
+        pytest-dev/pytest                           \
+        numpy/numpy,v
 
     # ------------------------------------------------------------
 

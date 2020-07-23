@@ -5,8 +5,7 @@
 [ -e $STAGE/caffe ] && ( set -xe
     cd $SCRATCH
 
-    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" cython/cython
-    CFLAGS="$CFLAGS -std=c99" "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" numpy/numpy,v
+    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" cython/cython numpy/numpy,v
 
     . "$ROOT_DIR/pkgs/utils/git/version.sh" BVLC/caffe,master
     until git clone --depth 1 --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done

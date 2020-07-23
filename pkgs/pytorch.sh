@@ -11,11 +11,8 @@
         benjaminp/six                               \
         yaml/pyyaml                                 \
         pytest-dev/pytest                           \
-        Frozenball/pytest-sugar,master
-
-    CFLAGS="$CFLAGS -std=c99" "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" numpy/numpy,v
-
-    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  \
+        Frozenball/pytest-sugar,master              \
+        numpy/numpy,v                               \
         micheles/decorator                          \
         networkx/networkx,networkx-
 
