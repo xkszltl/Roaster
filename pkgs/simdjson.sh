@@ -52,7 +52,9 @@
             ..
 
         time cmake --build . -- -j"$(nproc)"
-        CTEST_PARALLEL_LEVEL="$(nproc)" time cmake --build . --target test
+        # Known issues:
+        #   - checkperf test may fail when running in parallel.
+        CTEST_PARALLEL_LEVEL="$(nproc)" time cmake --build . --target test || time cmake --build . --target test
         time cmake --build . --target install -- -j
     )
 
