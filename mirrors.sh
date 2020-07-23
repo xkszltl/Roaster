@@ -182,7 +182,7 @@ uploadcare/pillow-simd,\
 USCiLab/cereal,\
 v2ray/{dist,ext,geoip,homebrew-v2ray,v2ray-core,V2RayN},\
 vivkin/gason,\
-wjakob/clang-cindex-python3,\
+__wjakob/clang-cindex-python3,\
 xianyi/OpenBLAS,\
 yaml/pyyaml,\
 Yangqing/ios-cmake,\
