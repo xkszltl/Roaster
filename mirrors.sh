@@ -16,6 +16,7 @@ cd $_
 
 [ $# -ge 1 ] && export PATTERN="$1"
 
+# Comment syntax: Prepend "__" to repo dir.
 parallel --bar --group --shuf -j 10 'bash -c '"'"'
 set -e
 export ARGS={}"  "
@@ -31,6 +32,8 @@ export DST="$DST_SITE$DST_DIR.git"
 export LOCAL="$(pwd)/$DST_DIR.git"
 
 echo "[\"$DST_DIR\"]"
+
+grep -v "^__" <<< "$SRC_DIR" || exit 0
 
 if [ ! "'"$PATTERN"'" ] || grep "'"$PATTERN"'" <<< "$SRC_DIR"; then
     mkdir -p "$(dirname "$LOCAL")"
