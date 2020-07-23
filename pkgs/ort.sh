@@ -25,6 +25,9 @@
         git pull --no-edit --rebase patch "$i"
     done
 
+    sed -i 's/FATAL_ERROR\( "Please enable Protobuf_USE_STATIC_LIBS"\)/WARNING\1/' 'cmake/CMakeLists.txt'
+    [ ! "$(git diff 'cmake/CMakeLists.txt')" ] || git commit -m 'Suppress Werror for using "libprotobuf.so" in system.' 'cmake/CMakeLists.txt'
+
     . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
 
     (
@@ -84,6 +87,7 @@
             -Donnxruntime_ENABLE_PYTHON=ON                  \
             -Donnxruntime_ENABLE_LANGUAGE_INTEROP_OPS=ON    \
             -Donnxruntime_ENABLE_LTO=OFF                    \
+            -Donnxruntime_PREFER_SYSTEM_LIB=ON              \
             -Donnxruntime_RUN_ONNX_TESTS=ON                 \
             -Donnxruntime_USE_BRAINSLICE=OFF                \
             -Donnxruntime_USE_CUDA=ON                       \
