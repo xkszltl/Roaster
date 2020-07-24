@@ -151,7 +151,7 @@
         'centos' | 'fedora' | 'rhel')
             # for site in {"/usr/local/lib64/python3.6","/opt/rh/rh-python38/root/usr/lib64/python3.8"}"/site-packages/torch"; do
             for site in "/usr/local/lib64/python3.6/site-packages/torch"; do
-                for target in bin/torch_shm_manager; do
+                for target in bin/torch_shm_manager include/torch lib; do
                     sudo mkdir -p "$(dirname "$site/./$target")"
                     sudo ln -sf {'/usr/local',"$site"}"/$target"
                 done
