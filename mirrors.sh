@@ -193,6 +193,7 @@ zfsonlinux/{pkg-{spl,zfs},spl,zfs{,-auto-snapshot,-buildbot,-images}},\
 zserge/jsmn,\
 },\
 https://gitlab.com/\ /\ {\
+libeigen/eigen,\
 NVIDIA/cuda,\
 pycqa/flake8,\
 },\
