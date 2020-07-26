@@ -168,11 +168,11 @@ else
         -Donnxruntime_RUN_ONNX_TESTS=ON                                                 `
         -Donnxruntime_USE_BRAINSLICE=OFF                                                `
         -Donnxruntime_USE_CUDA=OFF                                                      `
+        -Donnxruntime_USE_DNNL=ON                                                       `
         -Donnxruntime_USE_EIGEN_FOR_BLAS=ON                                             `
         -Donnxruntime_USE_FULL_PROTOBUF=ON                                              `
         -Donnxruntime_USE_JEMALLOC=OFF                                                  `
         -Donnxruntime_USE_LLVM=OFF                                                      `
-        -Donnxruntime_USE_MKLDNN=OFF                                                    `
         -Donnxruntime_USE_MKLML=OFF                                                     `
         -Donnxruntime_USE_MLAS=ON                                                       `
         -Donnxruntime_USE_NUPHAR=OFF                                                    `
