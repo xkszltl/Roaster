@@ -194,6 +194,7 @@ zserge/jsmn,\
 },\
 https://gitlab.com/\ /\ {\
 NVIDIA/cuda,\
+pycqa/flake8,\
 },\
 }
 
