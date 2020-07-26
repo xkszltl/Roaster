@@ -166,20 +166,26 @@ else
         -Donnxruntime_ENABLE_MICROSOFT_INTERNAL=OFF                                     `
         -Donnxruntime_ENABLE_PYTHON=ON                                                  `
         -Donnxruntime_RUN_ONNX_TESTS=ON                                                 `
+        -Donnxruntime_ENABLE_LANGUAGE_INTEROP_OPS=ON                                    `
+        -Donnxruntime_ENABLE_LTO=OFF                                                    `
+        -Donnxruntime_PREFER_SYSTEM_LIB=OFF                                             `
         -Donnxruntime_USE_BRAINSLICE=OFF                                                `
         -Donnxruntime_USE_CUDA=OFF                                                      `
         -Donnxruntime_USE_DNNL=ON                                                       `
         -Donnxruntime_USE_EIGEN_FOR_BLAS=ON                                             `
+        -Donnxruntime_USE_EIGEN_THREADPOOL=OFF                                          `
         -Donnxruntime_USE_FULL_PROTOBUF=ON                                              `
         -Donnxruntime_USE_JEMALLOC=OFF                                                  `
         -Donnxruntime_USE_LLVM=OFF                                                      `
         -Donnxruntime_USE_MKLML=OFF                                                     `
         -Donnxruntime_USE_MLAS=ON                                                       `
+        -Donnxruntime_USE_NGRAPH=OFF                                                    `
+        -Donnxruntime_USE_NSYNC=OFF                                                     `
         -Donnxruntime_USE_NUPHAR=OFF                                                    `
         -Donnxruntime_USE_OPENBLAS=OFF                                                  `
         -Donnxruntime_USE_OPENMP=OFF                                                    `
         -Donnxruntime_USE_PREINSTALLED_EIGEN=OFF                                        `
-        -Donnxruntime_USE_TRT=OFF                                                       `
+        -Donnxruntime_USE_TENSORRT=OFF                                                  `
         -Donnxruntime_USE_TVM=OFF                                                       `
         -G"Visual Studio 16 2019"                                                       `
         -T"host=x64"                                                                    `

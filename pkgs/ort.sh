@@ -98,6 +98,7 @@
             -Donnxruntime_USE_JEMALLOC=OFF                  \
             -Donnxruntime_USE_LLVM=ON                       \
             -Donnxruntime_USE_MKLML=ON                      \
+            -Donnxruntime_USE_MLAS=ON                       \
             -Donnxruntime_USE_NGRAPH=OFF                    \
             -Donnxruntime_USE_NSYNC=OFF                     \
             -Donnxruntime_USE_NUPHAR=OFF                    \
