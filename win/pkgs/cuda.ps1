@@ -22,3 +22,5 @@ if (-not $(Test-Path "${DownloadDir}/$exe"))
 
 Write-Host "Installing CUDA..."
 & "${DownloadDir}/${exe}" -s | Out-Null
+
+${Env:CUDA_PATH}=[System.Environment]::GetEnvironmentVariable("CUDA_PATH","Machine")
