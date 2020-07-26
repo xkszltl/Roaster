@@ -84,9 +84,9 @@
             -Donnxruntime_BUILD_FOR_NATIVE_MACHINE="$($TOOLCHAIN_CPU_NATIVE && echo 'ON' || echo 'OFF')"    \
             -Donnxruntime_BUILD_SHARED_LIB=ON               \
             -Donnxruntime_CUDNN_HOME='/usr/lib64'           \
-            -Donnxruntime_ENABLE_PYTHON=ON                  \
             -Donnxruntime_ENABLE_LANGUAGE_INTEROP_OPS=ON    \
             -Donnxruntime_ENABLE_LTO=OFF                    \
+            -Donnxruntime_ENABLE_PYTHON=ON                  \
             -Donnxruntime_PREFER_SYSTEM_LIB=ON              \
             -Donnxruntime_RUN_ONNX_TESTS=ON                 \
             -Donnxruntime_USE_BRAINSLICE=OFF                \
