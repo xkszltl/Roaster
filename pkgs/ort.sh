@@ -101,7 +101,7 @@
             -Donnxruntime_USE_MKLML=ON                      \
             -Donnxruntime_USE_MLAS=ON                       \
             -Donnxruntime_USE_NGRAPH=OFF                    \
-            -Donnxruntime_USE_NSYNC=OFF                     \
+            -Donnxruntime_USE_NSYNC=ON                      \
             -Donnxruntime_USE_NUPHAR=OFF                    \
             -Donnxruntime_USE_OPENBLAS=OFF                  \
             -Donnxruntime_USE_OPENMP=OFF                    \
