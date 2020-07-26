@@ -169,7 +169,7 @@ else
         -Donnxruntime_ENABLE_LANGUAGE_INTEROP_OPS=ON                                    `
         -Donnxruntime_ENABLE_LTO=OFF                                                    `
         -Donnxruntime_PREFER_SYSTEM_LIB=OFF                                             `
-        -Donnxruntime_USE_CUDA=OFF                                                      `
+        -Donnxruntime_USE_CUDA=ON                                                       `
         -Donnxruntime_USE_DNNL=ON                                                       `
         -Donnxruntime_USE_EIGEN_FOR_BLAS=ON                                             `
         -Donnxruntime_USE_FULL_PROTOBUF=ON                                              `
