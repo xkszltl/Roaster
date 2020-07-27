@@ -48,6 +48,8 @@ cmake                                                                   `
     -G"Ninja"                                                           `
     ..
 
+# Some D9025 warnings about /Ob overriding /O2 are expected.
+# - https://github.com/oneapi-src/oneDNN/blob/ab549349fc473f35e9bc41ed4d6bff5b1eaabfe0/src/cpu/x64/CMakeLists.txt#L56-L65
 cmake --build .
 if (-Not $?)
 {
