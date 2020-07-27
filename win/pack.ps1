@@ -86,7 +86,7 @@ Get-ChildItem ../nuget | Foreach-Object {
     }
     elseif ($pkg -eq "mkldnn" -or $pkg -eq "mkldnn-dev")
     {
-        $prefix = "${Env:ProgramFiles}/Intel(R) MKL-DNN"
+        $prefix = "${Env:ProgramFiles}/oneDNN"
     }
     elseif ($pkg -eq "onnx" -or $pkg -eq "onnx-dev")
     {
