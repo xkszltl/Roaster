@@ -41,6 +41,10 @@ cmake                                                                   `
     -DCMAKE_PDB_OUTPUT_DIRECTORY="${PWD}/pdb"                           `
     -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"     `
     -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                     `
+    -DDNNL_CPU_RUNTIME=OMP                                              `
+    -DDNNL_LIBRARY_TYPE=SHARED                                          `
+    -DMKLDNN_CPU_RUNTIME=OMP                                            `
+    -DMKLDNN_LIBRARY_TYPE=SHARED                                        `
     -G"Ninja"                                                           `
     ..
 

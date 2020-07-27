@@ -46,10 +46,13 @@
             -DCMAKE_C{,XX}_COMPILER_LAUNCHER=ccache \
             -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
-            -DMKLDNN_CPU_RUNTIME=OMP                \
-            -D{MKLDNN_,}ARCH_OPT_FLAGS"$($TOOLCHAIN_CPU_NATIVE  \
-                && echo "_PLACE_HOLDER="                        \
-                || echo "='-march=haswell -mtune=generic'")"    \
+            -D{DNNL,MKLDNN}_CPU_RUNTIME=OMP         \
+            -D{DNNL,MKLDNN}_LIBRARY_TYPE=SHARED     \
+            -D{{DNNL,MKLDNN}_,}ARCH_OPT_FLAGS"$(    \
+                $TOOLCHAIN_CPU_NATIVE               \
+                && echo "_PLACE_HOLDER="            \
+                || echo "='-march=haswell -mtune=generic'"  \
+            )"                                      \
             -G"Ninja"                               \
             ..
 
