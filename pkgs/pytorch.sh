@@ -105,6 +105,7 @@
             -DCMAKE_POLICY_DEFAULT_CMP0060=NEW              \
             -DCMAKE_VERBOSE_MAKEFILE=ON                     \
             -DCPUINFO_BUILD_TOOLS=ON                        \
+            -D{DNNL,MKLDNN}_LIBRARY_TYPE='SHARED'           \
             -DINSTALL_TEST=ON                               \
             -DNCCL_INCLUDE_DIR='/usr/include'               \
             -DNCCL_ROOT='/usr/'                             \

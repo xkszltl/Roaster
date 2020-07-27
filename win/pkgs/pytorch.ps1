@@ -126,6 +126,8 @@ cmake                                                                           
     -DCUDA_NVCC_FLAGS="--expt-relaxed-constexpr"                                `
     -DCUDA_SEPARABLE_COMPILATION=ON                                             `
     -DCUDA_VERBOSE_BUILD=ON                                                     `
+    -DDNNL_LIBRARY_TYPE="SHARED"                                                `
+    -DMKLDNN_LIBRARY_TYPE="SHARED"                                              `
     -DPROTOBUF_INCLUDE_DIRS="${Env:ProgramFiles}/protobuf/include"              `
     -DPROTOBUF_LIBRARIES="${Env:ProgramFiles}/protobuf/bin"                     `
     -DPROTOBUF_PROTOC_EXECUTABLE="${Env:ProgramFiles}/protobuf/bin/protoc.exe"  `
