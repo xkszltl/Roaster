@@ -200,33 +200,36 @@ else
 
 $model_path = "${Env:SCRATCH}/onnxruntime_models.zip"
 rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${model_path}.downloading"
-if (-not $(Test-Path $model_path))
+if ($true)
 {
-    & "${Env:ProgramFiles}/CURL/bin/curl.exe" -fkSL "https://onnxruntimetestdata.blob.core.windows.net/models/20190419.zip" -o "${model_path}.downloading"
-    mv -Force "${model_path}.downloading" "${model_path}"
-}
+    if (-not $(Test-Path $model_path))
+    {
+        & "${Env:ProgramFiles}/CURL/bin/curl.exe" --retry 5 -fkSL "https://onnxruntimetestdata.blob.core.windows.net/models/20190419.zip" -o "${model_path}.downloading"
+        mv -Force "${model_path}.downloading" "${model_path}"
+    }
 
-if (Get-Command -Name unzip -ErrorAction SilentlyContinue)
-{
-    unzip -ou "${model_path}" -d "${model_path}.d"
-    cmd /c mklink /D models "`"${model_path}.d`""
-}
-else
-{
-    Expand-Archive "${model_path}" "models"
-}
+    if (Get-Command -Name unzip -ErrorAction SilentlyContinue)
+    {
+        unzip -ou "${model_path}" -d "${model_path}.d"
+        cmd /c mklink /D models "`"${model_path}.d`""
+    }
+    else
+    {
+        Expand-Archive "${model_path}" "models"
+    }
 
-$ErrorActionPreference="SilentlyContinue"
-cmake --build . --config Release --target run_tests -- -maxcpucount
-if (-Not $?)
-{
-    echo "Check failed but we temporarily bypass it. Trying to reproduce:"
-    pushd Release
-    ./onnxruntime_test_all.exe
-    ./onnxruntime_shared_lib_test.exe
-    popd
+    $ErrorActionPreference="SilentlyContinue"
+    cmake --build . --config Release --target run_tests -- -maxcpucount
+    if (-Not $?)
+    {
+        echo "Check failed but we temporarily bypass it. Trying to reproduce:"
+        pushd Release
+        ./onnxruntime_test_all.exe
+        ./onnxruntime_shared_lib_test.exe
+        popd
+    }
+    $ErrorActionPreference="Stop"
 }
-$ErrorActionPreference="Stop"
 
 cmd /c rmdir /S /Q "${Env:ProgramFiles}/onnxruntime"
 cmake --build . --config Release --target install -- -maxcpucount
