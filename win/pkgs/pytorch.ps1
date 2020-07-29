@@ -38,6 +38,17 @@ if (-Not $?)
 }
 
 # ================================================================================
+# Patch DNNL compat_lib
+#   - https://github.com/pytorch/pytorch/issues/42115
+# ================================================================================
+
+(cat "third_party/ideep/mkl-dnn/src/CMakeLists.txt") -replace '\$<TARGET_FILE_DIR:\${LIB_NAME}>','$<TARGET_FILE_DIR:${LIB_NAME}>/../lib' | Out-File -Encoding UTF8 "third_party/ideep/mkl-dnn/src/CMakeLists.txt.patching"
+mv -force "third_party/ideep/mkl-dnn/src/CMakeLists.txt.patching" "third_party/ideep/mkl-dnn/src/CMakeLists.txt"
+
+git --no-pager diff
+git commit -am "Patch DNNL compat_lib path."
+
+# ================================================================================
 # Update Protobuf
 # ================================================================================
 
