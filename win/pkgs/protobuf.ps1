@@ -20,6 +20,10 @@ if (Test-Path "$root")
 
 $latest_ver='v' + $($(git ls-remote --tags "$repo") -match '.*refs/tags/v[0-9\.]*$' -replace '.*refs/tags/v','' | sort {[Version]$_})[-1]
 
+# Both 3.12.2 and 3.12.4 failed for the same issue.
+#   - https://github.com/protocolbuffers/protobuf/issues/7567
+$latest_ver='v3.12.3'
+
 git clone --depth 1 --recursive --single-branch -b "$latest_ver" -j8 "$repo"
 pushd "$root"
 
