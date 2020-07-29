@@ -244,7 +244,7 @@ Get-ChildItem "${Env:ProgramFiles}/onnxruntime" -Filter *.dll -Recurse | Foreach
 Get-ChildItem "${Env:ProgramFiles}/onnxruntime" -Filter *.exe -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 
 onnx_test_runner -e cpu ./models
-onnx_test_runner -e mkldnn ./models
+onnx_test_runner -e dnnl ./models
 onnx_test_runner -e cuda ./models
 
 popd
