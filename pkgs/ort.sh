@@ -110,6 +110,16 @@
         time cmake --build .
         time cmake --build . --target install
 
+        # Work around https://github.com/microsoft/onnxruntime/issues/4729
+        case "$DISTRO_ID" in
+        'centos' | 'fedora' | 'rhel')
+            find . -maxdepth 1 -name '*\.so' -or -name '*\.so\.*' | xargs install -t "$INSTALL_ABS/lib64/"
+            ;;
+        'ubuntu')
+            find . -maxdepth 1 -name '*\.so' -or -name '*\.so\.*' | xargs install -t "$INSTALL_ABS/lib/"
+            ;;
+        esac
+
         # Install MKLML
         mkdir -p "$INSTALL_ABS/lib"
         ldd libonnxruntime.so | sed -n 's/.*libmklml_.* => *\(.*\) (0x[0-9a-f]*) *$/\1/p' | xargs -rn1 install -t "$INSTALL_ABS/lib"
