@@ -113,10 +113,10 @@
         # Work around https://github.com/microsoft/onnxruntime/issues/4729
         case "$DISTRO_ID" in
         'centos' | 'fedora' | 'rhel')
-            find . -maxdepth 1 -name '*\.so' -or -name '*\.so\.*' | xargs install -t "$INSTALL_ABS/lib64/"
+            find . -maxdepth 1 -name '*\.so' -or -name '*\.so\.*' | xargs cp -dnrt "$INSTALL_ABS/lib64/"
             ;;
         'ubuntu')
-            find . -maxdepth 1 -name '*\.so' -or -name '*\.so\.*' | xargs install -t "$INSTALL_ABS/lib/"
+            find . -maxdepth 1 -name '*\.so' -or -name '*\.so\.*' | xargs cp -dnrt "$INSTALL_ABS/lib/"
             ;;
         esac
 
