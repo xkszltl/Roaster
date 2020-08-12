@@ -42,11 +42,17 @@ if (-Not $?)
 #   - https://github.com/pytorch/pytorch/issues/42115
 # ================================================================================
 
-(cat "third_party/ideep/mkl-dnn/src/CMakeLists.txt") -replace '\$<TARGET_FILE_DIR:\${LIB_NAME}>','$<TARGET_FILE_DIR:${LIB_NAME}>/../lib' | Out-File -Encoding UTF8 "third_party/ideep/mkl-dnn/src/CMakeLists.txt.patching"
-mv -force "third_party/ideep/mkl-dnn/src/CMakeLists.txt.patching" "third_party/ideep/mkl-dnn/src/CMakeLists.txt"
-
+pushd third_party/ideep
+pushd mkl-dnn
+git remote add CaoZhongZ https://github.com/CaoZhongZ/oneDNN.git
+git fetch CaoZhongZ
+git cherry-pick -X theirs e7cb4ce5
+popd
 git --no-pager diff
-git commit -am "Patch DNNL compat_lib path."
+git commit -am 'Patch DNNL compat_libs.'
+popd
+git --no-pager diff
+git commit -am 'Patch DNNL compat_libs.'
 
 # ================================================================================
 # Update Protobuf
