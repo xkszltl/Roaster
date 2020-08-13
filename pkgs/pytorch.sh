@@ -90,6 +90,7 @@
         #   - Currently there is a bug causing the second run of cmake to fail when finding python.
         #     Probably because PYTHON_* variables are partially cached.
         #     This may be a cmake bug.
+        #     https://github.com/pytorch/pytorch/issues/43030
         for i in $(seq 2); do
             NCCL_ROOT_DIR='/usr'                                \
             cmake                                               \
