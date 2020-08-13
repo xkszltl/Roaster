@@ -87,60 +87,63 @@
         #   - Enabling TensorRT causes crash during cmake generation.
         #     https://github.com/pytorch/pytorch/issues/18524
         #   - Somehow gloo fails to detect NCCL without NCCL_INCLUDE_DIR.
-        NCCL_ROOT_DIR='/usr'                                \
-        cmake                                               \
-            -DATEN_NO_TEST=ON                               \
-            -DBLAS=MKL                                      \
-            -DBUILD_BINARY=ON                               \
-            -DBUILD_CUSTOM_PROTOBUF=OFF                     \
-            -DBUILD_SHARED_LIBS=ON                          \
-            -DBUILD_TEST=ON                                 \
-            -DCMAKE_BUILD_TYPE=Release                      \
-            -DCMAKE_C_COMPILER="$CC"                        \
-            -DCMAKE_CXX_COMPILER="$CXX"                     \
-            -DCMAKE_{C,CXX,CUDA}_COMPILER_LAUNCHER=ccache   \
-            -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g $($TOOLCHAIN_CPU_NATIVE || echo '-march=haswell -mtune=generic')"  \
-            -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"           \
-            -DCMAKE_POLICY_DEFAULT_CMP0003=NEW              \
-            -DCMAKE_POLICY_DEFAULT_CMP0060=NEW              \
-            -DCMAKE_VERBOSE_MAKEFILE=ON                     \
-            -DCPUINFO_BUILD_TOOLS=ON                        \
-            -D{DNNL,MKLDNN}_LIBRARY_TYPE='SHARED'           \
-            -DINSTALL_TEST=ON                               \
-            -DNCCL_INCLUDE_DIR='/usr/include'               \
-            -DNCCL_ROOT='/usr/'                             \
-            -DNCCL_ROOT_DIR='/usr/'                         \
-            -DPYTHON_EXECUTABLE="$(which python3)"          \
-            -DTORCH_CUDA_ARCH_LIST="Pascal;Volta"           \
-            -DUSE_FBGEMM=ON                                 \
-            -DUSE_GFLAGS=ON                                 \
-            -DUSE_GLOG=ON                                   \
-            -DUSE_LEVELDB=ON                                \
-            -DUSE_LMDB=ON                                   \
-            -DUSE_MKLDNN=ON                                 \
-            -DUSE_NATIVE_ARCH="$($TOOLCHAIN_CPU_NATIVE && echo ON || echo OFF)" \
-            -DUSE_OBSERVERS=ON                              \
-            -DUSE_OPENCV=ON                                 \
-            -DUSE_OPENMP=ON                                 \
-            -DUSE_PROF=ON                                   \
-            -DUSE_ROCKSDB=ON                                \
-            -DUSE_SYSTEM_EIGEN_INSTALL=ON                   \
-            -DUSE_SYSTEM_NCCL=ON                            \
-            -DUSE_TENSORRT=OFF                              \
-            -DUSE_ZMQ=ON                                    \
-            -DUSE_ZSTD=OFF                                  \
-            -DWITH_BLAS=mkl                                 \
-            -G"Ninja"                                       \
-            ..
+        #   - Currently there is a bug causing the second run of cmake to fail when finding python.
+        #     Probably because PYTHON_* variables are partially cached.
+        #     This may be a cmake bug.
+        for i in $(seq 2); do
+            NCCL_ROOT_DIR='/usr'                                \
+            cmake                                               \
+                -DATEN_NO_TEST=ON                               \
+                -DBLAS=MKL                                      \
+                -DBUILD_BINARY=ON                               \
+                -DBUILD_CUSTOM_PROTOBUF=OFF                     \
+                -DBUILD_PYTHON=ON                               \
+                -DBUILD_SHARED_LIBS=ON                          \
+                -DBUILD_TEST=ON                                 \
+                -DCMAKE_BUILD_TYPE=Release                      \
+                -DCMAKE_C_COMPILER="$CC"                        \
+                -DCMAKE_CXX_COMPILER="$CXX"                     \
+                -DCMAKE_{C,CXX,CUDA}_COMPILER_LAUNCHER=ccache   \
+                -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g $($TOOLCHAIN_CPU_NATIVE || echo '-march=haswell -mtune=generic')"  \
+                -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"           \
+                -DCMAKE_POLICY_DEFAULT_CMP0003=NEW              \
+                -DCMAKE_POLICY_DEFAULT_CMP0060=NEW              \
+                -DCMAKE_VERBOSE_MAKEFILE=ON                     \
+                -DCPUINFO_BUILD_TOOLS=ON                        \
+                -D{DNNL,MKLDNN}_LIBRARY_TYPE='SHARED'           \
+                -DINSTALL_TEST=ON                               \
+                -DNCCL_INCLUDE_DIR='/usr/include'               \
+                -DNCCL_ROOT='/usr/'                             \
+                -DNCCL_ROOT_DIR='/usr/'                         \
+                -DPYTHON_EXECUTABLE="$(which python3)"          \
+                -DTORCH_CUDA_ARCH_LIST="Pascal;Volta"           \
+                -DUSE_FBGEMM=ON                                 \
+                -DUSE_GFLAGS=ON                                 \
+                -DUSE_GLOG=ON                                   \
+                -DUSE_LEVELDB=ON                                \
+                -DUSE_LMDB=ON                                   \
+                -DUSE_MKLDNN=ON                                 \
+                -DUSE_NATIVE_ARCH="$($TOOLCHAIN_CPU_NATIVE && echo ON || echo OFF)" \
+                -DUSE_OBSERVERS=ON                              \
+                -DUSE_OPENCV=ON                                 \
+                -DUSE_OPENMP=ON                                 \
+                -DUSE_PROF=ON                                   \
+                -DUSE_ROCKSDB=ON                                \
+                -DUSE_SYSTEM_EIGEN_INSTALL=ON                   \
+                -DUSE_SYSTEM_NCCL=ON                            \
+                -DUSE_TENSORRT=OFF                              \
+                -DUSE_ZMQ=ON                                    \
+                -DUSE_ZSTD=OFF                                  \
+                -DWITH_BLAS=mkl                                 \
+                -G"Ninja"                                       \
+                ..
+        done
+        time cmake --build . --target rebuild_cache
+        time cmake --build . --target rebuild_cache
+        grep '^BUILD_PYTHON:BOOL=ON' CMakeCache.txt
 
-        # Currently there is a bug causing the second run of cmake to fail when finding python.
-        # Probably because PYTHON_* variables are partially cached.
-        # This may be a cmake bug.
-
-        # time cmake --build . --target rebuild_cache
-        # time cmake --build . --target
+        time cmake --build . --target
         time cmake --build . --target install
-
         CTEST_PARALLEL_LEVEL="$(nproc)" time cmake --build . --target test || ! nvidia-smi
 
         # Known issues:
