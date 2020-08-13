@@ -137,8 +137,8 @@
                 -DWITH_BLAS=mkl                                 \
                 -G"Ninja"                                       \
                 ..
+            time cmake --build . --target rebuild_cache
         done
-        time cmake --build . --target rebuild_cache
         time cmake --build . --target rebuild_cache
         grep '^BUILD_PYTHON:BOOL=ON' CMakeCache.txt
 
