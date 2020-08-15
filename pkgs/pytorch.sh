@@ -148,7 +148,12 @@
         CTEST_PARALLEL_LEVEL="$(nproc)" time cmake --build . --target test || ! nvidia-smi
 
         # Known issues:
+        #   - setup.py assumes lib installed in-source:
+        #     See https://github.com/pytorch/pytorch/issues/43113
         #   - Set LDFLAGS for "-ltorch_python", or pip will fail with build_ext and restart, deleting all cached CMake options.
+        #     This may be fixed if we install libs in-source, but we have not checked.
+        mkdir -p '../torch'
+        DESTDIR="$(readlink -e '../torch')" time cmake --build . --target install
         LDFLAGS="-L'$(pwd)/lib'" NCCL_ROOT_DIR='/usr/' "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" ..
 
         # Dirty hack to fix torchvision build issues.
