@@ -153,7 +153,7 @@
         #   - Set LDFLAGS for "-ltorch_python", or pip will fail with build_ext and restart, deleting all cached CMake options.
         #     This may be fixed if we install libs in-source, but we have not checked.
         mkdir -p '../torch'
-        cp -rvf "$INSTALL_ABS/*" "../torch/"
+        cp -rvf "$INSTALL_ABS"/* "../torch/"
         LDFLAGS="-L'$(pwd)/lib'" NCCL_ROOT_DIR='/usr/' "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" ..
 
         # Dirty hack to fix torchvision build issues.
