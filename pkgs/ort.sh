@@ -84,7 +84,8 @@
             -Deigen_SOURCE_PATH="/usr/local/include/eigen3" \
             -Donnxruntime_BUILD_FOR_NATIVE_MACHINE="$($TOOLCHAIN_CPU_NATIVE && echo 'ON' || echo 'OFF')"    \
             -Donnxruntime_BUILD_SHARED_LIB=ON               \
-            -Donnxruntime_CUDNN_HOME='/usr/lib64'           \
+            -Donnxruntime_CUDA_HOME="$(readlink -e "$(dirname "$(which nvcc)")/..")"    \
+            -Donnxruntime_CUDNN_HOME='/usr'                 \
             -Donnxruntime_ENABLE_LANGUAGE_INTEROP_OPS=ON    \
             -Donnxruntime_ENABLE_LTO=OFF                    \
             -Donnxruntime_ENABLE_PYTHON=ON                  \

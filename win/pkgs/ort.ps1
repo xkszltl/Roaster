@@ -165,6 +165,7 @@ else
         -Deigen_SOURCE_PATH="${Env:ProgramFiles}/Eigen3/include/eigen3"                 `
         -Donnxruntime_BUILD_SHARED_LIB=ON                                               `
         -Donnxruntime_BUILD_UNIT_TESTS=ON                                               `
+        -Donnxruntime_CUDA_HOME="$(Split-Path (Get-Command nvcc).Source -Parent)/.."    `
         -Donnxruntime_CUDNN_HOME="$(Split-Path (Get-Command nvcc).Source -Parent)/.."   `
         -Donnxruntime_ENABLE_MICROSOFT_INTERNAL=OFF                                     `
         -Donnxruntime_ENABLE_PYTHON=ON                                                  `
