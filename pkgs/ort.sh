@@ -91,6 +91,7 @@
             -Donnxruntime_ENABLE_PYTHON=ON                  \
             -Donnxruntime_PREFER_SYSTEM_LIB=ON              \
             -Donnxruntime_RUN_ONNX_TESTS=ON                 \
+            -Donnxruntime_TENSORRT_HOME='/usr'              \
             -Donnxruntime_USE_CUDA=ON                       \
             -Donnxruntime_USE_DNNL=ON                       \
             -Donnxruntime_USE_EIGEN_FOR_BLAS=ON             \
