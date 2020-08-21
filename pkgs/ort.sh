@@ -112,7 +112,7 @@
             -Donnxruntime_USE_OPENBLAS=OFF                  \
             -Donnxruntime_USE_OPENMP=OFF                    \
             -Donnxruntime_USE_PREINSTALLED_EIGEN=OFF        \
-            -Donnxruntime_USE_TENSORRT=OFF                  \
+            -Donnxruntime_USE_TENSORRT=ON                   \
             -Donnxruntime_USE_TVM=OFF                       \
             -G"Ninja"                                       \
             ../cmake
