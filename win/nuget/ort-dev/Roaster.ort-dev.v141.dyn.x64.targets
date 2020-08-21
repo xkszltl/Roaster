@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" >
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)/../lib/native/include;$(MSBuildThisFileDirectory)/../lib/native/include/onnxruntime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)/../lib/native/include;$(MSBuildThisFileDirectory)/../lib/native/include/onnxruntime;$(MSBuildThisFileDirectory)/../lib/native/include/onnxruntime/core/session;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>ONNX_NAMESPACE=onnx;ONNX_ML;ORT_DLL_IMPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
