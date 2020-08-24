@@ -210,7 +210,6 @@ for dist in rhel7; do
         "path":         "'"nvidia/$dir/$dist/$(uname -i)"'",
         "retries":      10,
         "use_proxy":    "'"false"'",
-        "sync_args":    "--delete"
     }')
 done
 done
