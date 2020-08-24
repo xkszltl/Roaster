@@ -26,6 +26,10 @@ export USE_PROXY=false
 export DRY_RSYNC=$($DRY && echo --dry-run)
 export DRY_WGET=$($DRY && echo --spider)
 
+# Known issue:
+#   - Nvidia CDN in China has terrible availability.
+#     It is very likely to get "Failed to connect to origin, please retry" in HTTP 200.
+#     Disable plugin (yum-axelget) and use only one connection may help.
 export REPOSYNC='reposync
     --cachedir=$(mktemp -d)
     --download-metadata
