@@ -77,10 +77,13 @@
         #     Probably due to incomplete dependency in CMake.
         #     Suppressed since it does not really hurt at runtime.
         #     https://github.com/microsoft/onnxruntime/issues/4625
+        #   - Missing compute 3.5/3.7 support by default.
+        #     https://github.com/microsoft/onnxruntime/issues/4935
         # --------------------------------------------------------
         cmake                                               \
             -DCMAKE_BUILD_TYPE=Release                      \
             -DCMAKE_C_COMPILER="$CC"                        \
+            -DCMAKE_CUDA_FLAGS="-gencode=arch=compute_35,code=sm_35 -gencode=arch=compute_37,code=sm_37"                    \
             -DCMAKE_CXX_COMPILER="$CXX"                     \
             -DCMAKE_{C,CXX,CUDA}_COMPILER_LAUNCHER=ccache   \
             -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g $($TOOLCHAIN_CPU_NATIVE || echo '-march=haswell -mtune=generic')"  \
