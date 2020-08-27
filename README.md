@@ -88,3 +88,53 @@ Contribution
 
 This project is hosted on private git and mirrored to GitHub.
 Feel free to submit PR directly on Github and I will import it.
+
+Where to Start
+--------------------
+
+To add a new library, you need to provide a build script, add it to entry script, and provide packaging spec if needed.
+
+**Linux**
+
+1. Add a new `pkgs/foo.sh` for build/test/packaging.
+2. Add it to `setup.sh`.
+3. Try with `./setup.sh foo`.
+4. Add to proper build stage of dockerfile for all distros.
+5. Send out a PR.
+
+**Windows**
+
+1. Add a new `win/pkgs/foo.ps1` for build/test/install.
+2. Add it to `win/setup.ps1`.
+3. Try with `win/setup.ps1 foo`.
+4. Add nuget files (usually `.nuspec` and `.targets`) to new dirs in `win/nuget`.
+5. You may need to divide large packages into `-dev` or `-debuginfo` to meet size limits of nuget feed.
+6. Add them to win/pack.ps1`.
+7. Have a try with `win/pack.ps1` if you can.
+8. Send out a PR.
+
+Guidelines
+--------------------
+
+**Build Args:**
+  * Build as shared lib when possible.
+    CMake projects can usually handle this with either `-DBUILD_SHARED_LIBS=ON` or project-specific switches.
+  * Keep debug symbols as long as it does not hurt performance.
+    Usually this means `-O3 -g` on Linux.
+  * Build and run unit test from libs.
+    Most missing files or symbols issue can be revealed in this step.
+  * Use ninja-build instead of makefile when possible.
+    It is faster and most CMake projects support it implicitly.
+  * Try if you can run unit tests in parallel using `CTEST_PARALLEL_LEVEL`.
+    Some projects may have assumption on serial execution (e.g. I/O with shared files) so be careful.
+  * Use latest compiler avaiable in distro, unless it does not work (mostly nvcc related).
+
+**Library Selection**
+  * Currently we only support popular libs with active development and maintenance.
+    This ensures we can fix issues in upstream, without too many fancy tricks in our repo.
+  * For library already available in distro we support, we only add them if:
+      - Distro build is too old.
+      - Distro build is not old currently but will be based on their track record.
+      - Distro build has some issues, e.g. Ubuntu tends to have install path misaligned with upstream assumptions.
+      - Distro build does not have certain build flags we need.
+      - We are also the developer of lib and need to frequently rebuild non-released version.
