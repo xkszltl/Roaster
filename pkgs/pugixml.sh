@@ -38,7 +38,7 @@
             -DCMAKE_C{,XX}_COMPILER_LAUNCHER=ccache \
             -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
-            -DBUILD_TESTS=ON            \
+            -DBUILD_TESTS=ON                        \
             -G"Ninja"                               \
             ..
 
