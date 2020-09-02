@@ -112,7 +112,7 @@
             -Donnxruntime_USE_FULL_PROTOBUF=ON              \
             -Donnxruntime_USE_JEMALLOC=OFF                  \
             -Donnxruntime_USE_LLVM=ON                       \
-            -Donnxruntime_USE_MKLML=ON                      \
+            -Donnxruntime_USE_MKLML=OFF                     \
             -Donnxruntime_USE_NGRAPH=OFF                    \
             -Donnxruntime_USE_NUPHAR=OFF                    \
             -Donnxruntime_USE_OPENBLAS=OFF                  \
