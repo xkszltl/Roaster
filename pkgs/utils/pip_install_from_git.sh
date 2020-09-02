@@ -14,7 +14,10 @@ fi
 
 CACHE_VALID=false
 
-for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; do
+# Known issues:
+#   - Pin to setuptools v49.6.0 due to Cython LTO issue.
+#     https://github.com/pypa/setuptools/issues/2374
+for i in pypa/setuptools,v49 pypa/{pip,wheel} PythonCharmers/python-future,v $@; do
     PKG_PATH="$(cut -d, -f1 <<< "$i,")"
     if grep '^[[:alnum:]]' <<< "$PKG_PATH" > /dev/null; then
         . "$ROOT_DIR/pkgs/utils/git/version.sh" "$i"
