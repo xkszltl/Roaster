@@ -20,10 +20,12 @@
 
     git remote add patch https://github.com/xkszltl/onnxruntime.git
 
-    PATCHES=""
+    PATCHES="pb_lto"
 
+    git fetch patch
     for i in $PATCHES; do
-        git pull --no-edit --rebase patch "$i"
+        # git pull --no-edit --rebase patch "$i"
+        git cherry-pick "patch/$i"
     done
 
     sed -i 's/FATAL_ERROR\( "Please enable Protobuf_USE_STATIC_LIBS"\)/WARNING\1/' 'cmake/CMakeLists.txt'
@@ -56,9 +58,11 @@
             . scl_source enable devtoolset-8 rh-dotnet31
             set -xe
             export CC="gcc" CXX="g++"
+            export AR="gcc-ar" RANLIB="gcc-ranlib"
             ;;
         'ubuntu')
             export CC="gcc-8" CXX="g++-8"
+            export AR="gcc-ar-8" RANLIB="gcc-ranlib-8"
             ;;
         esac
 
@@ -81,47 +85,53 @@
         #     https://github.com/microsoft/onnxruntime/issues/4935
         #   - Dir missing but referenced by install().
         #     https://github.com/microsoft/onnxruntime/issues/5024
+        #   - Need ar/ranlib wrapper when using CUDA+LTO.
+        #     https://github.com/microsoft/onnxruntime/issues/5031
         # --------------------------------------------------------
+        # -DCMAKE_{C,CXX,CUDA}_COMPILER_{AR,RANLIB}="--plugin=$("$CC" --print-file-name=liblto_plugin.so)"
         mkdir -p '../include/onnxruntime/core/providers/shared'
-        cmake                                               \
-            -DCMAKE_BUILD_TYPE=Release                      \
-            -DCMAKE_C_COMPILER="$CC"                        \
+        cmake                                                   \
+            -DCMAKE_AR="$(which "$AR")"                         \
+            -DCMAKE_BUILD_TYPE=Release                          \
+            -DCMAKE_C_COMPILER="$CC"                            \
             -DCMAKE_CUDA_FLAGS="-gencode=arch=compute_35,code=sm_35 -gencode=arch=compute_37,code=sm_37"                    \
-            -DCMAKE_CXX_COMPILER="$CXX"                     \
-            -DCMAKE_{C,CXX,CUDA}_COMPILER_LAUNCHER=ccache   \
+            -DCMAKE_CXX_COMPILER="$CXX"                         \
+            -DCMAKE_{C,CXX,CUDA}_COMPILER_LAUNCHER=ccache       \
             -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g $($TOOLCHAIN_CPU_NATIVE || echo '-march=haswell -mtune=generic')"  \
             -DCMAKE_{EXE,SHARED}_LINKER_FLAGS='-Xlinker --allow-shlib-undefined'                                            \
-            -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"           \
-            -DCMAKE_POLICY_DEFAULT_CMP0060=NEW              \
-            -DCMAKE_VERBOSE_MAKEFILE=ON                     \
+            -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"               \
+            -DCMAKE_POLICY_DEFAULT_CMP0060=NEW                  \
+            -DCMAKE_RANLIB="$(which "$RANLIB")"                 \
+            -DCMAKE_VERBOSE_MAKEFILE=ON                         \
+            -DONNX_CUSTOM_PROTOC_EXECUTABLE="$(which protoc)"   \
             -DPython_ADDITIONAL_VERSIONS="$(python3 --version | sed -n 's/^Python[[:space:]]*\([0-9]*\.[0-9]*\)\..*/\1/p')" \
-            -Deigen_SOURCE_PATH="/usr/local/include/eigen3" \
-            -Donnxruntime_BUILD_CSHARP=OFF                  \
+            -Deigen_SOURCE_PATH="/usr/local/include/eigen3"     \
+            -Donnxruntime_BUILD_CSHARP=OFF                      \
             -Donnxruntime_BUILD_FOR_NATIVE_MACHINE="$($TOOLCHAIN_CPU_NATIVE && echo 'ON' || echo 'OFF')"                    \
-            -Donnxruntime_BUILD_SHARED_LIB=ON               \
+            -Donnxruntime_BUILD_SHARED_LIB=ON                   \
             -Donnxruntime_CUDA_HOME="$(readlink -e "$(dirname "$(which nvcc)")/..")"                                        \
-            -Donnxruntime_CUDNN_HOME='/usr'                 \
-            -Donnxruntime_ENABLE_LANGUAGE_INTEROP_OPS=ON    \
-            -Donnxruntime_ENABLE_LTO=OFF                    \
-            -Donnxruntime_ENABLE_PYTHON=ON                  \
-            -Donnxruntime_PREFER_SYSTEM_LIB=ON              \
-            -Donnxruntime_RUN_ONNX_TESTS=ON                 \
-            -Donnxruntime_TENSORRT_HOME='/usr'              \
-            -Donnxruntime_USE_CUDA=ON                       \
-            -Donnxruntime_USE_DNNL=ON                       \
-            -Donnxruntime_USE_EIGEN_FOR_BLAS=ON             \
-            -Donnxruntime_USE_FULL_PROTOBUF=ON              \
-            -Donnxruntime_USE_JEMALLOC=OFF                  \
-            -Donnxruntime_USE_LLVM=ON                       \
-            -Donnxruntime_USE_MKLML=OFF                     \
-            -Donnxruntime_USE_NGRAPH=OFF                    \
-            -Donnxruntime_USE_NUPHAR=OFF                    \
-            -Donnxruntime_USE_OPENBLAS=OFF                  \
-            -Donnxruntime_USE_OPENMP=OFF                    \
-            -Donnxruntime_USE_PREINSTALLED_EIGEN=OFF        \
-            -Donnxruntime_USE_TENSORRT=ON                   \
-            -Donnxruntime_USE_TVM=OFF                       \
-            -G"Ninja"                                       \
+            -Donnxruntime_CUDNN_HOME='/usr'                     \
+            -Donnxruntime_ENABLE_LANGUAGE_INTEROP_OPS=ON        \
+            -Donnxruntime_ENABLE_LTO=ON                         \
+            -Donnxruntime_ENABLE_PYTHON=ON                      \
+            -Donnxruntime_PREFER_SYSTEM_LIB=ON                  \
+            -Donnxruntime_RUN_ONNX_TESTS=ON                     \
+            -Donnxruntime_TENSORRT_HOME='/usr'                  \
+            -Donnxruntime_USE_CUDA=ON                           \
+            -Donnxruntime_USE_DNNL=ON                           \
+            -Donnxruntime_USE_EIGEN_FOR_BLAS=ON                 \
+            -Donnxruntime_USE_FULL_PROTOBUF=ON                  \
+            -Donnxruntime_USE_JEMALLOC=OFF                      \
+            -Donnxruntime_USE_LLVM=ON                           \
+            -Donnxruntime_USE_MKLML=OFF                         \
+            -Donnxruntime_USE_NGRAPH=OFF                        \
+            -Donnxruntime_USE_NUPHAR=OFF                        \
+            -Donnxruntime_USE_OPENBLAS=OFF                      \
+            -Donnxruntime_USE_OPENMP=OFF                        \
+            -Donnxruntime_USE_PREINSTALLED_EIGEN=OFF            \
+            -Donnxruntime_USE_TENSORRT=ON                       \
+            -Donnxruntime_USE_TVM=OFF                           \
+            -G"Ninja"                                           \
             ../cmake
 
         time cmake --build .
