@@ -53,7 +53,7 @@
         case "$DISTRO_ID" in
         'centos' | 'fedora' | 'rhel')
             set +xe
-            . scl_source enable devtoolset-8
+            . scl_source enable devtoolset-8 rh-dotnet31
             set -xe
             export CC="gcc" CXX="g++"
             ;;
@@ -96,6 +96,7 @@
             -DCMAKE_VERBOSE_MAKEFILE=ON                     \
             -DPython_ADDITIONAL_VERSIONS="$(python3 --version | sed -n 's/^Python[[:space:]]*\([0-9]*\.[0-9]*\)\..*/\1/p')" \
             -Deigen_SOURCE_PATH="/usr/local/include/eigen3" \
+            -Donnxruntime_BUILD_CSHARP=OFF                  \
             -Donnxruntime_BUILD_FOR_NATIVE_MACHINE="$($TOOLCHAIN_CPU_NATIVE && echo 'ON' || echo 'OFF')"                    \
             -Donnxruntime_BUILD_SHARED_LIB=ON               \
             -Donnxruntime_CUDA_HOME="$(readlink -e "$(dirname "$(which nvcc)")/..")"                                        \
