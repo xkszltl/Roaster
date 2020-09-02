@@ -79,7 +79,10 @@
         #     https://github.com/microsoft/onnxruntime/issues/4625
         #   - Missing compute 3.5/3.7 support by default.
         #     https://github.com/microsoft/onnxruntime/issues/4935
+        #   - Dir missing but referenced by install().
+        #     https://github.com/microsoft/onnxruntime/issues/5024
         # --------------------------------------------------------
+        mkdir -p '../include/onnxruntime/core/providers/shared'
         cmake                                               \
             -DCMAKE_BUILD_TYPE=Release                      \
             -DCMAKE_C_COMPILER="$CC"                        \
