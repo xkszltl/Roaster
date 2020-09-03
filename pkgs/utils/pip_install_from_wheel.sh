@@ -12,7 +12,7 @@ if [ ! "$ROOT_DIR" ]; then
 fi
 
 for i in setuptools pip wheel $@; do
-    for py in $(which python{,3}); do
+    for py in $(which python3); do
         sudo "$py" -m pip install -U "$i" || sudo "$py" -m pip install -IU "$i"
     done
 done
