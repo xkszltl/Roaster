@@ -55,7 +55,7 @@
         case "$DISTRO_ID" in
         'centos' | 'fedora' | 'rhel')
             set +xe
-            . scl_source enable devtoolset-8 rh-dotnet31
+            . scl_source enable devtoolset-9 rh-dotnet31
             set -xe
             export CC="gcc" CXX="g++"
             export AR="gcc-ar" RANLIB="gcc-ranlib"

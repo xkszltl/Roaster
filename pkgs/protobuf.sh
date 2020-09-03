@@ -23,7 +23,7 @@
         case "$DISTRO_ID" in
         'centos' | 'fedora' | 'rhel')
             set +xe
-            . scl_source enable devtoolset-8
+            . scl_source enable devtoolset-9
             set -xe
             export CC="gcc" CXX="g++"
             ;;
@@ -84,7 +84,7 @@
         case "$DISTRO_ID" in
         'centos' | 'fedora' | 'rhel')
             set +xe
-            . scl_source enable devtoolset-8 "$(cut -d',' -f1 <<< "$py")"
+            . scl_source enable devtoolset-9 "$(cut -d',' -f1 <<< "$py")"
             set -xe
             export CC="gcc" CXX="g++"
             ;;
