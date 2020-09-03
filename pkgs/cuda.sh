@@ -60,12 +60,12 @@
         case "$DISTRO_ID" in
         'centos' | 'fedora' | 'rhel')
             set +xe
-            . scl_source enable devtoolset-7
+            . scl_source enable devtoolset-9
             set -xe
             export CC="gcc" CXX="g++"
             ;;
         'ubuntu')
-            export CC="gcc-7" CXX="g++-7"
+            export CC="gcc-8" CXX="g++-8"
             ;;
         esac
 
