@@ -15,6 +15,7 @@
         numpy/numpy,v                               \
         micheles/decorator                          \
         networkx/networkx,networkx-
+    "$ROOT_DIR/pkgs/utils/pip_install_from_wheel.sh" dataclasses
 
     # ------------------------------------------------------------
 
