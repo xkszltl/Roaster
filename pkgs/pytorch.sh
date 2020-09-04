@@ -104,7 +104,7 @@
                 -DBUILD_TEST=ON                                 \
                 -DCMAKE_BUILD_TYPE=Release                      \
                 -DCMAKE_C_COMPILER="$CC"                        \
-                -DCMAKE_CXX_COMPILER="$CXX"                     \
+                -DCMAKE_{CUDA_HOST,CXX}_COMPILER="$CXX"         \
                 -DCMAKE_{C,CXX,CUDA}_COMPILER_LAUNCHER=ccache   \
                 -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g $($TOOLCHAIN_CPU_NATIVE || echo '-march=haswell -mtune=generic')"  \
                 -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"           \
