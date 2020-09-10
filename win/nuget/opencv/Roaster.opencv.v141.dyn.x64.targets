@@ -1,112 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" >
   <ItemGroup>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_alphamat430.dll">
-      <Link>opencv_alphamat430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_alphamat440.dll">
+      <Link>opencv_alphamat440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_annotation.exe">
       <Link>opencv_annotation.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_aruco430.dll">
-      <Link>opencv_aruco430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_aruco440.dll">
+      <Link>opencv_aruco440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_bgsegm430.dll">
-      <Link>opencv_bgsegm430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_bgsegm440.dll">
+      <Link>opencv_bgsegm440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_bioinspired430.dll">
-      <Link>opencv_bioinspired430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_bioinspired440.dll">
+      <Link>opencv_bioinspired440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_calib3d430.dll">
-      <Link>opencv_calib3d430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_calib3d440.dll">
+      <Link>opencv_calib3d440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_ccalib430.dll">
-      <Link>opencv_ccalib430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_ccalib440.dll">
+      <Link>opencv_ccalib440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_core430.dll">
-      <Link>opencv_core430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_core440.dll">
+      <Link>opencv_core440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_datasets430.dll">
-      <Link>opencv_datasets430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_datasets440.dll">
+      <Link>opencv_datasets440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_dpm430.dll">
-      <Link>opencv_dpm430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_dpm440.dll">
+      <Link>opencv_dpm440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_face430.dll">
-      <Link>opencv_face430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_face440.dll">
+      <Link>opencv_face440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_features2d430.dll">
-      <Link>opencv_features2d430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_features2d440.dll">
+      <Link>opencv_features2d440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_flann430.dll">
-      <Link>opencv_flann430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_flann440.dll">
+      <Link>opencv_flann440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_freetype430.dll">
-      <Link>opencv_freetype430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_freetype440.dll">
+      <Link>opencv_freetype440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_fuzzy430.dll">
-      <Link>opencv_fuzzy430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_fuzzy440.dll">
+      <Link>opencv_fuzzy440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_gapi430.dll">
-      <Link>opencv_gapi430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_gapi440.dll">
+      <Link>opencv_gapi440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_hfs430.dll">
-      <Link>opencv_hfs430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_hfs440.dll">
+      <Link>opencv_hfs440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_highgui430.dll">
-      <Link>opencv_highgui430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_highgui440.dll">
+      <Link>opencv_highgui440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_img_hash430.dll">
-      <Link>opencv_img_hash430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_img_hash440.dll">
+      <Link>opencv_img_hash440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_imgcodecs430.dll">
-      <Link>opencv_imgcodecs430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_imgcodecs440.dll">
+      <Link>opencv_imgcodecs440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_imgproc430.dll">
-      <Link>opencv_imgproc430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_imgproc440.dll">
+      <Link>opencv_imgproc440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_intensity_transform430.dll">
-      <Link>opencv_intensity_transform430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_intensity_transform440.dll">
+      <Link>opencv_intensity_transform440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_interactive-calibration.exe">
       <Link>opencv_interactive-calibration.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_line_descriptor430.dll">
-      <Link>opencv_line_descriptor430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_line_descriptor440.dll">
+      <Link>opencv_line_descriptor440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_ml430.dll">
-      <Link>opencv_ml430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_ml440.dll">
+      <Link>opencv_ml440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_objdetect430.dll">
-      <Link>opencv_objdetect430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_objdetect440.dll">
+      <Link>opencv_objdetect440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_optflow430.dll">
-      <Link>opencv_optflow430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_optflow440.dll">
+      <Link>opencv_optflow440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_perf_bioinspired.exe">
@@ -193,64 +193,64 @@
       <Link>opencv_perf_xphoto.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_phase_unwrapping430.dll">
-      <Link>opencv_phase_unwrapping430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_phase_unwrapping440.dll">
+      <Link>opencv_phase_unwrapping440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_photo430.dll">
-      <Link>opencv_photo430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_photo440.dll">
+      <Link>opencv_photo440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_plot430.dll">
-      <Link>opencv_plot430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_plot440.dll">
+      <Link>opencv_plot440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_quality430.dll">
-      <Link>opencv_quality430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_quality440.dll">
+      <Link>opencv_quality440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_rapid430.dll">
-      <Link>opencv_rapid430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_rapid440.dll">
+      <Link>opencv_rapid440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_reg430.dll">
-      <Link>opencv_reg430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_reg440.dll">
+      <Link>opencv_reg440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_rgbd430.dll">
-      <Link>opencv_rgbd430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_rgbd440.dll">
+      <Link>opencv_rgbd440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_saliency430.dll">
-      <Link>opencv_saliency430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_saliency440.dll">
+      <Link>opencv_saliency440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_sfm430.dll">
-      <Link>opencv_sfm430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_sfm440.dll">
+      <Link>opencv_sfm440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_shape430.dll">
-      <Link>opencv_shape430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_shape440.dll">
+      <Link>opencv_shape440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_stereo430.dll">
-      <Link>opencv_stereo430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_stereo440.dll">
+      <Link>opencv_stereo440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_stitching430.dll">
-      <Link>opencv_stitching430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_stitching440.dll">
+      <Link>opencv_stitching440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_structured_light430.dll">
-      <Link>opencv_structured_light430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_structured_light440.dll">
+      <Link>opencv_structured_light440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_superres430.dll">
-      <Link>opencv_superres430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_superres440.dll">
+      <Link>opencv_superres440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_surface_matching430.dll">
-      <Link>opencv_surface_matching430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_surface_matching440.dll">
+      <Link>opencv_surface_matching440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_aruco.exe">
@@ -409,8 +409,8 @@
       <Link>opencv_test_xphoto.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_tracking430.dll">
-      <Link>opencv_tracking430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_tracking440.dll">
+      <Link>opencv_tracking440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_version.exe">
@@ -421,40 +421,40 @@
       <Link>opencv_version_win32.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_video430.dll">
-      <Link>opencv_video430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_video440.dll">
+      <Link>opencv_video440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_videoio_ffmpeg430_64.dll">
-      <Link>opencv_videoio_ffmpeg430_64.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_videoio_ffmpeg440_64.dll">
+      <Link>opencv_videoio_ffmpeg440_64.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_videoio430.dll">
-      <Link>opencv_videoio430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_videoio440.dll">
+      <Link>opencv_videoio440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_videostab430.dll">
-      <Link>opencv_videostab430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_videostab440.dll">
+      <Link>opencv_videostab440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_visualisation.exe">
       <Link>opencv_visualisation.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_xfeatures2d430.dll">
-      <Link>opencv_xfeatures2d430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_xfeatures2d440.dll">
+      <Link>opencv_xfeatures2d440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_ximgproc430.dll">
-      <Link>opencv_ximgproc430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_ximgproc440.dll">
+      <Link>opencv_ximgproc440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_xobjdetect430.dll">
-      <Link>opencv_xobjdetect430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_xobjdetect440.dll">
+      <Link>opencv_xobjdetect440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_xphoto430.dll">
-      <Link>opencv_xphoto430.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_xphoto440.dll">
+      <Link>opencv_xphoto440.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
