@@ -144,9 +144,6 @@ if ($use_bat)
 }
 else
 {
-    # Turn off CUDA temporarily until Ort team switch back to static cudart.
-    # Turn off unit test due to missing protobuf 3.7 support.
-    #
     # Ort team is removing prebuilt protobuf.
     #     -DONNX_CUSTOM_PROTOC_EXECUTABLE="${Env:ProgramFiles}/protobuf/bin/protoc.exe"
     #     -Donnxruntime_USE_PREBUILT_PB=ON
@@ -155,6 +152,7 @@ else
         -DBOOST_ROOT="${Env:ProgramFiles}/boost"                                        `
         -DBUILD_SHARED_LIBS=OFF                                                         `
         -DCMAKE_C_FLAGS="/GL /MP /Zi /arch:AVX2"                                        `
+        -DCMAKE_CUDA_FLAGS="-gencode=arch=compute_35,code=sm_35 -gencode=arch=compute_37,code=sm_37"    `
         -DCMAKE_CXX_FLAGS="/EHsc /GL /MP /Zi /arch:AVX2"                                `
         -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"                    `
         -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/onnxruntime"                        `
@@ -163,11 +161,10 @@ else
         -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                                 `
         -DCUDA_VERBOSE_BUILD=ON                                                         `
         -Deigen_SOURCE_PATH="${Env:ProgramFiles}/Eigen3/include/eigen3"                 `
+        -Donnxruntime_BUILD_CSHARP=OFF                                                  `
         -Donnxruntime_BUILD_SHARED_LIB=ON                                               `
-        -Donnxruntime_BUILD_UNIT_TESTS=ON                                               `
         -Donnxruntime_CUDA_HOME="$(Split-Path (Get-Command nvcc).Source -Parent)/.."    `
         -Donnxruntime_CUDNN_HOME="$(Split-Path (Get-Command nvcc).Source -Parent)/.."   `
-        -Donnxruntime_ENABLE_MICROSOFT_INTERNAL=OFF                                     `
         -Donnxruntime_ENABLE_PYTHON=ON                                                  `
         -Donnxruntime_RUN_ONNX_TESTS=ON                                                 `
         -Donnxruntime_ENABLE_LANGUAGE_INTEROP_OPS=ON                                    `
