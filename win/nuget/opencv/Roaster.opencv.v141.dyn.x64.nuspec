@@ -24,8 +24,9 @@
   </metadata>
   <files>
     <file src="Roaster.opencv.v141.dyn.x64.targets" target="build\Roaster.opencv.v141.dyn.x64.targets" />
-    <file src="opencv\**\*.exe"                     target="lib\native\lib\Release\" />
-    <file src="opencv\**\*.dll"                     target="lib\native\lib\Release\" />
+    <file src="opencv\bin\**\*.exe"                 target="lib\native\lib\Release\" />
+    <file src="opencv\x64\vc16\bin\**\*.dll"        target="lib\native\lib\Release\" />
+    <file src="opencv\x64\vc16\bin\**\*.exe"        target="lib\native\lib\Release\" />
     <file src="opencv\*.cmake"                      target="lib\native\cmake\" />
     <file src="opencv\*.cmd"                        target="lib\native\" />
     <file src="opencv\LICENSE"                      target="lib\native\" />

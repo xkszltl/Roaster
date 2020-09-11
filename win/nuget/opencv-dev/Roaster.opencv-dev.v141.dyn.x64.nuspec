@@ -22,9 +22,11 @@
   </metadata>
   <files>
     <file src="Roaster.opencv-dev.v141.dyn.x64.targets" target="build\Roaster.opencv-dev.v141.dyn.x64.targets" />
-    <file src="opencv-dev\**\*.pdb"                     target="lib\native\lib\Release\" />
+    <file src="opencv-dev\bin\**\*.pdb"                 target="lib\native\lib\Release\" />
     <file src="opencv-dev\include\**\*"                 target="lib\native\include" />
-    <file src="opencv-dev\x64\vc16\lib\*"               target="lib\native\lib\Release\" />
-    <file src="opencv-dev\x64\vc16\staticlib\*"         target="lib\native\lib\Release\" />
+    <file src="opencv-dev\x64\vc16\bin\**\*.pdb"        target="lib\native\lib\Release\" />
+    <file src="opencv-dev\x64\vc16\lib\**\*.lib"        target="lib\native\lib\Release\" />
+    <file src="opencv-dev\x64\vc16\lib\**\*.pdb"        target="lib\native\lib\Release\" />
+    <file src="opencv-dev\x64\vc16\staticlib\**\*.lib"  target="lib\native\lib\Release\" />
   </files>
 </package>
