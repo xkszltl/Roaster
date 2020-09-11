@@ -44,9 +44,7 @@ if (-Not $?)
 
 pushd third_party/ideep
 pushd mkl-dnn
-git remote add CaoZhongZ https://github.com/CaoZhongZ/oneDNN.git
-git fetch CaoZhongZ
-git cherry-pick -X theirs e7cb4ce5
+git cherry-pick -X theirs 2bc4d3c
 popd
 git --no-pager diff
 git commit -am 'Patch DNNL compat_libs.'
