@@ -64,7 +64,7 @@ if (-Not $Env:ROASTER_TOOLCHAIN_COMMITED)
 
     if (${Env:NASM_HOME} -eq $null -or -not $(Test-Path ${Env:NASM_HOME}/nasm.exe -ErrorAction SilentlyContinue))
     {
-        $nasm_ver="2.15.03"
+        $nasm_ver="2.15.05"
         $DownloadURL = "https://www.nasm.us/pub/nasm/releasebuilds/${nasm_ver}/win64/nasm-${nasm_ver}-installer-x64.exe"
         $DownloadPath = "${Env:SCRATCH}/nasm-${nasm_ver}-installer-x64.exe"
         Write-Host "Downloading NASM..."
