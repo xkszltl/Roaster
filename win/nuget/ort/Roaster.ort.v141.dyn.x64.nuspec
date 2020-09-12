@@ -15,6 +15,8 @@
     <copyright>Copyright 2018</copyright>
     <tags>ort onnxruntime native C++ v141 dyn</tags>
     <dependencies>
+      <dependency id="Roaster.cuda.v141.dyn.x64"      version="[$version$]" />
+      <dependency id="Roaster.cudnn.v141.dyn.x64"     version="[$version$]" />
       <dependency id="Roaster.mklml.v141.dyn.x64"     version="[$version$]" />
     </dependencies>
   </metadata>
