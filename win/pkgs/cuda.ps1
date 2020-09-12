@@ -11,7 +11,7 @@ if (-not $(Test-Path $DownloadDir))
     Exit 1
 }
 
-$exe = "cuda_11.0.2_win10_network.exe"
+$exe = "cuda_11.0.3_win10_network.exe"
 if (-not $(Test-Path "${DownloadDir}/$exe"))
 {
     Write-Host "Downloading CUDA installation files..."
