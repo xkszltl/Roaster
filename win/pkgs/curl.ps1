@@ -39,7 +39,7 @@ cmake                                                               `
     -DCMAKE_SHARED_LINKER_FLAGS="/LTCG:incremental"                 `
     -DCMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO="/INCREMENTAL:NO"    `
     -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                 `
-    -DCMAKE_USE_WINSSL=ON                                           `
+    -DCMAKE_USE_SCHANNEL=ON                                         `
     -DCMAKE_USE_OPENSSL=ON                                          `
     -DCURL_CA_FALLBACK=ON                                           `
     -DENABLE_ARES=OFF                                               `
