@@ -33,14 +33,6 @@
       <Link>cudart64_110.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/cufft64_10.dll">
-      <Link>cufft64_10.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/cufftw64_10.dll">
-      <Link>cufftw64_10.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/cuinj64_110.dll">
       <Link>cuinj64_110.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

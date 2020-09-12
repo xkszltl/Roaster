@@ -16,6 +16,7 @@
     <tags>cuda native C++ v141 dyn</tags>
     <dependencies>
       <dependency id="Roaster.cublas.v141.dyn.x64"      version="[$version$]" />
+      <dependency id="Roaster.cufft.v141.dyn.x64"       version="[$version$]" />
       <dependency id="Roaster.cusolver.v141.dyn.x64"    version="[$version$]" />
     </dependencies>
   </metadata>
@@ -26,11 +27,11 @@
     <file src="cuda\Sanitizer\**\*.bat"                 target="lib\native\lib\Release\" />
     <file src="cuda\Sanitizer\**\*.dll"                 target="lib\native\lib\Release\" />
     <file src="cuda\Sanitizer\**\*.exe"                 target="lib\native\lib\Release\" />
-    <file src="cuda\bin\**\*"                           target="lib\native\lib\Release\" exclude="**\cublas*;**\cudnn*;**\cusolver*" />
+    <file src="cuda\bin\**\*"                           target="lib\native\lib\Release\" exclude="**\cublas*;**\cudnn*;**\cufft*;**\cusolver*" />
     <file src="cuda\extras\CUPTI\include\**\*"          target="lib\native\include" />
     <file src="cuda\extras\CUPTI\lib64\**\*"            target="lib\native\lib\Release\" />
-    <file src="cuda\include\**\*"                       target="lib\native\include"      exclude="**\cublas*;**\cudnn*;**\cusolver*" />
-    <file src="cuda\lib\x64\**\*"                       target="lib\native\lib\Release\" exclude="**\cublas*;**\cudnn*;**\cusolver*" />
+    <file src="cuda\include\**\*"                       target="lib\native\include"      exclude="**\cublas*;**\cudnn*;**\cufft*;**\cusolver*" />
+    <file src="cuda\lib\x64\**\*"                       target="lib\native\lib\Release\" exclude="**\cublas*;**\cudnn*;**\cufft*;**\cusolver*" />
     <file src="cuda\nvvm\bin\**\*"                      target="lib\native\lib\Release\" />
     <file src="cuda\nvvm\include\**\*"                  target="lib\native\include" />
     <file src="cuda\nvvm\lib\x64\**\*"                  target="lib\native\lib\Release\" />
