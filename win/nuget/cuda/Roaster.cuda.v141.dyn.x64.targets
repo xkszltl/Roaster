@@ -25,48 +25,12 @@
       <Link>TreeLauncherTargetInjection.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/cublas64_11.dll">
-      <Link>cublas64_11.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/cublasLt64_11.dll">
-      <Link>cublasLt64_11.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/cudart32_110.dll">
       <Link>cudart32_110.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/cudart64_110.dll">
       <Link>cudart64_110.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/cudnn64_8.dll">
-      <Link>cudnn64_8.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/cudnn_adv_infer64_8.dll">
-      <Link>cudnn_adv_infer64_8.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/cudnn_adv_train64_8.dll">
-      <Link>cudnn_adv_train64_8.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/cudnn_cnn_infer64_8.dll">
-      <Link>cudnn_cnn_infer64_8.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/cudnn_cnn_train64_8.dll">
-      <Link>cudnn_cnn_train64_8.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/cudnn_ops_infer64_8.dll">
-      <Link>cudnn_ops_infer64_8.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/cudnn_ops_train64_8.dll">
-      <Link>cudnn_ops_train64_8.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/cufft64_10.dll">
@@ -83,14 +47,6 @@
     </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/curand64_10.dll">
       <Link>curand64_10.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/cusolver64_10.dll">
-      <Link>cusolver64_10.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/cusolverMg64_10.dll">
-      <Link>cusolverMg64_10.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/cusparse64_11.dll">
