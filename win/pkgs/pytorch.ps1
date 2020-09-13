@@ -43,6 +43,7 @@ if (-Not $?)
 # ================================================================================
 
 git remote add peterjc123 https://github.com/peterjc123/pytorch.git
+git pull peterjc123 nvcc_flag_cleanup
 git pull peterjc123 system_protobuf_patch
 
 if (-Not $?)
