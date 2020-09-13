@@ -136,57 +136,63 @@ $cxxflags               = "${cflags} ${gtest_silent_warning}"
 #   * CUDA separable compilation with ninja creates long command not runnable.
 #     https://github.com/pytorch/pytorch/issues/44599
 #   * /Zi is replaced by /Z7 in CMake.
+#   * Need to run config multiple times before getting consistent output.
+#     https://github.com/pytorch/pytorch/issues/44614
 # ==========================================================================================
-cmake                                                                           `
-    -DBLAS=MKL                                                                  `
-    -DBUILD_BINARY=ON                                                           `
-    -DBUILD_CUSTOM_PROTOBUF=OFF                                                 `
-    -DBUILD_PYTHON=ON                                                           `
-    -DBUILD_SHARED_LIBS=ON                                                      `
-    -DBUILD_TEST=ON                                                             `
-    -DCMAKE_BUILD_TYPE=Release                                                  `
-    -DCMAKE_C_FLAGS="/FS /GL /MP /Zi /arch:AVX2 ${cflags}"                      `
-    -DCMAKE_CUDA_SEPARABLE_COMPILATION=OFF                                      `
-    -DCMAKE_CXX_FLAGS="/EHsc /FS /GL /MP /Zi /arch:AVX2 ${cxxflags}"            `
-    -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"                `
-    -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/Caffe2"                         `
-    -DCMAKE_PDB_OUTPUT_DIRECTORY="${PWD}/pdb"                                   `
-    -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"             `
-    -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                             `
-    -DCMAKE_VERBOSE_MAKEFILE=ON                                                 `
-    -DCPUINFO_BUILD_TOOLS=ON                                                    `
-    -DCUDA_NVCC_FLAGS="--expt-relaxed-constexpr"                                `
-    -DCUDA_SEPARABLE_COMPILATION=OFF                                            `
-    -DCUDA_VERBOSE_BUILD=ON                                                     `
-    -DDNNL_LIBRARY_TYPE="SHARED"                                                `
-    -DMKLDNN_LIBRARY_TYPE="SHARED"                                              `
-    -DPROTOBUF_INCLUDE_DIRS="${Env:ProgramFiles}/protobuf/include"              `
-    -DPROTOBUF_LIBRARIES="${Env:ProgramFiles}/protobuf/bin"                     `
-    -DPROTOBUF_PROTOC_EXECUTABLE="${Env:ProgramFiles}/protobuf/bin/protoc.exe"  `
-    -DTORCH_CUDA_ARCH_LIST="Kepler;Maxwell;Pascal;Volta"                        `
-    -DUSE_CUDA=OFF                                                              `
-    -DUSE_DISTRIBUTED=OFF                                                       `
-    -DUSE_GFLAGS=ON                                                             `
-    -DUSE_GLOG=ON                                                               `
-    -DUSE_GLOO=OFF                                                              `
-    -DUSE_FBGEMM=ON                                                             `
-    -DUSE_LEVELDB=OFF                                                           `
-    -DUSE_LMDB=OFF                                                              `
-    -DUSE_METAL=OFF                                                             `
-    -DUSE_MKLDNN=ON                                                             `
-    -DUSE_MPI=OFF                                                               `
-    -DUSE_NCCL=ON                                                               `
-    -DUSE_NNPACK=OFF                                                            `
-    -DUSE_NUMA=OFF                                                              `
-    -DUSE_OBSERVERS=ON                                                          `
-    -DUSE_OPENMP=ON                                                             `
-    -DUSE_OPENCV=ON                                                             `
-    -DUSE_ROCKSDB=ON                                                            `
-    -Dglog_DIR="${Env:ProgramFiles}/google-glog/lib/cmake/glog"                 `
-    -Dgtest_force_shared_crt=ON                                                 `
-    -Dpybind11_INCLUDE_DIR="${Env:ProgramFiles}/pybind11/include"               `
-    -G"Ninja"                                                                   `
-    ..
+For ($i=0; $i -lt 2; ++$i)
+{
+    cmake                                                                           `
+        -DBLAS=MKL                                                                  `
+        -DBUILD_BINARY=ON                                                           `
+        -DBUILD_CUSTOM_PROTOBUF=OFF                                                 `
+        -DBUILD_PYTHON=ON                                                           `
+        -DBUILD_SHARED_LIBS=ON                                                      `
+        -DBUILD_TEST=ON                                                             `
+        -DCMAKE_BUILD_TYPE=Release                                                  `
+        -DCMAKE_C_FLAGS="/FS /GL /MP /Zi /arch:AVX2 ${cflags}"                      `
+        -DCMAKE_CUDA_SEPARABLE_COMPILATION=OFF                                      `
+        -DCMAKE_CXX_FLAGS="/EHsc /FS /GL /MP /Zi /arch:AVX2 ${cxxflags}"            `
+        -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"                `
+        -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/Caffe2"                         `
+        -DCMAKE_PDB_OUTPUT_DIRECTORY="${PWD}/pdb"                                   `
+        -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"             `
+        -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                             `
+        -DCMAKE_VERBOSE_MAKEFILE=ON                                                 `
+        -DCPUINFO_BUILD_TOOLS=ON                                                    `
+        -DCUDA_NVCC_FLAGS="--expt-relaxed-constexpr"                                `
+        -DCUDA_SEPARABLE_COMPILATION=OFF                                            `
+        -DCUDA_VERBOSE_BUILD=ON                                                     `
+        -DDNNL_LIBRARY_TYPE="SHARED"                                                `
+        -DMKLDNN_LIBRARY_TYPE="SHARED"                                              `
+        -DPROTOBUF_INCLUDE_DIRS="${Env:ProgramFiles}/protobuf/include"              `
+        -DPROTOBUF_LIBRARIES="${Env:ProgramFiles}/protobuf/bin"                     `
+        -DPROTOBUF_PROTOC_EXECUTABLE="${Env:ProgramFiles}/protobuf/bin/protoc.exe"  `
+        -DTORCH_CUDA_ARCH_LIST="Kepler;Maxwell;Pascal;Volta"                        `
+        -DUSE_CUDA=OFF                                                              `
+        -DUSE_DISTRIBUTED=OFF                                                       `
+        -DUSE_GFLAGS=ON                                                             `
+        -DUSE_GLOG=ON                                                               `
+        -DUSE_GLOO=OFF                                                              `
+        -DUSE_FBGEMM=ON                                                             `
+        -DUSE_LEVELDB=OFF                                                           `
+        -DUSE_LMDB=OFF                                                              `
+        -DUSE_METAL=OFF                                                             `
+        -DUSE_MKLDNN=ON                                                             `
+        -DUSE_MPI=OFF                                                               `
+        -DUSE_NCCL=ON                                                               `
+        -DUSE_NNPACK=OFF                                                            `
+        -DUSE_NUMA=OFF                                                              `
+        -DUSE_OBSERVERS=ON                                                          `
+        -DUSE_OPENMP=ON                                                             `
+        -DUSE_OPENCV=ON                                                             `
+        -DUSE_ROCKSDB=ON                                                            `
+        -Dglog_DIR="${Env:ProgramFiles}/google-glog/lib/cmake/glog"                 `
+        -Dgtest_force_shared_crt=ON                                                 `
+        -Dpybind11_INCLUDE_DIR="${Env:ProgramFiles}/pybind11/include"               `
+        -G"Ninja"                                                                   `
+        ..
+}
+cmake --build . --target rebuild_cache
 
 $ErrorActionPreference="SilentlyContinue"
 cmake --build .
