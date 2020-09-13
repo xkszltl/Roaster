@@ -1,5 +1,5 @@
 ################################################################################
-# Intel may ask you to register on their website before downloading libraries.
+# Nvidia may ask you to register on their website before downloading libraries.
 # Please follow their instructions and procedures.
 #
 # You agree to take full responsibility for using this script, and relief
