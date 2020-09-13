@@ -38,6 +38,20 @@ if (-Not $?)
 }
 
 # ================================================================================
+# Protobuf Patch for CUDA
+#   - https://github.com/pytorch/pytorch/issues/42939
+# ================================================================================
+
+git remote add peterjc123 https://github.com/peterjc123/pytorch.git
+git pull peterjc123 system_protobuf_patch
+
+if (-Not $?)
+{
+    echo "Failed to apply protobuf patch for CUDA build."
+    exit 1
+}
+
+# ================================================================================
 # Patch DNNL compat_lib
 #   - https://github.com/pytorch/pytorch/issues/42115
 # ================================================================================
