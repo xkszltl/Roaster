@@ -133,6 +133,8 @@ $cxxflags               = "${cflags} ${gtest_silent_warning}"
 # Known issues:
 #   * They claim (I think it's wrong) that MKL-DNN requires OpenMP 3.0 which is not supported in MSVC.
 #   * Fix CUDA compilation with /FS.
+#   * CUDA separable compilation with ninja creates long command not runnable.
+#     https://github.com/pytorch/pytorch/issues/44599
 #   * /Zi is replaced by /Z7 in CMake.
 # ==========================================================================================
 cmake                                                                           `
@@ -144,7 +146,7 @@ cmake                                                                           
     -DBUILD_TEST=ON                                                             `
     -DCMAKE_BUILD_TYPE=Release                                                  `
     -DCMAKE_C_FLAGS="/FS /GL /MP /Zi /arch:AVX2 ${cflags}"                      `
-    -DCMAKE_CUDA_SEPARABLE_COMPILATION=ON                                       `
+    -DCMAKE_CUDA_SEPARABLE_COMPILATION=OFF                                      `
     -DCMAKE_CXX_FLAGS="/EHsc /FS /GL /MP /Zi /arch:AVX2 ${cxxflags}"            `
     -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"                `
     -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/Caffe2"                         `
@@ -154,7 +156,7 @@ cmake                                                                           
     -DCMAKE_VERBOSE_MAKEFILE=ON                                                 `
     -DCPUINFO_BUILD_TOOLS=ON                                                    `
     -DCUDA_NVCC_FLAGS="--expt-relaxed-constexpr"                                `
-    -DCUDA_SEPARABLE_COMPILATION=ON                                             `
+    -DCUDA_SEPARABLE_COMPILATION=OFF                                            `
     -DCUDA_VERBOSE_BUILD=ON                                                     `
     -DDNNL_LIBRARY_TYPE="SHARED"                                                `
     -DMKLDNN_LIBRARY_TYPE="SHARED"                                              `
