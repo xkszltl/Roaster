@@ -38,7 +38,7 @@ if (-not (Test-Path "../${trt_name}"))
 
 mkdir "${trt_name}.extracting"
 Expand-Archive "../${trt_name}" "${trt_name}.extracting"
-Move-Item -Force "${trt_name.extracting.d}/TensorRT-*" "tensorrt"
+Move-Item -Force "${trt_name}.extracting.d/TensorRT-*" "tensorrt"
 rm -Force -Recurse "${trt_name}.extracting"
 
 rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${Env:ProgramFiles}/tensorrt"
