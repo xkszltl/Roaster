@@ -7,7 +7,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)/../lib/native/lib/Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>asmjit.lib;c10.lib;caffe2_detectron_ops.lib;caffe2_module_test_dynamic.lib;caffe2_observers.lib;caffe2_rocksdb.lib;cpuinfo.lib;fbgemm.lib;shm.lib;torch.lib;torch_cpu.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>caffe2_detectron_ops_gpu.lib;caffe2_module_test_dynamic.lib;caffe2_nvrtc.lib;caffe2_observers.lib;caffe2_rocksdb.lib;cpuinfo.lib;shm.lib;torch.lib;torch_cuda.lib;c10_cuda.lib;torch_cpu.lib;c10.lib;fbgemm.lib;asmjit.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
 </Project>

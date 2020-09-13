@@ -9,12 +9,20 @@
       <Link>c10.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/caffe2_detectron_ops.dll">
-      <Link>caffe2_detectron_ops.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/c10_cuda.dll">
+      <Link>c10_cuda.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/caffe2_detectron_ops_gpu.dll">
+      <Link>caffe2_detectron_ops_gpu.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/caffe2_module_test_dynamic.dll">
       <Link>caffe2_module_test_dynamic.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/caffe2_nvrtc.dll">
+      <Link>caffe2_nvrtc.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/caffe2_observers.dll">
@@ -39,6 +47,10 @@
     </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/torch_cpu.dll">
       <Link>torch_cpu.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/torch_cuda.dll">
+      <Link>torch_cuda.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/torch_global_deps.dll">

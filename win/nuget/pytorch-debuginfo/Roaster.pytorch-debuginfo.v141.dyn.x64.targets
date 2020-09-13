@@ -9,8 +9,12 @@
       <Link>c10.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/caffe2_detectron_ops.pdb">
-      <Link>caffe2_detectron_ops.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/c10_cuda.pdb">
+      <Link>c10_cuda.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/caffe2_detectron_ops_gpu.pdb">
+      <Link>caffe2_detectron_ops_gpu.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/caffe2_module_test_dynamic.pdb">
@@ -31,6 +35,10 @@
     </Content>
     <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/torch_cpu.pdb">
       <Link>torch_cpu.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/torch_cuda.pdb">
+      <Link>torch_cuda.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
