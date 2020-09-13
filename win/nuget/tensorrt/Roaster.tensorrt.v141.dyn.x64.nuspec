@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Roaster.tensorrt.v141.dyn.x64</id>
+    <version>$version$</version>
+    <title>Roaster.tensorrt.v141.dyn.x64</title>
+    <authors>NVIDIA Corporation</authors>
+    <owners>Tongliang Liao</owners>
+    <licenseUrl>https://docs.nvidia.com/deeplearning/tensorrt/sla/index.html</licenseUrl>
+    <projectUrl>https://github.com/NVIDIA/TensorRT</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>The core of NVIDIA TensorRT is a C++ library that facilitates high-performance inference on NVIDIA graphics processing units (GPUs).</summary>
+    <description>TensorRT takes a trained network, which consists of a network definition and a set of trained parameters, and produces a highly optimized runtime engine which performs inference for that network.</description>
+    <releaseNotes>https://docs.nvidia.com/deeplearning/tensorrt/release-notes</releaseNotes>
+    <copyright>Copyright 2017-2020</copyright>
+    <tags>tensorrt native C++ v141 dyn</tags>
+    <dependencies>
+      <dependency id="Roaster.cuda.v141.dyn.x64"        version="[$version$]" />
+      <dependency id="Roaster.cudnn.v141.dyn.x64"       version="[$version$]" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="Roaster.tensorrt.v141.dyn.x64.targets"   target="build\Roaster.tensorrt.v141.dyn.x64.targets" />
+    <file src="tensorrt\*.txt"                          target="lib\native\lib\Release\" />
+    <file src="tensorrt\bin\**\*.exe"                   target="lib\native\lib\Release\" />
+    <file src="tensorrt\doc\**\*.pdf"                   target="lib\native\lib\Release\" />
+    <file src="tensorrt\doc\**\*.txt"                   target="lib\native\lib\Release\" />
+    <file src="tensorrt\include\**\*.h"                 target="lib\native\include" />
+    <file src="tensorrt\lib\**\*.dll"                   target="lib\native\lib\Release\" />
+    <file src="tensorrt\lib\**\*.lib"                   target="lib\native\lib\Release\" />
+  </files>
+</package>
