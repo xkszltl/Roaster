@@ -24,6 +24,7 @@ foreach ($pkg in @(
     "curl",
     "cuda",
     "cudnn",
+    "tensorrt",
     "intel",
     "mklml",
     "freetype",
