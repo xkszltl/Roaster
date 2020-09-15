@@ -23,6 +23,13 @@ if (Test-Path "$root")
 $latest_ver='v' + $($(git ls-remote --tags "$repo") -match '.*refs/tags/v[0-9\.]*$' -replace '.*refs/tags/v','' | sort {[Version]$_})[-1]
 git clone --depth 1 --recursive --single-branch -b "$latest_ver" "$repo"
 pushd "$root"
+
+# ----------------------------------------------------------------
+# Known issues:
+#   - Missing <algorithm> for std::count_if.
+# ----------------------------------------------------------------
+git cherry-pick 03b3d59d
+
 mkdir build
 pushd build
 
