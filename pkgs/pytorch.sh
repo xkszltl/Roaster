@@ -25,7 +25,7 @@
 
     git remote add patch https://github.com/xkszltl/pytorch.git
 
-    PATCHES="lstm rnn_arg"
+    PATCHES="lambda_capture lstm rnn_arg"
 
     git pull --no-edit patch $PATCHES
 

@@ -29,7 +29,7 @@ pushd "$root"
 
 git remote add patch https://github.com/xkszltl/pytorch.git
 git fetch patch
-git pull patch lstm
+git pull patch lambda_capture lstm
 
 if (-Not $?)
 {
