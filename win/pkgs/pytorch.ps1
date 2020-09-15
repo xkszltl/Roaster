@@ -137,6 +137,8 @@ $cxxflags               = "${cflags} ${gtest_silent_warning}"
 #   * /Zi is replaced by /Z7 in CMake.
 #   * Need to run config multiple times before getting consistent output.
 #     https://github.com/pytorch/pytorch/issues/44614
+#   * /LTCG:incremental crashes MSVC 16.7.3.
+#     https://developercommunity.visualstudio.com/content/problem/1143627/fatal-error-c1001-internal-compiler-error-with-167.html
 # ==========================================================================================
 For ($i=0; $i -lt 2; ++$i)
 {
@@ -151,13 +153,13 @@ For ($i=0; $i -lt 2; ++$i)
         -DCMAKE_C_FLAGS="/FS /GL /MP /Zi /arch:AVX2 ${cflags}"                      `
         -DCMAKE_CUDA_SEPARABLE_COMPILATION=OFF                                      `
         -DCMAKE_CXX_FLAGS="/EHsc /FS /GL /MP /Zi /arch:AVX2 ${cxxflags}"            `
-        -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"                `
+        -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG"                            `
         -DCMAKE_IGNORE_PATH="${Env:ProgramFiles}/Caffe2"                            `
         -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/Caffe2"                         `
         -DCMAKE_FIND_NO_INSTALL_PREFIX=ON                                           `
         -DCMAKE_PDB_OUTPUT_DIRECTORY="${PWD}/pdb"                                   `
-        -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"             `
-        -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                             `
+        -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG"                         `
+        -DCMAKE_STATIC_LINKER_FLAGS="/LTCG"                                         `
         -DCMAKE_VERBOSE_MAKEFILE=ON                                                 `
         -DCPUINFO_BUILD_TOOLS=ON                                                    `
         -DCUDA_NVCC_FLAGS="--expt-relaxed-constexpr"                                `
