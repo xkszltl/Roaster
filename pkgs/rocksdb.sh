@@ -7,8 +7,7 @@
 
     # ------------------------------------------------------------
 
-    # . "$ROOT_DIR/pkgs/utils/git/version.sh" facebook/rocksdb,v
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" facebook/rocksdb,master
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" facebook/rocksdb,v
     until git clone -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd rocksdb
 
