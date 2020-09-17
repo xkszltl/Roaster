@@ -51,5 +51,5 @@ esac
 
 mkdir -p "$INSTALL_ABS/src/$(basename "$(pwd)")"
 
-ls -A -I".git" -I"$(basename "$(dirname "$INSTALL_ROOT")")" \
+ls -A -I"$(basename "$(dirname "$INSTALL_ROOT")")" \
 | xargs cp --reflink=auto -aft "$INSTALL_ABS/src/$(basename "$(pwd)")/"
