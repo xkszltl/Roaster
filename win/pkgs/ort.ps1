@@ -144,6 +144,9 @@ if ($use_bat)
 }
 else
 {
+    # Work around https://github.com/microsoft/onnxruntime/issues/5024
+    mkdir '../include/onnxruntime/core/providers/shared'
+
     # Ort team is removing prebuilt protobuf.
     #     -DONNX_CUSTOM_PROTOC_EXECUTABLE="${Env:ProgramFiles}/protobuf/bin/protoc.exe"
     #     -Donnxruntime_USE_PREBUILT_PB=ON
