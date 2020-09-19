@@ -83,13 +83,10 @@
         #     https://github.com/microsoft/onnxruntime/issues/4625
         #   - Missing compute 3.5/3.7 support by default.
         #     https://github.com/microsoft/onnxruntime/issues/4935
-        #   - Dir missing but referenced by install().
-        #     https://github.com/microsoft/onnxruntime/issues/5024
         #   - Need ar/ranlib wrapper when using CUDA+LTO.
         #     https://github.com/microsoft/onnxruntime/issues/5031
         # --------------------------------------------------------
         # -DCMAKE_{C,CXX,CUDA}_COMPILER_{AR,RANLIB}="--plugin=$("$CC" --print-file-name=liblto_plugin.so)"
-        mkdir -p '../include/onnxruntime/core/providers/shared'
         cmake                                                   \
             -DCMAKE_AR="$(which "$AR")"                         \
             -DCMAKE_BUILD_TYPE=Release                          \
