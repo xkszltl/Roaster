@@ -8,8 +8,8 @@
         until sudo yum makecache -y; do echo 'Retrying'; done
         until sudo yum install -y sed yum-{plugin-{fastestmirror,priorities},utils}; do echo 'Retrying'; done
 
-        sudo yum-config-manager --setopt=tsflags= --save
-        $IS_CONTAINER || sudo yum-config-manager --setopt=installonly_limit=3 --save
+        sudo yum-config-manager --save --setopt=tsflags=
+        $IS_CONTAINER || sudo yum-config-manager --save --setopt=installonly_limit=3
 
         # Hack to skip repo caching.
         [ "_$GIT_MIRROR" = "_$GIT_MIRROR_CODINGCAFE" ] || export RPM_CACHE_REPO="$ROOT_DIR/non-exist-file"
@@ -17,6 +17,7 @@
         RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" {base,updates,extras,centosplus}{,-source} base-debuginfo
 
         until sudo yum install -y nextgen-yum4 dnf-plugins-core; do echo 'Retrying'; done
+        sudo dnf config-manager --save --setopt=fastestmirror=true
 
         until sudo dnf makecache -y; do echo 'Retrying'; done
         until sudo dnf install -y bc {core,find,ip}utils curl kernel-headers; do echo 'Retrying'; done
