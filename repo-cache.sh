@@ -30,15 +30,11 @@ export DRY_WGET=$($DRY && echo --spider)
 #   - Nvidia CDN in China has terrible availability.
 #     It is very likely to get "Failed to connect to origin, please retry" in HTTP 200.
 #     Disable plugin (yum-axelget) and use only one connection may help.
-export REPOSYNC='reposync
-    --cachedir=$(mktemp -d)
+export REPOSYNC='dnf reposync
     --download-metadata
-    --downloadcomps
-    '"$($REPO_GPG && echo --gpgcheck)"'
-    --norepopath
-    --plugins
-    --source
-    -r
+    '"$($REPO_GPG || echo --nogpgcheck)"'
+    '"$(false && --norepopath)"'
+    --repoid
 '
 
 export CREATEREPO='createrepo_c
@@ -118,8 +114,8 @@ parallel -j0 --line-buffer --bar 'bash -c '"'"'
 # Makecache
 # ----------------------------------------------------------------
 
-yum makecache fast -y || true
-rm -rf $(find . -name .repodata -type d)
+# dnf makecache --enablerepo '*' -y || true
+find . -name .repodata -type d | xargs -r rm -rf
 
 # ----------------------------------------------------------------
 # Proxy
@@ -298,20 +294,23 @@ done
 # ----------------------------------------------------------------
 
 parallel -j0 --line-buffer --bar 'bash -c '"'"'
-    export JSON_OBJ=$(jq <<< "$REPO_TASKS" ".repo_tasks | .[{}]")
+    JSON_OBJ=$(jq <<< "$REPO_TASKS" ".repo_tasks | .[{}]")
     printf "Execute task\n%s\n" "$JSON_OBJ"
 
-    export repo=$(jq -r ".repo" <<< "$JSON_OBJ")
-    export path=$(jq -r ".path" <<< "$JSON_OBJ")
+    repo="$(jq -r ".repo" <<< "$JSON_OBJ")"
+    path="$(jq -r ".path" <<< "$JSON_OBJ")"
     [ "'"$#"'" -eq 0 ] || grep -i "$repo" <<< "'"$@"'" || exit 0
-    jq -e ".sync_args" <<< "$JSON_OBJ" > /dev/null && export sync_args=$(jq -r ".sync_args" <<< "$JSON_OBJ")
-    export retries=1
-    jq -e ".retries" <<< "$JSON_OBJ" > /dev/null && export retries=$(jq -r ".retries" <<< "$JSON_OBJ")
-    export use_proxy="'"$USE_PROXY"'"
-    jq -e ".use_proxy" <<< "$JSON_OBJ" > /dev/null && export use_proxy=$(jq -r ".use_proxy" <<< "$JSON_OBJ")
+    jq -e ".sync_args" <<< "$JSON_OBJ" > /dev/null && sync_args=$(jq -r ".sync_args" <<< "$JSON_OBJ")
+    retries=1
+    jq -e ".retries" <<< "$JSON_OBJ" > /dev/null && retries=$(jq -r ".retries" <<< "$JSON_OBJ")
+    use_proxy="'"$USE_PROXY"'"
+    jq -e ".use_proxy" <<< "$JSON_OBJ" > /dev/null && use_proxy=$(jq -r ".use_proxy" <<< "$JSON_OBJ")
 
     mkdir -p "$path"
-    cd "$_"
+    repo_bn="$(basename "$repo")"
+    mkdir -p "repoid"
+    pushd "repoid"
+    ln -sf "../$path" "./$repo_bn"
     for rest in $(seq "$retries" -1 -1); do
         if [ "$rest" -ge 0 ] && "$use_proxy" || [ "$rest" -ne 0 ] && ! "$use_proxy" ; then
             export HTTP_PROXY="proxy.codingcafe.org:8118"
@@ -335,7 +334,10 @@ parallel -j0 --line-buffer --bar 'bash -c '"'"'
             fi
         fi
     done
+    pushd "$repo_bn"
     $DRY || eval $CREATEREPO
+    popd
+    popd
 '"'" :::    \
     $(seq 0 $(expr $(jq <<< "$REPO_TASKS" '.repo_tasks | length') - 1)) \
 &
