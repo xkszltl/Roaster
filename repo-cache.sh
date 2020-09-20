@@ -114,7 +114,7 @@ parallel -j0 --line-buffer --bar 'bash -c '"'"'
 # Makecache
 # ----------------------------------------------------------------
 
-dnf makecache --enablerepo '*' -y || true
+# dnf makecache --enablerepo '*' -y || true
 find . -name .repodata -type d | xargs -r rm -rf
 
 # ----------------------------------------------------------------
