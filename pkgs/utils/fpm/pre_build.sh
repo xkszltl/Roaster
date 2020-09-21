@@ -51,7 +51,16 @@ esac
 
 mkdir -p "$INSTALL_ABS/src/$(basename "$(pwd)")"
 
-git gc --aggressive --force
+(
+    set +xe
+    case "$DISTRO_ID" in
+    "centos" | "fedora" | "rhel")
+        . scl_source enable rh-git218
+        ;;
+    esac
+    set -xe
+    git gc --aggressive --force
+)
 
 ls -A -I"$(basename "$(dirname "$INSTALL_ROOT")")" \
 | xargs cp --reflink=auto -aft "$INSTALL_ABS/src/$(basename "$(pwd)")/"
