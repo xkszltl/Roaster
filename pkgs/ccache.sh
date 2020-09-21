@@ -4,7 +4,7 @@
 
 [ -e $STAGE/ccache ] && ( set -xe
     cd $SCRATCH
-    
+
     # ------------------------------------------------------------
 
     . "$ROOT_DIR/pkgs/utils/git/version.sh" ccache/ccache,v

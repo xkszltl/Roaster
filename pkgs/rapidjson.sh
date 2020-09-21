@@ -4,7 +4,7 @@
 
 [ -e $STAGE/rapidjson ] && ( set -xe
     cd $SCRATCH
-    
+
     # ------------------------------------------------------------
 
     . "$ROOT_DIR/pkgs/utils/git/version.sh" Tencent/rapidjson,master

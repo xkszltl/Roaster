@@ -4,7 +4,7 @@
 
 [ -e $STAGE/gflags ] && ( set -xe
     cd $SCRATCH
-    
+
     # ------------------------------------------------------------
 
     . "$ROOT_DIR/pkgs/utils/git/version.sh" gflags/gflags,v

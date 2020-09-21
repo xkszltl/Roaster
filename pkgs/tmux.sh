@@ -4,7 +4,7 @@
 
 [ -e $STAGE/tmux ] && ( set -xe
     cd $SCRATCH
-    
+
     # ------------------------------------------------------------
 
     . "$ROOT_DIR/pkgs/utils/git/version.sh" tmux/tmux,

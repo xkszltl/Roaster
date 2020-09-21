@@ -4,7 +4,7 @@
 
 [ -e $STAGE/fpm ] && ( set -xe
     cd $SCRATCH
-    
+
     # ------------------------------------------------------------
 
     . "$ROOT_DIR/pkgs/utils/git/version.sh" jordansissel/fpm,v

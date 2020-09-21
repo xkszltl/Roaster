@@ -4,7 +4,7 @@
 
 [ -e $STAGE/jsoncpp ] && ( set -xe
     cd $SCRATCH
-    
+
     # ------------------------------------------------------------
 
     # Use master until patch released: https://github.com/open-source-parsers/jsoncpp/commit/a4fb5db54389e618a4968a3feb7f20d5ce853232

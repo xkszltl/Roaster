@@ -4,7 +4,7 @@
 
 [ -e $STAGE/axel ] && ( set -xe
     cd $SCRATCH
-    
+
     # ------------------------------------------------------------
 
     . "$ROOT_DIR/pkgs/utils/git/version.sh" axel-download-accelerator/axel,v

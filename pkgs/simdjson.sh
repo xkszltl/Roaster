@@ -4,7 +4,7 @@
 
 [ -e $STAGE/simdjson ] && ( set -xe
     cd $SCRATCH
-    
+
     # ------------------------------------------------------------
 
     . "$ROOT_DIR/pkgs/utils/git/version.sh" simdjson/simdjson,v

@@ -4,7 +4,7 @@
 
 [ -e $STAGE/ipt ] && ( set -xe
     cd $SCRATCH
-    
+
     # ------------------------------------------------------------
 
     . "$ROOT_DIR/pkgs/utils/git/version.sh" 01org/processor-trace,v

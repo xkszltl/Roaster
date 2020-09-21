@@ -219,7 +219,7 @@ Maintenance
 
 We try to automate the script to find the latest release.
 However, some libraries require active manual maintenance.
-Usually this is caused by anti-crawler mechanism. 
+Usually this is caused by anti-crawler mechanism.
 
 Intel Performance Libraries
 ----------

@@ -4,7 +4,7 @@
 
 [ -e $STAGE/snappy ] && ( set -xe
     cd $SCRATCH
-    
+
     # ------------------------------------------------------------
 
     . "$ROOT_DIR/pkgs/utils/git/version.sh" google/snappy,

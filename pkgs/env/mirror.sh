@@ -18,7 +18,7 @@ case "$DISTRO_ID" in
     ;;
 'debian' | 'linuxmint' | "ubuntu")
     which bc     > /dev/null 2> /dev/null || sudo apt-get install -y bc
-    which column > /dev/null 2> /dev/null || sudo apt-get install -y bsdmainutils 
+    which column > /dev/null 2> /dev/null || sudo apt-get install -y bsdmainutils
     which paste  > /dev/null 2> /dev/null || sudo apt-get install -y coreutils
     which ping   > /dev/null 2> /dev/null || sudo apt-get install -y iputils-ping
     which sed    > /dev/null 2> /dev/null || sudo apt-get install -y sed

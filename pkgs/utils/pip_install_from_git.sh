@@ -52,7 +52,7 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
             ;;
         'ubuntu')
             # Skip SCL Python.
-            [ "$(cut -d',' -f1 <<< "$py")" ] && exit 0 
+            [ "$(cut -d',' -f1 <<< "$py")" ] && exit 0
             ;;
         *)
             echo "Unknown DISTRO_ID \"$DISTRO_ID\"."

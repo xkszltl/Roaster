@@ -4,7 +4,7 @@
 
 [ -e $STAGE/nccl ] && ( set -xe
     cd $SCRATCH
-    
+
     # ------------------------------------------------------------
 
     . "$ROOT_DIR/pkgs/utils/git/version.sh" NVIDIA/nccl,v

@@ -4,7 +4,7 @@
 
 [ -e $STAGE/libgdiplus ] && ( set -xe
     cd $SCRATCH
-    
+
     # ------------------------------------------------------------
 
     . "$ROOT_DIR/pkgs/utils/git/version.sh" mono/libgdiplus,

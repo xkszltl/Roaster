@@ -198,12 +198,12 @@
                 ;;
             esac
         done
- 
+
         popd
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
-    
+
     # ------------------------------------------------------------
 
     cd

@@ -4,7 +4,7 @@
 
 [ -e $STAGE/leveldb ] && ( set -xe
     cd $SCRATCH
-    
+
     # ------------------------------------------------------------
 
     until git clone --depth 1 --no-checkout --no-single-branch $GIT_MIRROR/google/leveldb.git; do echo 'Retrying'; done

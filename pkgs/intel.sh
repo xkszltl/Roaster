@@ -42,7 +42,7 @@
         echo "Installing Intel $(tr [a-z] [A-Z] <<< $i)..."
         sudo $i/install.sh --silent $i/silent_install.cfg
     done
-    
+
     sudo ldconfig
 
     cd

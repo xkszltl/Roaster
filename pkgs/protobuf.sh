@@ -37,7 +37,7 @@
         if false; then
             export CC="ccache $CC"
             export CXX="ccache $CXX"
-            export C{,XX}FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -fPIC -O3 -g" 
+            export C{,XX}FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -fPIC -O3 -g"
 
             ./autogen.sh
             ./configure --prefix="$INSTALL_ABS"

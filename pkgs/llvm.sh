@@ -72,7 +72,7 @@ for i in llvm-{gcc,clang}; do
                 -DPOLLY_ENABLE_GPGPU_CODEGEN=ON
                 -G Ninja
                 ../llvm"
-            
+
             # GCC only takes plugin processed static lib for LTO.
             # Need to use ar/ranlib wrapper.
             #
