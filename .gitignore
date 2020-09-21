@@ -1,13 +1,7 @@
 /tmp
 
-# Created by https://www.gitignore.io/api/c,windows,macos,osx,linux,latex,tex,vim,emacs,eclipse,sublimetext,svn,cvs,mercurial,microsoftoffice,visualstudio,visualstudiocode,cmake,maven,java,python,intellij,jetbrains,pycharm
-
-### CVS ###
-/CVS/*
-**/CVS/*
-.cvsignore
-*/.cvsignore
-
+# Created by https://www.toptal.com/developers/gitignore/api/c,tex,svn,cvs,vim,osx,java,latex,cmake,linux,maven,macos,python,pycharm,windows,eclipse,intellij,notepadpp,mercurial,jetbrains,sublimetext,visualstudio,microsoftoffice,visualstudiocode,xcode
+# Edit at https://www.toptal.com/developers/gitignore?templates=c,tex,svn,cvs,vim,osx,java,latex,cmake,linux,maven,macos,python,pycharm,windows,eclipse,intellij,notepadpp,mercurial,jetbrains,sublimetext,visualstudio,microsoftoffice,visualstudiocode,xcode
 
 ### C ###
 # Prerequisites
@@ -57,442 +51,47 @@
 # Kernel Module Compile Results
 *.mod*
 *.cmd
+.tmp_versions/
 modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
 
-
-### macOS ###
-*.DS_Store
-.AppleDouble
-.LSOverride
-
-# Icon must end with two \r
-Icon
-# Thumbnails
-._*
-# Files that might appear in the root of a volume
-.DocumentRevisions-V100
-.fseventsd
-.Spotlight-V100
-.TemporaryItems
-.Trashes
-.VolumeIcon.icns
-.com.apple.timemachine.donotpresent
-# Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
-
-
-### OSX ###
-# Icon must end with two \r
-# Thumbnails
-# Files that might appear in the root of a volume
-# Directories potentially created on remote AFP share
-
-
-### Linux ###
-*~
-
-# temporary files which can be created if a process still has a handle open of a deleted file
-.fuse_hidden*
-
-# KDE directory preferences
-.directory
-
-# Linux trash folder which might appear on any partition or disk
-.Trash-*
-
-# .nfs files are created when an open file is removed but is still being accessed
-.nfs*
-
-
-### LaTeX ###
-## Core latex/pdflatex auxiliary files:
-*.aux
-*.lof
-*.log
-*.lot
-*.fls
-*.toc
-*.fmt
-*.fot
-*.cb
-*.cb2
-
-## Intermediate documents:
-*.dvi
-*-converted-to.*
-# these rules might exclude image files for figures etc.
-# *.ps
-# *.eps
-# *.pdf
-
-## Generated if empty string is given at "Please type another file name for output:"
-.pdf
-
-## Bibliography auxiliary files (bibtex/biblatex/biber):
-*.bbl
-*.bcf
-*.blg
-*-blx.aux
-*-blx.bib
-*.brf
-*.run.xml
-
-## Build tool auxiliary files:
-*.fdb_latexmk
-*.synctex
-*.synctex(busy)
-*.synctex.gz
-*.synctex.gz(busy)
-*.pdfsync
-
-## Auxiliary and intermediate files from other packages:
-# algorithms
-*.alg
-*.loa
-
-# achemso
-acs-*.bib
-
-# amsthm
-*.thm
-
-# beamer
-*.nav
-*.pre
-*.snm
-*.vrb
-
-# cprotect
-*.cpt
-
-# endnotes
-*.ent
-
-# fixme
-*.lox
-
-# feynmf/feynmp
-*.mf
-*.mp
-*.t[1-9]
-*.t[1-9][0-9]
-*.tfm
-*.[1-9]
-*.[1-9][0-9]
-
-#(r)(e)ledmac/(r)(e)ledpar
-*.end
-*.?end
-*.[1-9][0-9][0-9]
-*.[1-9]R
-*.[1-9][0-9]R
-*.[1-9][0-9][0-9]R
-*.eledsec[1-9]
-*.eledsec[1-9]R
-*.eledsec[1-9][0-9]
-*.eledsec[1-9][0-9]R
-*.eledsec[1-9][0-9][0-9]
-*.eledsec[1-9][0-9][0-9]R
-
-# glossaries
-*.acn
-*.acr
-*.glg
-*.glo
-*.gls
-*.glsdefs
-
-# gnuplottex
-*-gnuplottex-*
-
-# gregoriotex
-*.gaux
-*.gtex
-
-# hyperref
-
-# knitr
-*-concordance.tex
-# TODO Comment the next line if you want to keep your tikz graphics files
-*.tikz
-*-tikzDictionary
-
-# listings
-*.lol
-
-# makeidx
-*.idx
-*.ilg
-*.ind
-*.ist
-
-# minitoc
-*.maf
-*.mlf
-*.mlt
-*.mtc[0-9]*
-
-# minted
-_minted*
-*.pyg
-
-# morewrites
-*.mw
-
-# mylatexformat
-
-# nomencl
-*.nlo
-
-# sagetex
-*.sagetex.sage
-*.sagetex.py
-*.sagetex.scmd
-
-# scrwfile
-*.wrt
-
-# sympy
-*.sout
-*.sympy
-sympy-plots-for-*.tex/
-
-# pdfcomment
-*.upa
-*.upb
-
-# pythontex
-*.pytxcode
-pythontex-files-*/
-
-# thmtools
-*.loe
-
-# TikZ & PGF
-*.dpth
-*.md5
-*.auxlock
-
-# todonotes
-*.tdo
-
-# easy-todo
-*.lod
-
-# xindy
-*.xdy
-
-# xypic precompiled matrices
-*.xyc
-
-# endfloat
-*.ttt
-*.fff
-
-# Latexian
-TSWLatexianTemp*
-
-## Editors:
-# WinEdt
-*.bak
-*.sav
-
-# Texpad
-.texpadtmp
-
-# Kile
-*.backup
-
-# KBibTeX
-*~[0-9]*
-
-# auto folder when using emacs and auctex 
-/auto/*
-
-# expex forward references with \gathertags
-*-tags.tex
-
-### TeX ###
-## Core latex/pdflatex auxiliary files:
-
-## Intermediate documents:
-# these rules might exclude image files for figures etc.
-# *.ps
-# *.eps
-# *.pdf
-
-## Generated if empty string is given at "Please type another file name for output:"
-
-## Bibliography auxiliary files (bibtex/biblatex/biber):
-
-## Build tool auxiliary files:
-
-## Auxiliary and intermediate files from other packages:
-# algorithms
-
-# achemso
-
-# amsthm
-
-# beamer
-
-# cprotect
-
-# endnotes
-
-# fixme
-
-# feynmf/feynmp
-
-#(r)(e)ledmac/(r)(e)ledpar
-
-# glossaries
-
-# gnuplottex
-
-# gregoriotex
-
-# hyperref
-
-# knitr
-# TODO Comment the next line if you want to keep your tikz graphics files
-
-# listings
-
-# makeidx
-
-# minitoc
-
-# minted
-
-# morewrites
-
-# mylatexformat
-
-# nomencl
-
-# sagetex
-
-# scrwfile
-
-# sympy
-
-# pdfcomment
-
-# pythontex
-
-# thmtools
-
-# TikZ & PGF
-
-# todonotes
-
-# easy-todo
-
-# xindy
-
-# xypic precompiled matrices
-
-# endfloat
-
-# Latexian
-
-## Editors:
-# WinEdt
-
-# Texpad
-
-# Kile
-
-# KBibTeX
-
-# auto folder when using emacs and auctex 
-
-# expex forward references with \gathertags
-
-### Vim ###
-# swap
-[._]*.s[a-v][a-z]
-[._]*.sw[a-p]
-[._]s[a-v][a-z]
-[._]sw[a-p]
-# session
-Session.vim
-# temporary
-.netrwhist
-# auto-generated tag files
-tags
-
-
-### Emacs ###
-# -*- mode: gitignore; -*-
-\#*\#
-/.emacs.desktop
-/.emacs.desktop.lock
-*.elc
-auto-save-list
-tramp
-.\#*
-
-# Org-mode
-.org-id-locations
-*_archive
-
-# flymake-mode
-*_flymake.*
-
-# eshell files
-/eshell/history
-/eshell/lastdir
-
-# elpa packages
-/elpa/
-
-# reftex files
-*.rel
-
-# AUCTeX auto folder
-/auto/
-
-# cask packages
-.cask/
-dist/
-
-# Flycheck
-flycheck_*.el
-
-# server auth directory
-/server/
-
-# projectiles files
-.projectile
-
-# directory configuration
-.dir-locals.el
-
+### CMake ###
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
+
+### CMake Patch ###
+# External projects
+*-prefix/
+
+### CVS ###
+/CVS/*
+**/CVS/*
+.cvsignore
+*/.cvsignore
 
 ### Eclipse ###
-
 .metadata
 bin/
 tmp/
 *.tmp
+*.bak
 *.swp
 *~.nib
 local.properties
 .settings/
 .loadpath
 .recommenders
-
-# Eclipse Core
-.project
 
 # External tool builders
 .externalToolBuilders/
@@ -506,8 +105,8 @@ local.properties
 # CDT-specific (C/C++ Development Tooling)
 .cproject
 
-# JDT-specific (Eclipse Java Development Tools)
-.classpath
+# CDT- autotools
+.autotools
 
 # Java annotation processor (APT)
 .factorypath
@@ -530,121 +129,74 @@ local.properties
 # Code Recommenders
 .recommenders/
 
+# Annotation Processing
+.apt_generated/
+.apt_generated_test/
 
-### SublimeText ###
-# cache files for sublime text
-*.tmlanguage.cache
-*.tmPreferences.cache
-*.stTheme.cache
+# Scala IDE specific (Scala & Java development for Eclipse)
+.cache-main
+.scala_dependencies
+.worksheet
 
-# workspace files are user-specific
-*.sublime-workspace
+# Uncomment this line if you wish to ignore the project description file.
+# Typically, this file would be tracked if it contains build/dependency configurations:
+#.project
 
-# project files should be checked into the repository, unless a significant
-# proportion of contributors will probably not be using SublimeText
-# *.sublime-project
+### Eclipse Patch ###
+# Spring Boot Tooling
+.sts4-cache/
 
-# sftp configuration file
-sftp-config.json
-
-# Package control specific files
-Package Control.last-run
-Package Control.ca-list
-Package Control.ca-bundle
-Package Control.system-ca-bundle
-Package Control.cache/
-Package Control.ca-certs/
-bh_unicode_properties.cache
-
-# Sublime-github package stores a github token in this file
-# https://packagecontrol.io/packages/sublime-github
-GitHub.sublime-settings
-
-
-### SVN ###
-.svn/
-
-
-### Windows ###
-# Windows thumbnail cache files
-Thumbs.db
-ehthumbs.db
-ehthumbs_vista.db
-
-# Folder config file
-Desktop.ini
-
-# Recycle Bin used on file shares
-$RECYCLE.BIN/
-
-# Windows Installer files
-*.cab
-*.msi
-*.msm
-*.msp
-
-# Windows shortcuts
-*.lnk
-
-
-### Mercurial ###
-.hg/
-.hgignore
-.hgsigs
-.hgsub
-.hgsubstate
-.hgtags
-
-
-### MicrosoftOffice ###
-
-# Word temporary
-~$*.doc*
-
-# Excel temporary
-~$*.xls*
-
-# Excel Backup File
-*.xlk
-
-# PowerPoint temporary
-~$*.ppt*
-
-# Visio autosave temporary files
-*.~vsdx
-
-
-### JetBrains ###
-# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
+### Intellij ###
+# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
-# User-specific stuff:
-.idea/workspace.xml
-.idea/tasks.xml
+# User-specific stuff
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
 
-# Sensitive or high-churn files:
-.idea/dataSources/
-.idea/dataSources.ids
-.idea/dataSources.xml
-.idea/dataSources.local.xml
-.idea/sqlDataSources.xml
-.idea/dynamic.xml
-.idea/uiDesigner.xml
+# Generated files
+.idea/**/contentModel.xml
 
-# Gradle:
-.idea/gradle.xml
-.idea/libraries
+# Sensitive or high-churn files
+.idea/**/dataSources/
+.idea/**/dataSources.ids
+.idea/**/dataSources.local.xml
+.idea/**/sqlDataSources.xml
+.idea/**/dynamic.xml
+.idea/**/uiDesigner.xml
+.idea/**/dbnavigator.xml
 
-# Mongo Explorer plugin:
-.idea/mongoSettings.xml
+# Gradle
+.idea/**/gradle.xml
+.idea/**/libraries
 
-## File-based project format:
+# Gradle and Maven with auto-import
+# When using Gradle or Maven with auto-import, you should exclude module files,
+# since they will be recreated, and may cause churn.  Uncomment if using
+# auto-import.
+# .idea/artifacts
+# .idea/compiler.xml
+# .idea/jarRepositories.xml
+# .idea/modules.xml
+# .idea/*.iml
+# .idea/modules
+# *.iml
+# *.ipr
+
+# CMake
+cmake-build-*/
+
+# Mongo Explorer plugin
+.idea/**/mongoSettings.xml
+
+# File-based project format
 *.iws
 
-## Plugin-specific files:
-
 # IntelliJ
-/out/
+out/
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
@@ -652,11 +204,120 @@ $RECYCLE.BIN/
 # JIRA plugin
 atlassian-ide-plugin.xml
 
+# Cursive Clojure plugin
+.idea/replstate.xml
+
 # Crashlytics plugin (for Android Studio and IntelliJ)
 com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 fabric.properties
+
+# Editor-based Rest Client
+.idea/httpRequests
+
+# Android studio 3.1+ serialized cache file
+.idea/caches/build_file_checksums.ser
+
+### Intellij Patch ###
+# Comment Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-215987721
+
+# *.iml
+# modules.xml
+# .idea/misc.xml
+# *.ipr
+
+# Sonarlint plugin
+# https://plugins.jetbrains.com/plugin/7973-sonarlint
+.idea/**/sonarlint/
+
+# SonarQube Plugin
+# https://plugins.jetbrains.com/plugin/7238-sonarqube-community-plugin
+.idea/**/sonarIssues.xml
+
+# Markdown Navigator plugin
+# https://plugins.jetbrains.com/plugin/7896-markdown-navigator-enhanced
+.idea/**/markdown-navigator.xml
+.idea/**/markdown-navigator-enh.xml
+.idea/**/markdown-navigator/
+
+# Cache file creation bug
+# See https://youtrack.jetbrains.com/issue/JBR-2257
+.idea/$CACHE_FILE$
+
+# CodeStream plugin
+# https://plugins.jetbrains.com/plugin/12206-codestream
+.idea/codestream.xml
+
+### Java ###
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+### JetBrains ###
+# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
+# Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
+
+# User-specific stuff
+
+# Generated files
+
+# Sensitive or high-churn files
+
+# Gradle
+
+# Gradle and Maven with auto-import
+# When using Gradle or Maven with auto-import, you should exclude module files,
+# since they will be recreated, and may cause churn.  Uncomment if using
+# auto-import.
+# .idea/artifacts
+# .idea/compiler.xml
+# .idea/jarRepositories.xml
+# .idea/modules.xml
+# .idea/*.iml
+# .idea/modules
+# *.iml
+# *.ipr
+
+# CMake
+
+# Mongo Explorer plugin
+
+# File-based project format
+
+# IntelliJ
+
+# mpeltonen/sbt-idea plugin
+
+# JIRA plugin
+
+# Cursive Clojure plugin
+
+# Crashlytics plugin (for Android Studio and IntelliJ)
+
+# Editor-based Rest Client
+
+# Android studio 3.1+ serialized cache file
 
 ### JetBrains Patch ###
 # Comment Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-215987721
@@ -666,25 +327,350 @@ fabric.properties
 # .idea/misc.xml
 # *.ipr
 
+# Sonarlint plugin
+# https://plugins.jetbrains.com/plugin/7973-sonarlint
 
-### VisualStudioCode ###
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+# SonarQube Plugin
+# https://plugins.jetbrains.com/plugin/7238-sonarqube-community-plugin
 
+# Markdown Navigator plugin
+# https://plugins.jetbrains.com/plugin/7896-markdown-navigator-enhanced
 
-### CMake ###
-CMakeCache.txt
-CMakeFiles
-CMakeScripts
-# Makefile
-cmake_install.cmake
-install_manifest.txt
-compile_commands.json
-CTestTestfile.cmake
+# Cache file creation bug
+# See https://youtrack.jetbrains.com/issue/JBR-2257
 
+# CodeStream plugin
+# https://plugins.jetbrains.com/plugin/12206-codestream
+
+### LaTeX ###
+## Core latex/pdflatex auxiliary files:
+*.aux
+*.lof
+*.lot
+*.fls
+*.toc
+*.fmt
+*.fot
+*.cb
+*.cb2
+.*.lb
+
+## Intermediate documents:
+*.dvi
+*.xdv
+*-converted-to.*
+# these rules might exclude image files for figures etc.
+# *.ps
+# *.eps
+# *.pdf
+
+## Generated if empty string is given at "Please type another file name for output:"
+.pdf
+
+## Bibliography auxiliary files (bibtex/biblatex/biber):
+*.bbl
+*.bcf
+*.blg
+*-blx.aux
+*-blx.bib
+*.run.xml
+
+## Build tool auxiliary files:
+*.fdb_latexmk
+*.synctex
+*.synctex(busy)
+*.synctex.gz
+*.synctex.gz(busy)
+*.pdfsync
+
+## Build tool directories for auxiliary files
+# latexrun
+latex.out/
+
+## Auxiliary and intermediate files from other packages:
+# algorithms
+*.alg
+*.loa
+
+# achemso
+acs-*.bib
+
+# amsthm
+*.thm
+
+# beamer
+*.nav
+*.pre
+*.snm
+*.vrb
+
+# changes
+*.soc
+
+# comment
+*.cut
+
+# cprotect
+*.cpt
+
+# elsarticle (documentclass of Elsevier journals)
+*.spl
+
+# endnotes
+*.ent
+
+# fixme
+*.lox
+
+# feynmf/feynmp
+*.mf
+*.mp
+*.t[1-9]
+*.t[1-9][0-9]
+*.tfm
+
+#(r)(e)ledmac/(r)(e)ledpar
+*.end
+*.?end
+*.[1-9]
+*.[1-9][0-9]
+*.[1-9][0-9][0-9]
+*.[1-9]R
+*.[1-9][0-9]R
+*.[1-9][0-9][0-9]R
+*.eledsec[1-9]
+*.eledsec[1-9]R
+*.eledsec[1-9][0-9]
+*.eledsec[1-9][0-9]R
+*.eledsec[1-9][0-9][0-9]
+*.eledsec[1-9][0-9][0-9]R
+
+# glossaries
+*.acn
+*.acr
+*.glg
+*.glo
+*.gls
+*.glsdefs
+*.lzo
+*.lzs
+
+# uncomment this for glossaries-extra (will ignore makeindex's style files!)
+# *.ist
+
+# gnuplottex
+*-gnuplottex-*
+
+# gregoriotex
+*.gaux
+*.gtex
+
+# htlatex
+*.4ct
+*.4tc
+*.idv
+*.lg
+*.trc
+*.xref
+
+# hyperref
+*.brf
+
+# knitr
+*-concordance.tex
+# TODO Comment the next line if you want to keep your tikz graphics files
+*.tikz
+*-tikzDictionary
+
+# listings
+*.lol
+
+# luatexja-ruby
+*.ltjruby
+
+# makeidx
+*.idx
+*.ilg
+*.ind
+
+# minitoc
+*.maf
+*.mlf
+*.mlt
+*.mtc[0-9]*
+*.slf[0-9]*
+*.slt[0-9]*
+*.stc[0-9]*
+
+# minted
+_minted*
+*.pyg
+
+# morewrites
+*.mw
+
+# nomencl
+*.nlg
+*.nlo
+*.nls
+
+# pax
+*.pax
+
+# pdfpcnotes
+*.pdfpc
+
+# sagetex
+*.sagetex.sage
+*.sagetex.py
+*.sagetex.scmd
+
+# scrwfile
+*.wrt
+
+# sympy
+*.sout
+*.sympy
+sympy-plots-for-*.tex/
+
+# pdfcomment
+*.upa
+*.upb
+
+# pythontex
+*.pytxcode
+pythontex-files-*/
+
+# tcolorbox
+*.listing
+
+# thmtools
+*.loe
+
+# TikZ & PGF
+*.dpth
+*.md5
+*.auxlock
+
+# todonotes
+*.tdo
+
+# vhistory
+*.hst
+*.ver
+
+# easy-todo
+*.lod
+
+# xcolor
+*.xcp
+
+# xmpincl
+*.xmpi
+
+# xindy
+*.xdy
+
+# xypic precompiled matrices and outlines
+*.xyc
+*.xyd
+
+# endfloat
+*.ttt
+*.fff
+
+# Latexian
+TSWLatexianTemp*
+
+## Editors:
+# WinEdt
+*.sav
+
+# Texpad
+.texpadtmp
+
+# LyX
+*.lyx~
+
+# Kile
+*.backup
+
+# gummi
+.*.swp
+
+# KBibTeX
+*~[0-9]*
+
+# TeXnicCenter
+*.tps
+
+# auto folder when using emacs and auctex
+./auto/*
+*.el
+
+# expex forward references with \gathertags
+*-tags.tex
+
+# standalone packages
+*.sta
+
+# Makeindex log files
+*.lpz
+
+# REVTeX puts footnotes in the bibliography by default, unless the nofootinbib
+# option is specified. Footnotes are the stored in a file with suffix Notes.bib.
+# Uncomment the next line to have this generated file ignored.
+#*Notes.bib
+
+### LaTeX Patch ###
+# LIPIcs / OASIcs
+*.vtc
+
+# glossaries
+*.glstex
+
+### Linux ###
+*~
+
+# temporary files which can be created if a process still has a handle open of a deleted file
+.fuse_hidden*
+
+# KDE directory preferences
+.directory
+
+# Linux trash folder which might appear on any partition or disk
+.Trash-*
+
+# .nfs files are created when an open file is removed but is still being accessed
+.nfs*
+
+### macOS ###
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must end with two \r
+Icon
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
 
 ### Maven ###
 target/
@@ -696,26 +682,81 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
+# https://github.com/takari/maven-wrapper#usage-without-binary-jar
+.mvn/wrapper/maven-wrapper.jar
 
-# Exclude maven wrapper
-!/.mvn/wrapper/maven-wrapper.jar
+### Mercurial ###
+.hg/
+.hgignore
+.hgsigs
+.hgsub
+.hgsubstate
+.hgtags
 
+### MicrosoftOffice ###
 
-### Intellij ###
-# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
+# Word temporary
+~$*.doc*
+
+# Word Auto Backup File
+Backup of *.doc*
+
+# Excel temporary
+~$*.xls*
+
+# Excel Backup File
+*.xlk
+
+# PowerPoint temporary
+~$*.ppt*
+
+# Visio autosave temporary files
+*.~vsd*
+
+### NotepadPP ###
+# Notepad++ backups #
+
+### OSX ###
+# General
+
+# Icon must end with two \r
+
+# Thumbnails
+
+# Files that might appear in the root of a volume
+
+# Directories potentially created on remote AFP share
+
+### PyCharm ###
+# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
-# User-specific stuff:
+# User-specific stuff
 
-# Sensitive or high-churn files:
+# Generated files
 
-# Gradle:
+# Sensitive or high-churn files
 
-# Mongo Explorer plugin:
+# Gradle
 
-## File-based project format:
+# Gradle and Maven with auto-import
+# When using Gradle or Maven with auto-import, you should exclude module files,
+# since they will be recreated, and may cause churn.  Uncomment if using
+# auto-import.
+# .idea/artifacts
+# .idea/compiler.xml
+# .idea/jarRepositories.xml
+# .idea/modules.xml
+# .idea/*.iml
+# .idea/modules
+# *.iml
+# *.ipr
 
-## Plugin-specific files:
+# CMake
+
+# Mongo Explorer plugin
+
+# File-based project format
 
 # IntelliJ
 
@@ -723,9 +764,15 @@ buildNumber.properties
 
 # JIRA plugin
 
+# Cursive Clojure plugin
+
 # Crashlytics plugin (for Android Studio and IntelliJ)
 
-### Intellij Patch ###
+# Editor-based Rest Client
+
+# Android studio 3.1+ serialized cache file
+
+### PyCharm Patch ###
 # Comment Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-215987721
 
 # *.iml
@@ -733,6 +780,20 @@ buildNumber.properties
 # .idea/misc.xml
 # *.ipr
 
+# Sonarlint plugin
+# https://plugins.jetbrains.com/plugin/7973-sonarlint
+
+# SonarQube Plugin
+# https://plugins.jetbrains.com/plugin/7238-sonarqube-community-plugin
+
+# Markdown Navigator plugin
+# https://plugins.jetbrains.com/plugin/7896-markdown-navigator-enhanced
+
+# Cache file creation bug
+# See https://youtrack.jetbrains.com/issue/JBR-2257
+
+# CodeStream plugin
+# https://plugins.jetbrains.com/plugin/12206-codestream
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
@@ -744,9 +805,9 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-# env/
 build/
 develop-eggs/
+dist/
 downloads/
 eggs/
 .eggs/
@@ -756,9 +817,12 @@ parts/
 sdist/
 var/
 wheels/
+pip-wheel-metadata/
+share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+MANIFEST
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -773,13 +837,17 @@ pip-delete-this-directory.txt
 # Unit test / coverage reports
 htmlcov/
 .tox/
+.nox/
 .coverage
 .coverage.*
 .cache
 nosetests.xml
 coverage.xml
-*,cover
+*.cover
+*.py,cover
 .hypothesis/
+.pytest_cache/
+pytestdebug.log
 
 # Translations
 *.mo
@@ -787,6 +855,8 @@ coverage.xml
 
 # Django stuff:
 local_settings.py
+db.sqlite3
+db.sqlite3-journal
 
 # Flask stuff:
 instance/
@@ -797,83 +867,327 @@ instance/
 
 # Sphinx documentation
 docs/_build/
+doc/_build/
 
 # PyBuilder
 
 # Jupyter Notebook
 .ipynb_checkpoints
 
+# IPython
+profile_default/
+ipython_config.py
+
 # pyenv
 .python-version
 
-# celery beat schedule file
+# pipenv
+#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
+#   However, in case of collaboration, if having platform-specific dependencies or dependencies
+#   having no cross-platform support, pipenv may install dependencies that don't work, or not
+#   install all needed dependencies.
+#Pipfile.lock
+
+# PEP 582; used by e.g. github.com/David-OConnor/pyflow
+__pypackages__/
+
+# Celery stuff
 celerybeat-schedule
+celerybeat.pid
 
-# dotenv
+# SageMath parsed files
+*.sage.py
+
+# Environments
 .env
-
-# virtualenv
-.venv/
+.venv
+env/
 venv/
-# ENV/
+ENV/
+env.bak/
+venv.bak/
 
 # Spyder project settings
 .spyderproject
+.spyproject
 
 # Rope project settings
 .ropeproject
 
+# mkdocs documentation
+/site
 
-### PyCharm ###
-# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
-# Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
 
-# User-specific stuff:
+# Pyre type checker
+.pyre/
 
-# Sensitive or high-churn files:
+# pytype static type analyzer
+.pytype/
 
-# Gradle:
+### SublimeText ###
+# Cache files for Sublime Text
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
 
-# Mongo Explorer plugin:
+# Workspace files are user-specific
+*.sublime-workspace
 
-## File-based project format:
+# Project files should be checked into the repository, unless a significant
+# proportion of contributors will probably not be using Sublime Text
+# *.sublime-project
 
-## Plugin-specific files:
+# SFTP configuration file
+sftp-config.json
 
-# IntelliJ
+# Package control specific files
+Package Control.last-run
+Package Control.ca-list
+Package Control.ca-bundle
+Package Control.system-ca-bundle
+Package Control.cache/
+Package Control.ca-certs/
+Package Control.merged-ca-bundle
+Package Control.user-ca-bundle
+oscrypto-ca-bundle.crt
+bh_unicode_properties.cache
 
-# mpeltonen/sbt-idea plugin
+# Sublime-github package stores a github token in this file
+# https://packagecontrol.io/packages/sublime-github
+GitHub.sublime-settings
 
-# JIRA plugin
+### SVN ###
+.svn/
 
-# Crashlytics plugin (for Android Studio and IntelliJ)
+### TeX ###
 
-### PyCharm Patch ###
-# Comment Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-215987721
-
-# *.iml
-# modules.xml
-# .idea/misc.xml
-# *.ipr
+# these rules might exclude image files for figures etc.
+# *.ps
+# *.eps
+# *.pdf
 
 
-### Java ###
-*.class
 
-# BlueJ files
-*.ctxt
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+# latexrun
 
-# Package Files #
-*.jar
-*.war
-*.ear
+# algorithms
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+# achemso
 
+# amsthm
+
+# beamer
+
+# changes
+
+# comment
+
+# cprotect
+
+# elsarticle (documentclass of Elsevier journals)
+
+# endnotes
+
+# fixme
+
+# feynmf/feynmp
+
+
+# glossaries
+
+# uncomment this for glossaries-extra (will ignore makeindex's style files!)
+# *.ist
+
+# gnuplottex
+
+# gregoriotex
+
+# htlatex
+
+# hyperref
+
+# knitr
+# TODO Comment the next line if you want to keep your tikz graphics files
+
+# listings
+
+# luatexja-ruby
+
+# makeidx
+
+# minitoc
+
+# minted
+
+# morewrites
+
+# nomencl
+
+# pax
+
+# pdfpcnotes
+
+# sagetex
+
+# scrwfile
+
+# sympy
+
+# pdfcomment
+
+# pythontex
+
+# tcolorbox
+
+# thmtools
+
+# TikZ & PGF
+
+# todonotes
+
+# vhistory
+
+# easy-todo
+
+# xcolor
+
+# xmpincl
+
+# xindy
+
+# xypic precompiled matrices and outlines
+
+# endfloat
+
+# Latexian
+
+# WinEdt
+
+# Texpad
+
+# LyX
+
+# Kile
+
+# gummi
+
+# KBibTeX
+
+# TeXnicCenter
+
+# auto folder when using emacs and auctex
+
+# expex forward references with \gathertags
+
+# standalone packages
+
+# Makeindex log files
+
+# REVTeX puts footnotes in the bibliography by default, unless the nofootinbib
+# option is specified. Footnotes are the stored in a file with suffix Notes.bib.
+# Uncomment the next line to have this generated file ignored.
+
+### TeX Patch ###
+# LIPIcs / OASIcs
+
+# glossaries
+
+### Vim ###
+# Swap
+[._]*.s[a-v][a-z]
+!*.svg  # comment out if you don't need vector files
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+
+# Session
+Session.vim
+Sessionx.vim
+
+# Temporary
+.netrwhist
+# Auto-generated tag files
+tags
+# Persistent undo
+[._]*.un~
+
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+
+### Windows ###
+# Windows thumbnail cache files
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+
+# Dump file
+*.stackdump
+
+# Folder config file
+[Dd]esktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+### Xcode ###
+# Xcode
+#
+# gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
+
+## User settings
+xcuserdata/
+
+## compatibility with Xcode 8 and earlier (ignoring not required starting Xcode 9)
+*.xcscmblueprint
+*.xccheckout
+
+## compatibility with Xcode 3 and earlier (ignoring not required starting Xcode 4)
+DerivedData/
+*.moved-aside
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+
+## Gcc Patch
+/*.gcno
+
+### Xcode Patch ###
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcworkspace/contents.xcworkspacedata
+**/xcshareddata/WorkspaceSettings.xcsettings
 
 ### VisualStudio ###
 ## Ignore Visual Studio temporary files, build results, and
@@ -882,14 +1196,17 @@ hs_err_pid*
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 # User-specific files
+*.rsuser
 *.suo
 *.user
 *.userosscache
 *.sln.docstates
-*.vcxproj.filters
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
+
+# Mono auto generated files
+mono_crash.*
 
 # Build results
 [Dd]ebug/
@@ -898,39 +1215,54 @@ hs_err_pid*
 [Rr]eleases/
 x64/
 x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
 bld/
 [Bb]in/
 [Oo]bj/
 [Ll]og/
+[Ll]ogs/
 
-# Visual Studio 2015 cache/options directory
+# Visual Studio 2015/2017 cache/options directory
 .vs/
 # Uncomment if you have tasks that create the project's static files in wwwroot
 #wwwroot/
+
+# Visual Studio 2017 auto generated files
+Generated\ Files/
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
 
-# NUNIT
+# NUnit
 *.VisualState.xml
 TestResult.xml
+nunit-*.xml
 
 # Build Results of an ATL Project
 [Dd]ebugPS/
 [Rr]eleasePS/
 dlldata.c
 
+# Benchmark Results
+BenchmarkDotNet.Artifacts/
+
 # .NET Core
 project.lock.json
 project.fragment.lock.json
 artifacts/
-**/Properties/launchSettings.json
 
+# StyleCop
+StyleCopReport.xml
+
+# Files built by Visual Studio
 *_i.c
 *_p.c
-*_i.h
+*_h.h
 *.meta
+*.iobj
+*.ipdb
 *.pgc
 *.pgd
 *.rsp
@@ -939,6 +1271,7 @@ artifacts/
 *.tli
 *.tlh
 *.tmp_proj
+*_wpftmp.csproj
 *.vspscc
 *.vssscc
 .builds
@@ -966,6 +1299,9 @@ ipch/
 *.vspx
 *.sap
 
+# Visual Studio Trace Files
+*.e2e
+
 # TFS 2012 Local Workspace
 $tf/
 
@@ -977,14 +1313,18 @@ _ReSharper*/
 *.[Rr]e[Ss]harper
 *.DotSettings.user
 
-# JustCode is a .NET coding add-in
-.JustCode
-
 # TeamCity is a build add-in
 _TeamCity*
 
 # DotCover is a Code Coverage Tool
 *.dotCover
+
+# AxoCover is a Code Coverage Tool
+.axoCover/*
+!.axoCover/settings.json
+
+# Coverlet is a free, cross platform Code Coverage Tool
+coverage*[.json, .xml, .info]
 
 # Visual Studio code coverage results
 *.coverage
@@ -1021,7 +1361,7 @@ publish/
 # Publish Web Output
 *.[Pp]ublish.xml
 *.azurePubxml
-# TODO: Comment the next line if you want to checkin your web deploy settings
+# Note: Comment the next line if you want to checkin your web deploy settings,
 # but database connection strings (with potential passwords) will be unencrypted
 *.pubxml
 *.publishproj
@@ -1033,13 +1373,15 @@ PublishScripts/
 
 # NuGet Packages
 *.nupkg
+# NuGet Symbol Packages
+*.snupkg
 # The packages folder can be ignored because of Package Restore
-**/packages/*
+**/[Pp]ackages/*
 # except build/, which is used as an MSBuild target.
-!**/packages/build/
+!**/[Pp]ackages/build/
 # Uncomment if necessary however generally it will be regenerated when needed
-#!**/packages/repositories.config
-# NuGet v3's project.json files produces more ignoreable files
+#!**/[Pp]ackages/repositories.config
+# NuGet v3's project.json files produces more ignorable files
 *.nuget.props
 *.nuget.targets
 
@@ -1056,12 +1398,15 @@ AppPackages/
 BundleArtifacts/
 Package.StoreAssociation.xml
 _pkginfo.txt
+*.appx
+*.appxbundle
+*.appxupload
 
 # Visual Studio cache files
 # files ending in .cache can be ignored
 *.[Cc]ache
 # but keep track of directories ending in .cache
-!*.[Cc]ache/
+!?*.[Cc]ache/
 
 # Others
 ClientBin/
@@ -1071,8 +1416,11 @@ ClientBin/
 *.jfm
 *.pfx
 *.publishsettings
-node_modules/
 orleans.codegen.cs
+
+# Including strong name files can present a security risk
+# (https://github.com/github/gitignore/pull/2483#issue-259490424)
+#*.snk
 
 # Since there are multiple workflows, uncomment next line to ignore bower_components
 # (https://github.com/github/gitignore/pull/1529#issuecomment-104372622)
@@ -1088,15 +1436,22 @@ _UpgradeReport_Files/
 Backup*/
 UpgradeLog*.XML
 UpgradeLog*.htm
+ServiceFabricBackup/
+*.rptproj.bak
 
 # SQL Server files
 *.mdf
 *.ldf
+*.ndf
 
 # Business Intelligence projects
 *.rdl.data
 *.bim.layout
 *.bim_*.settings
+*.rptproj.rsuser
+*- [Bb]ackup.rdl
+*- [Bb]ackup ([0-9]).rdl
+*- [Bb]ackup ([0-9][0-9]).rdl
 
 # Microsoft Fakes
 FakesAssemblies/
@@ -1106,6 +1461,7 @@ FakesAssemblies/
 
 # Node.js Tools for Visual Studio
 .ntvs_analysis.dat
+node_modules/
 
 # Visual Studio 6 build log
 *.plg
@@ -1131,19 +1487,53 @@ paket-files/
 # FAKE - F# Make
 .fake/
 
-# JetBrains Rider
-.idea/
-*.sln.iml
-
-# CodeRush
-.cr/
+# CodeRush personal settings
+.cr/personal
 
 # Python Tools for Visual Studio (PTVS)
 *.pyc
 
 # Cake - Uncomment if you are using it
-# tools/
+# tools/**
+# !tools/packages.config
 
-### VisualStudio Patch ###
+# Tabs Studio
+*.tss
 
-# End of https://www.gitignore.io/api/c,windows,macos,osx,linux,latex,tex,vim,emacs,eclipse,sublimetext,svn,cvs,mercurial,microsoftoffice,visualstudio,visualstudiocode,cmake,maven,java,python,intellij,jetbrains,pycharm
+# Telerik's JustMock configuration file
+*.jmconfig
+
+# BizTalk build output
+*.btp.cs
+*.btm.cs
+*.odx.cs
+*.xsd.cs
+
+# OpenCover UI analysis results
+OpenCover/
+
+# Azure Stream Analytics local run output
+ASALocalRun/
+
+# MSBuild Binary and Structured Log
+*.binlog
+
+# NVidia Nsight GPU debugger configuration file
+*.nvuser
+
+# MFractors (Xamarin productivity tool) working folder
+.mfractor/
+
+# Local History for Visual Studio
+.localhistory/
+
+# BeatPulse healthcheck temp database
+healthchecksdb
+
+# Backup folder for Package Reference Convert tool in Visual Studio 2017
+MigrationBackup/
+
+# Ionide (cross platform F# VS Code tools) working folder
+.ionide/
+
+# End of https://www.toptal.com/developers/gitignore/api/c,tex,svn,cvs,vim,osx,java,latex,cmake,linux,maven,macos,python,pycharm,windows,eclipse,intellij,notepadpp,mercurial,jetbrains,sublimetext,visualstudio,microsoftoffice,visualstudiocode,xcode
