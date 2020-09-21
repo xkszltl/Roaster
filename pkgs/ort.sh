@@ -134,6 +134,9 @@
         time cmake --build .
         time cmake --build . --target install
 
+        # Install unit tests.
+        find . -maxdepth 1 -name 'onnxruntime_*test*' -type f -executable | xargs cp -dnrt "$INSTALL_ABS/bin/"
+
         # Work around https://github.com/microsoft/onnxruntime/issues/4729
         case "$DISTRO_ID" in
         'centos' | 'fedora' | 'rhel')
