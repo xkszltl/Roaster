@@ -14,8 +14,8 @@
     # Known issues:
     #   - Patch CMake 3.18.3 issue with FindPython.
     #     https://gitlab.kitware.com/cmake/cmake/-/issues/21223
-    git remote add kitware https://gitlab.kitware.com/cmake/cmake.git
-    git fetch kitware
+    git remote add marc.chevrier https://gitlab.kitware.com/marc.chevrier/cmake.git
+    eit fetch marc.chevrier release-bugfixes
     git cherry-pick 6c094c1
 
     # ------------------------------------------------------------
