@@ -5,12 +5,11 @@
 [ -e $STAGE/torchvision ] && ( set -xe
     cd $SCRATCH
 
-    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" numpy/numpy,v
-
     "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  \
         python/typing                               \
         benjaminp/six                               \
-        python-pillow/Pillow
+        python-pillow/Pillow                        \
+        numpy/numpy,v
 
     # ------------------------------------------------------------
 

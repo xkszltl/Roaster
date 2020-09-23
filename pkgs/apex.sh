@@ -10,12 +10,11 @@
         cython/cython                               \
         yaml/pyyaml                                 \
         pytest-dev/pytest                           \
+        numpy/numpy,v                               \
         afq984/python-cxxfilt,master                \
         docopt/docopt                               \
         tqdm/py-make,v                              \
         tqdm/tqdm,v
-
-    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" numpy/numpy,v
 
     # ------------------------------------------------------------
 
