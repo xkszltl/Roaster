@@ -8,8 +8,15 @@
     # ------------------------------------------------------------
 
     . "$ROOT_DIR/pkgs/utils/git/version.sh" Kitware/CMake,v
-    until git clone --depth 1 --single-branch -b "$GIT_TAG" "$GIT_REPO" cmake; do echo 'Retrying'; done
+    until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO" cmake; do echo 'Retrying'; done
     cd cmake
+
+    # Known issues:
+    #   - Patch CMake 3.18.3 issue with FindPython.
+    #     https://gitlab.kitware.com/cmake/cmake/-/issues/21223
+    git remote add kitware 
+    git fetch kitware
+    git cherry-pick 6c094c1
 
     # ------------------------------------------------------------
 
