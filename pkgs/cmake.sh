@@ -15,7 +15,7 @@
     #   - Patch CMake 3.18.3 issue with FindPython.
     #     https://gitlab.kitware.com/cmake/cmake/-/issues/21223
     git remote add marc.chevrier https://gitlab.kitware.com/marc.chevrier/cmake.git
-    eit fetch marc.chevrier release-bugfixes
+    git fetch marc.chevrier release-bugfixes
     git cherry-pick 6c094c1
 
     # ------------------------------------------------------------
