@@ -320,6 +320,7 @@ parallel -j0 --line-buffer --bar 'bash -c '"'"'
         else
             unset HTTP_PROXY HTTPS_PROXY http_proxy https_proxy
         fi
+        unset HTTP_PROXY HTTPS_PROXY http_proxy https_proxy
         if ! "$DRY"; then
             eval $REPOSYNC $repo $sync_args && break
             if [ "$rest" -ge 0 ]; then

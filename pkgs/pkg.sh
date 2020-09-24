@@ -15,7 +15,7 @@ for subset in pkg-{stable,skip,all}; do
         CUDA_PKGS='cuda'
         if $IS_CONTAINER; then
             CUDA_PKGS=''
-            for  in 'compat' 'toolkit'; do
+            for i in 'compat' 'toolkit'; do
                 CUDA_PKGS="$CUDA_PKGS $(                        \
                     dnf list -q "cuda-$i-[0-9\-]*"              \
                     | sed -n "s/^\(cuda-$i-[0-9\-]*\).*/\1/p"   \
