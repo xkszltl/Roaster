@@ -2,8 +2,8 @@
 # Install Packages
 # ================================================================
 
-for i in pkg-{stable,skip,all}; do
-    [ -e $STAGE/$i ] && ( set -xe
+for subset in pkg-{stable,skip,all}; do
+    [ -e $STAGE/$subset ] && ( set -xe
         for skip in true false; do
         for attempt in $(seq $RPM_MAX_ATTEMPT -1 0); do
             $RPM_UPDATE && break
@@ -15,7 +15,7 @@ for i in pkg-{stable,skip,all}; do
         CUDA_PKGS='cuda'
         if $IS_CONTAINER; then
             CUDA_PKGS=''
-            for i in 'compat' 'toolkit'; do
+            for  in 'compat' 'toolkit'; do
                 CUDA_PKGS="$CUDA_PKGS $(                        \
                     dnf list -q "cuda-$i-[0-9\-]*"              \
                     | sed -n "s/^\(cuda-$i-[0-9\-]*\).*/\1/p"   \
@@ -187,12 +187,12 @@ for i in pkg-{stable,skip,all}; do
                 {ruby,rh-ruby26}{,-*}
                 lua{,-*}
             " \
-            | sed 's/^[[:space:]]*//' \
-            | sed "$([ "_$i" != '_pkg-stable' ] && echo 's/^\[!\].*//p' || echo 's/^//')" \
-            | sed -n "$([ "_$i" = '_pkg-stable' ] && echo 's/^\[!\][[:space:]]*//p' || echo '/./p')" \
-            | xargs -n10 echo "$RPM_INSTALL $([ "_$i" != '_pkg-all' ] && echo --setopt=strict=0)" \
-            | sed 's/^/set -xe; /' \
-            | bash \
+            | sed 's/^[[:space:]]*//'                                                                       \
+            | sed "$([ "_$subset" != '_pkg-stable' ] && echo 's/^\[!\].*//p' || echo 's/^//')"              \
+            | sed -n "$([ "_$subset" = '_pkg-stable' ] && echo 's/^\[!\][[:space:]]*//p' || echo '/./p')"   \
+            | xargs -n10 echo "$RPM_INSTALL $([ "_$subset" != '_pkg-all' ] && echo --setopt=strict=0)"      \
+            | sed 's/^/set -xe; /'                                                                          \
+            | bash                                                                                          \
             && break
             echo "Retrying... $attempt chance(s) left."
             [ $attempt -gt 0 ] || exit 1
@@ -229,10 +229,10 @@ for i in pkg-{stable,skip,all}; do
         # Install python utilities.
         # ------------------------------------------------------------
 
-        if [ "_$i" = '_pkg-skip' ] || [ "_$i" = '_pkg-all' ]; then
+        if [ "_$subset" = '_pkg-skip' ] || [ "_$subset" = '_pkg-all' ]; then
             "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" giampaolo/psutil,release- nicolargo/glances,v
         fi
     )
-    sudo rm -vf $STAGE/$i
+    sudo rm -vf $STAGE/$subset
     sync || true
 done
