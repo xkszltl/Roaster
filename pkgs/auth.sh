@@ -67,10 +67,11 @@
 
     # ------------------------------------------------------------
 
-    git config --global user.name       'Tongliang Liao'
-    git config --global user.email      'xkszltl@gmail.com'
-    git config --global push.default    'simple'
-    git config --global core.editor     'vim'
+    git config --global core.editor         'vim'
+    git config --global credential.helper   'store'
+    git config --global push.default        'simple'
+    git config --global user.email          'xkszltl@gmail.com'
+    git config --global user.name           'Tongliang Liao'
 )
 sudo rm -vf $STAGE/auth
 sync || true
