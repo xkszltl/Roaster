@@ -5,10 +5,17 @@ LABEL BUILD_ID=$LABEL_BUILD_ID
 
 COPY [".", "/etc/roaster/scripts"]
 
+# ------------------------------------------------------------
+# Pin to CUDA 11.0 for now.
+# Known issues for CUDA 11.1:
+#   - LLVM openmp failed to build during cmake config.
+#   - Missing matching cuDNN/TensorRT.
+# TODO: Remove "11-0"
+# ------------------------------------------------------------
 RUN set -e; \
     sudo apt-get update -y; \
     sudo apt-get upgrade -y; \
-    apt-cache show 'cuda-[0-9\-]*'              \
+    apt-cache show 'cuda-11-0[0-9\-]*'          \
     | sed -n 's/^Package:[[:space:]]*cuda-//p'  \
     | sort -Vu                                  \
     | tail -n1                                  \

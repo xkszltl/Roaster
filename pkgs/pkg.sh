@@ -12,12 +12,19 @@ for subset in pkg-{stable,skip,all}; do
         done
         done
 
+        # ------------------------------------------------------------
+        # Pin to CUDA 11.0 for now.
+        # Known issues for CUDA 11.1:
+        #   - LLVM openmp failed to build during cmake config.
+        #   - Missing matching cuDNN/TensorRT.
+        # TODO: Remove "11-0"
+        # ------------------------------------------------------------
         CUDA_PKGS='cuda'
         if $IS_CONTAINER; then
             CUDA_PKGS=''
             for i in 'compat' 'toolkit'; do
                 CUDA_PKGS="$CUDA_PKGS $(                        \
-                    dnf list -q "cuda-$i-[0-9\-]*"              \
+                    dnf list -q "cuda-$i-11-0[0-9\-]*"          \
                     | sed -n "s/^\(cuda-$i-[0-9\-]*\).*/\1/p"   \
                     | sort -Vu                                  \
                     | tail -n1                                  \
