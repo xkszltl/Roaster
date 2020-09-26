@@ -71,7 +71,7 @@
     git config --global credential.helper   'store'
     git config --global push.default        'simple'
     git config --global user.email          'xkszltl@gmail.com'
-    git config --global user.name           'Tongliang Liao'
+    git config --global user.name           'Roaster Project'
 )
 sudo rm -vf $STAGE/auth
 sync || true
