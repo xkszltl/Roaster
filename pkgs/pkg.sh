@@ -66,7 +66,7 @@ for subset in pkg-{stable,skip,all}; do
 
                 [!] bash{,-*}
                 {fish,zsh,mosh,tmux}{,-*}
-                [!] {bc,sed,man,pv,time,which}{,-*}
+                [!] {bc,gawk,man,pv,sed,time,which}{,-*}
                 [!] parallel{,-*}
                 jq{,-*}
                 [!] {tree,whereami,mlocate,lsof}{,-*}
@@ -81,7 +81,7 @@ for subset in pkg-{stable,skip,all}; do
                 hping3{,-*}
                 [!] {traceroute,mtr,rsync,tcpdump,whois,net-snmp}{,-*}
                 torsocks{,-*}
-                [!] {core,elf,find,ib,ip,pci,usb,yum-}utils{,-*}
+                [!] {core,diff,elf,find,ib,ip,pci,usb,yum-}utils{,-*}
                 nextgen-yum4{,-*}
                 dnf-plugins-core{,-*}
                 {bridge,crypto}-utils{,-*}

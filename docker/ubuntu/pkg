@@ -40,13 +40,16 @@ RUN set -e; \
         bzip2 pbzip2 \
         ccache \
         cmake{,-curses-gui} \
+        coreutils \
         cpio \
         curl \
         default-jdk ant maven \
+        diffutils \
         docker-{ce,compose} \
         flex \
         fuse libfuse-dev \
         g++{,-{4,5,6,7,8}} \
+        gawk \
         gdb \
         gettext \
         gfortran{,-{5,6,7,8}} \
@@ -100,6 +103,7 @@ RUN set -e; \
         pigz \
         powertop \
         prelink \
+        procps \
         pv \
         pybind11-dev \
         python3{,-pip} \
@@ -107,6 +111,7 @@ RUN set -e; \
         rapidjson-dev \
         rsync \
         ruby-all-dev \
+        sed \
         {selinux-policy,policycoreutils}{,'-*'} \
         strace \
         software-properties-common \
