@@ -44,8 +44,8 @@
             set -xe
 
             nvml_repo="https://developer.download.nvidia.com/compute/machine-learning/repos"
-            nvml_repo="$nvml_repo/$(set -e && curl -sSLv --retry 100 --retry-delay 5 "$nvml_repo" | sed -n "s/.*href='\($(sed 's/\.//g' <<< "rhel$DISTRO_VERSION_ID")[^']*\)\/.*/\1/p" | sort -V | tail -n1)/x86_64"
-            nvml_repo="$nvml_repo/$(set -e && curl -sSLv --retry 100 --retry-delay 5 "$nvml_repo" | sed -n "s/.*href='\(nvidia-machine-learning-repo-[^']*\).*/\1/p" | sort -V | tail -n1)"
+            nvml_repo="$nvml_repo/$(set -xe && curl -sSLv --retry 100 --retry-delay 5 "$nvml_repo" | sed -n "s/.*href='\($(sed 's/\.//g' <<< "rhel$DISTRO_VERSION_ID")[^']*\)\/.*/\1/p" | sort -V | tail -n1)/x86_64"
+            nvml_repo="$nvml_repo/$(set -xe && curl -sSLv --retry 100 --retry-delay 5 "$nvml_repo" | sed -n "s/.*href='\(nvidia-machine-learning-repo-[^']*\).*/\1/p" | sort -V | tail -n1)"
             sudo dnf install -y "$nvml_repo"
         )
         sudo sed -i 's/http:\/\//https:\/\//' '/etc/yum.repos.d/nvidia-machine-learning.repo'
@@ -85,14 +85,14 @@
             cd "$SCRATCH"
 
             cuda_repo="https://developer.download.nvidia.com/compute/cuda/repos"
-            cuda_repo="$cuda_repo/$(set -e && curl -sSLv --retry 100 --retry-delay 5 "$cuda_repo" | sed -n "s/.*href='\($(sed 's/\.//g' <<< "$DISTRO_ID$DISTRO_VERSION_ID")[^']*\)\/.*/\1/p" | sort -V | tail -n1)/x86_64"
-            cuda_repo_pin="$cuda_repo/$(set -e && curl -sSLv --retry 100 --retry-delay 5 "$cuda_repo" | sed -n "s/.*href='\(cuda-$DISTRO_ID$DISTRO_VERSION_ID[^']*\).*/\1/p" | sort -V | tail -n1)"
+            cuda_repo="$cuda_repo/$(set -xe && curl -sSLv --retry 100 --retry-delay 5 "$cuda_repo" | sed -n "s/.*href='\($(sed 's/\.//g' <<< "$DISTRO_ID$DISTRO_VERSION_ID")[^']*\)\/.*/\1/p" | sort -V | tail -n1)/x86_64"
+            cuda_repo_pin="$cuda_repo/$(set -xe && curl -sSLv --retry 100 --retry-delay 5 "$cuda_repo" | sed -n "s/.*href='\(cuda-$DISTRO_ID$DISTRO_VERSION_ID[^']*\.pin\).*/\1/p" | sort -V | tail -n1)"
             curl -sSLv --retry 100 --retry-delay 5 "$cuda_repo_pin" | sudo tee '/etc/apt/preferences.d/cuda-repository-pin-600'
-            sudo apt-key adv --fetch-keys "$cuda_repo/$(set -e && curl -sSLv --retry 100 --retry-delay 5 "$cuda_repo" | sed -n "s/.*href='\([^']*\.pub\).*/\1/p" | sort -V | tail -n1)"
+            sudo apt-key adv --fetch-keys "$cuda_repo/$(set -xe && curl -sSLv --retry 100 --retry-delay 5 "$cuda_repo" | sed -n "s/.*href='\([^']*\.pub\).*/\1/p" | sort -V | tail -n1)"
             sudo add-apt-repository "deb $cuda_repo/ /"
             nvml_repo="https://developer.download.nvidia.com/compute/machine-learning/repos"
-            nvml_repo="$nvml_repo/$(set -e && curl -sSLv --retry 100 --retry-delay 5 "$nvml_repo" | sed -n "s/.*href='\($(sed 's/\.//g' <<< "$DISTRO_ID$DISTRO_VERSION_ID")[^']*\)\/.*/\1/p" | sort -V | tail -n1)/x86_64"
-            nvml_repo="$nvml_repo/$(set -e && curl -sSLv --retry 100 --retry-delay 5 "$nvml_repo" | sed -n "s/.*href='\(nvidia-machine-learning-repo-[^']*\).*/\1/p" | sort -V | tail -n1)"
+            nvml_repo="$nvml_repo/$(set -xe && curl -sSLv --retry 100 --retry-delay 5 "$nvml_repo" | sed -n "s/.*href='\($(sed 's/\.//g' <<< "$DISTRO_ID$DISTRO_VERSION_ID")[^']*\)\/.*/\1/p" | sort -V | tail -n1)/x86_64"
+            nvml_repo="$nvml_repo/$(set -xe && curl -sSLv --retry 100 --retry-delay 5 "$nvml_repo" | sed -n "s/.*href='\(nvidia-machine-learning-repo-[^']*\).*/\1/p" | sort -V | tail -n1)"
             curl -SLv --retry 100 --retry-delay 5 "$nvml_repo" > "$(basename "$nvml_repo")"
             sudo DEBIAN_FRONTEND=noninteractive apt-get install -y "./$(basename "$nvml_repo")"
             rm -rf "$(basename "$nvml_repo")"
