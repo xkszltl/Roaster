@@ -86,7 +86,7 @@
 
             cuda_repo="https://developer.download.nvidia.com/compute/cuda/repos"
             cuda_repo="$cuda_repo/$(set -xe && curl -sSLv --retry 100 --retry-delay 5 "$cuda_repo" | sed -n "s/.*href='\($(sed 's/\.//g' <<< "$DISTRO_ID$DISTRO_VERSION_ID")[^']*\)\/.*/\1/p" | sort -V | tail -n1)/x86_64"
-            cuda_repo_pin="$cuda_repo/$(set -xe && curl -sSLv --retry 100 --retry-delay 5 "$cuda_repo" | sed -n "s/.*href='\(cuda-$DISTRO_ID$DISTRO_VERSION_ID[^']*\.pin\).*/\1/p" | sort -V | tail -n1)"
+            cuda_repo_pin="$cuda_repo/$(set -xe && curl -sSLv --retry 100 --retry-delay 5 "$cuda_repo" | sed -n "s/.*href='\(cuda-$DISTRO_ID$(sed 's/\.//g' <<< "$DISTRO_VERSION_ID")[^']*\.pin\).*/\1/p" | sort -V | tail -n1)"
             curl -sSLv --retry 100 --retry-delay 5 "$cuda_repo_pin" | sudo tee '/etc/apt/preferences.d/cuda-repository-pin-600'
             sudo apt-key adv --fetch-keys "$cuda_repo/$(set -xe && curl -sSLv --retry 100 --retry-delay 5 "$cuda_repo" | sed -n "s/.*href='\([^']*\.pub\).*/\1/p" | sort -V | tail -n1)"
             sudo add-apt-repository "deb $cuda_repo/ /"
