@@ -216,7 +216,8 @@ if $IS_CONTAINER; then
     case "$DISTRO_ID" in
     "centos" | "fedora" | "rhel")
         sudo dnf autoremove -y || sudo yum autoremove -y
-        sudo dnf clean all --enablerepo='*' || sudo yum clean all
+        sudo dnf clean all --enablerepo='*'
+        sudo yum clean all
         sudo rm -rf /var/cache/yum
         ;;
     "debian" | "linuxmint" | "ubuntu")
