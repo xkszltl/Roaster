@@ -26,6 +26,8 @@ export USE_PROXY=false
 export DRY_RSYNC=$($DRY && echo --dry-run)
 export DRY_WGET=$($DRY && echo --spider)
 
+export CLEAN_CACHE='dnf clean dbcache expire-cache metadata --repo'
+
 # Known issue:
 #   - Nvidia CDN in China has terrible availability.
 #     It is very likely to get "Failed to connect to origin, please retry" in HTTP 200.
@@ -321,6 +323,7 @@ parallel -j0 --line-buffer --bar 'bash -c '"'"'
             unset HTTP_PROXY HTTPS_PROXY http_proxy https_proxy
         fi
         unset HTTP_PROXY HTTPS_PROXY http_proxy https_proxy
+        eval $CLEAN_CACHE $repo
         if ! "$DRY"; then
             eval $REPOSYNC $repo $sync_args && break
             if [ "$rest" -ge 0 ]; then
