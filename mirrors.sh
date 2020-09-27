@@ -43,15 +43,15 @@ if [ ! "'"$PATTERN"'" ] || grep "'"$PATTERN"'" <<< "$SRC_DIR"; then
     # git remote set-url origin "$DST" 2>&1
     git fetch "$DST" 2>&1 || true
     git fetch --tags "$DST" 2>&1 || true
-    [ "$(git lfs ls-files --all)" ] && git lfs fetch "$DST" 2>&1 || true
+    [ "$(git lfs ls-files -an)" ] && git lfs fetch "$DST" 2>&1 || true
     # git remote set-url origin "$SRC" 2>&1
     git fetch --prune "$SRC" 2>&1
     git fetch --prune --tags "$SRC" 2>&1
     # [ "$(git lfs ls-files)" ] && git lfs fetch --prune "$SRC" 2>&1
-    [ "$(git lfs ls-files --all)" ] && git lfs fetch "$SRC" 2>&1
+    [ "$(git lfs ls-files -an)" ] && git lfs fetch "$SRC" 2>&1
     git gc --auto 2>&1
     # git remote set-url origin "$DST" 2>&1
-    [ "$(git lfs ls-files --all)" ] && git lfs push --all "$DST" 2>&1 || true
+    [ "$(git lfs ls-files -an)" ] && git lfs push --all "$DST" 2>&1 || true
     git push --mirror "$DST" 2>&1
 fi
 '"'" ::: {\
