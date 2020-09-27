@@ -47,7 +47,7 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
         case "$DISTRO_ID" in
         'centos' | 'fedora' | 'rhel')
             set +e
-            . scl_source enable $(cut -d',' -f1 <<< "$py")
+            . scl_source enable $(cut -d',' -f1 <<< "$py") || exit 1
             set -e
             ;;
         'ubuntu')
@@ -83,7 +83,7 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
             case "$DISTRO_ID" in
             'centos' | 'fedora' | 'rhel')
                 set +e
-                . scl_source enable devtoolset-9
+                . scl_source enable devtoolset-9 || exit 1
                 set -e
                 export CC="$(which gcc)" CXX="$(which g++)"
                 ;;

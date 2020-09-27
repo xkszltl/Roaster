@@ -55,7 +55,7 @@ mkdir -p "$INSTALL_ABS/src/$(basename "$(pwd)")"
     set +xe
     case "$DISTRO_ID" in
     "centos" | "fedora" | "rhel")
-        . scl_source enable rh-git218
+        . scl_source enable rh-git218 || exit 1
         ;;
     esac
     set -xe

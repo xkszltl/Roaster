@@ -25,7 +25,7 @@
         case "$DISTRO_ID" in
         'centos' | 'fedora' | 'rhel')
             set +xe
-            . scl_source enable devtoolset-9 rh-git218
+            . scl_source enable devtoolset-9 rh-git218 || exit 1
             set -xe
             export CC="gcc" CXX="g++" AR="$(which gcc-ar)" RANLIB="$(which gcc-ranlib)"
             ;;

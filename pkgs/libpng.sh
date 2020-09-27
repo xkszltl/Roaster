@@ -29,7 +29,7 @@
         case "$DISTRO_ID" in
         'centos' | 'fedora' | 'rhel')
             set +xe
-            . scl_source enable devtoolset-9
+            . scl_source enable devtoolset-9 || exit 1
             set -xe
             export CC="gcc" CXX="g++"
             ;;

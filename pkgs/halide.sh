@@ -28,7 +28,7 @@
         case "$DISTRO_ID" in
         'centos' | 'fedora' | 'rhel')
             # set +xe
-            # . scl_source enable llvm-toolset-7
+            # . scl_source enable llvm-toolset-7 || exit 1
             # set -xe
             export CC="clang" CXX="clang++"
             ;;
