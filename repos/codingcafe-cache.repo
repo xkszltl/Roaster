@@ -240,8 +240,8 @@ enabled=0
 # CUDA
 ################################################################################
 
-[cache-cuda]
-name=[Cache] cuda
+[cache-cuda-rhel$releasever-$basearch]
+name=[Cache] cuda-rhel$releasever-$basearch
 baseurl=https://repo.codingcafe.org/nvidia/cuda/rhel$releasever/$basearch
 gpgcheck=1
 gpgkey=https://repo.codingcafe.org/nvidia/cuda/rhel$releasever/$basearch/7fa2af80.pub

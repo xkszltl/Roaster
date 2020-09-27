@@ -2,12 +2,14 @@
 
 set -xe
 
+. <(sed 's/^\(..*\)/export DISTRO_\1/' '/etc/os-release')
+
 if [ $# -le 0 ]; then
     $0                                                                              \
         {updates,extras,centosplus,runner_gitlab-runner,gitlab_gitlab-ce}{,-source} \
         {base,epel,centos-sclo-{sclo,rh},docker-ce-stable}{,-source,-debuginfo}     \
         dotnet                                                                      \
-        cuda libnvidia-container nvidia-{container-runtime,docker,machine-learning}
+        "cuda-$DISTRO_VERSION_ID-$(uname -i)" libnvidia-container nvidia-{container-runtime,docker,machine-learning}
     exit $?
 fi
 

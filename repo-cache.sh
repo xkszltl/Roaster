@@ -196,7 +196,24 @@ done
 # CUDA Repository Mirroring Task
 # ----------------------------------------------------------------
 
-for sub_repo in cuda,cuda nvidia-machine-learning,machine-learning; do
+for dist in rhel7; do
+    name="$(cut -d',' -f1 <<< "$sub_repo,")"
+    mkdir -p "nvidia/cuda/$dist/$(uname -i)"
+    pushd "$_"
+    $DRY || wget $DRY_WGET -cq "https://developer.download.nvidia.com/compute/cuda/repos/$dist/$(uname -i)/7fa2af80.pub"
+    $DRY || rpm --import "7fa2af80.pub"
+    popd
+
+    export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
+    {
+        "repo":         "'"cuda-$dist-$(uname -i)"'",
+        "path":         "'"nvidia/cuda/$dist/$(uname -i)"'",
+        "retries":      10,
+        "use_proxy":    "'"false"'",
+    }')
+done
+
+for sub_repo in nvidia-machine-learning,machine-learning; do
 for dist in rhel7; do
     name="$(cut -d',' -f1 <<< "$sub_repo,")"
     dir="$(cut -d',' -f2 <<< "$sub_repo,")"
