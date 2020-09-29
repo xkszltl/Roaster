@@ -208,7 +208,7 @@ for dist in rhel7; do
     {
         "repo":         "'"cuda-$dist-$(uname -i)"'",
         "path":         "'"nvidia/cuda/$dist/$(uname -i)"'",
-        "retries":      10,
+        "retries":      30,
         "use_proxy":    "'"false"'",
     }')
 done
@@ -227,7 +227,7 @@ for dist in rhel7; do
     {
         "repo":         "'"$name"'",
         "path":         "'"nvidia/$dir/$dist/$(uname -i)"'",
-        "retries":      10,
+        "retries":      30,
         "use_proxy":    "'"false"'",
     }')
 done
