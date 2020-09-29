@@ -330,6 +330,7 @@ parallel -j0 --line-buffer --bar 'bash -c '"'"'
     mkdir -p "repoid"
     pushd "repoid"
     ln -sf "../$path" "./$repo_bn"
+    "$DRY" || eval $CLEAN_CACHE $repo
     for rest in $(seq "$retries" -1 -1); do
         if [ "$rest" -ge 0 ] && "$use_proxy" || [ "$rest" -ne 0 ] && ! "$use_proxy" ; then
             export HTTP_PROXY="proxy.codingcafe.org:8118"
@@ -340,7 +341,6 @@ parallel -j0 --line-buffer --bar 'bash -c '"'"'
             unset HTTP_PROXY HTTPS_PROXY http_proxy https_proxy
         fi
         unset HTTP_PROXY HTTPS_PROXY http_proxy https_proxy
-        eval $CLEAN_CACHE $repo
         if ! "$DRY"; then
             eval $REPOSYNC $repo $sync_args && break
             if [ "$rest" -ge 0 ]; then
