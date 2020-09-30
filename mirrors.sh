@@ -40,19 +40,26 @@ if [ ! "'"$PATTERN"'" ] || grep "'"$PATTERN"'" <<< "$SRC_DIR"; then
     cd "$(dirname "$LOCAL")"
     [ -d "$LOCAL" ] || git clone --mirror "$DST" "$LOCAL" 2>&1 || git clone --mirror "$SRC" "$LOCAL" 2>&1
     cd "$LOCAL"
-    # git remote set-url origin "$DST" 2>&1
-    git fetch "$DST" 2>&1 || true
-    git fetch --tags "$DST" 2>&1 || true
-    [ "$(git lfs ls-files -an)" ] && git lfs fetch --all "$DST" 2>&1 || true
-    # git remote set-url origin "$SRC" 2>&1
-    git fetch --prune "$SRC" 2>&1
-    git fetch --prune --tags "$SRC" 2>&1
-    # [ "$(git lfs ls-files)" ] && git lfs fetch --all --prune "$SRC" 2>&1
-    [ "$(git lfs ls-files -an)" ] && git lfs fetch --all "$SRC" 2>&1
+    git remote set-url origin "$DST" 2>&1
+    git config remote.origin.mirror true
+    git fetch origin 2>&1 || true
+    git fetch --tags origin 2>&1 || true
+    [ "$(git lfs ls-files -an)" ] && git lfs fetch --all origin 2>&1 || true
+    git remote set-url origin "$SRC" 2>&1
+    # git fetch --prune origin 2>&1
+    git fetch --prune --tags origin 2>&1
     git gc --auto 2>&1
-    # git remote set-url origin "$DST" 2>&1
-    [ "$(git lfs ls-files -an)" ] && git lfs push --all "$DST" 2>&1 || true
-    git push --mirror "$DST" 2>&1
+    [ "$(git lfs ls-files -an)" ] && git lfs fetch --all origin 2>&1 || true
+    git remote set-url origin "$DST" 2>&1
+    [ "$(git lfs ls-files -an)" ] && git lfs push --all origin 2>&1 || true
+    git config --replace-all remote.origin.push "+refs/heads/*"
+    git config --add         remote.origin.push "+refs/tags/*"
+    git config remote.origin.mirror false
+    # git push --mirror origin 2>&1
+    # git push -f --all  --prune origin 2>&1
+    # git push -f --tags --prune origin 2>&1
+    git push -f --prune origin 2>&1
+    git config remote.origin.mirror true
 fi
 '"'" ::: {\
 https://github.com/\ /\ {\
