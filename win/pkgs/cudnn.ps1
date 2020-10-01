@@ -47,15 +47,15 @@ $cudnn_url="https://developer.download.nvidia.com/compute/redist/cudnn"
 Write-Host -NoNewline "Scanning for latest release of cuDNN "
 
 # URL in the form of:
-#     https://developer.download.nvidia.com/compute/redist/cudnn/v8.0.1/cudnn-11.0-windows-x64-v8.0.1.13.zip
+#     https://developer.download.nvidia.com/compute/redist/cudnn/v8.0.4/cudnn-11.1-windows-x64-v8.0.4.30.zip
 
 for ($i=8; ($i -ge 8) -and (-not (Test-Path cudnn.zip)); $i--)
 {
     for ($j=0; ($j -ge 0) -and (-not (Test-Path cudnn.zip)); $j--)
     {
-        for ($k=3; ($k -ge 0) -and (-not (Test-Path cudnn.zip)); $k--)
+        for ($k=4; ($k -ge 0) -and (-not (Test-Path cudnn.zip)); $k--)
         {
-            for ($l=33; ($l -ge 0) -and (-not (Test-Path cudnn.zip)); $l--)
+            for ($l=30; ($l -ge 0) -and (-not (Test-Path cudnn.zip)); $l--)
             {
                 $cudnn_name="cudnn-$((nvcc --version) -match ' release ([0-9\.]*)' -replace '.* release ([0-9\.]*).*','${1}')-windows-x64-v${i}.${j}.${k}.${l}.zip"
                 Write-Host -NoNewline '.'
