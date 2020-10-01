@@ -85,7 +85,10 @@
         #     https://github.com/microsoft/onnxruntime/issues/4935
         #   - Need ar/ranlib wrapper when using CUDA+LTO.
         #     https://github.com/microsoft/onnxruntime/issues/5031
+        #   - Dir missing but referenced by install().
+        #     https://github.com/microsoft/onnxruntime/issues/5024
         # --------------------------------------------------------
+        mkdir -p '../include/onnxruntime/core/providers/shared'
         # -DCMAKE_{C,CXX,CUDA}_COMPILER_{AR,RANLIB}="--plugin=$("$CC" --print-file-name=liblto_plugin.so)"
         cmake                                                   \
             -DCMAKE_AR="$(which "$AR")"                         \

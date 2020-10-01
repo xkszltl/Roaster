@@ -129,6 +129,13 @@ if (-not $use_bat)
     pushd build
 }
 
+# ----------------------------------------------------------------
+# Known issues:
+#   - Dir missing but referenced by install().
+#     https://github.com/microsoft/onnxruntime/issues/5024
+# ----------------------------------------------------------------
+mkdir '../include/onnxruntime/core/providers/shared'
+
 if ($use_bat)
 {
     ./build.bat                                         `
