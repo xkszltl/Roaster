@@ -19,12 +19,12 @@ export ROOT_DIR="$(readlink -e "$(dirname $0)")"
 
 for i in $(ls "$ROOT_DIR/repos/"*.repo); do
     [ ! -f "/etc/yum.repos.d/$(basename "$i")" ] || continue
-    repo_tmp="$(mktemp "repo_tmp.XXXXXXXXXX.repo")"
+    repo_tmp="$(mktemp -d "repo_tmp.XXXXXXXXXX")"
     cat "$i"                                                                                        \
     | sed 's/^\([[:space:]]*\[.*\)\$basearch\(.*\]\)[[:space:]]*$/\1'"$(uname -i)"'\2/g'            \
     | sed 's/^\([[:space:]]*\[.*\)\$releasever\(.*\]\)[[:space:]]*$/\1'"$DISTRO_VERSION_ID"'\2/g'   \
-    | tee "$repo_tmp"
-    sudo yum-config-manager --add-repo "$repo_tmp"
+    | tee "$repo_tmp/$(basename "$i")"
+    sudo yum-config-manager --add-repo "$repo_tmp/$(basename "$i")"
     rm -rf "$repo_tmp"
 done
 
