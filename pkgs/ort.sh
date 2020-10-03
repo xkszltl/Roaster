@@ -20,7 +20,7 @@
 
     git remote add patch https://github.com/xkszltl/onnxruntime.git
 
-    PATCHES="pb_lto"
+    PATCHES=""
 
     git fetch patch
     for i in $PATCHES; do
