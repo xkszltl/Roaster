@@ -36,7 +36,7 @@
         until sudo dnf update -y; do echo 'Retrying'; done
         sudo dnf update -y || true
 
-        sudo dnf config-manager --add-repo "https://developer.download.nvidia.com/compute/cuda/repos/rhel$DISTRO_VERSION_ID/x86_64/cuda-rhel$DISTRO_VERSION_ID.repo"
+        until sudo dnf config-manager --add-repo "https://developer.download.nvidia.com/compute/cuda/repos/rhel$DISTRO_VERSION_ID/x86_64/cuda-rhel$DISTRO_VERSION_ID.repo"; do echo "Retrying"; done
         sudo sed -i 's/http:\/\//https:\/\//' "/etc/yum.repos.d/cuda-rhel$DISTRO_VERSION_ID.repo"
         RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" "cuda-rhel$DISTRO_VERSION_ID-$(uname -i)"
 
@@ -46,7 +46,7 @@
             nvml_repo="https://developer.download.nvidia.com/compute/machine-learning/repos"
             nvml_repo="$nvml_repo/$(set -xe && curl -sSLv --retry 100 --retry-delay 5 "$nvml_repo" | sed -n "s/.*href='\($(sed 's/\.//g' <<< "rhel$DISTRO_VERSION_ID")[^']*\)\/.*/\1/p" | sort -V | tail -n1)/x86_64"
             nvml_repo="$nvml_repo/$(set -xe && curl -sSLv --retry 100 --retry-delay 5 "$nvml_repo" | sed -n "s/.*href='\(nvidia-machine-learning-repo-[^']*\).*/\1/p" | sort -V | tail -n1)"
-            sudo dnf install -y "$nvml_repo"
+            until sudo dnf install -y "$nvml_repo"; do echo "Retrying"; done
         )
         sudo sed -i 's/http:\/\//https:\/\//' '/etc/yum.repos.d/nvidia-machine-learning.repo'
         RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" nvidia-machine-learning
