@@ -31,7 +31,11 @@
     export TEXLIVE_INSTALL_PREFIX="$INSTALL_ABS"
 
     echo 'selected_scheme scheme-full' > install_profile
-    ./install-tl --repository $TEXLIVE_MIRROR --portable --profile ./install_profile
+    for retry in $(seq 5 -1 0); do
+        [ "$retry" -gt 0 ]
+        ./install-tl --repository $TEXLIVE_MIRROR --portable --profile './install_profile' && break
+        echo "Retry installation. $(expr "$retry" - 1) time(s) left."
+    done
 
     popd
 
