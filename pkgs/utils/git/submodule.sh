@@ -46,8 +46,8 @@ set +x
                 #     This is a temporary solution for sourceware.org mirroring.
                 #     Should use config file instead ASAP.
                 for i in $(sed -n 's/^\([[:alnum:]][^\/[:space:]]*\),.*/\1/p' "$ROOT_DIR/mirrors.sh"); do
-                    sed -i "s/[^[:space:]]*:\/\/[^\/]*\(\/$i\/.*[^\/]\)[\/]*/$(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR")sourceware\/\1.git/" .gitmodules
-                    sed -i "s/\($(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR")\/$i\/.*\.git\)\.git[[:space:]]*$/\1/" .gitmodules
+                    sed -i "s/[^[:space:]]*:\/\/[^\/]*\(\/$i\)[\/]*/$(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR")\/sourceware\1.git/" .gitmodules
+                    sed -i "s/\($(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR")\/sourceware\/$i\/.*\.git\)\.git[[:space:]]*$/\1/" .gitmodules
                 done
             fi
 
