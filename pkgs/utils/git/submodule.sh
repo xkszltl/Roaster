@@ -29,7 +29,7 @@ set +x
                 for i in 01org/mkl-dnn=intel/mkl-dnn google/upb=protocolbuffers/upb lyft/protoc-gen-validate=envoyproxy/protoc-gen-validate philsquared/Catch=catchorg/Catch2; do
                     sed -i "s/$(sed 's/\([\/\.]\)/\\\1/g' <<< "$i" | tr '=' '/')/" .gitmodules
                 done
-                for i in $(sed -n 's/^\([[:alnum:]][^\/[:space:]]*\)\/[^\/[:space:]].*/\1/p' "$ROOT_DIR/mirrors.sh"); do
+                for i in $(sed -n 's/^\([[:alnum:]][^\/[:space:]]*\)\/[^\/[:space:]].*,.*/\1/p' "$ROOT_DIR/mirrors.sh"); do
                     # Case-insensitive with escape.
                     Ii="$(paste -d' '                   \
                             <(tr a-z A-Z <<< "$i" | sed 's/\(.\)/\1 /g' | xargs -n1)    \
@@ -41,6 +41,13 @@ set +x
                         | sed 's/\([\/\.\-]\)/\\\1/g')"
                     sed -i "s/[^[:space:]]*:\/\/[^\/]*\(\/$Ii\/.*[^\/]\)[\/]*/$(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR")\1.git/" .gitmodules
                     sed -i "s/\($(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR")\/$Ii\/.*\.git\)\.git[[:space:]]*$/\1/" .gitmodules
+                done
+                # TODO:
+                #     This is a temporary solution for sourceware.org mirroring.
+                #     Should use config file instead ASAP.
+                for i in $(sed -n 's/^\([[:alnum:]][^\/[:space:]]*\),.*/\1/p' "$ROOT_DIR/mirrors.sh"); do
+                    sed -i "s/[^[:space:]]*:\/\/[^\/]*\(\/$i\/.*[^\/]\)[\/]*/$(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR")sourceware\/\1.git/" .gitmodules
+                    sed -i "s/\($(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR")\/$i\/.*\.git\)\.git[[:space:]]*$/\1/" .gitmodules
                 done
             fi
 

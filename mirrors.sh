@@ -29,7 +29,7 @@ export DST_DOMAIN="$(cut -d" " -f2 <<< "$ARGS" | sed "s/^\/*//" | sed "s/\/*$//"
 export DST_SITE="git@git.codingcafe.org:Mirrors/$DST_DOMAIN"
 export DST_DIR="$SRC_DIR"
 export DST="$DST_SITE$DST_DIR.git"
-export LOCAL="$(pwd)/$DST_DIR.git"
+export LOCAL="$(pwd)/$DST_DOMAIN/$DST_DIR.git"
 
 echo "[\"$DST_DIR\"]"
 
@@ -208,6 +208,9 @@ https://gitlab.com/\ /\ {\
 libeigen/eigen,\
 NVIDIA/cuda,\
 pycqa/flake8,\
+},\
+https://sourceware.org/git/\ sourceware\ {\
+valgrind,\
 },\
 }
 
