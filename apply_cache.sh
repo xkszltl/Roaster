@@ -9,7 +9,7 @@ if [ $# -le 0 ]; then
         {updates,extras,centosplus,runner_gitlab-runner,gitlab_gitlab-ce}{,-source} \
         {base,epel,centos-sclo-{sclo,rh},docker-ce-stable}{,-source,-debuginfo}     \
         dotnet                                                                      \
-        "cuda-$DISTRO_VERSION_ID-$(uname -i)" libnvidia-container nvidia-{container-runtime,docker,machine-learning}
+        "cuda-rhel$DISTRO_VERSION_ID-$(uname -i)" libnvidia-container nvidia-{container-runtime,docker,machine-learning}
     exit $?
 fi
 
