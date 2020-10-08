@@ -29,7 +29,7 @@
         sudo apt-get update -y
         for i in 'compat' 'toolkit'; do
             apt-cache show "cuda-$i-$CUDA_VER_MAJOR-$CUDA_VER_MINOR"    \
-            | sed -n 's/^Package:[[:space:]]*cuda-//p'                  \
+            | sed -n 's/^Package:[[:space:]]*\(cuda-\)/\1/p'            \
             | sort -Vu                                                  \
             | tail -n1                                                  \
             | sudo DEBIAN_FRONTEND=noninteractive xargs -r apt-get install -y
