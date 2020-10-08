@@ -28,7 +28,7 @@
     'debian' | 'linuxmint' | 'ubuntu')
         sudo apt-get update -y
         for i in 'compat' 'toolkit'; do
-            apt-cache show "cuda-$i-$CUDA_VER_MAJRO-$CUDA_VER_MINOR"    \
+            apt-cache show "cuda-$i-$CUDA_VER_MAJOR-$CUDA_VER_MINOR"    \
             | sed -n 's/^Package:[[:space:]]*cuda-//p'                  \
             | sort -Vu                                                  \
             | tail -n1                                                  \
@@ -63,7 +63,7 @@
             | sed -n 's/^Version:[[:space:]]*//p'                           \
             | sort -Vu                                                      \
             | tail -n1                                                      \
-            | xargs -I{} sudo DEBIAN_FRONTEND=noninteractive apt-get install -y "cuda={}"
+            | xargs -I{} sudo DEBIAN_FRONTEND=noninteractive apt-get install --allow-downgrades -y "cuda={}"
             ;;
         esac
     fi
@@ -79,7 +79,7 @@
         $RPM_INSTALL lib{cudnn8{,-devel},nccl{,-devel,-static},nv{infer{,-plugin},{,onnx}parsers}-devel}"-*-*cuda$CUDA_VER_MAJOR.$CUDA_VER_MINOR"
         ;;
     'debian' | 'linuxmint' | 'ubuntu')
-        sudo DEBIAN_FRONTEND=noninteractive apt-get install -y lib{cudnn8{,-dev},nccl{2,-dev},nv{infer{,-plugin},{,onnx}parsers}{7,-dev}}"=*+cuda$CUDA_VER_MAJOR.$CUDA_VER_MINOR"
+        sudo DEBIAN_FRONTEND=noninteractive apt-get install --allow-downgrades -y lib{cudnn8{,-dev},nccl{2,-dev},nv{infer{,-plugin},{,onnx}parsers}{7,-dev}}"=*+cuda$CUDA_VER_MAJOR.$CUDA_VER_MINOR"
         ;;
     esac
 
