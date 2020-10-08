@@ -221,6 +221,7 @@ if $IS_CONTAINER; then
         sudo rm -rf /var/cache/yum
         ;;
     "debian" | "linuxmint" | "ubuntu")
+        sudo apt-get autoremove -y
         sudo apt-get clean
         ;;
     esac
