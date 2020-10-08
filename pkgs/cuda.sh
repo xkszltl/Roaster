@@ -5,11 +5,83 @@
 [ -e $STAGE/cuda ] && ( set -xe
     cd $SCRATCH
 
+    # ------------------------------------------------------------
+    # Pin to CUDA 11.0 for now.
+    # Known issues for CUDA 11.1:
+    #   - LLVM openmp failed to build during cmake config.
+    #   - Missing matching cuDNN/TensorRT.
+    # TODO: Remove "11-0"
+    # ------------------------------------------------------------
+    export CUDA_VER_MAJOR="11"
+    export CUDA_VER_MINOR="0"
+    case "$DISTRO_ID" in
+    'centos' | 'fedora' | 'rhel')
+        sudo dnf makecache
+        for i in 'compat' 'toolkit'; do
+            dnf list -q "cuda-$i-$CUDA_VER_MAJOR-$CUDA_VER_MINOR"       \
+            | sed -n "s/^\(cuda-$i-[0-9\-]*\).*/\1/p"                   \
+            | sort -Vu                                                  \
+            | tail -n1                                                  \
+            | xargs -r $RPM_INSTALL
+        done
+        ;;
+    'debian' | 'linuxmint' | 'ubuntu')
+        sudo apt-get update -y
+        for i in 'compat' 'toolkit'; do
+            apt-cache show "cuda-$i-$CUDA_VER_MAJRO-$CUDA_VER_MINOR"    \
+            | sed -n 's/^Package:[[:space:]]*cuda-//p'                  \
+            | sort -Vu                                                  \
+            | tail -n1                                                  \
+            | sudo DEBIAN_FRONTEND=noninteractive xargs -r apt-get install -y
+        done
+        # Blacklist
+        if false; then
+            apt-cache show 'cuda'                       \
+            | sed -n 's/^Package:[[:space:]]*cuda-//p'  \
+            | sort -Vu                                  \
+            | tail -n1                                  \
+            | xargs -I{} apt-cache show 'cuda-*-{}'     \
+            | sed -n 's/^Package:[[:space:]]*//p'       \
+            | grep -v '^cuda-demo-suite-'               \
+            | grep -v '^cuda-runtime-'                  \
+            | paste -s -                                \
+            | sudo DEBIAN_FRONTEND=noninteractive xargs apt-get install -y
+        fi
+        ! dpkg -l cuda-drivers || $IS_CONTAINER
+        ;;
+    esac
+
+    if $IS_CONTAINER; then
+        ls -d "/usr/local/cuda-$CUDA_VER_MAJOR_VERSION.$CUDA_VER_MINOR/" | sort -V | tail -n1 | sudo xargs -I{} ln -sf {} '/usr/local/cuda'
+    else
+        case "$DISTRO_ID" in
+        'centos' | 'fedora' | 'rhel')
+            $RPM_INSTALL "cuda-$CUDA_VER_MAJOR.$CUDA_VER_MINOR.*"
+            ;;
+        'debian' | 'linuxmint' | 'ubuntu')
+            apt-cache show "cuda-toolkit-$CUDA_VER_MAJRO-$CUDA_VER_MINOR"   \
+            | sed -n 's/^Version:[[:space:]]*//p'                           \
+            | sort -Vu                                                      \
+            | tail -n1                                                      \
+            | xargs -I{} sudo DEBIAN_FRONTEND=noninteractive apt-get install -y "cuda={}"
+            ;;
+        esac
+    fi
+
     [ -x '/usr/local/cuda/bin/nvcc' ]
     export CUDA_VER="$(/usr/local/cuda/bin/nvcc --version | sed -n 's/.*[[:space:]]V\([0-9\.]*\).*/\1/p')"
     export CUDA_VER_MAJOR="$(cut -d'.' -f1 <<< "$CUDA_VER")"
     export CUDA_VER_MINOR="$(cut -d'.' -f2 <<< "$CUDA_VER")"
     export CUDA_VER_BUILD="$(cut -d'.' -f3 <<< "$CUDA_VER")"
+
+    case "$DISTRO_ID" in
+    'centos' | 'fedora' | 'rhel')
+        $RPM_INSTALL lib{cudnn8{,-devel},nccl{,-devel,-static},nv{infer{,-plugin},{,onnx}parsers}-devel}"-*-*cuda$CUDA_VER_MAJOR.$CUDA_VER_MINOR"
+        ;;
+    'debian' | 'linuxmint' | 'ubuntu')
+        sudo DEBIAN_FRONTEND=noninteractive apt-get install -y lib{cudnn8{,-dev},nccl{2,-dev},nv{infer{,-plugin},{,onnx}parsers}{7,-dev}}"=*+cuda$CUDA_VER_MAJOR.$CUDA_VER_MINOR"
+        ;;
+    esac
 
     # ============================================================
     # TensorRT (Hack deprecated)

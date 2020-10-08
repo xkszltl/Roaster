@@ -13,26 +13,6 @@ for subset in pkg-{stable,skip,all}; do
         done
 
         # ------------------------------------------------------------
-        # Pin to CUDA 11.0 for now.
-        # Known issues for CUDA 11.1:
-        #   - LLVM openmp failed to build during cmake config.
-        #   - Missing matching cuDNN/TensorRT.
-        # TODO: Remove "11-0"
-        # ------------------------------------------------------------
-        CUDA_PKGS='cuda'
-        if $IS_CONTAINER; then
-            CUDA_PKGS=''
-            for i in 'compat' 'toolkit'; do
-                CUDA_PKGS="$CUDA_PKGS $(                        \
-                    dnf list -q "cuda-$i-11-0[0-9\-]*"          \
-                    | sed -n "s/^\(cuda-$i-[0-9\-]*\).*/\1/p"   \
-                    | sort -Vu                                  \
-                    | tail -n1                                  \
-                )"
-            done
-        fi
-
-        # ------------------------------------------------------------
         # Annotation:
         # [!] Stable.
         #     These are low-level or very important packages.
@@ -154,8 +134,6 @@ for subset in pkg-{stable,skip,all}; do
                 nagios{,-selinux,-devel,-debuginfo,-plugins-all}
                 {nrpe,nsca}
                 {collectd,rrdtool,pnp4nagios}{,-*}
-                [!] $CUDA_PKGS
-                [!] lib{cudnn8{,-devel},nccl{,-devel,-static},nv{infer{,-plugin},{,onnx}parsers}-devel}"-*-*+cuda11.0"
                 [!] nvidia-container-runtime
 
                 hdf5{,-*}
@@ -219,12 +197,6 @@ for subset in pkg-{stable,skip,all}; do
         # ------------------------------------------------------------
 
         which parallel 2>/dev/null && sudo parallel --will-cite < /dev/null
-
-        # ------------------------------------------------------------
-        # Manually symlink latest CUDA in docker.
-        # ------------------------------------------------------------
-
-        $IS_CONTAINER && ls -d /usr/local/cuda-*/ | sort -V | tail -n1 | sudo xargs -I{} ln -sf {} /usr/local/cuda
 
         # ------------------------------------------------------------
         # Remove suspicious python modules that can cause pip>=10 to crash.

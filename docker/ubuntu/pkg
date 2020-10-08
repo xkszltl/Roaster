@@ -5,28 +5,9 @@ LABEL BUILD_ID=$LABEL_BUILD_ID
 
 COPY [".", "/etc/roaster/scripts"]
 
-# ------------------------------------------------------------
-# Pin to CUDA 11.0 for now.
-# Known issues for CUDA 11.1:
-#   - LLVM openmp failed to build during cmake config.
-#   - Missing matching cuDNN/TensorRT.
-# TODO: Remove "11-0"
-# ------------------------------------------------------------
 RUN set -e; \
     sudo apt-get update -y; \
     sudo apt-get upgrade -y; \
-    apt-cache show 'cuda-11-0[0-9\-]*'          \
-    | sed -n 's/^Package:[[:space:]]*cuda-//p'  \
-    | sort -Vu                                  \
-    | tail -n1                                  \
-    | xargs -I{} apt-cache show 'cuda-*-{}'     \
-    | sed -n 's/^Package:[[:space:]]*//p'       \
-    | grep -v '^cuda-demo-suite-'               \
-    | grep -v '^cuda-runtime-'                  \
-    | paste -s -                                \
-    | sudo DEBIAN_FRONTEND=noninteractive xargs apt-get install -y; \
-    ! dpkg -l cuda-drivers; \
-    ls -d /usr/local/cuda-*/ | sort -V | tail -n1 | sudo xargs -I{} ln -sf {} /usr/local/cuda; \
     sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
         asciidoc \
         autoconf{,-archive} automake autopoint \
@@ -73,7 +54,6 @@ RUN set -e; \
         ldap-utils slapd \
         lib{asan{0,2,3,4,5},tsan0,ubsan{0,1}} \
         lib{atlas-base,boost-all,bz2,cairo2,edit,eigen3,gflags,gif,google-glog,grpc++,gtest,harfbuzz,hwloc,jemalloc,jpeg{,-turbo8},jsoncpp,lapack,leveldb,lmdb,lzma,ncurses5,openblas,opencv,pango1.0,png,rados,rocksdb,snappy,ssl,tiff,utf8proc,yaml}-dev \
-        lib{cudnn8{,-dev},nccl{2,-dev},nv{infer{,-plugin},{,onnx}parsers}{7,-dev}}"=*+cuda11.0" \
         libevent-dev \
         libfreetype6{,-dev} \
         liblz4-dev liblz4-tool \
