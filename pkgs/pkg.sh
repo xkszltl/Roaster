@@ -155,7 +155,7 @@ for subset in pkg-{stable,skip,all}; do
                 {nrpe,nsca}
                 {collectd,rrdtool,pnp4nagios}{,-*}
                 [!] $CUDA_PKGS
-                [!] lib{cudnn8{,-devel},nccl{,-devel,-static},nv{infer{,-plugin},{,onnx}parsers}-devel}
+                [!] lib{cudnn8{,-devel},nccl{,-devel,-static}-*-*+cuda11.0,nv{infer{,-plugin},{,onnx}parsers}-devel}
                 [!] nvidia-container-runtime
 
                 hdf5{,-*}
