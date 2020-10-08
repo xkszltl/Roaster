@@ -73,7 +73,7 @@ RUN set -e; \
         ldap-utils slapd \
         lib{asan{0,2,3,4,5},tsan0,ubsan{0,1}} \
         lib{atlas-base,boost-all,bz2,cairo2,edit,eigen3,gflags,gif,google-glog,grpc++,gtest,harfbuzz,hwloc,jemalloc,jpeg{,-turbo8},jsoncpp,lapack,leveldb,lmdb,lzma,ncurses5,openblas,opencv,pango1.0,png,rados,rocksdb,snappy,ssl,tiff,utf8proc,yaml}-dev \
-        lib{cudnn8{,-dev},nccl{2,-dev},nv{infer{,-plugin},{,onnx}parsers}{7,-dev}} \
+        lib{cudnn8{,-dev},nccl{2,-dev},nv{infer{,-plugin},{,onnx}parsers}{7,-dev}}"=*+cuda11.0" \
         libevent-dev \
         libfreetype6{,-dev} \
         liblz4-dev liblz4-tool \
