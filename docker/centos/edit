@@ -5,4 +5,5 @@ LABEL BUILD_ID=$LABEL_BUILD_ID
 
 COPY [".", "/etc/roaster/scripts"]
 
+RUN RPM_CACHE_REPO=/non-existing-file ./apply_cache.sh
 RUN updatedb
