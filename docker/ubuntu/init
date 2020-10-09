@@ -23,6 +23,9 @@ RUN set -xe; \
     sudo apt-get clean; \
     truncate -s0 ~/.bash_history;
 
+# man
+RUN rm -rf /etc/dpkg/dpkg.cfg.d/excludes
+
 VOLUME [ "/sys/fs/cgroup" ]
 CMD ["/sbin/init"]
 

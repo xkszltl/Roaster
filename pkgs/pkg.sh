@@ -65,6 +65,7 @@ for subset in pkg-{stable,skip,all}; do
                 nextgen-yum4{,-*}
                 dnf-plugins-core{,-*}
                 {bridge,crypto}-utils{,-*}
+                [!] man-pages
                 [!] util-linux{,-*}
                 [!] moreutils{,-debuginfo}
                 [!] papi{,-*}
