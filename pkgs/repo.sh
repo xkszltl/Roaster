@@ -130,6 +130,12 @@
 
         sudo apt-get update -y
         sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
+
+        echo '-----------------------------------------------------------------'
+        echo '| Active repos'
+        echo '-----------------------------------------------------------------'
+        sed 's/#.*//' '/etc/apt/sources.list'{,.d/*.list} | grep '[^[:space:]]' | sed 's/^/| /'
+        echo '-----------------------------------------------------------------'
         ;;
     *)
         echo "Unsupported distro \"$DISTRO_ID\"."
