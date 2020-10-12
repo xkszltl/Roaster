@@ -155,6 +155,7 @@ nico/demumble,\
 nicolargo/glances,\
 ninja-build/ninja,\
 nlohmann/json,\
+ntop/{bro-pf_ring,docker-ntop,libebpfflow,n2disk,n2n,nDPI,nProbe,ntopng{,-grafana-datasource},packager,PF_RING,wireshark-ntop},\
 numpy/numpy{,doc},\
 NVIDIA/{apex,cnmem,cuda-samples,cutlass,DALI{,_extra},Dataset_Synthesizer,DeepLearningExamples,DIGITS,flownet2-pytorch,libglvnd,Megatron-LM,NeMo,nccl,nccl-tests,nvidia-{container-runtime,docker,installer,modprobe,persistenced,settings,xconfig},NvPipe,nvvl,open-gpu-doc,OpenSeq2Seq,pix2pixHD,tacotron2,TensorRT,tensorrt-inference-server,vid2vid,waveglow},\
 NVlabs/{cub,ffhq-dataset,pacnet,PWC-Net,SPADE,stylegan,xmp},\
