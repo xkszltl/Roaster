@@ -130,6 +130,7 @@ jarro2783/cxxopts,\
 JDAI-CV/{dabnn{,-example},DCL,DNNLibrary},\
 jemalloc/jemalloc,\
 jordansissel/fpm,\
+joseph-henry/lwip{,-contrib},\
 JuliaStrings/utf8proc,\
 Kitware/{CMake,VTK},\
 libav/libav,\
@@ -200,6 +201,7 @@ yaml/pyyaml,\
 Yangqing/ios-cmake,\
 yixuan/{LBFGSpp,MiniDNN,recosystem,spectra},\
 zeromq/{cppzmq,libzmq,pyzmq},\
+zerotier/{libzt,ZeroTier{One,NAS}},\
 zeux/{meshoptimizer,pugixml},\
 zfsonlinux/{pkg-{spl,zfs},spl,zfs{,-auto-snapshot,-buildbot,-images}},\
 zserge/jsmn,\
