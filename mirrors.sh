@@ -116,6 +116,7 @@ google/{benchmark,bloaty,boringssl,flatbuffers,gemmlowp,glog,googletest,jax,leve
 googleapis/googleapis,\
 googlefonts/{fontmake,noto-{cjk,emoji,fonts,sans-hebrew,source},nototools,robotoslab},\
 grpc/grpc{,-{dart,dotnet,go,java,node,php,proto,swift,web}},\
+gsliepen/tinc,\
 halide/Halide,\
 harfbuzz/harfbuzz,\
 horovod/{artwork,horovod,tutorials},\
@@ -180,6 +181,7 @@ pytorch/{audio,botorch,captum,cppdocs,cpuinfo,elastic,examples,fairseq,FBGEMM,gl
 RadeonOpenCompute/{hcc,ROCm-Device-Libs,ROCR-Runtime},\
 RMerl/{am-toolchains,asuswrt-merlin.ng},\
 ROCm-Developer-Tools/HIP,\
+ryd/chaosvpn,\
 SchedMD/slurm,\
 scipy/scipy{,-mathjax,-sphinx-theme},\
 shadowsocks/{ShadowsocksX-NG,libQtShadowsocks,shadowsocks{,-go,-libev,-manager,-windows},v2ray-plugin},\
