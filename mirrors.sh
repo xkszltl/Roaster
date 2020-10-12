@@ -101,6 +101,7 @@ esnme/ujson4c,\
 facebook/{rocksdb,zstd},\
 facebookincubator/{fbjni,gloo},\
 facebookresearch/{ClassyVision,CrypTen,Detectron,detectron2,dlrm,DrQA,faiss,fastMRI,fastText,flashlight,fvcore,habitat-sim,ImageNet-Adversarial-Training,maskrcnn-benchmark,ParlAI,pycls,pytext,pythia,PyTorch-BigGraph,pytorch-dp,pytorch3d,SentEval,ResNeXt,wav2letter,XLM},\
+fatedier/{fft,frp,golib},\
 FFmpeg/FFmpeg,\
 fmtlib/{fmt,format-benchmark},\
 frerich/clcache,\
