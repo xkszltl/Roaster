@@ -160,8 +160,8 @@ for i in $(echo "
     axel
     intel
     ipt
-    openmpi
     cuda
+    openmpi
     nccl
     llvm
     boost
