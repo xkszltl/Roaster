@@ -66,8 +66,9 @@
             "$(javac -version > /dev/null && echo '--with-java')"
 
         make all docs -j$(nproc)
-        make gtest -j$(nproc)
         make install -j
+        # Unit tests take too long to run.
+        # make gtest -j$(nproc)
     )
 
     false
