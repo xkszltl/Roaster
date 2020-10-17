@@ -41,6 +41,9 @@
         export CFLAGS="  $CFLAGS   -O3 -fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"
         export CXXFLAGS="$CXXFLAGS -O3 -fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"
 
+        cuda_nvcc="$(which nvcc || echo /usr/local/cuda/bin/nvcc)"
+        cuda_root="$("$cuda_nvcc" --version > /dev/null && readlink -e "$(dirname "$cuda_nvcc")/..")"
+
         ./autogen.sh
         ./configure                     \
             --disable-assertions        \
@@ -58,11 +61,12 @@
             --enable-ucg=no             \
             --prefix="$INSTALL_ABS"     \
             --with-avx                  \
-            --with-cuda="$(readlink -e "$(dirname "$(which nvcc)")/..")"    \
+            "$(sed 's/\(..*\)/--with-cuda=\1/' <<< "$cuda_root")"   \
             --with-gdrcopy=no           \
-            --with-java
+            "$(javac -version > /dev/null && echo '--with-java')"
 
         make all docs -j$(nproc)
+        make gtest -j$(nproc)
         make install -j
     )
 

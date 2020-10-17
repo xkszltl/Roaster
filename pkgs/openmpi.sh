@@ -26,6 +26,9 @@
             ;;
         esac
 
+        cuda_nvcc="$(which nvcc || echo /usr/local/cuda/bin/nvcc)"
+        cuda_root="$("$cuda_nvcc" --version > /dev/null && readlink -e "$(dirname "$cuda_nvcc")/..")"
+
         ./autogen.pl
         ./configure                             \
             --enable-mpi-cxx                    \
@@ -35,9 +38,10 @@
             --enable-sparse-groups              \
             --enable-static                     \
             --prefix="$INSTALL_ABS/openmpi"     \
-            "$(/usr/local/cuda/bin/nvcc --version > /dev/null && echo '--with-cuda')"   \
+            "$(sed 's/\(..*\)/--with-cuda=\1/' <<< "$cuda_root")"   \
             --with-sge                          \
-            --with-slurm
+            --with-slurm                        \
+            --with-ucx=/usr/local
 
         make -j$(nproc)
         make -j install
