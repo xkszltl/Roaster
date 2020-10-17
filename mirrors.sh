@@ -112,7 +112,7 @@ giampaolo/psutil,\
 github/{git-lfs,gitignore},\
 golang/{appengine,benchmarks,dep,example,freetype,glog,go{,frontend},groupcache,leveldb,mock,oauth2,protobuf,snappy,term,winstrap},\
 goldmann/docker-squash,\
-google/{benchmark,bloaty,boringssl,flatbuffers,gemmlowp,glog,googletest,jax,leveldb,libnop,libprotobuf-mutator,nsync,protobuf,re2,skia,snappy,upb,XNNPACK},\
+google/{benchmark,bloaty,boringssl,flatbuffers,gemmlowp,glog,googletest,gtest-parallel,jax,leveldb,libnop,libprotobuf-mutator,nsync,protobuf,re2,skia,snappy,upb,XNNPACK},\
 googleapis/googleapis,\
 googlefonts/{fontmake,noto-{cjk,emoji,fonts,sans-hebrew,source},nototools,robotoslab},\
 grpc/grpc{,-{dart,dotnet,go,java,node,php,proto,swift,web}},\
