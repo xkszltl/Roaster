@@ -68,6 +68,8 @@
         make install -j
         # Unit tests take too long to run.
         # make gtest -j$(nproc)
+
+        find "$INSTALL_ABS" -name '*.la' | xargs -r sed -i "s/$(sed 's/\([\\\/\-\.]\)/\\\1/g' <<< "$INSTALL_ROOT")//g"
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
