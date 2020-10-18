@@ -70,9 +70,7 @@
         # make gtest -j$(nproc)
     )
 
-    false
-
-    # "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
+    "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
 
     # ------------------------------------------------------------
 
