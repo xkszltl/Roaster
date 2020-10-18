@@ -14,13 +14,12 @@
     # Known issues:
     #   - Header mismatched between ucg and ucs in v1.9.0.
     #     https://github.com/openucx/ucx/issues/5810
-    pushd src/ucg
+    # pushd src/ucg
     # git checkout master
     # git submodule update --init
-    popd
-
-    git --no-pager diff
-    git commit -am "Automatic git submodule updates."
+    # popd
+    # git --no-pager diff
+    # git commit -am "Automatic git submodule updates."
 
     # ------------------------------------------------------------
 
