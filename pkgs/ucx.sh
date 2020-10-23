@@ -18,7 +18,7 @@
     #   - Header mismatched between ucg and ucs in v1.9.0.
     #     https://github.com/openucx/ucx/issues/5810
 
-    git cherry-pick d694075
+    git cherry-pick 3fe3502
 
     pushd src/ucg
     git checkout master
