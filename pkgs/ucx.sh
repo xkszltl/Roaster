@@ -6,14 +6,20 @@
     cd $SCRATCH
 
     . "$ROOT_DIR/pkgs/utils/git/version.sh" openucx/ucx,v
-    until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
+    until git clone -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd ucx
 
     . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
 
+
     # Known issues:
+    #   - Patch v1.9.0 for Java 11 (Ubuntu default).
+    #     https://github.com/openucx/ucx/issues/5811#event-3907745448
     #   - Header mismatched between ucg and ucs in v1.9.0.
     #     https://github.com/openucx/ucx/issues/5810
+
+    git cherry-pick d694075
+
     pushd src/ucg
     git checkout master
     git submodule update --init
