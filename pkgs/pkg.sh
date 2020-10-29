@@ -64,6 +64,7 @@ for subset in pkg-{stable,skip,all}; do
                 [!] {core,diff,elf,find,ib,ip,pci,usb,yum-}utils{,-*}
                 nextgen-yum4{,-*}
                 dnf-plugins-core{,-*}
+                {python{2,3}-dnf,yum}-plugin-versionlock{,-*}
                 {bridge,crypto}-utils{,-*}
                 [!] man-pages
                 [!] util-linux{,-*}
