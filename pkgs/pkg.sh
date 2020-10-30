@@ -54,6 +54,8 @@ for subset in pkg-{stable,skip,all}; do
                 {h,if,io,latency,power,tip}top{,-*}
                 iproute{,-*}
                 {ibutils,infiniband-diags}{,-*}
+                rdma-core{,-*}
+                librdmacm{,-utils}
                 lshw{,-*}
                 procps-ng{,-*}
                 [!] {axel,curl,net-tools,wget}{,-*}
