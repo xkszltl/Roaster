@@ -5,6 +5,8 @@ LABEL BUILD_ID=$LABEL_BUILD_ID
 
 SHELL ["/bin/bash", "-c"]
 
+ENV LANG=C.UTF-8
+
 # systemd
 RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ "_$i" = '_systemd-tmpfiles-setup.service' ] || rm -f "$i"; done); \
     rm -f /lib/systemd/system/multi-user.target.wants/*; \
@@ -19,10 +21,10 @@ VOLUME [ "/sys/fs/cgroup" ]
 CMD ["/usr/sbin/init"]
 
 # nvidia-docker
-ENV PATH /usr/local/nvidia/bin:/usr/local/cuda/bin:${PATH}
-ENV LD_LIBRARY_PATH /usr/local/nvidia/lib64:/usr/local/nvidia/lib:${LD_LIBRARY_PATH}
+ENV PATH=/usr/local/nvidia/bin:/usr/local/cuda/bin:${PATH}
+ENV LD_LIBRARY_PATH=/usr/local/nvidia/lib64:/usr/local/nvidia/lib:${LD_LIBRARY_PATH}
 ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility,video
-ENV NVIDIA_VISIBLE_DEVICES all
+ENV NVIDIA_VISIBLE_DEVICES=all
 
 VOLUME ["/var/log"]
 
