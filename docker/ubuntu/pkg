@@ -89,7 +89,7 @@ RUN set -e; \
         python3{,-pip} \
         qt5-default \
         rapidjson-dev \
-        rdma-core rdmacm-utils librdmacm{1,-dev}
+        rdma-core rdmacm-utils librdmacm{1,-dev} \
         rsync \
         ruby-all-dev \
         sed \
