@@ -84,6 +84,7 @@ caffe2/{caffe2,models},\
 catchorg/{Catch2,Clara},\
 ccache/ccache,\
 chadaustin/sajson,\
+chromium/{ballista,chromium,gyp,pdfium,vs-chromium},\
 cocodataset/{cocoapi,panopticapi},\
 containerd/containerd,\
 cython/cython,\
