@@ -43,8 +43,9 @@
         if true; then
             mkdir -p build
             cd $_
-            # The NDEBUG in non-debug cmake build leads to test-related compile error.
-            # Benchmark requires testharness: https://github.com/facebook/rocksdb/issues/6769
+            # Known issues:
+            #   - The NDEBUG in non-debug cmake build leads to test-related compile error.
+            #     Benchmark requires testharness: https://github.com/facebook/rocksdb/issues/6769
             cmake                                       \
                 -DCMAKE_BUILD_TYPE=Release              \
                 -DCMAKE_C_COMPILER="$CC"                \
