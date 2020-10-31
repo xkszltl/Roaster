@@ -46,11 +46,13 @@
             # Known issues:
             #   - The NDEBUG in non-debug cmake build leads to test-related compile error.
             #     Benchmark requires testharness: https://github.com/facebook/rocksdb/issues/6769
+            #   - RocksDB enables ccache automatically via RULE_LAUNCH_COMPILE and RULE_LAUNCH_LINK.
+            #     https://github.com/facebook/rocksdb/issues/7623
             cmake                                       \
                 -DCMAKE_BUILD_TYPE=Release              \
                 -DCMAKE_C_COMPILER="$CC"                \
                 -DCMAKE_CXX_COMPILER="$CXX"             \
-                -DCMAKE_C{,XX}_COMPILER_LAUNCHER=ccache \
+                -DCMAKE_C{,XX}_COMPILER_LAUNCHER=""     \
                 -DCMAKE_C{,XX}_FLAGS="-fPIC -fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g" \
                 -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
                 -DCMAKE_VERBOSE_MAKEFILE=ON             \
