@@ -40,6 +40,7 @@ for i in llvm-{gcc,clang}; do
                 -DCMAKE_BUILD_TYPE=Release
                 -DCMAKE_INSTALL_PREFIX='$INSTALL_ABS'
                 -DCMAKE_VERBOSE_MAKEFILE=ON
+                -DENABLE_LINKER_BUILD_ID=ON
                 -DLIBCLANG_BUILD_STATIC=ON
                 -DLIBCXX_CONFIGURE_IDE=ON
                 -DLIBCXX_ENABLE_PARALLEL_ALGORITHMS=ON
@@ -102,6 +103,7 @@ for i in llvm-{gcc,clang}; do
                     -DLLVM_ENABLE_LIBCXX=ON             \
                     -DLLVM_ENABLE_LLD=ON                \
                     -DLLVM_ENABLE_LTO=Thin              \
+                    -DLLVM_TOOL_MLIR_BUILD=ON           \
                     $LLVM_COMMON_ARGS
             fi
 
