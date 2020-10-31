@@ -5,7 +5,9 @@ LABEL BUILD_ID=$LABEL_BUILD_ID
 
 SHELL ["/bin/bash", "-c"]
 
-ENV LANG=C.UTF-8
+# C.UTF-8 may never be available before CentOS 8 due to glibc bug.
+# https://bugzilla.redhat.com/show_bug.cgi?id=1361965
+ENV LANG=en_US.UTF-8
 
 # systemd
 RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ "_$i" = '_systemd-tmpfiles-setup.service' ] || rm -f "$i"; done); \
