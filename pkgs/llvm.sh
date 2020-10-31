@@ -31,6 +31,9 @@ for i in llvm-{gcc,clang}; do
             cd $_
 
             # TODO: Enable OpenMP for fortran when ninja supports it.
+            # Known issues:
+            #   - Enable LLVM_LIBC_ENABLE_LINTING to bypass libc system header check failures.
+            #     https://github.com/llvm/llvm-project/blob/176249bd6732a8044d457092ed932768724a6f06/libc/test/src/CMakeLists.txt#L77
             export LLVM_COMMON_ARGS="
                 -DCLANG_DEFAULT_CXX_STDLIB=libc++
                 -DCLANG_DEFAULT_LINKER=lld
@@ -67,6 +70,7 @@ for i in llvm-{gcc,clang}; do
                 -DLLVM_ENABLE_RTTI=ON
                 -DLLVM_INSTALL_BINUTILS_SYMLINKS=ON
                 -DLLVM_INSTALL_UTILS=ON
+                -DLLVM_LIBC_ENABLE_LINTING=OFF
                 -DLLVM_LINK_LLVM_DYLIB=ON
                 -DLLVM_OPTIMIZED_TABLEGEN=ON
                 -DLLVM_USE_PERF=ON
