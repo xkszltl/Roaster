@@ -26,11 +26,14 @@ $url_win81="https://download.microsoft.com/download/B/0/C/B0C80BA3-8AD6-4958-810
 $url_win8="https://download.microsoft.com/download/F/1/3/F1300C9C-A120-4341-90DF-8A52509B23AC/standalonesdk/sdksetup.exe"
 $url_win7="https://download.microsoft.com/download/A/6/A/A6AC035D-DA3F-4F0C-ADA4-37C8E5D34E3D/winsdk_web.exe"
 
-rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${DownloadDir}/setup.exe"
-Write-Host "Downloading Windows SDK installer..."
-[System.Net.WebClient]::new().DownloadFile("$url_win10_1709", "${DownloadDir}/setup.exe")
+foreach ($url in @(${url_win10_1709}, ${url_win10_1809}, ${url_win10_1903}, ${url_win10_2004}))
+{
+    rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${DownloadDir}/setup.exe"
+    Write-Host "Downloading Windows SDK installer..."
+    [System.Net.WebClient]::new().DownloadFile("$url", "${DownloadDir}/setup.exe")
 
-Write-Host "Installing Windows SDK..."
-& "${DownloadDir}/setup.exe" -ceip off -features + -quiet | Out-Null
+    Write-Host "Installing Windows SDK..."
+    & "${DownloadDir}/setup.exe" -ceip off -features + -quiet | Out-Null
 
-rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${DownloadDir}/setup.exe"
+    rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${DownloadDir}/setup.exe"
+}
