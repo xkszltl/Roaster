@@ -51,6 +51,9 @@ esac
 
 mkdir -p "$INSTALL_ABS/src/$(basename "$(pwd)")"
 
+ls -A -I"$(basename "$(dirname "$INSTALL_ROOT")")" \
+| xargs cp --reflink=auto -aft "$INSTALL_ABS/src/$(basename "$(pwd)")/"
+
 (
     set +xe
     case "$DISTRO_ID" in
@@ -59,8 +62,7 @@ mkdir -p "$INSTALL_ABS/src/$(basename "$(pwd)")"
         ;;
     esac
     set -xe
-    git gc --aggressive --force
-)
 
-ls -A -I"$(basename "$(dirname "$INSTALL_ROOT")")" \
-| xargs cp --reflink=auto -aft "$INSTALL_ABS/src/$(basename "$(pwd)")/"
+    cd "$INSTALL_ABS/src/$(basename "$(pwd)")/"
+    git gc --aggressive --force
+) &
