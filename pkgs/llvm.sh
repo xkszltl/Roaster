@@ -66,7 +66,7 @@ for i in llvm-{gcc,clang}; do
                 -DLLVM_CCACHE_BUILD=ON
                 -DLLVM_ENABLE_EH=ON
                 -DLLVM_ENABLE_FFI=ON
-                -DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;compiler-rt;libc;libclc;libcxx;libcxxabi;libunwind;lld;lldb;openmp;parallel-libs;polly;pstl'
+                -DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;compiler-rt;libclc;libcxx;libcxxabi;libunwind;lld;lldb;openmp;parallel-libs;polly;pstl'
                 -DLLVM_ENABLE_RTTI=ON
                 -DLLVM_INSTALL_BINUTILS_SYMLINKS=ON
                 -DLLVM_INSTALL_UTILS=ON
