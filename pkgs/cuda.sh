@@ -5,15 +5,8 @@
 [ -e $STAGE/cuda ] && ( set -xe
     cd $SCRATCH
 
-    # ------------------------------------------------------------
-    # Pin to CUDA 11.0 for now.
-    # Known issues for CUDA 11.1:
-    #   - LLVM openmp failed to build during cmake config.
-    #   - Missing matching cuDNN/TensorRT.
-    # TODO: Remove "11-0"
-    # ------------------------------------------------------------
     export CUDA_VER_MAJOR="11"
-    export CUDA_VER_MINOR="0"
+    export CUDA_VER_MINOR="1"
     case "$DISTRO_ID" in
     'centos' | 'fedora' | 'rhel')
         sudo dnf makecache

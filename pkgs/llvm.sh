@@ -91,23 +91,25 @@ for i in llvm-{gcc,clang}; do
                     -DCMAKE_RANLIB="$(which gcc-ranlib)"    \
                     $LLVM_COMMON_ARGS
             else
-                # -DLIBOMPTARGET_NVPTX_ENABLE_BCLIB=ON
-                LDFLAGS='-fuse-ld=lld'                  \
-                cmake                                   \
-                    -DCMAKE_C_COMPILER=clang            \
-                    -DCMAKE_CXX_COMPILER=clang++        \
+                # Known issues:
+                #   - LIBOMPTARGET_NVPTX_ENABLE_BCLIB=ON does not work with LLVM 11 + CUDA 11.1.
+                #     CUDA 11.0 is fine.
+                LDFLAGS='-fuse-ld=lld'                      \
+                cmake                                       \
+                    -DCMAKE_C_COMPILER=clang                \
+                    -DCMAKE_CXX_COMPILER=clang++            \
                     -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src'"   \
-                    -DCMAKE_LINKER=ld.lld               \
-                    -DENABLE_X86_RELAX_RELOCATIONS=ON   \
-                    -DLIBCXX_USE_COMPILER_RT=ON         \
-                    -DLIBCXXABI_USE_COMPILER_RT=ON      \
-                    -DLIBCXXABI_USE_LLVM_UNWINDER=ON    \
-                    -DLIBOMPTARGET_NVPTX_ENABLE_BCLIB=ON\
-                    -DLIBUNWIND_USE_COMPILER_RT=ON      \
-                    -DLLVM_ENABLE_LIBCXX=ON             \
-                    -DLLVM_ENABLE_LLD=ON                \
-                    -DLLVM_ENABLE_LTO=Thin              \
-                    -DLLVM_TOOL_MLIR_BUILD=ON           \
+                    -DCMAKE_LINKER=ld.lld                   \
+                    -DENABLE_X86_RELAX_RELOCATIONS=ON       \
+                    -DLIBCXX_USE_COMPILER_RT=ON             \
+                    -DLIBCXXABI_USE_COMPILER_RT=ON          \
+                    -DLIBCXXABI_USE_LLVM_UNWINDER=ON        \
+                    -DLIBOMPTARGET_NVPTX_ENABLE_BCLIB=OFF   \
+                    -DLIBUNWIND_USE_COMPILER_RT=ON          \
+                    -DLLVM_ENABLE_LIBCXX=ON                 \
+                    -DLLVM_ENABLE_LLD=ON                    \
+                    -DLLVM_ENABLE_LTO=Thin                  \
+                    -DLLVM_TOOL_MLIR_BUILD=ON               \
                     $LLVM_COMMON_ARGS
             fi
 
