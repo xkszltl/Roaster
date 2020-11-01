@@ -63,7 +63,7 @@
             --enable-examples           \
             --enable-gtest              \
             --enable-mt                 \
-            --enable-ucg=no             \
+            --enable-ucg=yes            \
             --prefix="$INSTALL_ABS"     \
             --with-avx                  \
             "$(sed 's/\(..*\)/--with-cuda=\1/' <<< "$cuda_root")"   \
