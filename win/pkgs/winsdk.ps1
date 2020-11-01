@@ -31,4 +31,6 @@ Write-Host "Downloading Windows SDK installer..."
 [System.Net.WebClient]::new().DownloadFile("$url_win10_1709", "${DownloadDir}/setup.exe")
 
 Write-Host "Installing Windows SDK..."
-& "${DownloadDir}/setup.exe" /? | Out-Null
+& "${DownloadDir}/setup.exe" -ceip off -features + -quiet | Out-Null
+
+rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${DownloadDir}/setup.exe"
