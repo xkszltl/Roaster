@@ -18,6 +18,12 @@
     until git clone -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd onnxruntime
 
+    # Known issues:
+    #  - libonnxruntime_providers_dnnl.so not installed.
+    #    https://github.com/microsoft/onnxruntime/issues/4729
+    git fetch origin master
+    git cherry-pick 16d3526
+
     git remote add patch https://github.com/xkszltl/onnxruntime.git
 
     PATCHES=""
@@ -139,16 +145,6 @@
 
         # Install unit tests.
         find . -maxdepth 1 -name 'onnxruntime_*test*' -type f -executable | xargs cp -dnrt "$INSTALL_ABS/bin/"
-
-        # Work around https://github.com/microsoft/onnxruntime/issues/4729
-        case "$DISTRO_ID" in
-        'centos' | 'fedora' | 'rhel')
-            find . -maxdepth 1 -name '*\.so' -or -name '*\.so\.*' | xargs cp -dnrt "$INSTALL_ABS/lib64/"
-            ;;
-        'ubuntu')
-            find . -maxdepth 1 -name '*\.so' -or -name '*\.so\.*' | xargs cp -dnrt "$INSTALL_ABS/lib/"
-            ;;
-        esac
 
         # Install MKLML
         mkdir -p "$INSTALL_ABS/lib"
