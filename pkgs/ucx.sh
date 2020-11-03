@@ -21,6 +21,10 @@
     git cherry-pick 3fe3502
     git cherry-pick 84c73e3
 
+    sed -i "s/\(<javadocExecutable>\)[^<]*\(<\/javadocExecutable>\)/\1$(readlink -e "$(which javadoc)" | sed 's/\([\\\/\.\-]\)/\\\1/g')\2/" 'bindings/java/pom.xml.in'
+    git --no-pager diff
+    git commit 'bindings/java/pom.xml.in' -m 'Patch javadoc path: https://github.com/openucx/ucx/issues/5858'
+
     pushd src/ucg
     git checkout master
     git submodule update --init
