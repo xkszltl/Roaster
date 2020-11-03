@@ -15,7 +15,7 @@
 
     # Patch missing python header issue in v2.6.0
     # https://github.com/pybind/pybind11/pull/2636
-    git fetch master
+    git fetch origin master
     git cherry-pick b8dc60e
 
     . "$ROOT_DIR/pkgs/utils/git/submodule.sh"

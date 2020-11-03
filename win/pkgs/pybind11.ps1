@@ -21,14 +21,16 @@ if (Test-Path "$root")
 }
 
 $latest_ver='v' + $($(git ls-remote --tags "$repo") -match '.*refs/tags/v[0-9\.]*$' -replace '.*refs/tags/v','' | sort {[Version]$_})[-1]
-git clone --recursive -b "$latest_ver" "$repo"
+git clone --recursive --single-branch -b "$latest_ver" "$repo"
 pushd "$root"
 
 # ----------------------------------------------------------------
 # Known issues:
-#   - Missing <algorithm> for std::count_if.
+#   - Patch missing python header issue in v2.6.0
+#     https://github.com/pybind/pybind11/pull/2636
 # ----------------------------------------------------------------
-git cherry-pick 03b3d59d
+git fetch origin master
+git cherry-pick b8dc60e
 
 mkdir build
 pushd build
