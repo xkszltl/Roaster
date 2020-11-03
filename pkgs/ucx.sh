@@ -19,7 +19,7 @@
     #     https://github.com/openucx/ucx/issues/5810
 
     git cherry-pick 3fe3502
-    git cherry-pick 089fd96
+    git cherry-pick 84c73e3
 
     pushd src/ucg
     git checkout master
