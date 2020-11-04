@@ -221,7 +221,7 @@ NVIDIA/cuda,\
 pycqa/flake8,\
 },\
 https://gitlab.alpinelinux.org/\ /\ {\
-alpine/{abuild,alpine-{baselayout,conf},apk-tools,aports,awall,ca-certificates,dmvpn-tools,docs/{{developer,user}-handbook,docs.a.o,governance},infra/{alpine-{mksite,secdb},aports-turbo,build-server-status,compose,docker,gitlab-ci-templates,infra{,-packages},mirror-status,turbo-paste,zabbix-agent2-plugins},lua-aports,mkinitfs},\
+alpine/{abuild,alpine-{baselayout,conf},apk-tools,aports,awall,ca-certificates,dmvpn-tools,docs/{{developer,user}-handbook,docs.a.o,governance},infra/{alpine-{mksite,secdb},aports-turbo,build-server-status,compose/{algitbot,alpine-mirror-sync,appstream-generator,cgit,gitlab-{acceptance-tests,inbound-email,runner-alpine-ci),netbox,package-host,webhook},docker/{alpine-gitlab-ci,ansible,apkbuild-lint-tools,aports-{build,turbo},appstream-generator,build-base,darkhttpd,docker-{cli,compose},git-mirror-syncd,gitlab{,-runner{,-helper}},lua-turbo,mariadb,mirror-status,mlmmj,netbox,package-builder,rsyncd,secdb,turbo-paste,uacme-nsd-wildcard,unbound,webhook},gitlab-ci-templates,infra{,-packages},mirror-status,turbo-paste,zabbix-agent2-plugins},lua-aports,mkinitfs},\
 },\
 https://sourceware.org/git/\ sourceware\ {\
 valgrind,\
