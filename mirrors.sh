@@ -116,6 +116,7 @@ golang/{appengine,benchmarks,dep,example,freetype,glog,go{,frontend},groupcache,
 goldmann/docker-squash,\
 google/{benchmark,bloaty,boringssl,flatbuffers,gemmlowp,glog,googletest,gtest-parallel,jax,leveldb,libnop,libprotobuf-mutator,nsync,protobuf,re2,skia,snappy,upb,XNNPACK},\
 googleapis/googleapis,\
+GoogleContainerTools/{base-images-docker,container-{debug-support,diff,structure-test},distroless,jib{,-extensions},kaniko,kpt{,-functions-{catalog,sdk}},skaffold},\
 googlefonts/{fontmake,noto-{cjk,emoji,fonts,sans-hebrew,source},nototools,robotoslab},\
 grpc/grpc{,-{dart,dotnet,go,java,node,php,proto,swift,web}},\
 gsliepen/tinc,\
