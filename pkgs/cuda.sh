@@ -45,7 +45,11 @@
     esac
 
     if $IS_CONTAINER; then
-        ls -d "/usr/local/cuda-$CUDA_VER_MAJOR_VERSION.$CUDA_VER_MINOR/" | sort -V | tail -n1 | sudo xargs -I{} ln -sf {} '/usr/local/cuda'
+        # Note:
+        #   - cuda-toolkit creates symlink "/usr/local/cuda -> /etc/alternatives/cuda -> /usr/local/cuda-<ver>".
+        #     libnvidia-container cannot set up cuda-compat driver properly in this case.
+        #     Use "ln -T" to overwrite dir symlink.
+        ls -d "/usr/local/cuda-$CUDA_VER_MAJOR_VERSION.$CUDA_VER_MINOR/" | sort -V | tail -n1 | sudo xargs -I{} ln -sfT {} '/usr/local/cuda'
     else
         case "$DISTRO_ID" in
         'centos' | 'fedora' | 'rhel')
