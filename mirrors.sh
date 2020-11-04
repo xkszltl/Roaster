@@ -183,7 +183,7 @@ python/typing,\
 python-attrs/attrs,\
 pytorch/{audio,botorch,captum,cppdocs,cpuinfo,elastic,examples,fairseq,FBGEMM,glow,ignite,pytorch,QNNPACK,serve,tensorpipe,text,translate,tutorials,vision,xla},\
 RadeonOpenCompute/{hcc,ROCm-Device-Libs,ROCR-Runtime},\
-reactos/{rapps-db,reactos{,dbg},RosBE,wine},
+reactos/{rapps-db,reactos{,dbg},RosBE,wine},\
 RMerl/{am-toolchains,asuswrt-merlin.ng},\
 ROCm-Developer-Tools/HIP,\
 ryd/chaosvpn,\
