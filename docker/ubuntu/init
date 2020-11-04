@@ -34,7 +34,7 @@ CMD ["/sbin/init"]
 # nvidia-docker
 ENV PATH=/usr/local/nvidia/bin:/usr/local/cuda/bin:${PATH}
 ENV LD_LIBRARY_PATH=/usr/local/nvidia/lib64:/usr/local/nvidia/lib:${LD_LIBRARY_PATH}
-ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility,video
+ENV NVIDIA_DRIVER_CAPABILITIES=compute,graphics,utility,video
 ENV NVIDIA_VISIBLE_DEVICES=all
 
 VOLUME ["/var/log"]
