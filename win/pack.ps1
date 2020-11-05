@@ -76,7 +76,7 @@ Remove-Job *
 
 Get-ChildItem ../nuget | Foreach-Object {
     $pkg = $_.Name
-    if ($pkg -eq "cuda" -or $pkg -eq "cublas" -or $pkg -eq "cufft" -or $pkg -eq "cusolver")
+    if ($pkg -eq "cuda" -or $pkg -eq "cublas" -or $pkg -eq "cufft" -or $pkg -eq "cusolver" -or $pkg -eq "cusparse")
     {
         $prefix = "${Env:ProgramFiles}/NVIDIA GPU Computing Toolkit/CUDA/v11.0"
     }
