@@ -34,7 +34,13 @@
         export CFLAGS="$CFLAGS -fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"
         export CXXFLAGS="$CXXFLAGS -fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"
 
-        make all -j$(nproc)
+        # Known issues:
+        #  - Retry due to potentially broken dependency graph.
+        #    https://github.com/facebook/zstd/issues/2380
+        for retry in $(seq 3 -1 0); do
+            [ "$retry" -gt 0 ]
+            make all -j$(nproc) && break
+        done
         # Only run quick tests (check) by default.
         # make test -j$(nproc)
         make check -j$(nproc)
