@@ -14,16 +14,18 @@
 
     # Known issues:
     #   - Patch v1.9.0 for Java 11 (Ubuntu default).
-    #     https://github.com/openucx/ucx/issues/5811#event-3907745448
+    #     https://github.com/openucx/ucx/issues/5811
+    #     https://github.com/openucx/ucx/commit/3fe3502fe5b925ac11cc18d564265384ee544701
+    #   - Patch v1.9.0 for javadoc path:
+    #     https://github.com/openucx/ucx/issues/5858
+    #     https://github.com/openucx/ucx/commit/84c73e34454f96d7eb8887cec6435d4474ded756
+    #     https://github.com/openucx/ucx/commit/a1cf7c54f6c427c027605d732aa230bd50e405c5
     #   - Header mismatched between ucg and ucs in v1.9.0.
     #     https://github.com/openucx/ucx/issues/5810
 
     git cherry-pick 3fe3502
     git cherry-pick 84c73e3
-
-    sed -i "s/\(<javadocExecutable>\)[^<]*\(<\/javadocExecutable>\)/\1$(readlink -e "$(which javadoc)" | sed 's/\([\\\/\.\-]\)/\\\1/g')\2/" 'bindings/java/pom.xml.in'
-    git --no-pager diff
-    git commit 'bindings/java/pom.xml.in' -m 'Patch javadoc path: https://github.com/openucx/ucx/issues/5858'
+    git cherry-pick a1cf7c5
 
     pushd src/ucg
     git checkout master
