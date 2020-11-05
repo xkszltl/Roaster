@@ -9,8 +9,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/cudnn64_8.dll">
-      <Link>cudnn64_8.dll</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/cudnn_cnn_infer64_8.dll">
+      <Link>cudnn_cnn_infer64_8.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/cudnn_cnn_train64_8.dll">
+      <Link>cudnn_cnn_train64_8.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
