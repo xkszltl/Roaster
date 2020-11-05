@@ -20,10 +20,10 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="Roaster.cudnn_cnn.v141.dyn.x64.targets"  target="build\Roaster.cudnn_cnn.v141.dyn.x64.targets" />
-    <file src="cudnn\*.txt"                             target="lib\native\lib\Release\" />
-    <file src="cudnn\bin\**\cudnn_cnn_*"                target="lib\native\lib\Release\" />
-    <file src="cudnn\include\**\cudnn_cnn_*"            target="lib\native\include" />
-    <file src="cudnn\lib\x64\**\cudnn_cnn_*"            target="lib\native\lib\Release\" />
+    <file src="Roaster.cudnn_cnn.v141.dyn.x64.targets"      target="build\Roaster.cudnn_cnn.v141.dyn.x64.targets" />
+    <file src="cudnn_cnn\*.txt"                             target="lib\native\lib\Release\" />
+    <file src="cudnn_cnn\bin\**\cudnn_cnn_*"                target="lib\native\lib\Release\" />
+    <file src="cudnn_cnn\include\**\cudnn_cnn_*"            target="lib\native\include" />
+    <file src="cudnn_cnn\lib\x64\**\cudnn_cnn_*"            target="lib\native\lib\Release\" />
   </files>
 </package>

@@ -15,14 +15,14 @@
     <copyright>Copyright 2017-2020</copyright>
     <tags>cuda cudnn cudnn_ops native C++ v141 dyn</tags>
     <dependencies>
-      <dependency id="Roaster.cuda.v141.dyn.x64"        version="[$version$]" />
+      <dependency id="Roaster.cuda.v141.dyn.x64"    version="[$version$]" />
     </dependencies>
   </metadata>
   <files>
-    <file src="Roaster.cudnn_ops.v141.dyn.x64.targets"  target="build\Roaster.cudnn_ops.v141.dyn.x64.targets" />
-    <file src="cudnn\*.txt"                             target="lib\native\lib\Release\" />
-    <file src="cudnn\bin\**\cudnn_ops_*"                target="lib\native\lib\Release\" />
-    <file src="cudnn\include\**\cudnn_ops_*"            target="lib\native\include" />
-    <file src="cudnn\lib\x64\**\cudnn_ops_*"            target="lib\native\lib\Release\" />
+    <file src="Roaster.cudnn_ops.v141.dyn.x64.targets"      target="build\Roaster.cudnn_ops.v141.dyn.x64.targets" />
+    <file src="cudnn_ops\*.txt"                             target="lib\native\lib\Release\" />
+    <file src="cudnn_ops\bin\**\cudnn_ops_*"                target="lib\native\lib\Release\" />
+    <file src="cudnn_ops\include\**\cudnn_ops_*"            target="lib\native\include" />
+    <file src="cudnn_ops\lib\x64\**\cudnn_ops_*"            target="lib\native\lib\Release\" />
   </files>
 </package>
