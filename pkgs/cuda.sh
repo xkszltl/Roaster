@@ -49,7 +49,7 @@
         #   - cuda-toolkit creates symlink "/usr/local/cuda -> /etc/alternatives/cuda -> /usr/local/cuda-<ver>".
         #     libnvidia-container cannot set up cuda-compat driver properly in this case.
         #     Use "ln -T" to overwrite dir symlink.
-        ls -d "/usr/local/cuda-$CUDA_VER_MAJORN.$CUDA_VER_MINOR/" | sort -V | tail -n1 | sudo xargs -I{} ln -sfT {} '/usr/local/cuda'
+        ls -d "/usr/local/cuda-$CUDA_VER_MAJOR.$CUDA_VER_MINOR/" | sort -V | tail -n1 | sudo xargs -I{} ln -sfT {} '/usr/local/cuda'
     else
         case "$DISTRO_ID" in
         'centos' | 'fedora' | 'rhel')
