@@ -147,7 +147,7 @@
         VERBOSE=1 time sudo make -j$(nproc) -k || true
 
         for cuda_util in deviceQuery{,Drv} topologyQuery {bandwidth,p2pBandwidthLatency}Test; do
-            "$cuda_util" || true
+            "bin/$(uname -p)/linux/release/$cuda_util" || true
         done
     )
 )
