@@ -93,7 +93,7 @@ dcleblanc/{CAdES,SafeInt},\
 dmlc/{dlpack,dmlc-core,gluon-cv,gluon-nlp,HalideIR,tvm,xgboost},\
 docker/docker-ce,\
 docopt/docopt,\
-dotnet/{cli,core{,-setup,clr,fx},standard},\
+dotnet/{cli,core{,-setup,clr,fx},source-build,standard},\
 dropbox/json11,\
 eigenteam/eigen-git-mirror,\
 elnormous/{HTTPRequest,ouzel,OuzelShadingLanguage,SoftwareRenderer},\
