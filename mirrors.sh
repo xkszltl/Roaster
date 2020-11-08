@@ -85,6 +85,7 @@ catchorg/{Catch2,Clara},\
 ccache/ccache,\
 chadaustin/sajson,\
 chromium/{ballista,chromium,gyp,pdfium,vs-chromium},\
+Cisco-Talos/clamav-{bytecode-compiler,devel,faq,safebrowsing},\
 cocodataset/{cocoapi,panopticapi},\
 containerd/containerd,\
 cython/cython,\
