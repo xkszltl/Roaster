@@ -72,6 +72,7 @@ afq984/python-cxxfilt,\
 agauniyal/{rang,termdb},\
 aquynh/capstone,\
 ARM-software/{arm-trusted-firmware,ComputeLibrary,lisa},\
+arminc/{clair-{local-scan,scanner},k8s-platform-lcm,terraform-ecs},\
 asmjit/{asm{db,jit,tk},cult},\
 aws/aws-{cli,sdk-{cpp,go,java,js,net,php,ruby}},\
 axel-download-accelerator/axel,\
