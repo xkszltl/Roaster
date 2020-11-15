@@ -134,8 +134,8 @@ fi
 # CentOS Repository Mirroring Task
 # ----------------------------------------------------------------
 
-for i in base updates extras centosplus dotnet; do
-for j in =$(uname -i) -source=Source $([ "_$i" = '_base' ] && echo -debuginfo=debug/$(uname -i)); do
+for i in base updates extras centosplus cr dotnet; do
+for j in =$(uname -i) $([ "_$i" = '_cr' ] || echo '-source=Source') $([ "_$i" = '_base' ] && echo "-debuginfo=debug/$(uname -i)"); do
     export lhs=$(sed 's/=.*//' <<< $j)
     export rhs=$(sed 's/.*=//' <<< $j)
     export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
