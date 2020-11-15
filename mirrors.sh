@@ -67,6 +67,7 @@ fi
 '"'" ::: {\
 https://github.com/\ /\ {\
 01org/{mkl-dnn,processor-trace,tbb},\
+389ds/389-ds-base,\
 abseil/abseil-{cpp,py},\
 afq984/python-cxxfilt,\
 agauniyal/{rang,termdb},\
