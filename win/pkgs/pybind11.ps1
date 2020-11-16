@@ -24,14 +24,6 @@ $latest_ver='v' + $($(git ls-remote --tags "$repo") -match '.*refs/tags/v[0-9\.]
 git clone --recursive --single-branch -b "$latest_ver" "$repo"
 pushd "$root"
 
-# ----------------------------------------------------------------
-# Known issues:
-#   - Patch missing python header issue in v2.6.0
-#     https://github.com/pybind/pybind11/pull/2636
-# ----------------------------------------------------------------
-git fetch origin master
-git cherry-pick b8dc60e
-
 mkdir build
 pushd build
 

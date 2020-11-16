@@ -13,11 +13,6 @@
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd pybind11
 
-    # Patch missing python header issue in v2.6.0
-    # https://github.com/pybind/pybind11/pull/2636
-    git fetch origin master
-    git cherry-pick b8dc60e
-
     . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
 
     git remote add patch 'https://github.com/xkszltl/pybind11.git'
