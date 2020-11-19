@@ -64,6 +64,7 @@ for i in llvm-{gcc,clang}; do
                 -DLLDB_ENABLE_PYTHON=OFF
                 -DLLVM_BUILD_LLVM_DYLIB=ON
                 -DLLVM_CCACHE_BUILD=ON
+                -DLLVM_ENABLE_ASSERTIONS=ON
                 -DLLVM_ENABLE_EH=ON
                 -DLLVM_ENABLE_FFI=ON
                 -DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;compiler-rt;libclc;libcxx;libcxxabi;libunwind;lld;lldb;openmp;parallel-libs;polly;pstl'
