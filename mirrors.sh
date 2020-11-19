@@ -133,7 +133,7 @@ HypothesisWorks/hypothesis,\
 iina/{iina{,-plugin-definition,-website},plugin-ytdl},\
 intel/{ARM_NEON_2_x86_SSE,compute-runtime,ideep,mkl-dnn},\
 intelxed/xed,\
-ispc/ispc,\
+ispc/ispc{,.github.com},\
 IvanKobzarev/fbjni,\
 jarro2783/cxxopts,\
 JDAI-CV/{dabnn{,-example},DCL,DNNLibrary},\
