@@ -7,7 +7,8 @@
 
     # ------------------------------------------------------------
 
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" Kitware/CMake,v
+    # Pin to v3.18.5 due to https://gitlab.kitware.com/cmake/cmake/-/issues/21469
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" Kitware/CMake,v3.18
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO" cmake; do echo 'Retrying'; done
     cd cmake
 
