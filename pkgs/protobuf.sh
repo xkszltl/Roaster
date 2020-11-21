@@ -10,8 +10,16 @@
     # ------------------------------------------------------------
 
     . "$ROOT_DIR/pkgs/utils/git/version.sh" protocolbuffers/protobuf,v
-    until git clone --depth 1 --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
+    until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd protobuf
+
+    PATCHES="example"
+    git remote add patch "https://github.com/xkszltl/protobuf.git"
+    git fetch patch
+    for i in $PATCHES; do
+        git fetch patch "$i"
+        git cherry-pick "patch/$i"
+    done
 
     . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
 
