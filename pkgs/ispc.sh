@@ -25,18 +25,18 @@
         mkdir -p build
         cd $_
 
-        cmake                                       \
-            -DCMAKE_BUILD_TYPE=Release              \
-            -DCMAKE_C_COMPILER="clang"              \
-            -DCMAKE_CXX_COMPILER="clang++"          \
-            -DCMAKE_C{,XX}_COMPILER_LAUNCHER=ccache \
+        cmake                                                   \
+            -DCMAKE_BUILD_TYPE=Release                          \
+            -DCMAKE_C_COMPILER="clang"                          \
+            -DCMAKE_CXX_COMPILER="clang++"                      \
+            -DCMAKE_C{,XX}_COMPILER_LAUNCHER=ccache             \
             -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
-            -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
-            -DCMAKE_VERBOSE_MAKEFILE=ON             \
-            -DISPC_INCLUDE_BENCHMARKS=ON            \
-            -DISPC_INCLUDE_RT=OFF                   \
-            -DISPC_PREPARE_PACKAGE=OFF              \
-            -G"Ninja"                               \
+            -DCMAKE_{EXE,SHARED}_LINKER_FLAGS="-fuse-ld=lld"    \
+            -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"               \
+            -DISPC_INCLUDE_BENCHMARKS=ON                        \
+            -DISPC_INCLUDE_RT=OFF                               \
+            -DISPC_PREPARE_PACKAGE=OFF                          \
+            -G"Ninja"                                           \
             ..
 
         time cmake --build .
