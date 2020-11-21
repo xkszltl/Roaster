@@ -88,6 +88,7 @@ ccache/ccache,\
 chadaustin/sajson,\
 chromium/{ballista,chromium,gyp,pdfium,vs-chromium},\
 Cisco-Talos/clamav-{bytecode-compiler,devel,faq,safebrowsing},\
+cncf/{cnf-conformance,landscape,sig-{app-delivery,contributor-strategy,network,observability,runtime,security{,-events}},udpa},\
 cocodataset/{cocoapi,panopticapi},\
 containerd/containerd,\
 cython/cython,\
