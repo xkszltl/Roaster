@@ -20,18 +20,6 @@
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
     (
-        case "$DISTRO_ID" in
-        'centos' | 'fedora' | 'rhel')
-            set +xe
-            . scl_source enable devtoolset-9 || exit 1
-            set -xe
-            export CC="gcc" CXX="g++"
-            ;;
-        'ubuntu')
-            export CC="gcc-8" CXX="g++-8"
-            ;;
-        esac
-
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
 
         mkdir -p build
@@ -39,11 +27,12 @@
 
         cmake                                       \
             -DCMAKE_BUILD_TYPE=Release              \
-            -DCMAKE_C_COMPILER="$CC"                \
-            -DCMAKE_CXX_COMPILER="$CXX"             \
+            -DCMAKE_C_COMPILER="clang"              \
+            -DCMAKE_CXX_COMPILER="clang++"          \
             -DCMAKE_C{,XX}_COMPILER_LAUNCHER=ccache \
             -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
+            -DCMAKE_VERBOSE_MAKEFILE=ON             \
             -DISPC_INCLUDE_BENCHMARKS=ON            \
             -DISPC_INCLUDE_RT=OFF                   \
             -DISPC_PREPARE_PACKAGE=OFF              \
