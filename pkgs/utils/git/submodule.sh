@@ -58,7 +58,7 @@ set +x
             done
 
             SUBMODULE_QUEUE="$(sed 's/;;*/;/g' <<< "$SUBMODULE_QUEUE;$(git config --file .gitmodules --name-only --get-regexp path | cut -d'.' -f2- | sed 's/\.[^\.]*$//' | xargs readlink -e | paste -sd';' -)" | sed 's/^;*//' | sed 's/;*$//')"
-    fi
+        fi
 
         popd
     done
