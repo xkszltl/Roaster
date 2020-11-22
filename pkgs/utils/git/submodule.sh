@@ -51,8 +51,14 @@ set +x
                 done
             fi
 
+            git submodule init
             for i in $(seq 10 -1 0); do
-                git submodule update --init -j 100 && break
+                # Exponential back-off.
+                # GitHub may stall with too many large submodules.
+                [ "$(git submodule init | wc -l)" -gt 10 ] && timeout -k 10s  5m git submodule update -j 100 && break
+                [ "$(git submodule init | wc -l)" -gt  1 ] && timeout -k 10s 30m git submodule update -j  10 && break
+                [ "$(git submodule init | wc -l)" -gt  0 ] &&                    git submodule update -j   1 && break
+                git submodule update && break
                 sleep 1
                 echo "Retrying... $i time(s) left."
             done
