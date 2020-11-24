@@ -13,11 +13,14 @@
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd protobuf
 
-    PATCHES="example"
+    # Patch example installation: https://github.com/protocolbuffers/protobuf/pull/8080
+    git fetch origin
+    git cherry-pick 5a7a4a5
+
+    PATCHES=""
     git remote add patch "https://github.com/xkszltl/protobuf.git"
-    git fetch patch
     for i in $PATCHES; do
-        git fetch patch "$i"
+        git fetch patch
         git cherry-pick "patch/$i"
     done
 
