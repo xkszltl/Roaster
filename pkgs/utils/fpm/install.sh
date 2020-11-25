@@ -64,9 +64,13 @@ echo '----------------------------------------------------------------'
 # Install
 # ----------------------------------------------------------------
 
+# Note:
+#   - yum/dnf skip install with exit code 0 when package with the same version exist.
+#   - apt-get install regardless in this case.
+#   - apt-get does not have reinstall command.
 case "$PKG_TYPE" in
 "rpm")
-    PKG_YUM_SEQ="install reinstall downgrade update"
+    PKG_YUM_SEQ="reinstall install downgrade update"
     rpm -q "$PKG_NAME" || PKG_YUM_SEQ="install"
 
     # Remove legacy.
@@ -75,11 +79,7 @@ case "$PKG_TYPE" in
     for i in $PKG_YUM_SEQ _; do
         [ "$i" != '_' ]
         echo "[INFO] Trying with \"dnf $i\"."
-        if [ "$i" = "reinstall" ]; then
-            sudo dnf remove -y "$PKG_NAME" && sudo dnf install -y "$PKG_PATH" && break
-        else
-            sudo dnf "$i" -y "$PKG_PATH" && break
-        fi
+        sudo dnf "$i" -y "$PKG_PATH" && break
         echo "[INFO] Does not succeed with \"dnf $i\"."
     done
     ;;
