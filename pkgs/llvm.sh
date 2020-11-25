@@ -38,6 +38,8 @@ for i in llvm-{gcc,clang}; do
                 -DCLANG_DEFAULT_CXX_STDLIB=libc++
                 -DCLANG_DEFAULT_LINKER=lld
                 -DCLANG_DEFAULT_OBJCOPY=llvm-objcopy
+                -DCLANG_DEFAULT_OPENMP_RUNTIME=libomp
+                -DCLANG_DEFAULT_RTLIB=libgcc
                 -DCLANG_ENABLE_PROTO_FUZZER=OFF
                 -DCLANG_OPENMP_NVPTX_DEFAULT_ARCH='sm_61'
                 -DCMAKE_BUILD_TYPE=Release
@@ -58,7 +60,7 @@ for i in llvm-{gcc,clang}; do
                 -DLIBOMP_USE_HIER_SCHED=ON
                 -DLIBOMP_USE_HWLOC=ON
                 -DLIBOMP_USE_STDCPPLIB=ON
-                -DLIBOMPTARGET_NVPTX_COMPUTE_CAPABILITIES='35,37,52,60,61,70,75'
+                -DLIBOMPTARGET_NVPTX_COMPUTE_CAPABILITIES='35,37,52,60,61,70,75,80,86'
                 -DLIBUNWIND_ENABLE_CROSS_UNWINDING=ON
                 -DLLDB_BUILD_INTEL_PT=ON
                 -DLLDB_ENABLE_PYTHON=OFF
@@ -95,12 +97,11 @@ for i in llvm-{gcc,clang}; do
                 # Known issues:
                 #   - LIBOMPTARGET_NVPTX_ENABLE_BCLIB=ON does not work with LLVM 11 + CUDA 11.1.
                 #     CUDA 11.0 is fine.
-                LDFLAGS='-fuse-ld=lld'                      \
                 cmake                                       \
                     -DCMAKE_C_COMPILER=clang                \
                     -DCMAKE_CXX_COMPILER=clang++            \
                     -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src'"   \
-                    -DCMAKE_LINKER=ld.lld                   \
+                    -DCMAKE_{EXE,SHARED}_LINKER_FLAGS="-fuse-ld=lld"                             \
                     -DENABLE_X86_RELAX_RELOCATIONS=ON       \
                     -DLIBCXX_USE_COMPILER_RT=ON             \
                     -DLIBCXXABI_USE_COMPILER_RT=ON          \
