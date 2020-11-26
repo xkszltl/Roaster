@@ -14,7 +14,7 @@
     cd protobuf
 
     # Patch example installation: https://github.com/protocolbuffers/protobuf/pull/8080
-    git fetch origin
+    git fetch origin master
     git cherry-pick 5a7a4a5
 
     PATCHES=""
