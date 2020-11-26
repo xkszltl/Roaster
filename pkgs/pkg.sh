@@ -179,7 +179,7 @@ for subset in pkg-{stable,skip,all}; do
             | sed 's/^[[:space:]]*//'                                                                       \
             | sed "$([ "_$subset" != '_pkg-stable' ] && echo 's/^\[!\].*//p' || echo 's/^//')"              \
             | sed -n "$([ "_$subset" = '_pkg-stable' ] && echo 's/^\[!\][[:space:]]*//p' || echo '/./p')"   \
-            | xargs -n10 echo "$RPM_INSTALL $([ "_$subset" != '_pkg-all' ] && echo --setopt=strict=0)"      \
+            | xargs -n50 echo "$RPM_INSTALL $([ "_$subset" != '_pkg-all' ] && echo --setopt=strict=0)"      \
             | sed 's/^/set -xe; /'                                                                          \
             | bash                                                                                          \
             && break
