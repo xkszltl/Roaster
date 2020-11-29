@@ -59,7 +59,7 @@ for subset in pkg-{stable,skip,all}; do
                 lshw{,-*}
                 procps-ng{,-*}
                 [!] {axel,curl,net-tools,wget}{,-*}
-                {f,tc,dhc,libo,io}ping{,-*}
+                {f,tc,dhc,htt,libo,io}ping{,-*}
                 hping3{,-*}
                 [!] {traceroute,mtr,rsync,tcpdump,whois,net-snmp}{,-*}
                 torsocks{,-*}

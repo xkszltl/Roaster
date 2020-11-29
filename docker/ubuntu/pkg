@@ -45,6 +45,7 @@ RUN set -e; \
         gzip \
         hdf5-{helpers,tools} h5utils libhdf5-{{,{mpi,mpich,openmpi}-}dev,doc} \
         htop \
+        httping \
         ibutils infiniband-diags \
         icu-devtools \
         iftop \
