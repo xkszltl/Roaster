@@ -149,6 +149,7 @@ llvm/llvm-{archive,project,test-suite,www{,-pubs}},\
 llvm-mirror/{ll{vm,d,db,go},clang{,-tools-extra},polly,compiler-rt,openmp,lib{unwind,cxx{,abi}},test-suite},\
 LMDB/lmdb,\
 lutzroeder/netron,\
+lz4/lz4{,-java},\
 madler/zlib,\
 matplotlib/{jupyter-matplotlib,matplotlib,mplcairo,pytest-mpl},\
 Maratyszcza/{confu,cpuinfo,FP16,FXdiv,NNPACK,PeachPy,psimd,pthreadpool},\
