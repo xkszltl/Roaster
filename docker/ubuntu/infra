@@ -7,4 +7,4 @@ LABEL BUILD_ID=$LABEL_BUILD_ID
 
 COPY [".", "/etc/roaster/scripts"]
 
-RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh zstd cmake ccache c-ares axel intel ipt cuda ucx ompi
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh lz4 zstd cmake ccache c-ares axel intel ipt cuda ucx ompi
