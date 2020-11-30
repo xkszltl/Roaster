@@ -56,6 +56,7 @@ set -g @plugin 'tmux-plugins/tmux-continuum'
 set -g @resurrect-processes 'watch "/usr/bin/python3 /usr/bin/glances"'
 set -g @continuum-restore 'on'
 
+set -g mouse-utf8 on
 set -g mouse on
 
 run -b '~/.tmux/plugins/tpm/tpm'
