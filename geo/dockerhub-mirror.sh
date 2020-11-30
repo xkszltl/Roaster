@@ -20,7 +20,8 @@ echo '----------------------------------------------------------------'
     https://docker.mirrors.ustc.edu.cn  \
     https://hub-mirror.c.163.com        \
     https://mirror.baidubce.com         \
-    https://registry-1.docker.io
+    https://registry-1.docker.io        \
+    https://registry.hub.docker.com
 [ "$LINK_QUALITY" ]
 
 column -t <<< "$LINK_QUALITY" | sed 's/^/| /'
