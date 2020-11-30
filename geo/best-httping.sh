@@ -5,7 +5,7 @@ for cmd in bc httping parallel; do
 done
 
 LINK_QUALITY="$(set -e
-    parallel --halt $(sed -n 's/\(..*\)/now,success=\1/p' <<< "$TOPK") -j0 'bash -c '"'"'
+    parallel $(sed -n 's/\(..*\)/\-\-halt now,success=\1/p' <<< "$TOPK") -j0 'bash -c '"'"'
         set -e
         httping -Zfc10 -t3 {} 2>&1                                                                  \
         | sed -n "s/.*[^0-9]\([0-9][0-9]*\) *ok.*time  *\([0-9][0-9]*\) *ms.*/\1\/(\2\+1)\*10^3/p"  \
