@@ -18,7 +18,8 @@ echo '----------------------------------------------------------------'
 . "$ROOT_DIR/geo/best-httping.sh"       \
     https://docker.io                   \
     https://docker.mirrors.ustc.edu.cn  \
-    https://hub-mirror.c.163.com
+    https://hub-mirror.c.163.com        \
+    https://registry-1.docker.io
 [ "$LINK_QUALITY" ]
 
 column -t <<< "$LINK_QUALITY" | sed 's/^/| /'
