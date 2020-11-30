@@ -7,7 +7,7 @@ cd "$(dirname "$0")"
 [ "$ROOT_DIR" ]
 cd "$ROOT_DIR"
 
-for cmd in bc httping parallel xmllint; do
+for cmd in xmllint; do
     which "$cmd" > /dev/null
 done
 
@@ -24,7 +24,7 @@ TOPK=3 . "$ROOT_DIR/geo/best-httping.sh"                                \
     https://mirrors.163.com/maven/repository/maven-public/              \
     https://repo.maven.apache.org/maven2/                               \
     https://repo1.maven.org/maven2/                                     \
-    https://repository.jboss.org/nexus/content/repositories/central/    \
+    https://repository.jboss.org/nexus/content/repositories/central/
 [ "$LINK_QUALITY" ]
 
 column -t <<< "$LINK_QUALITY" | sed 's/^/| /'
