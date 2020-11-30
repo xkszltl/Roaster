@@ -19,6 +19,7 @@ echo '----------------------------------------------------------------'
     https://docker.io                   \
     https://docker.mirrors.ustc.edu.cn  \
     https://hub-mirror.c.163.com        \
+    https://mirror.baidubce.com         \
     https://registry-1.docker.io
 [ "$LINK_QUALITY" ]
 
