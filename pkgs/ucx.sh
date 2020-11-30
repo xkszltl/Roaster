@@ -11,7 +11,6 @@
 
     . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
 
-
     # Known issues:
     #   - Patch v1.9.0 for Java 11 (Ubuntu default).
     #     https://github.com/openucx/ucx/issues/5811
@@ -36,6 +35,7 @@
 
     # ------------------------------------------------------------
 
+    "$ROOT_DIR/geo/maven-mirror.sh"
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
     (
