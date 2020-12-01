@@ -35,13 +35,13 @@ sudo cat '/etc/docker/daemon.json'          \
 | sudo tee '/etc/docker/daemon.json.bak'    \
 | jq -e '.'
 sudo cat '/etc/docker/daemon.json.bak'      \
-| jq -e '."registry-mirrors" |= []'         \
+| jq -Se '."registry-mirrors" |= []'        \
 | sudo tee '/etc/docker/daemon.json.new'    \
 > /dev/null
 
 for url in $DOCKER_MIRROR; do
     sudo cat '/etc/docker/daemon.json.new'                                      \
-    | jq -e '."registry-mirrors"[."registry-mirrors" | length] |= "'"$url"'"'   \
+    | jq -Se '."registry-mirrors"[."registry-mirrors" | length] |= "'"$url"'"'  \
     | sudo tee '/etc/docker/daemon.json.tmp'                                    \
     > /dev/null
     sudo mv -f '/etc/docker/daemon.json.'{tmp,new}
