@@ -8,8 +8,15 @@
     # ------------------------------------------------------------
 
     . "$ROOT_DIR/pkgs/utils/git/version.sh" facebook/zstd,v
-    until git clone --depth 1 --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
+    until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd zstd
+
+    # Known issues:
+    #   - Wrong use of LZ4 causes TTY issue:
+    #     https://github.com/facebook/zstd/issues/2400
+    #     https://github.com/facebook/zstd/commit/4b5d7e9ddbd6d85e7a32e28934055ecb1473aa39
+    git fetch origin dev
+    git cherry-pick 4b5d7e9
 
     # ------------------------------------------------------------
 
@@ -43,8 +50,7 @@
         done
         # Only run quick tests (check) by default.
         # make test -j$(nproc)
-        # Cannot test due to TTY issue: https://github.com/facebook/zstd/issues/2400
-        # make check -j$(nproc)
+        make check -j$(nproc)
         make PREFIX="$INSTALL_ABS" install -j
     )
 
