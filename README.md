@@ -116,6 +116,10 @@ To add a new library, you need to provide a build script, add it to entry script
 Guidelines
 --------------------
 
+**Overall Architecture**
+
+![Architecture Diagram]/(doc/arch.pdf)
+
 **Build Args:**
   * Build as shared lib when possible.
     CMake projects can usually handle this with either `-DBUILD_SHARED_LIBS=ON` or project-specific switches.
