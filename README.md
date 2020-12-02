@@ -118,7 +118,7 @@ Guidelines
 
 **Overall Architecture**
 
-![Architecture Diagram](doc/arch.pdf)
+![Architecture Diagram](doc/arch.svg)
 
 **Build Args:**
   * Build as shared lib when possible.
