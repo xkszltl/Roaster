@@ -1,0 +1,119 @@
+digraph arch
+{
+    subgraph cluster_nuget
+    {
+        label = "NuGet";
+        node [color = blue, shape = box] "pack.ps1";
+        node [color = lightblue, shape = tab] "NuGet Feed";
+        "NuGet Feed" -> "pack.ps1"
+    }
+    subgraph cluster_win
+    {
+        label = "Windows Build";
+        node [color = blue, shape = box] "$Env:PATH";
+        node [color = blue, shape = folder] "Program Files", "Program Files (x86)", "system32";
+        "$Env:PATH" -> "system32"
+        "system32" -> "Program Files", "Program Files (x86)"
+    }
+    subgraph cluster_docker_buildkit
+    {
+        label = "Docker BuildKit";
+        node [color = red, shape = box] "DOCKER_BUILDKIT=1 docker build";
+        node [color = red, shape = cylinder] "stage-init", "stage-repo", "stage-pkgs", "stage-infra", "stage-llvm", "stage-util", "stage-misc", "stage-dl", "stage-ort", "stage-edit";
+        "DOCKER_BUILDKIT=1 docker build" -> "stage-init", "stage-repo", "stage-pkgs", "stage-infra", "stage-llvm", "stage-util", "stage-misc", "stage-dl", "stage-ort", "stage-edit";
+        "stage-edit" -> "stage-ort";
+        "stage-ort" -> "stage-dl";
+        "stage-dl" -> "stage-misc";
+        "stage-misc" -> "stage-util";
+        "stage-util" -> "stage-llvm";
+        "stage-llvm" -> "stage-infra";
+        "stage-infra" -> "stage-pkgs";
+        "stage-pkgs" -> "stage-repo";
+        "stage-repo" -> "stage-init";
+    }
+    subgraph cluster_docker_base
+    {
+        label = "Docker Base Image";
+        node [color = red, shape = cylinder] "centos", "ubuntu"
+    }
+    subgraph cluster_Linux
+    {
+        label = "Linxu Installation";
+        node [color = orange, shape = box] "ldconfig", "$PATH";
+        node [color = orange, shape = folder] "/usr/local/", "/opt/", "/etc/";
+        "ldconfig" -> "/usr/local/", "/etc/"
+        "$PATH" -> "/usr/local/", "/opt/"
+    }
+    subgraph cluster_shell
+    {
+        label = "Shell Scripts";
+        node [color = orange, shape = folder] ".sh/Linux";
+        node [color = blue, shape = folder] ".ps1/Windows";
+    }
+    subgraph cluster_setup
+    {
+        label = "CLI";
+        node [color = green, shape = cds] "setup";
+        node [color = green, shape = cds] "probe";
+        "setup" -> "probe";
+    }
+    subgraph cluster_mirror
+    {
+        label = "Mirrors";
+        node [color = lightblue, shape = tab] "github.com", "gitlab.com", "docker.io", "rpm repos", "maven repos";
+    }
+    subgraph cluster_libs
+    {
+        label = "Libraries";
+        node [color = green, shape = folder] "pkgs/";
+        node [color = green, shape = component] cmake, protobuf, llvm, opencv, openmpi, onnx, pytorch;
+        "pkgs/" -> cmake, protobuf, llvm, opencv, openmpi, onnx, pytorch;
+    }
+    subgraph cluster_prebuilt_pkgs
+    {
+        label = "Pre-built Packages";
+        node [color = green, shape = component] mkl, cuda, texlive;
+        "pkgs/" -> mkl, cuda, texlive;
+    }
+    subgraph cluster_compile
+    {
+        label = "Compilation";
+        node [color = green, shape = box] make, ninja, msbuild;
+        node [color = green, shape = box] gcc, llvm, msvc;
+        make, ninja -> gcc, llvm
+        ninja, msbuild -> msvc
+    }
+    subgraph cluster_packaging
+    {
+        label = "Packaging";
+        node [color = green, shape = box] "fpm";
+        node [color = green, shape = box] "yum", "dnf", "apt-get";
+        node [color = green, shape = box] "rpmbuild", "dpkg-deb";
+        node [color = green, shape = box] ".rpm",".deb";
+        "fpm" -> "rpmbuild", "dpkg-deb";
+        "yum", "dnf", "rpmbuild" -> ".rpm";
+        "apt-get", "dpkg-deb" -> ".deb";
+    }
+    subgraph cluster_pip
+    {
+        label = "Python Wheel";
+        node [color = green, shape = box] "pip";
+        node [color = green, shape = box] "python3", "rh-python*";
+        "pip" -> "python3", "rh-python*"
+    }
+    "pack.ps1" -> "Program Files", "Program Files (x86)";
+    "Program Files", "Program Files (x86)", "system32" -> ".ps1/Windows"
+    "stage-init" -> "centos", "ubuntu";
+    "centos", "ubuntu" -> "docker.io";
+    "DOCKER_BUILDKIT=1 docker build" -> ".sh/Linux";
+    "DOCKER_BUILDKIT=1 docker build" -> "$PATH", "ldconfig";
+    "/usr/local/", "/opt/", "/etc/" -> ".sh/Linux";
+    ".sh/Linux", ".ps1/Windows" -> "setup";
+    ".sh/Linux" -> "probe";
+    "probe" -> "github.com", "gitlab.com", "docker.io", "rpm repos", "maven repos";
+    "setup" -> "pkgs/";
+    pytorch -> "github.com", cmake, "fpm", "pip"
+    cmake -> make, ninja, msbuild
+    "yum", "dnf" -> "rpm repos";
+    "rpm repos" -> ".rpm";
+}
