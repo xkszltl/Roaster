@@ -145,7 +145,7 @@ if (-Not $Env:ROASTER_TOOLCHAIN_COMMITED)
     {
         $ninja_repo="https://github.com/ninja-build/ninja.git"
         $ninja_ver='v' + $($(git ls-remote --tags $ninja_repo) -match '.*refs/tags/v[0-9\.]*$' -replace '.*refs/tags/v', '' | sort { [Version]$_ })[-1]
-        $DownloadURL = "https://github.com/ninja-build/ninja/releases/download/v${ninja_ver}/ninja-win.zip"
+        $DownloadURL = "https://github.com/ninja-build/ninja/releases/download/${ninja_ver}/ninja-win.zip"
         $DownloadPath = "${Env:SCRATCH}/ninja-win.zip"
         Write-Host "Downloading Ninja..."
         Invoke-WebRequest -Uri $DownloadURL -OutFile $DownloadPath
