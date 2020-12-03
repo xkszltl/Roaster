@@ -7,7 +7,6 @@ COPY [".", "/etc/roaster/scripts"]
 
 # Drop mirrors used in build.
 RUN set -e; \
-    rm -rf ~/.m2/settings.xml; \
-    RPM_CACHE_REPO=/tmp/non-existing-file /etc/roaster/scripts/apply_cache.sh;
+    rm -rf ~/.m2/settings.xml;
 
 RUN updatedb
