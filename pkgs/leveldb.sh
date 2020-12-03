@@ -75,7 +75,7 @@
 
         # Exclude GTest files.
         pushd "$INSTALL_ROOT"
-        for i in gtest; do
+        for i in benchmark gtest; do
             case "$DISTRO_ID" in
             'centos' | 'fedora' | 'rhel')
                 [ "$(rpm -qa "roaster-$i")" ] || continue
