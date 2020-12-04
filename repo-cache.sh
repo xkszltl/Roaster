@@ -94,7 +94,7 @@ parallel -j0 --line-buffer --bar 'bash -c '"'"'
     mkdir -p intel
     cd "$_"
 
-    $DRY || wget $DRY_WGET -cq --bind-address='$ROUTE' $INTEL_URL/{}
+    $DRY || wget $DRY_WGET -cqt 10 --bind-address='$ROUTE' $INTEL_URL/{}
 '"'" :::   \
     17130/l_daal_2020.3.304.tgz     \
     17154/l_ipp_2020.3.304.tgz      \
@@ -200,7 +200,7 @@ for dist in rhel7; do
     name="$(cut -d',' -f1 <<< "$sub_repo,")"
     mkdir -p "nvidia/cuda/$dist/$(uname -i)"
     pushd "$_"
-    $DRY || wget $DRY_WGET -cq "https://developer.download.nvidia.com/compute/cuda/repos/$dist/$(uname -i)/7fa2af80.pub"
+    $DRY || wget $DRY_WGET -ct 1000 "https://developer.download.nvidia.com/compute/cuda/repos/$dist/$(uname -i)/7fa2af80.pub"
     $DRY || rpm --import "7fa2af80.pub"
     popd
 
@@ -219,7 +219,7 @@ for dist in rhel7; do
     dir="$(cut -d',' -f2 <<< "$sub_repo,")"
     mkdir -p "nvidia/$dir/$dist/$(uname -i)"
     pushd "$_"
-    $DRY || wget $DRY_WGET -cq "https://developer.download.nvidia.com/compute/$dir/repos/$dist/$(uname -i)/7fa2af80.pub"
+    $DRY || wget $DRY_WGET -ct 1000 "https://developer.download.nvidia.com/compute/$dir/repos/$dist/$(uname -i)/7fa2af80.pub"
     $DRY || rpm --import "7fa2af80.pub"
     popd
 
@@ -236,7 +236,7 @@ done
 for i in libnvidia-container nvidia-{container-runtime,docker}; do
     mkdir -p "nvidia/$i/centos7/$(uname -i)"
     pushd "$_"
-    $DRY || wget $DRY_WGET -cq "https://nvidia.github.io/$i/gpgkey"
+    $DRY || wget $DRY_WGET -cqt 10 "https://nvidia.github.io/$i/gpgkey"
     $DRY || rpm --import "gpgkey"
     popd
 
@@ -259,7 +259,7 @@ done
 
     mkdir -p 'docker/linux/centos'
     cd "$_"
-    $DRY || wget $DRY_WGET -cq https://download.docker.com/linux/centos/gpg
+    $DRY || wget $DRY_WGET -cqt 10 https://download.docker.com/linux/centos/gpg
     $DRY || rpm --import gpg
 )
 
