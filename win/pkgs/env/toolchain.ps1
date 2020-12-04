@@ -93,7 +93,7 @@ if (-Not $Env:ROASTER_TOOLCHAIN_COMMITED)
 
     if (${Env:PYTHONHOME} -eq $null -or -not $(Test-Path ${Env:PYTHONHOME}/python.exe -ErrorAction SilentlyContinue))
     {
-        ${Env:PYTHONHOME} = Join-Path ${Env:ProgramFiles} Python38
+        ${Env:PYTHONHOME} = Join-Path ${Env:ProgramFiles} Python39
     }
 
     if (${Env:PYTHONHOME} -eq $null -or -not $(Test-Path ${Env:PYTHONHOME}/python.exe -ErrorAction SilentlyContinue))
@@ -107,7 +107,7 @@ if (-Not $Env:ROASTER_TOOLCHAIN_COMMITED)
         & $DownloadPath /passive InstallAllUsers=1 PrependPath=1 | Out-Null
         if ($(Test-Path ${Env:ProgramFiles}/Python39/python.exe -ErrorAction SilentlyContinue))
         {
-            ${Env:PYTHONHOME} = Join-Path ${Env:ProgramFiles} Python38
+            ${Env:PYTHONHOME} = Join-Path ${Env:ProgramFiles} Python39
             Write-Host "Python installed successfully."
         }
         else
