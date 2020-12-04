@@ -174,7 +174,34 @@ if (-Not $Env:ROASTER_TOOLCHAIN_COMMITED)
             ${Env:VS_HOME} = & "${Env:ProgramFiles(x86)}/Microsoft Visual Studio/Installer/vswhere.exe" -latest -property installationPath
         }
 
+        $vcvars_script = "${Env:VS_HOME}/VC/Auxiliary/Build/vcvarsall.bat"
+        if (-Not (Test-Path $vcvars_script))
+        {
+            Write-Host "Unable to locate Visual Studio command file: vcvarsall.bat. This is required for VC env import."
+            Exit 1
+        }
+
         Invoke-Expression $($(cmd /c "`"${Env:VS_HOME}/VC/Auxiliary/Build/vcvarsall.bat`" x64 10.0.16299.0 & set") -Match '^.+=' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
+
+        if ((${Env:VCToolsVersion} -eq $null) -or (${Env:WindowsSDKVersion} -eq $null))
+        {
+            Write-Host "Failed to import VC env."
+            Exit 1
+        }
+
+        if (-not ${Env:VCToolsVersion}.StartsWith("14.1"))
+        {
+            # MSVC Internal version numbering
+            # https://en.wikipedia.org/wiki/Microsoft_Visual_C%2B%2B
+            Write-Host "Invalid MSVC version: ${Env:VCToolsVersion}. vc141 is expetced."
+            Exit 1
+        }
+
+        if (-not ${Env:WindowsSDKVersion}.StartsWith("10.0.16299.0"))
+        {
+            Write-Host "Invalid WinSDK version: ${Env:WindowsSDKVersion}, 10.0.16299.0 (Redstone3) is expetced."
+            Exit 1
+        }
     }
 }
 
