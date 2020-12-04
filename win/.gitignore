@@ -1647,3 +1647,5 @@ $RECYCLE.BIN/
 
 
 # End of https://www.gitignore.io/api/c,svn,c++,cvs,vim,tex,java,ninja,xcode,maven,macos,linux,latex,emacs,clion,cmake,matlab,python,csharp,eclipse,android,windows,pycharm,intellij,notepadpp,autotools,mercurial,jetbrains,powershell,objective-c,sublimetext,libreoffice,tortoisegit,visualstudio,microsoftoffice,jupyternotebook,visualstudiocode
+
+!pkgs/env
