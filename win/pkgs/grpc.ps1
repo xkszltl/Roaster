@@ -69,6 +69,9 @@ cmd /c xcopy /i /f /y "pdb\*.pdb" "${Env:ProgramFiles(x86)}\grpc\bin"
 Get-ChildItem "${Env:ProgramFiles(x86)}/grpc" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 
 popd
+# Remove-Item cannot remove symlink.
+cmd /c rmdir /S /Q spm-core-include
+cmd /c rmdir /S /Q spm-cpp-include
 popd
 rm -Force -Recurse "$root"
 popd
