@@ -19,6 +19,7 @@ if (Test-Path "$root")
 }
 
 $latest_ver=$($(git ls-remote --tags "$repo") -match '.*refs/tags/[0-9\.]*$' -replace '.*refs/tags/','' | sort {[Version]$_})[-1]
+$latest_ver="master"
 git clone --depth 1 --single-branch -b "$latest_ver" "$repo"
 pushd "$root"
 mkdir build
@@ -42,7 +43,6 @@ cmake                                                               `
     -DCMAKE_PDB_OUTPUT_DIRECTORY="${PWD}/pdb"                       `
     -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental" `
     -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                 `
-    -DGTEST_LIBRARY_TYPE=SHARED                                     `
     -DGTEST_ROOT="${Env:ProgramFiles}/googletest-distribution"      `
     -DSNAPPY_REQUIRE_AVX2=ON                                        `
     -G"Ninja"                                                       `
