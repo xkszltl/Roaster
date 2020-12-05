@@ -31,13 +31,14 @@ pushd build
 #   - Snappy uses GTest through cmake var, not target.
 #     GTEST_LIBRARY_TYPE is only set for target property.
 #     https://gitlab.kitware.com/cmake/cmake/-/blob/v3.19.1/Modules/FindGTest.cmake#L222-225
+#   - Need additional /DNOMINMAX for std::max in unit tests.
 #   - /GL doesn't work for unknown reason.
 $gtest_dll="/DGTEST_LINKED_AS_SHARED_LIBRARY=1"
 cmake                                                               `
     -DBUILD_SHARED_LIBS=ON                                          `
     -DCMAKE_BUILD_TYPE=Release                                      `
-    -DCMAKE_C_FLAGS="/MP /Zi ${gtest_dll}"                          `
-    -DCMAKE_CXX_FLAGS="/EHsc /MP /Zi ${gtest_dll}"                  `
+    -DCMAKE_C_FLAGS="/DNOMINMAX /MP /Zi ${gtest_dll}"               `
+    -DCMAKE_CXX_FLAGS="/DNOMINMAX /EHsc /MP /Zi ${gtest_dll}"       `
     -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"    `
     -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/Snappy"             `
     -DCMAKE_PDB_OUTPUT_DIRECTORY="${PWD}/pdb"                       `
