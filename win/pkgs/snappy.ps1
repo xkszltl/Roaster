@@ -38,6 +38,7 @@ cmake                                                               `
     -DCMAKE_PDB_OUTPUT_DIRECTORY="${PWD}/pdb"                       `
     -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental" `
     -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                 `
+    -DGTEST_LIBRARY_TYPE=SHARED                                     `
     -DGTEST_ROOT="${Env:ProgramFiles}/googletest-distribution"      `
     -DSNAPPY_REQUIRE_AVX2=ON                                        `
     -G"Ninja"                                                       `
