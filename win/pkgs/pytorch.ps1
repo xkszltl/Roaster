@@ -38,22 +38,6 @@ if (-Not $?)
 }
 
 # ================================================================================
-# Patch DNNL compat_lib
-#   - https://github.com/pytorch/pytorch/issues/42115
-#   - https://github.com/oneapi-src/oneDNN/commit/2bc4d3c3278ab9e5743d0e83b09574b140d6de3f
-# ================================================================================
-
-pushd third_party/ideep
-pushd mkl-dnn
-git cherry-pick -X theirs 2bc4d3c
-popd
-git --no-pager diff
-git commit -am 'Patch DNNL compat_libs.'
-popd
-git --no-pager diff
-git commit -am 'Patch DNNL compat_libs.'
-
-# ================================================================================
 # Update Protobuf
 # ================================================================================
 
