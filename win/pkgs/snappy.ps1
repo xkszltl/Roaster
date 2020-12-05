@@ -25,7 +25,10 @@ pushd "$root"
 mkdir build
 pushd build
 
-# /GL doesn't work for unknown reason.
+# Known issues:
+#   - FindGTest does not cover our installation path.
+#     https://gitlab.kitware.com/cmake/cmake/-/issues/21556
+#   - /GL doesn't work for unknown reason.
 cmake                                                               `
     -DBUILD_SHARED_LIBS=ON                                          `
     -DCMAKE_BUILD_TYPE=Release                                      `
@@ -36,6 +39,7 @@ cmake                                                               `
     -DCMAKE_PDB_OUTPUT_DIRECTORY="${PWD}/pdb"                       `
     -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental" `
     -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                 `
+    -DGTEST_ROOT="${Env:ProgramFiles}/googletest-distribution"      `
     -DSNAPPY_REQUIRE_AVX2=ON                                        `
     -G"Ninja"                                                       `
     ..
