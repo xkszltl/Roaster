@@ -123,7 +123,9 @@
                 until [ "$cuda_repo_file_pin" ]; do cuda_repo_file_pin="$(set -xe && curl -sSLv --retry 100 --retry-delay 5 "$cuda_repo" | sed -n "s/.*href='\(cuda-$DISTRO_ID$(sed 's/\.//g' <<< "$DISTRO_VERSION_ID")[^']*\.pin\).*/\1/p" | sort -V | tail -n1 || sleep 5)"; done
                 cuda_repo_pin="$cuda_repo/$cuda_repo_file_pin"
                 curl -sSLv --retry 100 --retry-delay 5 "$cuda_repo_pin" | sudo tee '/etc/apt/preferences.d/cuda-repository-pin-600'
-                sudo apt-key adv --fetch-keys "$cuda_repo/$(set -xe && curl -sSLv --retry 100 --retry-delay 5 "$cuda_repo" | sed -n "s/.*href='\([^']*\.pub\).*/\1/p" | sort -V | tail -n1)"
+                until [ "$cuda_repo_file_pubkey" ]; do cuda_repo_file_pubkey="$(set -xe && curl -sSLv --retry 100 --retry-delay 5 "$cuda_repo" | sed -n "s/.*href='\([^']*\.pub\).*/\1/p" | sort -V | tail -n1)"; done
+                cuda_repo_pubkey="$cuda_repo/$cuda_repo_file_pubkey"
+                sudo apt-key adv --fetch-keys "$cuda_repo_pubkey"
                 until sudo add-apt-repository "deb $cuda_repo/ /"; do echo "Retrying"; sleep 5; done
             ) && break
             echo "Retry. $(expr "$retry" - 1) time(s) left."
