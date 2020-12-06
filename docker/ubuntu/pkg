@@ -10,7 +10,7 @@ RUN set -e; \
     for attempt in $(seq "$DEB_MAX_ATTEMPT" -1 0); do \
         [ "$attempt" -gt 0 ]; \
         ( \
-            set -e ;
+            set -e; \
             sudo apt-get update -y; \
             sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y; \
         ) && break; \
