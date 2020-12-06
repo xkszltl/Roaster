@@ -20,7 +20,7 @@ RUN set -e; \
         [ "$attempt" -gt 0 ]; \
         sudo DEBIAN_FRONTEND=noninteractive apt-get install -y $(apt-cache --names-only search '^fonts-*' | cut -d' ' -f1 | grep -v mathematica); \
         echo "Retrying... $(expr "$attempt" - 1) chance(s) left."; \
-    done
+    done; \
     sudo apt-get autoremove -y; \
     sudo apt-get clean; \
     truncate -s0 ~/.bash_history;
