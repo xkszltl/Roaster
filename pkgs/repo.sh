@@ -160,7 +160,7 @@
             sleep 5
         done
 
-        curl -sSL --retry 1000 $curl_connref --retry-delay 1 "https://download.docker.com/linux/$DISTRO_ID/gpg" | sudo APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key add -
+        curl -sSL --retry 10000 $curl_connref --retry-delay 1 "https://download.docker.com/linux/$DISTRO_ID/gpg" | sudo APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key add -
         until sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/$DISTRO_ID $(lsb_release -cs) stable"; do echo "Retrying"; done
         curl -sSL --retry 1000 $curl_connref --retry-delay 1 "https://nvidia.github.io/nvidia-docker/gpgkey" | sudo APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key add -
         curl -sSL --retry 1000 $curl_connref --retry-delay 1 "https://nvidia.github.io/nvidia-docker/$DISTRO_ID$DISTRO_VERSION_ID/nvidia-docker.list" | sudo tee "/etc/apt/sources.list.d/nvidia-docker.list"
