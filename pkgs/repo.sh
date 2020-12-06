@@ -4,7 +4,7 @@
 
 [ -e $STAGE/repo ] && ( set -xe
     # Option added in curl 7.52 and not supported by CentOS 7 stock curl 7.29.
-    curl_connref="$(curl --help -v | grep '\-\-retry\-connrefused' > /dev/null && echo '--retry-connrefused')"
+    curl_connref="$(which curl >/dev/null 2>/dev/null && curl --help -v | grep '\-\-retry\-connrefused' > /dev/null && echo '--retry-connrefused')"
     
     case "$DISTRO_ID" in
     "centos" | "rhel")
@@ -24,6 +24,7 @@
 
         until sudo dnf makecache -y; do echo 'Retrying'; done
         until sudo dnf install -y bc {core,find,ip}utils curl kernel-headers; do echo 'Retrying'; done
+        curl_connref="$(which curl >/dev/null 2>/dev/null && curl --help -v | grep '\-\-retry\-connrefused' > /dev/null && echo '--retry-connrefused')"
 
         until sudo dnf install -y centos-release-dotnet; do echo 'Retrying'; done
         RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" dotnet
@@ -110,6 +111,7 @@
             curl \
             gnupg-agent \
             software-properties-common
+        curl_connref="$(which curl >/dev/null 2>/dev/null && curl --help -v | grep '\-\-retry\-connrefused' > /dev/null && echo '--retry-connrefused')"
 
         for retry in $(seq 20 -1 0); do
             [ "$retry" -gt 0 ]
