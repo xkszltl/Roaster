@@ -126,6 +126,7 @@ for subset in pkg-{stable,skip,all}; do
                 librados2{,-*}
                 pugixml{,-*}
                 libyaml{,-*}
+                byacc{,j}{,-*}
                 {gflags,glog,gmock,gtest,protobuf}{,-*}
                 {jsoncpp,rapidjson}{,-*}
                 {redis,hiredis}{,-*}

@@ -28,6 +28,7 @@ RUN set -e; \
             bison \
             bmon \
             bsdmainutils \
+            byacc{,-j} \
             bzip2 pbzip2 \
             ccache \
             cmake{,-curses-gui} \
