@@ -62,10 +62,10 @@ Test-Path ${Env:NUGET_HOME}/nuget.exe | Out-Null
 
 $ErrorActionPreference="SilentlyContinue"
 & ${Env:NUGET_HOME}/nuget.exe sources Add -Name "OneOCR" -Source "https://pkgs.dev.azure.com/msresearch/_packaging/OneOCR/nuget/v3/index.json"
-& ${Env:NUGET_HOME}/nuget.exe sources Add -Name "API-OCR" -Source "https://msazure.pkgs.visualstudio.com/_packaging/API-OCR/nuget/v3/index.json"
+& ${Env:NUGET_HOME}/nuget.exe sources Add -Name "API-OCR" -Source "https://pkgs.dev.azure.com/msazure/_packaging/API-OCR/nuget/v3/index.json"
 $ErrorActionPreference="Stop"
 & ${Env:NUGET_HOME}/nuget.exe sources Update -Name "OneOCR" -Source "https://pkgs.dev.azure.com/msresearch/_packaging/OneOCR/nuget/v3/index.json"
-& ${Env:NUGET_HOME}/nuget.exe sources Update -Name "API-OCR" -Source "https://msazure.pkgs.visualstudio.com/_packaging/API-OCR/nuget/v3/index.json"
+& ${Env:NUGET_HOME}/nuget.exe sources Update -Name "API-OCR" -Source "https://pkgs.dev.azure.com/msazure/_packaging/API-OCR/nuget/v3/index.json"
 & ${Env:NUGET_HOME}/nuget.exe sources
 
 Write-Host "--------------------------------------------------------------------------------"
