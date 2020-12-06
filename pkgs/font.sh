@@ -19,23 +19,23 @@
 
     # Install fc-cache before bypassing it.
 
-    for attempt in $(seq $RPM_MAX_ATTEMPT -1 0); do
+    for attempt in $(seq "$RPM_MAX_ATTEMPT" -1 0); do
+        [ $attempt -gt 0 ] || exit 1
         $RPM_INSTALL --setopt=strict=0  \
             fontconfig{,-*}             \
             && break
-        echo "Retrying... $attempt chance(s) left."
-        [ $attempt -gt 0 ] || exit 1
+        echo "Retrying... $(expr "$attempt" - 1) chance(s) left."
     done
 
     sudo mv -f /usr/bin/fc-cache{,.bak}
     sudo ln -sf /usr/bin/{true,fc-cache}
 
-    for attempt in $(seq $RPM_MAX_ATTEMPT -1 0); do
+    for attempt in $(seq "$RPM_MAX_ATTEMPT" -1 0); do
+        [ $attempt -gt 0 ] || exit 1
         $RPM_INSTALL --setopt=strict=0 *-fonts{,-*} \
         && $RPM_INSTALL $MSFONTS_URL/$MSFONTS_VER   \
         && break
-        echo "Retrying... $attempt chance(s) left."
-        [ $attempt -gt 0 ] || exit 1
+        echo "Retrying... $(expr "$attempt" - 1) chance(s) left."
     done
 
     sudo mv -f /usr/bin/fc-cache{.bak,}
