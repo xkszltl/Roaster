@@ -78,11 +78,11 @@ Get-ChildItem ../nuget | Foreach-Object {
     $pkg = $_.Name
     if ($pkg -eq "cuda" -or $pkg -eq "cublas" -or $pkg -eq "cufft" -or $pkg -eq "cusolver" -or $pkg -eq "cusparse")
     {
-        $prefix = "${Env:ProgramFiles}/NVIDIA GPU Computing Toolkit/CUDA/v11.0"
+        $prefix = "${Env:ProgramFiles}/NVIDIA GPU Computing Toolkit/CUDA/v11.1"
     }
     elseif ($pkg -eq "cudnn" -or $pkg -eq "cudnn_adv" -or $pkg -eq "cudnn_cnn" -or $pkg -eq "cudnn_ops")
     {
-        $prefix = "${Env:ProgramFiles}/NVIDIA GPU Computing Toolkit/CUDA/v11.0"
+        $prefix = "${Env:ProgramFiles}/NVIDIA GPU Computing Toolkit/CUDA/v11.1"
     }
     elseif ($pkg -eq "eigen")
     {
