@@ -18,7 +18,10 @@ RUN set -e; \
     done; \
     for attempt in $(seq "$DEB_MAX_ATTEMPT" -1 0); do \
         [ "$attempt" -gt 0 ]; \
-        sudo DEBIAN_FRONTEND=noninteractive apt-get install -y $(apt-cache --names-only search '^fonts-*' | cut -d' ' -f1 | grep -v mathematica); \
+        ( \
+            set -e; \
+            sudo DEBIAN_FRONTEND=noninteractive apt-get install -y $(apt-cache --names-only search '^fonts-*' | cut -d' ' -f1 | grep -v mathematica); \
+        ) && break; \
         echo "Retrying... $(expr "$attempt" - 1) chance(s) left."; \
     done; \
     sudo apt-get autoremove -y; \
