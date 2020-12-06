@@ -269,3 +269,13 @@ rm : There is a mismatch between the tag specified in the request and the tag pr
     + FullyQualifiedErrorId : System.ComponentModel.Win32Exception,Microsoft.PowerShell.Commands.RemoveItemCommand
 ```
 Delete that directory from explorer.
+
+Windows Defender
+--------
+
+We have seem hanging issues and permission errors in boost (1.74) build.
+It keeps come and go, and we haven't found the exact trigger yet.
+If hang, usually it stops around a line building `libboost_*-variant-*`.
+
+For famous open source projects, it is unlikely to carry virus/malware.
+If you believe this is a false positive, please turn off Windows Defender (everything under "Virus & Thread Protection") or whitelist build dirs.
