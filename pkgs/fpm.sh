@@ -14,8 +14,8 @@
     # ------------------------------------------------------------
 
     (
-        case "$DISTRO_ID" in
-        'centos' | 'fedora' | 'rhel')
+        case "$DISTRO_ID$DISTRO_VERSION_ID" in
+        'centos7' | 'rhel7')
             scl enable rh-ruby26 'gem build fpm.gemspec'
             # Document of childprocess failed to build with rh-ruby26.
             sudo scl enable rh-ruby26 'gem install --no-document ./fpm-*.gem'
