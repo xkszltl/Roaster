@@ -3,6 +3,9 @@
 # ================================================================
 
 [ -e $STAGE/repo ] && ( set -xe
+    # Option added in curl 7.52 and not supported by CentOS 7 stock curl 7.29.
+    curl_connref="$(curl --help -v | grep '\-\-retry\-connrefused' > /dev/null && echo '--retry-connrefused')"
+    
     case "$DISTRO_ID" in
     "centos" | "rhel")
         until sudo yum makecache -y; do echo 'Retrying'; done
@@ -59,9 +62,9 @@
             set -xe
 
             nvml_repo="https://developer.download.nvidia.com/compute/machine-learning/repos"
-            until [ "$nvml_repo_file_dist" ]; do nvml_repo_file_dist="$(set -xe && curl -sSLv --retry 100 --retry-delay 5 "$nvml_repo" | sed -n "s/.*href='\($(sed 's/\.//g' <<< "rhel$DISTRO_VERSION_ID")[^']*\)\/.*/\1/p" | sort -V | tail -n1 || sleep 5)"; done
+            until [ "$nvml_repo_file_dist" ]; do nvml_repo_file_dist="$(set -xe && curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$nvml_repo" | sed -n "s/.*href='\($(sed 's/\.//g' <<< "rhel$DISTRO_VERSION_ID")[^']*\)\/.*/\1/p" | sort -V | tail -n1 || sleep 5)"; done
             nvml_repo="$nvml_repo/$nvml_repo_file_dist/x86_64"
-            until [ "$nvml_repo_file_repo" ]; do nvml_repo_file_repo="$(set -xe && curl -sSLv --retry 100 --retry-delay 5 "$nvml_repo" | sed -n "s/.*href='\(nvidia-machine-learning-repo-[^']*\).*/\1/p" | sort -V | tail -n1 || sleep 5)"; done
+            until [ "$nvml_repo_file_repo" ]; do nvml_repo_file_repo="$(set -xe && curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$nvml_repo" | sed -n "s/.*href='\(nvidia-machine-learning-repo-[^']*\).*/\1/p" | sort -V | tail -n1 || sleep 5)"; done
             nvml_repo="$nvml_repo/$nvml_repo_file_repo"
             for retry in $(seq 100 -1 0); do
                 until sudo dnf install -y "$nvml_repo"; do echo "Retrying"; sleep 1; done
@@ -85,11 +88,11 @@
         sudo dnf config-manager --add-repo "https://nvidia.github.io/nvidia-docker/$DISTRO_ID$DISTRO_VERSION_ID/nvidia-docker.repo"
         RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" libnvidia-container nvidia-{container-runtime,docker}
 
-        curl -sSL --retry 100 --retry-delay 1 "https://packages.gitlab.com/install/repositories/runner/gitlab-ci-multi-runner/script.rpm.sh" | sudo bash
+        curl -sSL --retry 100 $curl_connref --retry-delay 1 "https://packages.gitlab.com/install/repositories/runner/gitlab-ci-multi-runner/script.rpm.sh" | sudo bash
         RPM_PRIORITY=2 "$ROOT_DIR/apply_cache.sh" runner_gitlab-ci-multi-runner{,-source}
 
         sudo rm -rvf /etc/yum.repos.d/gitlab_gitlab-ce.repo
-        curl -sSL --retry 100 --retry-delay 1 "https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh" | sudo bash
+        curl -sSL --retry 100 $curl_connref --retry-delay 1 "https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh" | sudo bash
         RPM_PRIORITY=2 "$ROOT_DIR/apply_cache.sh" gitlab_gitlab-ce{,-source}
 
         until sudo dnf install -y bc iputils pv which; do echo 'Retrying'; done
@@ -118,12 +121,12 @@
                 mkdir -p 'cuda_repo'
                 cd 'cuda_repo'
                 cuda_repo="https://developer.download.nvidia.com/compute/cuda/repos"
-                until [ "$cuda_repo_file_dist" ]; do cuda_repo_file_dist="$(set -xe && curl -sSLv --retry 100 --retry-delay 5 "$cuda_repo" | sed -n "s/.*href='\($(sed 's/\.//g' <<< "$DISTRO_ID$DISTRO_VERSION_ID")[^']*\)\/.*/\1/p" | sort -V | tail -n1 || sleep 5)"; done
+                until [ "$cuda_repo_file_dist" ]; do cuda_repo_file_dist="$(set -xe && curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$cuda_repo" | sed -n "s/.*href='\($(sed 's/\.//g' <<< "$DISTRO_ID$DISTRO_VERSION_ID")[^']*\)\/.*/\1/p" | sort -V | tail -n1 || sleep 5)"; done
                 cuda_repo="$cuda_repo/$cuda_repo_file_dist/x86_64"
-                until [ "$cuda_repo_file_pin" ]; do cuda_repo_file_pin="$(set -xe && curl -sSLv --retry 100 --retry-delay 5 "$cuda_repo" | sed -n "s/.*href='\(cuda-$DISTRO_ID$(sed 's/\.//g' <<< "$DISTRO_VERSION_ID")[^']*\.pin\).*/\1/p" | sort -V | tail -n1 || sleep 5)"; done
+                until [ "$cuda_repo_file_pin" ]; do cuda_repo_file_pin="$(set -xe && curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$cuda_repo" | sed -n "s/.*href='\(cuda-$DISTRO_ID$(sed 's/\.//g' <<< "$DISTRO_VERSION_ID")[^']*\.pin\).*/\1/p" | sort -V | tail -n1 || sleep 5)"; done
                 cuda_repo_pin="$cuda_repo/$cuda_repo_file_pin"
-                curl -sSLv --retry 100 --retry-delay 5 "$cuda_repo_pin" | sudo tee '/etc/apt/preferences.d/cuda-repository-pin-600'
-                until [ "$cuda_repo_file_pubkey" ]; do cuda_repo_file_pubkey="$(set -xe && curl -sSLv --retry 100 --retry-delay 5 "$cuda_repo" | sed -n "s/.*href='\([^']*\.pub\).*/\1/p" | sort -V | tail -n1)"; done
+                curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$cuda_repo_pin" | sudo tee '/etc/apt/preferences.d/cuda-repository-pin-600'
+                until [ "$cuda_repo_file_pubkey" ]; do cuda_repo_file_pubkey="$(set -xe && curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$cuda_repo" | sed -n "s/.*href='\([^']*\.pub\).*/\1/p" | sort -V | tail -n1)"; done
                 cuda_repo_pubkey="$cuda_repo/$cuda_repo_file_pubkey"
                 sudo APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key adv --fetch-keys "$cuda_repo_pubkey"
                 until sudo add-apt-repository "deb $cuda_repo/ /"; do echo "Retrying"; sleep 5; done
@@ -142,11 +145,11 @@
                 mkdir -p 'nvml_repo'
                 cd 'nvml_repo'
                 nvml_repo="https://developer.download.nvidia.com/compute/machine-learning/repos"
-                until [ "$nvml_repo_file_dist" ]; do nvml_repo_file_dist="$(set -xe && curl -sSLv --retry 100 --retry-delay 5 "$nvml_repo" | sed -n "s/.*href='\($(sed 's/\.//g' <<< "$DISTRO_ID$DISTRO_VERSION_ID")[^']*\)\/.*/\1/p" | sort -V | tail -n1 || sleep 5)"; done
+                until [ "$nvml_repo_file_dist" ]; do nvml_repo_file_dist="$(set -xe && curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$nvml_repo" | sed -n "s/.*href='\($(sed 's/\.//g' <<< "$DISTRO_ID$DISTRO_VERSION_ID")[^']*\)\/.*/\1/p" | sort -V | tail -n1 || sleep 5)"; done
                 nvml_repo="$nvml_repo/$nvml_repo_file_dist/x86_64"
-                until [ "$nvml_repo_file_repo" ]; do nvml_repo_file_repo="$(set -xe && curl -sSLv --retry 100 --retry-delay 5 "$nvml_repo" | sed -n "s/.*href='\(nvidia-machine-learning-repo-[^']*\).*/\1/p" | sort -V | tail -n1 || sleep 5)"; done
+                until [ "$nvml_repo_file_repo" ]; do nvml_repo_file_repo="$(set -xe && curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$nvml_repo" | sed -n "s/.*href='\(nvidia-machine-learning-repo-[^']*\).*/\1/p" | sort -V | tail -n1 || sleep 5)"; done
                 nvml_repo="$nvml_repo/$nvml_repo_file_repo"
-                curl -SLv --retry 100 --retry-delay 5 "$nvml_repo" > "$(basename "$nvml_repo")"
+                curl -SLv --retry 100 $curl_connref --retry-delay 5 "$nvml_repo" > "$(basename "$nvml_repo")"
                 sudo DEBIAN_FRONTEND=noninteractive apt-get install -y "./$(basename "$nvml_repo")"
                 rm -rf "$(basename "$nvml_repo")"
                 sudo sed -i 's/http:\/\//https:\/\//' '/etc/apt/sources.list.d/nvidia-machine-learning.list'
@@ -155,10 +158,10 @@
             sleep 5
         done
 
-        curl -sSL --retry 100 --retry-delay 5 "https://download.docker.com/linux/$DISTRO_ID/gpg" | sudo APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key add -
+        curl -sSL --retry 100 $curl_connref --retry-delay 5 "https://download.docker.com/linux/$DISTRO_ID/gpg" | sudo APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key add -
         until sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/$DISTRO_ID $(lsb_release -cs) stable"; do echo "Retrying"; done
-        curl -sSL --retry 100 --retry-delay 1 "https://nvidia.github.io/nvidia-docker/gpgkey" | sudo APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key add -
-        curl -sSL --retry 100 --retry-delay 1 "https://nvidia.github.io/nvidia-docker/$DISTRO_ID$DISTRO_VERSION_ID/nvidia-docker.list" | sudo tee "/etc/apt/sources.list.d/nvidia-docker.list"
+        curl -sSL --retry 100 $curl_connref --retry-delay 1 "https://nvidia.github.io/nvidia-docker/gpgkey" | sudo APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key add -
+        curl -sSL --retry 100 $curl_connref --retry-delay 1 "https://nvidia.github.io/nvidia-docker/$DISTRO_ID$DISTRO_VERSION_ID/nvidia-docker.list" | sudo tee "/etc/apt/sources.list.d/nvidia-docker.list"
 
         sudo apt-get update -y
         sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y

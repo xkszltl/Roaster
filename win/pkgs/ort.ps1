@@ -206,7 +206,7 @@ if ($true)
 {
     if (-not $(Test-Path $model_path))
     {
-        & "${Env:ProgramFiles}/CURL/bin/curl.exe" --retry 5 -fkSL "https://onnxruntimetestdata.blob.core.windows.net/models/20190419.zip" -o "${model_path}.downloading"
+        & "${Env:ProgramFiles}/CURL/bin/curl.exe" --retry 5 --retry-connrefused -fkSL "https://onnxruntimetestdata.blob.core.windows.net/models/20190419.zip" -o "${model_path}.downloading"
         mv -Force "${model_path}.downloading" "${model_path}"
     }
 
