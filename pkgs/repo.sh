@@ -125,7 +125,7 @@
                 curl -sSLv --retry 100 --retry-delay 5 "$cuda_repo_pin" | sudo tee '/etc/apt/preferences.d/cuda-repository-pin-600'
                 until [ "$cuda_repo_file_pubkey" ]; do cuda_repo_file_pubkey="$(set -xe && curl -sSLv --retry 100 --retry-delay 5 "$cuda_repo" | sed -n "s/.*href='\([^']*\.pub\).*/\1/p" | sort -V | tail -n1)"; done
                 cuda_repo_pubkey="$cuda_repo/$cuda_repo_file_pubkey"
-                sudo apt-key adv --fetch-keys "$cuda_repo_pubkey"
+                sudo APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key adv --fetch-keys "$cuda_repo_pubkey"
                 until sudo add-apt-repository "deb $cuda_repo/ /"; do echo "Retrying"; sleep 5; done
             ) && break
             echo "Retry. $(expr "$retry" - 1) time(s) left."
@@ -155,9 +155,9 @@
             sleep 5
         done
 
-        curl -sSL --retry 100 --retry-delay 5 "https://download.docker.com/linux/$DISTRO_ID/gpg" | sudo apt-key add -
+        curl -sSL --retry 100 --retry-delay 5 "https://download.docker.com/linux/$DISTRO_ID/gpg" | sudo APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key add -
         until sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/$DISTRO_ID $(lsb_release -cs) stable"; do echo "Retrying"; done
-        curl -sSL --retry 100 --retry-delay 1 "https://nvidia.github.io/nvidia-docker/gpgkey" | sudo apt-key add -
+        curl -sSL --retry 100 --retry-delay 1 "https://nvidia.github.io/nvidia-docker/gpgkey" | sudo APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key add -
         curl -sSL --retry 100 --retry-delay 1 "https://nvidia.github.io/nvidia-docker/$DISTRO_ID$DISTRO_VERSION_ID/nvidia-docker.list" | sudo tee "/etc/apt/sources.list.d/nvidia-docker.list"
 
         sudo apt-get update -y
