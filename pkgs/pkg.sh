@@ -5,10 +5,10 @@
 for subset in pkg-{stable,skip,all}; do
     [ -e $STAGE/$subset ] && ( set -xe
         for skip in true false; do
-        for attempt in $(seq $RPM_MAX_ATTEMPT -1 0); do
+        for attempt in $(seq "$RPM_MAX_ATTEMPT" -1 0); do
+            [ "$attempt" -gt 0 ] || exit 1
             $RPM_UPDATE && break
-            echo "Retrying... $attempt chance(s) left."
-            [ $attempt -gt 0 ] || exit 1
+            echo "Retrying... $(expr "$attempt" - 1) chance(s) left."
         done
         done
 
