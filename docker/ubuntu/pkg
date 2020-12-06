@@ -125,7 +125,8 @@ RUN set -e; \
             wget \
             whois \
             xz-utils pxz \
-            zstd libzstd-dev; \
+            zstd libzstd-dev \
+        && break; \
         echo "Retrying... $(expr "$attempt" - 1) chance(s) left."; \
     done; \
     sudo apt-get autoremove -y; \
