@@ -179,6 +179,7 @@ openssl/openssl,\
 openucx/{shmem-opensnapi,sparkucx,torch-ucc,ucc{,_spec},ucx,xccl,xucg},\
 openwrt/{luci,openwrt,packages,targets,telephony,video},\
 PeachPy/enum34,\
+phacility/{arcanist,javelin,phabricator,xhprof},\
 protocolbuffers/{protobuf,upb},\
 pybind/pybind11,\
 PythonCharmers/python-future,\
