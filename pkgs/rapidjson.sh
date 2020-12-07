@@ -8,10 +8,12 @@
     # ------------------------------------------------------------
 
     . "$ROOT_DIR/pkgs/utils/git/version.sh" Tencent/rapidjson,master
-    until git clone --depth 1 --recursive --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
+    until git clone --depth 1 --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd rapidjson
 
     # ------------------------------------------------------------
+
+    . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
 
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
