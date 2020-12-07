@@ -164,7 +164,7 @@ networkx/networkx,\
 nico/demumble,\
 nicolargo/glances,\
 ninja-build/ninja,\
-nlohmann/json,\
+nlohmann/{crow,fifo_map,json},\
 ntop/{bro-pf_ring,docker-ntop,libebpfflow,n2disk,n2n,nDPI,nProbe,ntopng{,-grafana-datasource},packager,PF_RING,wireshark-ntop},\
 numpy/numpy{,doc},\
 NVIDIA/{AMGX,apex,cccl,cnmem,cuda{,-gdb,-profiler,-samples},cutlass,DALI{,_extra},Dataset_Synthesizer,DeepLearningExamples,DIGITS,flownet2-pytorch,gdrcopy,hpc-container-maker,jitify,lib{cudacxx,glvnd,nvidia-container},Megatron-LM,NeMo,nccl{,-tests},nvidia-{container-runtime,docker,installer,modprobe,persistenced,settings,xconfig},NvPipe,NVTX,nvvl,open-gpu-doc,OpenSeq2Seq,pix2pixHD,tacotron2,TensorRT,tensorrt-inference-server,TRTorch,vid2vid,waveglow},\
