@@ -169,10 +169,10 @@ if (-Not $Env:ROASTER_TOOLCHAIN_COMMITED)
 
     if (${Env:VSCMD_VER} -eq $null)
     {
-        if (${Env:VS_HOME} -eq $null)
-        {
-            ${Env:VS_HOME} = & "${Env:ProgramFiles(x86)}/Microsoft Visual Studio/Installer/vswhere.exe" -latest -property installationPath
-        }
+        ${VS_HOME} = & "${Env:ProgramFiles(x86)}/Microsoft Visual Studio/Installer/vswhere.exe" `
+                        -latest -products * `
+                        -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 `
+                        -property installationPath
 
         $vcvars_script = "${Env:VS_HOME}/VC/Auxiliary/Build/vcvarsall.bat"
         if (-Not (Test-Path $vcvars_script))
