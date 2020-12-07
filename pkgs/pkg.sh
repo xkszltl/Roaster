@@ -99,6 +99,7 @@ for subset in pkg-{stable,skip,all}; do
                 [!] {gmp,mpfr,libmpc}{,-*}
                 [!] lib{asan,lsan,tsan,ubsan}{,-debuginfo}
                 lib{exif,jpeg-turbo,tiff,png,gomp,gphoto2}{,-*}
+                lcov{,-*}
                 giflib{,-*}
                 OpenEXR{,-*}
                 {libv4l,v4l-utils}{,-*}
