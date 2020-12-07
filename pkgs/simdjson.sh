@@ -48,6 +48,7 @@
             -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
             -DSIMDJSON_BUILD_STATIC=OFF             \
+            -DSIMDJSON_COMPETITION=OFF              \
             -G"Unix Makefiles"                      \
             ..
 
