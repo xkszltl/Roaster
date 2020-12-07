@@ -188,7 +188,7 @@ pypa/{pip,pipenv,setuptools,virtualenv,warehouse,wheel},\
 pytest-dev/{pluggy,py,pytest},\
 python/typing,\
 python-attrs/attrs,\
-pytorch/{audio,botorch,captum,cppdocs,cpuinfo,elastic,examples,fairseq,FBGEMM,glow,ignite,pytorch,QNNPACK,serve,tensorpipe,text,translate,tutorials,vision,xla},\
+pytorch/{audio,botorch,captum,cppdocs,cpuinfo,elastic,examples,fairseq,FBGEMM,glow,ignite,kineto,pytorch,QNNPACK,serve,tensorpipe,text,translate,tutorials,vision,xla},\
 RadeonOpenCompute/{hcc,ROCm-Device-Libs,ROCR-Runtime},\
 reactos/{rapps-db,reactos{,dbg},RosBE,wine},\
 RMerl/{am-toolchains,asuswrt-merlin.ng},\
