@@ -170,34 +170,29 @@ if (-Not $Env:ROASTER_TOOLCHAIN_COMMITED)
     if (${Env:VSCMD_VER} -eq $null)
     {
         ${VS_HOME} = & "${Env:ProgramFiles(x86)}/Microsoft Visual Studio/Installer/vswhere.exe" `
-                        -latest -products * `
-                        -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 `
-                        -property installationPath
+                        -latest                                                                 `
+                        -products *                                                             `
+                        -property installationPath                                              `
+                        -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64
 
-        $vcvars_script = "${Env:VS_HOME}/VC/Auxiliary/Build/vcvarsall.bat"
+        $vcvars_script = "${VS_HOME}/VC/Auxiliary/Build/vcvarsall.bat"
         if (-Not (Test-Path $vcvars_script))
         {
             Write-Host "Unable to locate Visual Studio command file: vcvarsall.bat. This is required for VC env import."
             Exit 1
         }
 
-        Invoke-Expression $($(cmd /c "`"${Env:VS_HOME}/VC/Auxiliary/Build/vcvarsall.bat`" x64 10.0.16299.0 & set") -Match '^.+=' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
+        Invoke-Expression $($(cmd /c "`"${VS_HOME}/VC/Auxiliary/Build/vcvarsall.bat`" x64 10.0.16299.0 & set") -Match '^.+=' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
 
-        if ((${Env:VCToolsVersion} -eq $null) -or (${Env:WindowsSDKVersion} -eq $null))
+        if ((${Env:VCToolsVersion} -eq $null) -or -not ${Env:VCToolsVersion}.StartsWith("14.2"))
         {
-            Write-Host "Failed to import VC env."
+            # MSVC internal version numbering
+            # https://en.wikipedia.org/wiki/Microsoft_Visual_C++
+            Write-Host "Invalid MSVC version: ${Env:VCToolsVersion}. vc142 is expetced."
             Exit 1
         }
 
-        if (-not ${Env:VCToolsVersion}.StartsWith("14.1"))
-        {
-            # MSVC Internal version numbering
-            # https://en.wikipedia.org/wiki/Microsoft_Visual_C%2B%2B
-            Write-Host "Invalid MSVC version: ${Env:VCToolsVersion}. vc141 is expetced."
-            Exit 1
-        }
-
-        if (-not ${Env:WindowsSDKVersion}.StartsWith("10.0.16299.0"))
+        if ((${Env:WindowsSDKVersion} -eq $null) -or -not ${Env:WindowsSDKVersion}.StartsWith("10.0.16299.0"))
         {
             Write-Host "Invalid WinSDK version: ${Env:WindowsSDKVersion}, 10.0.16299.0 (Redstone3) is expetced."
             Exit 1
