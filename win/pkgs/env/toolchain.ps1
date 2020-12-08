@@ -45,7 +45,7 @@ if (-Not $Env:ROASTER_TOOLCHAIN_COMMITED)
         else
         {
             Write-Host "ActivePerl installation Failed. Please install manually: ${DownloadURL}"
-            Exit 1
+            exit 1
         }
     }
 
@@ -79,7 +79,7 @@ if (-Not $Env:ROASTER_TOOLCHAIN_COMMITED)
         else
         {
             Write-Host "NASM installation Failed. Please install manually: ${DownloadURL}"
-            Exit 1
+            exit 1
         }
     }
 
@@ -113,7 +113,7 @@ if (-Not $Env:ROASTER_TOOLCHAIN_COMMITED)
         else
         {
             Write-Host "Python installation Failed. Please install manually: ${DownloadURL}"
-            Exit 1
+            exit 1
         }
     }
 
@@ -159,7 +159,7 @@ if (-Not $Env:ROASTER_TOOLCHAIN_COMMITED)
         else
         {
             Write-Host "Ninja installation Failed. Please install manually: ${DownloadURL}"
-            Exit 1
+            exit 1
         }
     }
 
@@ -179,7 +179,7 @@ if (-Not $Env:ROASTER_TOOLCHAIN_COMMITED)
         if (-Not (Test-Path $vcvars_script))
         {
             Write-Host "Unable to locate Visual Studio command file: vcvarsall.bat. This is required for VC env import."
-            Exit 1
+            exit 1
         }
 
         Invoke-Expression $($(cmd /c "`"${VS_HOME}/VC/Auxiliary/Build/vcvarsall.bat`" x64 10.0.16299.0 & set") -Match '^.+=' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
@@ -189,13 +189,13 @@ if (-Not $Env:ROASTER_TOOLCHAIN_COMMITED)
             # MSVC internal version numbering
             # https://en.wikipedia.org/wiki/Microsoft_Visual_C++
             Write-Host "Invalid MSVC version: ${Env:VCToolsVersion}. vc142 is expetced."
-            Exit 1
+            exit 1
         }
 
         if ((${Env:WindowsSDKVersion} -eq $null) -or -not ${Env:WindowsSDKVersion}.StartsWith("10.0.16299.0"))
         {
             Write-Host "Invalid WinSDK version: ${Env:WindowsSDKVersion}, 10.0.16299.0 (Redstone3) is expetced."
-            Exit 1
+            exit 1
         }
     }
 }
