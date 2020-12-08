@@ -93,7 +93,7 @@ if (-Not $Env:ROASTER_TOOLCHAIN_COMMITED)
 
     if (${Env:PYTHONHOME} -eq $null -or -not $(Test-Path ${Env:PYTHONHOME}/python.exe -ErrorAction SilentlyContinue))
     {
-        ${Env:PYTHONHOME} = Join-Path ${Env:ProgramFiles} Python38
+        ${Env:PYTHONHOME} = Join-Path ${Env:ProgramFiles} Python39
     }
 
     if (${Env:PYTHONHOME} -eq $null -or -not $(Test-Path ${Env:PYTHONHOME}/python.exe -ErrorAction SilentlyContinue))
@@ -105,9 +105,9 @@ if (-Not $Env:ROASTER_TOOLCHAIN_COMMITED)
         Invoke-WebRequest -Uri $DownloadURL -OutFile $DownloadPath
         Write-Host "Installing Python..."
         & $DownloadPath /passive InstallAllUsers=1 PrependPath=1 | Out-Null
-        if ($(Test-Path ${Env:ProgramFiles}/Python38/python.exe -ErrorAction SilentlyContinue))
+        if ($(Test-Path ${Env:ProgramFiles}/Python39/python.exe -ErrorAction SilentlyContinue))
         {
-            ${Env:PYTHONHOME} = Join-Path ${Env:ProgramFiles} Python38
+            ${Env:PYTHONHOME} = Join-Path ${Env:ProgramFiles} Python39
             Write-Host "Python installed successfully."
         }
         else
@@ -169,8 +169,34 @@ if (-Not $Env:ROASTER_TOOLCHAIN_COMMITED)
 
     if (${Env:VSCMD_VER} -eq $null)
     {
-        ${VS_HOME} = & "${Env:ProgramFiles(x86)}/Microsoft Visual Studio/Installer/vswhere.exe" -latest -property installationPath
+        ${VS_HOME} = & "${Env:ProgramFiles(x86)}/Microsoft Visual Studio/Installer/vswhere.exe" `
+                        -latest                                                                 `
+                        -products *                                                             `
+                        -property installationPath                                              `
+                        -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64
+
+        $vcvars_script = "${VS_HOME}/VC/Auxiliary/Build/vcvarsall.bat"
+        if (-Not (Test-Path $vcvars_script))
+        {
+            Write-Host "Unable to locate Visual Studio command file: vcvarsall.bat. This is required for VC env import."
+            Exit 1
+        }
+
         Invoke-Expression $($(cmd /c "`"${VS_HOME}/VC/Auxiliary/Build/vcvarsall.bat`" x64 10.0.16299.0 & set") -Match '^.+=' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
+
+        if ((${Env:VCToolsVersion} -eq $null) -or -not ${Env:VCToolsVersion}.StartsWith("14.2"))
+        {
+            # MSVC internal version numbering
+            # https://en.wikipedia.org/wiki/Microsoft_Visual_C++
+            Write-Host "Invalid MSVC version: ${Env:VCToolsVersion}. vc142 is expetced."
+            Exit 1
+        }
+
+        if ((${Env:WindowsSDKVersion} -eq $null) -or -not ${Env:WindowsSDKVersion}.StartsWith("10.0.16299.0"))
+        {
+            Write-Host "Invalid WinSDK version: ${Env:WindowsSDKVersion}, 10.0.16299.0 (Redstone3) is expetced."
+            Exit 1
+        }
     }
 }
 
