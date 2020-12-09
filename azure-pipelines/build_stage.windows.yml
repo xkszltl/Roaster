@@ -1,0 +1,13 @@
+parameters:
+  - name: stage_name
+    type: string
+    default: ''
+
+steps:
+- powershell: |
+    if ("${{ parameters.stage_name }}") {
+      .\gitlab-ci\build_stage.ps1 ${{ parameters.stage_name }}
+    } else {
+      .\gitlab-ci\build_stage.ps1 $ENV:SYSTEM_JOBDISPLAYNAME
+    }
+  displayName: "Build on Windows"

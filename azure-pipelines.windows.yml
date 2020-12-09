@@ -1,0 +1,174 @@
+name: Roaster Windows Build
+
+trigger:
+- master
+
+pool:
+  name: $(AGENT_POOL_NAME)
+
+stages:
+- stage: prep
+  jobs:
+    - job: vsbuildtools
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+        parameters:
+          stage_name: vsbuildtools
+
+    - job: cmake
+      dependsOn: vsbuildtools
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: curl
+      dependsOn: cmake
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: cuda
+      dependsOn: curl
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: cudnn
+      dependsOn: cuda
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: tensorrt
+      dependsOn: cudnn
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: intel
+      dependsOn: tensorrt
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: mklml
+      dependsOn: intel
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+- stage: build
+  dependsOn: prep
+  jobs:
+    - job: zlib
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: openssl
+      dependsOn: zlib
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: c-ares
+      dependsOn: openssl
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: freetype_fp
+      dependsOn: c-ares
+      continueOnError: 'true'
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+        parameters:
+          stage_name: freetype
+
+    - job: harfbuzz
+      dependsOn: freetype
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: freetype_sp
+      dependsOn: harfbuzz
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+        parameters:
+          stage_name: freetype
+
+    - job: boost
+      timeoutInMinutes: "240"
+      dependsOn: freetype_sp
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: jsoncpp
+      dependsOn: boost
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: utf8proc
+      dependsOn: jsoncpp
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: eigen
+      dependsOn: utf8proc
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: pybind11
+      dependsOn: eigen
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: mkl-dnn
+      dependsOn: pybind11
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: gflags
+      dependsOn: mkl-dnn
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: glog
+      dependsOn: gflags
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: gtest
+      dependsOn: glog
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: benchmark
+      dependsOn: gtest
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: snappy
+      dependsOn: benchmark
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: protobuf
+      dependsOn: snappy
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: grpc
+      dependsOn: protobuf
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: opencv
+      dependsOn: grpc
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: rocksdb
+      dependsOn: opencv
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: onnx
+      dependsOn: rocksdb
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: ort
+      dependsOn: onnx
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
