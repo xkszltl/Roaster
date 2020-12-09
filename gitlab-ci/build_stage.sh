@@ -55,7 +55,10 @@ for retry in $(seq 100 -1 0); do
     (
         set -xe
         #     --cpu-shares 128
-        sudo DOCKER_BUILDKIT=1 docker build                             \
+        sudo                                                            \
+            BUILDKIT_STEP_LOG_MAX_SIZE="$(expr 1024 \* 1048576)"        \
+            DOCKER_BUILDKIT=1                                           \
+            docker build                                                \
             --add-host 'docker.codingcafe.org:10.0.0.10'                \
             --add-host 'repo.codingcafe.org:10.0.0.10'                  \
             --add-host 'proxy.codingcafe.org:10.0.0.10'                 \
