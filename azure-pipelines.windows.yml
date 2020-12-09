@@ -62,13 +62,15 @@ stages:
       steps:
       - template: azure-pipelines/build_stage.windows.yml
 
-    - job: c-ares
+    - job: c_ares
       dependsOn: openssl
       steps:
       - template: azure-pipelines/build_stage.windows.yml
+        parameters:
+          stage_name: c-ares
 
     - job: freetype_fp
-      dependsOn: c-ares
+      dependsOn: c_ares
       continueOnError: 'true'
       steps:
       - template: azure-pipelines/build_stage.windows.yml
@@ -76,7 +78,7 @@ stages:
           stage_name: freetype
 
     - job: harfbuzz
-      dependsOn: freetype
+      dependsOn: freetype_fp
       steps:
       - template: azure-pipelines/build_stage.windows.yml
 
@@ -113,13 +115,15 @@ stages:
       steps:
       - template: azure-pipelines/build_stage.windows.yml
 
-    - job: mkl-dnn
+    - job: mkl_dnn
       dependsOn: pybind11
       steps:
       - template: azure-pipelines/build_stage.windows.yml
+        parameters:
+          stage_name: mkl-dnn
 
     - job: gflags
-      dependsOn: mkl-dnn
+      dependsOn: mkl_dnn
       steps:
       - template: azure-pipelines/build_stage.windows.yml
 
