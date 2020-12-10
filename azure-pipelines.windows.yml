@@ -4,7 +4,6 @@ trigger:
 - master
 
 pool:
-  name: Default
   demands:
   - Agent.OS -equals Windows_NT
 
