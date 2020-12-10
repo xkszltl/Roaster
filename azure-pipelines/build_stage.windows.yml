@@ -6,8 +6,8 @@ parameters:
 steps:
 - powershell: |
     if ("${{ parameters.stage_name }}") {
-      .\gitlab-ci\build_stage.ps1 ${{ parameters.stage_name }} "${Env:Agent_TempDirectory}/roaster-scratch"
+      .\gitlab-ci\build_stage.ps1 "${{ parameters.stage_name }}" "${Env:Agent_TempDirectory}/roaster-scratch"
     } else {
-      .\gitlab-ci\build_stage.ps1 $Env:SYSTEM_JOBDISPLAYNAME "${Env:Agent_TempDirectory}/roaster-scratch"
+      .\gitlab-ci\build_stage.ps1 "$Env:SYSTEM_JOBDISPLAYNAME" "${Env:Agent_TempDirectory}/roaster-scratch"
     }
   displayName: "Build on Windows"

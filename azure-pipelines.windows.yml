@@ -9,46 +9,25 @@ pool:
 stages:
 - stage: prep
   jobs:
-    - job: vsbuildtools
+    - job: build
       steps:
       - template: azure-pipelines/build_stage.windows.yml
         parameters:
-          stage_name: vsbuildtools
+          stage_name: vsbuildtools,cmake,curl
 
-    - job: cmake
-      dependsOn: vsbuildtools
+    - job: gpu
+      dependsOn: build
       steps:
       - template: azure-pipelines/build_stage.windows.yml
+        parameters:
+          stage_name: cuda,cudnn,tensorort
 
-    - job: curl
-      dependsOn: cmake
+    - job: mkl
+      dependsOn: gpu
       steps:
       - template: azure-pipelines/build_stage.windows.yml
-
-    - job: cuda
-      dependsOn: curl
-      steps:
-      - template: azure-pipelines/build_stage.windows.yml
-
-    - job: cudnn
-      dependsOn: cuda
-      steps:
-      - template: azure-pipelines/build_stage.windows.yml
-
-    - job: tensorrt
-      dependsOn: cudnn
-      steps:
-      - template: azure-pipelines/build_stage.windows.yml
-
-    - job: intel
-      dependsOn: tensorrt
-      steps:
-      - template: azure-pipelines/build_stage.windows.yml
-
-    - job: mklml
-      dependsOn: intel
-      steps:
-      - template: azure-pipelines/build_stage.windows.yml
+        parameters:
+          stage_name: intel,mklml
 
 - stage: build
   dependsOn: prep
@@ -91,7 +70,7 @@ stages:
 
     - job: boost
       timeoutInMinutes: "240"
-      dependsOn: freetype_sp
+      dependsOn: freetype_2
       steps:
       - template: azure-pipelines/build_stage.windows.yml
 
