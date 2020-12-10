@@ -8,7 +8,7 @@ if (Test-Path $vs_where)
     $vs_home = & $vs_where -latest -products * -property installationPath
     if ($vs_home)
     {
-        Write-Host "Found existing VS installtaion under `"$vs_home`". Skip installation."
+        Write-Host "Found existing VS installation under `"$vs_home`". Skip installation."
         exit 0
     }
 }
