@@ -13,10 +13,17 @@ stages:
       steps:
       - template: azure-pipelines/build_stage.windows.yml
         parameters:
-          stage_name: vsbuildtools,cmake,curl
+          stage_name: vsbuildtools,cmake
+
+    - job: tool
+      dependsOn: build
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+        parameters:
+          stage_name: zlib,openssl,c-ares,curl
 
     - job: gpu
-      dependsOn: build
+      dependsOn: tool
       steps:
       - template: azure-pipelines/build_stage.windows.yml
         parameters:
@@ -32,24 +39,7 @@ stages:
 - stage: build
   dependsOn: prep
   jobs:
-    - job: zlib
-      steps:
-      - template: azure-pipelines/build_stage.windows.yml
-
-    - job: openssl
-      dependsOn: zlib
-      steps:
-      - template: azure-pipelines/build_stage.windows.yml
-
-    - job: c_ares
-      dependsOn: openssl
-      steps:
-      - template: azure-pipelines/build_stage.windows.yml
-        parameters:
-          stage_name: c-ares
-
     - job: freetype_1
-      dependsOn: c_ares
       continueOnError: 'true'
       steps:
       - template: azure-pipelines/build_stage.windows.yml
