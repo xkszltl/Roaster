@@ -28,9 +28,6 @@ ${Env:CUDA_PATH}=[System.Environment]::GetEnvironmentVariable("CUDA_PATH","Machi
 
 # CUDA MSBuild integration is not working for VS BuildTools.
 # Manually install CUDA Build Customizations files into MSBuild customization folder.
-#
-# See Table: CUDA Visual Studio .props locations from:
-# https://docs.nvidia.com/cuda/cuda-installation-guide-microsoft-windows/index.html
 if (${Env:VSCMD_VER} -ne $null)
 {
     $vs_where = "${Env:ProgramFiles(x86)}/Microsoft Visual Studio/Installer/vswhere.exe"
@@ -38,6 +35,12 @@ if (${Env:VSCMD_VER} -ne $null)
     if ($vs_home)
     {
         $cuda_vsext_dir = "${Env:CUDA_PATH}/extras/visual_studio_integration/MSBuildExtensions"
+
+        # See Table: CUDA Visual Studio .props locations from:
+        # https://docs.nvidia.com/cuda/cuda-installation-guide-microsoft-windows/index.html
+        #
+        # For VS2019, the sample location is:
+        # C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MSBuild\Microsoft\VC\v160\BuildCustomizations
         $msbuild_custom_dir = "$vs_home/MSBuild/Microsoft/VC/v160/BuildCustomizations"
 
         Write-Host "Patching CUDA VS .props files:"
