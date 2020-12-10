@@ -13,16 +13,24 @@ if (Test-Path $vs_where)
     }
 }
 
-Invoke-WebRequest -Uri https://aka.ms/vs/16/release/vs_buildtools.exe -OutFile "${Env:SCRATCH}/vs_buildtools.exe"
+Invoke-WebRequest -Uri "https://aka.ms/vs/16/release/vs_buildtools.exe" -OutFile "${Env:SCRATCH}/vs_buildtools.exe"
 
-$install_cmd = "`"${Env:SCRATCH}/vs_buildtools.exe`" --quiet --wait --norestart --nocache " `
-    + "--add Microsoft.VisualStudio.Workload.VCTools;includeRecommended "                   `
-    + "--add Microsoft.VisualStudio.Component.Windows10SDK.16299 "                          `
-    + "--installPath C:\BuildTools || exit /b %ERRORLEVEL%"
+$install_cmd = "`"${Env:SCRATCH}/vs_buildtools.exe`" "                      `
+    + "--nocache "                                                          `
+    + "--norestart "                                                        `
+    + "--quiet "                                                            `
+    + "--wait "                                                             `
+    + "--add Microsoft.VisualStudio.Workload.VCTools;includeRecommended "   `
+    + "--add Microsoft.VisualStudio.Component.Windows10SDK.16299 || exit /b %ERRORLEVEL%"
+
 cmd /c $install_cmd
 
-if ($LASTEXITCODE -ne 0 -or $LASTEXITCODE -ne 3003)
+# Installation is still successful even if it returns non-zero error code 3010.
+# The error code comes from the link below:
+# https://docs.microsoft.com/en-us/visualstudio/install/build-tools-container?view=vs-2019
+$error_code = $LASTEXITCODE
+if ($error_code -ne 0 -or $error_code -ne 3010)
 {
-    Write-Error "Failed to install vs buildtools, exit code is $LASTEXITCODE."
+    Write-Error "Failed to install vs buildtools, exit code is $error_code."
     exit 1
 }

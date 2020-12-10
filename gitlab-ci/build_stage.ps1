@@ -1,13 +1,16 @@
 Param(
     [Parameter(Mandatory = $True)]
-    [string] $pkg
+    [string] $pkg,
+
+    [Parameter(Mandatory = $True)]
+    [string] $scratch
 )
 
 $ErrorActionPreference="Stop"
 
 cd $PSScriptRoot/../win
 
-${ENV:SCRATCH} = "${ENV:Agent_TempDirectory}/roaster-scratch"
+${Env:SCRATCH} = $scratch
 mkdir "${Env:SCRATCH}"
 
 if ($pkg -ne "vsbuildtools")

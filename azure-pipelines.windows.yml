@@ -69,7 +69,7 @@ stages:
         parameters:
           stage_name: c-ares
 
-    - job: freetype_fp
+    - job: freetype_1
       dependsOn: c_ares
       continueOnError: 'true'
       steps:
@@ -78,11 +78,11 @@ stages:
           stage_name: freetype
 
     - job: harfbuzz
-      dependsOn: freetype_fp
+      dependsOn: freetype_1
       steps:
       - template: azure-pipelines/build_stage.windows.yml
 
-    - job: freetype_sp
+    - job: freetype_2
       dependsOn: harfbuzz
       steps:
       - template: azure-pipelines/build_stage.windows.yml
