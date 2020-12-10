@@ -43,6 +43,7 @@ if (${Env:VSCMD_VER} -ne $null)
         Write-Host "Patching CUDA VS .props files:"
         Write-Host "  From: $cuda_vsext_dir"
         Write-Host "  To:   $msbuild_custom_dir"
-        Copy-Item $cuda_vsext_dir/* $msbuild_custom_dir
+
+        cp -Force $cuda_vsext_dir/* $msbuild_custom_dir
     }
 }
