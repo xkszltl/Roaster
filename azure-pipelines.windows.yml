@@ -40,8 +40,16 @@ stages:
 - stage: build
   dependsOn: prep
   jobs:
+    - job: env
+      steps:
+      - powershell: |
+          cmake --version
+          nvcc -V
+          python -V
+
     - job: freetype_1
       continueOnError: 'true'
+      dependsOn: env
       steps:
       - template: azure-pipelines/build_stage.windows.yml
         parameters:
