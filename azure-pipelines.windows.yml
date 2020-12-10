@@ -4,7 +4,7 @@ trigger:
 - master
 
 pool:
-  name: $(AGENT_POOL_NAME)
+  vmImage: 'windows-latest'
 
 stages:
 - stage: prep
