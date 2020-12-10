@@ -3,6 +3,11 @@ name: Roaster Windows Build
 trigger:
 - master
 
+pool:
+  name: Default
+  demands:
+  - Agent.OS -equals Windows_NT
+
 stages:
 - stage: prep
   jobs:
