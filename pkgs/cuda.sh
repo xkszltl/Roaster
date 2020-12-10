@@ -11,34 +11,49 @@
     'centos' | 'fedora' | 'rhel')
         sudo dnf makecache
         for i in 'compat' 'toolkit'; do
-            dnf list -q "cuda-$i-$CUDA_VER_MAJOR-$CUDA_VER_MINOR"       \
-            | sed -n "s/^\(cuda-$i-[0-9\-]*\).*/\1/p"                   \
-            | sort -Vu                                                  \
-            | tail -n1                                                  \
-            | xargs -r $RPM_INSTALL
+            for attempt in $(seq "$RPM_MAX_ATTEMPT" -1 0); do
+                [ "$attempt" -gt 0 ]
+                dnf list -q "cuda-$i-$CUDA_VER_MAJOR-$CUDA_VER_MINOR"   \
+                | sed -n "s/^\(cuda-$i-[0-9\-]*\).*/\1/p"               \
+                | sort -Vu                                              \
+                | tail -n1                                              \
+                | xargs -r $RPM_INSTALL                                 \
+                && break
+                echo "Retrying... $(expr "$attempt" - 1) chance(s) left."
+            done
         done
         ;;
     'debian' | 'linuxmint' | 'ubuntu')
         sudo apt-get update -y
         for i in 'compat' 'toolkit'; do
-            apt-cache show "cuda-$i-$CUDA_VER_MAJOR-$CUDA_VER_MINOR"    \
-            | sed -n 's/^Package:[[:space:]]*\(cuda-\)/\1/p'            \
-            | sort -Vu                                                  \
-            | tail -n1                                                  \
-            | sudo DEBIAN_FRONTEND=noninteractive xargs -r apt-get install -y
+            for attempt in $(seq "$DEB_MAX_ATTEMPT" -1 0); do
+                [ "$attempt" -gt 0 ]
+                apt-cache show "cuda-$i-$CUDA_VER_MAJOR-$CUDA_VER_MINOR"            \
+                | sed -n 's/^Package:[[:space:]]*\(cuda-\)/\1/p'                    \
+                | sort -Vu                                                          \
+                | tail -n1                                                          \
+                | sudo DEBIAN_FRONTEND=noninteractive xargs -r apt-get install -y   \
+                && break
+                echo "Retrying... $(expr "$attempt" - 1) chance(s) left."
+            done
         done
         # Blacklist
         if false; then
-            apt-cache show 'cuda'                       \
-            | sed -n 's/^Package:[[:space:]]*cuda-//p'  \
-            | sort -Vu                                  \
-            | tail -n1                                  \
-            | xargs -I{} apt-cache show 'cuda-*-{}'     \
-            | sed -n 's/^Package:[[:space:]]*//p'       \
-            | grep -v '^cuda-demo-suite-'               \
-            | grep -v '^cuda-runtime-'                  \
-            | paste -s -                                \
-            | sudo DEBIAN_FRONTEND=noninteractive xargs apt-get install -y
+            for attempt in $(seq "$DEB_MAX_ATTEMPT" -1 0); do
+                [ "$attempt" -gt 0 ]
+                apt-cache show 'cuda'                                           \
+                | sed -n 's/^Package:[[:space:]]*cuda-//p'                      \
+                | sort -Vu                                                      \
+                | tail -n1                                                      \
+                | xargs -I{} apt-cache show 'cuda-*-{}'                         \
+                | sed -n 's/^Package:[[:space:]]*//p'                           \
+                | grep -v '^cuda-demo-suite-'                                   \
+                | grep -v '^cuda-runtime-'                                      \
+                | paste -s -                                                    \
+                | sudo DEBIAN_FRONTEND=noninteractive xargs apt-get install -y  \
+                && break
+                echo "Retrying... $(expr "$attempt" - 1) chance(s) left."
+            done
         fi
         ! dpkg -l cuda-drivers || $IS_CONTAINER
         ;;

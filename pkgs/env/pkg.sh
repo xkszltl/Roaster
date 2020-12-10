@@ -2,6 +2,7 @@
 # Environment for Package Installation
 # ================================================================
 
+export DEB_MAX_ATTEMPT=10
 export RPM_MAX_ATTEMPT=10
 
 # TODO: Fix the following issue:
