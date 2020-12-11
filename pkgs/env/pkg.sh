@@ -5,6 +5,19 @@
 export DEB_MAX_ATTEMPT=10
 export RPM_MAX_ATTEMPT=10
 
+# Note: Do not leak $DISTRO_* because this script is only for package management environment.
+case "$(. <(sed 's/^\(..*\)/export DISTRO_\1/' '/etc/os-release') && bash -c 'printf "$DISTRO_ID"')" in
+'centos' | 'fedora' | 'rhel')
+    export PKG_MAX_ATTEMPT="$RPM_MAX_ATTEMPT"
+    ;;
+'debian' | 'linuxmint' | 'ubuntu')
+    export PKG_MAX_ATTEMPT="$DEB_MAX_ATTEMPT"
+    ;;
+*)
+    export PKG_MAX_ATTEMPT=10
+    ;;
+esac
+
 # TODO: Fix the following issue:
 #   - LLVM may select the wrong gcc toolchain without libgcc_s integrated.
 #     The correct choice is x86_64-redhat-linux instead of x86_64-linux-gnu.
