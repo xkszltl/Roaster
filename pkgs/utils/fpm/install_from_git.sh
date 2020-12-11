@@ -8,7 +8,7 @@ set -xe
 
 . "$ROOT_DIR/pkgs/utils/fpm/post_build.sh"
 
-DESC="$(git describe --long --match '[0-9]*[_.-]*[0-9]' --tags || echo 0.0-0-0000000)"
+DESC="$(git describe --long --match '*[0-9]*[_.-]*[0-9]' --tags || echo 0.0-0-0000000)"
 
 for i in {"$ROOT_DIR/pkgs/utils","$INSTALL_ROOT/.."}'/fpm/post_install.sh'; do
     [ -f "$i" ] || continue
