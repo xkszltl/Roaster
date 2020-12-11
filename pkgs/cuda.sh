@@ -68,18 +68,25 @@
         #     https://github.com/NVIDIA/libnvidia-container/issues/117
         ls -d "/usr/local/cuda-$CUDA_VER_MAJOR.$CUDA_VER_MINOR/" | sort -V | tail -n1 | xargs -n1 basename | sudo xargs -I{} ln -sfT {} "/usr/local/cuda"
     else
-        case "$DISTRO_ID" in
-        'centos' | 'fedora' | 'rhel')
-            $RPM_INSTALL "cuda-$CUDA_VER_MAJOR.$CUDA_VER_MINOR.*"
-            ;;
-        'debian' | 'linuxmint' | 'ubuntu')
-            apt-cache show "cuda-toolkit-$CUDA_VER_MAJRO-$CUDA_VER_MINOR"   \
-            | sed -n 's/^Version:[[:space:]]*//p'                           \
-            | sort -Vu                                                      \
-            | tail -n1                                                      \
-            | xargs -I{} sudo DEBIAN_FRONTEND=noninteractive apt-get install --allow-downgrades -y "cuda={}"
-            ;;
-        esac
+        for attempt in $(seq "$PKG_MAX_ATTEMPT" -1 0); do
+            [ "$attempt" -gt 0 ]
+            (
+                set -e
+                case "$DISTRO_ID" in
+                'centos' | 'fedora' | 'rhel')
+                    $RPM_INSTALL "cuda-$CUDA_VER_MAJOR.$CUDA_VER_MINOR.*"
+                    ;;
+                'debian' | 'linuxmint' | 'ubuntu')
+                    apt-cache show "cuda-toolkit-$CUDA_VER_MAJRO-$CUDA_VER_MINOR"   \
+                    | sed -n 's/^Version:[[:space:]]*//p'                           \
+                    | sort -Vu                                                      \
+                    | tail -n1                                                      \
+                    | xargs -I{} sudo DEBIAN_FRONTEND=noninteractive apt-get install --allow-downgrades -y "cuda={}"
+                    ;;
+                esac
+            ) && break
+            echo "Retrying... $(expr "$attempt" - 1) chance(s) left."
+        done
     fi
 
     [ -x '/usr/local/cuda/bin/nvcc' ]
@@ -88,14 +95,21 @@
     export CUDA_VER_MINOR="$(cut -d'.' -f2 <<< "$CUDA_VER")"
     export CUDA_VER_BUILD="$(cut -d'.' -f3 <<< "$CUDA_VER")"
 
-    case "$DISTRO_ID" in
-    'centos' | 'fedora' | 'rhel')
-        $RPM_INSTALL lib{cudnn8{,-devel},nccl{,-devel,-static},nv{infer{,-plugin},{,onnx}parsers}-devel}"-*-*cuda$CUDA_VER_MAJOR.$CUDA_VER_MINOR"
-        ;;
-    'debian' | 'linuxmint' | 'ubuntu')
-        sudo DEBIAN_FRONTEND=noninteractive apt-get install --allow-downgrades -y lib{cudnn8{,-dev},nccl{2,-dev},nv{infer{,-plugin},{,onnx}parsers}{7,-dev}}"=*+cuda$CUDA_VER_MAJOR.$CUDA_VER_MINOR"
-        ;;
-    esac
+    for attempt in $(seq "$PKG_MAX_ATTEMPT" -1 0); do
+        [ "$attempt" -gt 0 ]
+        (
+            set -e
+            case "$DISTRO_ID" in
+            'centos' | 'fedora' | 'rhel')
+                $RPM_INSTALL lib{cudnn8{,-devel},nccl{,-devel,-static},nv{infer{,-plugin},{,onnx}parsers}-devel}"-*-*cuda$CUDA_VER_MAJOR.$CUDA_VER_MINOR"
+                ;;
+            'debian' | 'linuxmint' | 'ubuntu')
+                sudo DEBIAN_FRONTEND=noninteractive apt-get install --allow-downgrades -y lib{cudnn8{,-dev},nccl{2,-dev},nv{infer{,-plugin},{,onnx}parsers}{7,-dev}}"=*+cuda$CUDA_VER_MAJOR.$CUDA_VER_MINOR"
+                ;;
+            esac
+        ) && break
+        echo "Retrying... $(expr "$attempt" - 1) chance(s) left."
+    done
 
     # ============================================================
     # TensorRT (Hack deprecated)
