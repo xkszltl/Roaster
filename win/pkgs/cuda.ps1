@@ -41,7 +41,8 @@ if (${Env:VSCMD_VER} -ne $null)
         #
         # For VS2019, the sample location is:
         # C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MSBuild\Microsoft\VC\v160\BuildCustomizations
-        $msbuild_custom_dir = "$vs_home/MSBuild/Microsoft/VC/v160/BuildCustomizations"
+        $msbuild_ver = (ls "$vs_home/MSBuild/Microsoft/VC")[-1].Name
+        $msbuild_custom_dir = "$vs_home/MSBuild/Microsoft/VC/$msbuild_ver/BuildCustomizations"
 
         Write-Host "Patching CUDA VS .props files:"
         Write-Host "  From: $cuda_vsext_dir"
