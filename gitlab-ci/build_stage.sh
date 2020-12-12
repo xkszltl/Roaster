@@ -57,6 +57,7 @@ for retry in $(seq 100 -1 0); do
         #     --cpu-shares 128
         sudo                                                            \
             BUILDKIT_STEP_LOG_MAX_SIZE="$(expr 1024 \* 1048576)"        \
+            BUILDKIT_STEP_LOG_MAX_SPEED="$(expr 1 \* 1048576)"          \
             DOCKER_BUILDKIT=1                                           \
             docker build                                                \
             --add-host 'docker.codingcafe.org:10.0.0.10'                \
