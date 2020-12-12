@@ -18,12 +18,6 @@
     until git clone -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd onnxruntime
 
-    # Known issues:
-    #  - libonnxruntime_providers_dnnl.so not installed.
-    #    https://github.com/microsoft/onnxruntime/issues/4729
-    git fetch origin master
-    git cherry-pick 16d3526
-
     git remote add patch https://github.com/xkszltl/onnxruntime.git
 
     PATCHES=""
