@@ -260,8 +260,20 @@ done
 for i in libnvidia-container nvidia-{container-runtime,docker}; do
     mkdir -p "nvidia/$i/centos7/$(uname -i)"
     pushd "$_"
-    $DRY || wget $DRY_WGET -cqt 10 "https://nvidia.github.io/$i/gpgkey"
-    $DRY || rpm --import "gpgkey"
+    for attempt in $($DRY || seq 100 -1 0); do
+        [ "$attempt" -gt 0 ]
+        (
+            set -e
+            wget $DRY_WGET -cqt 10 "https://nvidia.github.io/$i/gpgkey"
+            if ! rpm --import "gpgkey"; then
+                echo 'Bad pubkey file:'
+                sed 's/^\(.\)/    \1/' 'gpgkey'
+                rm -f 'gpgkey'
+                exit 1
+            fi
+        ) && break
+        echo "Retrying... $(expr "$attempt" - 1) chance(s) left."
+    done
     popd
 
     export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
@@ -283,8 +295,20 @@ done
 
     mkdir -p 'docker/linux/centos'
     cd "$_"
-    $DRY || wget $DRY_WGET -cqt 10 https://download.docker.com/linux/centos/gpg
-    $DRY || rpm --import gpg
+    for attempt in $($DRY || seq 100 -1 0); do
+        [ "$attempt" -gt 0 ]
+        (
+            set -e
+            wget $DRY_WGET -cqt 10 "https://download.docker.com/linux/centos/gpg"
+            if ! rpm --import "gpg"; then
+                echo 'Bad pubkey file:'
+                sed 's/^\(.\)/    \1/' 'gpg'
+                rm -f 'gpg'
+                exit 1
+            fi
+        ) && break
+        echo "Retrying... $(expr "$attempt" - 1) chance(s) left."
+    done
 )
 
 for i in stable edge test; do :
