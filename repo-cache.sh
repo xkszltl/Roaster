@@ -200,8 +200,20 @@ for dist in rhel7; do
     name="$(cut -d',' -f1 <<< "$sub_repo,")"
     mkdir -p "nvidia/cuda/$dist/$(uname -i)"
     pushd "$_"
-    $DRY || wget $DRY_WGET -ct 1000 "https://developer.download.nvidia.com/compute/cuda/repos/$dist/$(uname -i)/7fa2af80.pub"
-    $DRY || rpm --import "7fa2af80.pub"
+    for attempt in $($DRY || seq 100 -1 0); do
+        [ "$attempt" -gt 0 ]
+        (
+            set -e
+            wget $DRY_WGET -ct 1000 "https://developer.download.nvidia.com/compute/cuda/repos/$dist/$(uname -i)/7fa2af80.pub"
+            if ! rpm --import "7fa2af80.pub"; then
+                echo 'Bad pubkey file:'
+                sed 's/^\(.\)/    \1/' '7fa2af80.pub'
+                rm -f '7fa2af80.pub'
+                exit 1
+            fi
+        ) && break
+        echo "Retrying... $(expr "$attempt" - 1) chance(s) left."
+    done
     popd
 
     export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
@@ -219,8 +231,20 @@ for dist in rhel7; do
     dir="$(cut -d',' -f2 <<< "$sub_repo,")"
     mkdir -p "nvidia/$dir/$dist/$(uname -i)"
     pushd "$_"
-    $DRY || wget $DRY_WGET -ct 1000 "https://developer.download.nvidia.com/compute/$dir/repos/$dist/$(uname -i)/7fa2af80.pub"
-    $DRY || rpm --import "7fa2af80.pub"
+    for attempt in $($DRY || seq 100 -1 0); do
+        [ "$attempt" -gt 0 ]
+        (
+            set -e
+            wget $DRY_WGET -ct 1000 "https://developer.download.nvidia.com/compute/$dir/repos/$dist/$(uname -i)/7fa2af80.pub"
+            if ! rpm --import "7fa2af80.pub"; then
+                echo 'Bad pubkey file:'
+                sed 's/^\(.\)/    \1/' '7fa2af80.pub'
+                rm -f '7fa2af80.pub'
+                exit 1
+            fi
+        ) && break
+        echo "Retrying... $(expr "$attempt" - 1) chance(s) left."
+    done
     popd
 
     export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
