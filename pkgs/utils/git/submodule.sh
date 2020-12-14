@@ -49,6 +49,10 @@ set +x
                     sed -i "s/[^[:space:]]*:\/\/[^\/].*\(\/$i\.git\)[\/]*/$(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR")\/sourceware\1.git/" .gitmodules
                     sed -i "s/\($(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR")\/sourceware\/$i\.git\)\.git[[:space:]]*$/\1/" .gitmodules
                 done
+                # gRPC->bloaty->libFuzzer is hosted on googlesource.com, not always accessible.
+                #   - https://github.com/grpc/grpc/issues/24926
+                # Use a mirror on gitee for now.
+                sed -i 's/https:\/\/.*\/chromium\/llvm\-project\/llvm\/lib\/Fuzzer/https:\/\/gitee\.com\/local-grpc\/Fuzzer\.git/' .gitmodules
             fi
 
             git submodule init
