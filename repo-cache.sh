@@ -257,14 +257,14 @@ for dist in rhel7; do
 done
 done
 
-for i in libnvidia-container nvidia-{container-runtime,docker}; do
+for i in libnvidia-container{,-experimental} nvidia-{container-runtime{,-experimental},docker}; do
     mkdir -p "nvidia/$i/centos7/$(uname -i)"
     pushd "$_"
     for attempt in $($DRY || seq 100 -1 0); do
         [ "$attempt" -gt 0 ]
         (
             set -e
-            wget $DRY_WGET -cqt 10 "https://nvidia.github.io/$i/gpgkey"
+            wget $DRY_WGET -cqt 10 "https://nvidia.github.io/$(sed 's/\-experimental//' <<< "$i")/gpgkey"
             if ! rpm --import "gpgkey"; then
                 echo 'Bad pubkey file:'
                 sed 's/^\(.\)/    \1/' 'gpgkey'

@@ -267,9 +267,31 @@ repo_gpgcheck=0
 sslcacert=/etc/pki/tls/certs/ca-bundle.crt
 sslverify=1
 
+[cache-libnvidia-container-experimental]
+name=[Cache] libnvidia-container
+baseurl=https://repo.codingcafe.org/nvidia/libnvidia-container-experimental/centos$releasever/$basearch
+enabled=0
+gpgcheck=1
+gpgkey=https://nvidia.github.io/libnvidia-container/gpgkey
+priority=1
+repo_gpgcheck=0
+sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+sslverify=1
+
 [cache-nvidia-container-runtime]
 name=[Cache] nvidia-container-runtime
 baseurl=https://repo.codingcafe.org/nvidia/nvidia-container-runtime/centos$releasever/$basearch
+enabled=0
+gpgcheck=1
+gpgkey=https://nvidia.github.io/nvidia-container-runtime/gpgkey
+priority=1
+repo_gpgcheck=0
+sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+sslverify=1
+
+[cache-nvidia-container-runtime-experimental]
+name=[Cache] nvidia-container-runtime-experimental
+baseurl=https://repo.codingcafe.org/nvidia/nvidia-container-runtime-experimental/centos$releasever/$basearch
 enabled=0
 gpgcheck=1
 gpgkey=https://nvidia.github.io/nvidia-container-runtime/gpgkey
