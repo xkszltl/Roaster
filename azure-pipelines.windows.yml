@@ -1,0 +1,157 @@
+name: Roaster Windows Build
+
+trigger:
+- master
+
+pool:
+  demands:
+  - Agent.OS -equals Windows_NT
+
+stages:
+- stage: prep
+  jobs:
+    - job: build
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+        parameters:
+          stage_name: vsbuildtools,cmake
+
+    - job: tool
+      dependsOn: build
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+        parameters:
+          stage_name: zlib,openssl,c-ares,curl
+
+    - job: gpu
+      dependsOn: tool
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+        parameters:
+          stage_name: cuda,cudnn,tensorrt
+
+    - job: mkl
+      dependsOn: gpu
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+        parameters:
+          stage_name: intel,mklml
+
+- stage: build
+  dependsOn: prep
+  jobs:
+    - job: env
+      steps:
+      - powershell: |
+          cmake --version
+          nvcc -V
+          python -V
+
+    - job: freetype_1
+      continueOnError: 'true'
+      dependsOn: env
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+        parameters:
+          stage_name: freetype
+
+    - job: harfbuzz
+      dependsOn: freetype_1
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: freetype_2
+      dependsOn: harfbuzz
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+        parameters:
+          stage_name: freetype
+
+    - job: boost
+      timeoutInMinutes: "240"
+      dependsOn: freetype_2
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: jsoncpp
+      dependsOn: boost
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: utf8proc
+      dependsOn: jsoncpp
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: eigen
+      dependsOn: utf8proc
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: pybind11
+      dependsOn: eigen
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: mkl_dnn
+      dependsOn: pybind11
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+        parameters:
+          stage_name: mkl-dnn
+
+    - job: gflags
+      dependsOn: mkl_dnn
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: glog
+      dependsOn: gflags
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: gtest
+      dependsOn: glog
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: benchmark
+      dependsOn: gtest
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: snappy
+      dependsOn: benchmark
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: protobuf
+      dependsOn: snappy
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: grpc
+      dependsOn: protobuf
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: opencv
+      dependsOn: grpc
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: rocksdb
+      dependsOn: opencv
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: onnx
+      dependsOn: rocksdb
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
+
+    - job: ort
+      dependsOn: onnx
+      timeoutInMinutes: "1440"
+      steps:
+      - template: azure-pipelines/build_stage.windows.yml
