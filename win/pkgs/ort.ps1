@@ -40,11 +40,10 @@ $update_gtest = $true
 $update_onnx = $false
 $update_protobuf = $false
 $use_bat = $false
-$run_tests = $true
-if ($ENV:ROASTER_ORT_SKIP_TESTS)
-{
-    $run_tests = $false
-}
+
+# CUDA test hang if build machine doesn't have GPU
+# https://github.com/microsoft/onnxruntime/issues/4656
+$run_tests = $((Get-Command -Name "nvidia-smi" -ErrorAction SilentlyContinue) -and (nvidia-smi -L))
 
 # ================================================================================
 # Patch
@@ -208,8 +207,6 @@ else
 $model_path = "${Env:SCRATCH}/onnxruntime_models.zip"
 rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${model_path}.downloading"
 
-# CUDA test hang if build machine doesn't have GPU
-# https://github.com/microsoft/onnxruntime/issues/4656
 if ($run_tests)
 {
     if (-not $(Test-Path $model_path))

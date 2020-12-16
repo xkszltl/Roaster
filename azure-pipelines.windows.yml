@@ -154,10 +154,4 @@ stages:
       dependsOn: onnx
       timeoutInMinutes: "1440"
       steps:
-      - powershell: |
-          # CUDA test hang without GPU.
-          # https://github.com/microsoft/onnxruntime/issues/4656
-          Write-Host "##vso[task.setvariable variable=ROASTER_ORT_SKIP_TESTS]$true"
-        displayName: env
-
       - template: azure-pipelines/build_stage.windows.yml
