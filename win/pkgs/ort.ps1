@@ -45,6 +45,12 @@ $use_bat = $false
 # Patch
 # ================================================================================
 
+# Known issues:
+#  - CUDA test hang without GPU.
+#    https://github.com/microsoft/onnxruntime/issues/4656
+git fetch origin master
+git cherry-pick 0978d2b
+
 git remote add patch https://github.com/xkszltl/onnxruntime.git
 git fetch patch
 
