@@ -40,6 +40,7 @@ cmake                                                               `
     -DCMAKE_C_FLAGS="/DNOMINMAX /MP /Zi ${gtest_dll}"               `
     -DCMAKE_CXX_FLAGS="/DNOMINMAX /EHsc /MP /Zi ${gtest_dll}"       `
     -DCMAKE_EXE_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental"    `
+    -DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=ON                           `
     -DCMAKE_INSTALL_PREFIX="${Env:ProgramFiles}/Snappy"             `
     -DCMAKE_PDB_OUTPUT_DIRECTORY="${PWD}/pdb"                       `
     -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental" `
