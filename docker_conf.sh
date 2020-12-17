@@ -10,7 +10,7 @@ cd "$ROOT_DIR"
 . pkgs/env/cred.sh
 
 echo '========================================'
-echo '| HTTP Proxy'
+echo '| HTTP Proxy/Buildkit'
 echo '========================================'
 
 sudo mkdir -p '/etc/systemd/system/docker.service.d'
@@ -22,6 +22,13 @@ Environment=\"HTTP_PROXY=$CRED_USR_PRIVOXY_ADDR:$CRED_USR_PRIVOXY_PORT\"
 Environment=\"HTTPS_PROXY=$CRED_USR_PRIVOXY_ADDR:$CRED_USR_PRIVOXY_PORT\"
 Environment=\"NO_PROXY=127.0.0.1,::1,localhost,docker.codingcafe.org,git.codingcafe.org\"
 " | sudo tee '/etc/systemd/system/docker.service.d/http-proxy.conf'
+
+echo "# This file is auto-generated and may be overwritten.
+
+[Service]
+Environment=\"BUILDKIT_STEP_LOG_MAX_SIZE=1073741824\"
+Environment=\"BUILDKIT_STEP_LOG_MAX_SPEED=1048576\"
+" | sudo tee '/etc/systemd/system/docker.service.d/buildkit.conf'
 
 sudo systemctl daemon-reload || true
 # sudo systemctl restart docker
