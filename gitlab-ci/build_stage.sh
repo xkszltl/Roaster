@@ -56,14 +56,12 @@ for retry in $(seq 100 -1 0); do
         set -xe
         #     --cpu-shares 128
         sudo                                                            \
-            BUILDKIT_STEP_LOG_MAX_SIZE="$(expr 1024 \* 1048576)"        \
-            BUILDKIT_STEP_LOG_MAX_SPEED="$(expr 1 \* 1048576)"          \
             DOCKER_BUILDKIT=1                                           \
             docker build                                                \
             --add-host 'docker.codingcafe.org:10.0.0.10'                \
             --add-host 'proxy.codingcafe.org:10.0.0.10'                 \
             --add-host 'repo.codingcafe.org:10.0.0.10'                  \
-            --build-arg "LABEL_BUILD_ID=$LABEL_BUILD_ID"                \
+            --build-arg LABEL_BUILD_ID="$LABEL_BUILD_ID"                \
             --file "$GENERATED_DOCKERFILE"                              \
             --label "BUILD_TIME=$(date -u +'%Y-%m-%dT%H:%M:%SZ')"       \
             --no-cache                                                  \
