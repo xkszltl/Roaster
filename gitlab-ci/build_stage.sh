@@ -44,7 +44,7 @@ sed -i "s/^FROM docker\.codingcafe\.org\/.*:/FROM $(sed 's/\([\\\/\.\-]\)/\\\1/g
 # sed -i 's/^\([[:space:]]*#[[:space:]]*syntax=docker\/dockerfile:experimental[[:space:]]*\)$//' "$GENERATED_DOCKERFILE"
 
 BUILD_LOG="$(mktemp --tmpdir 'roaster-docker-build.XXXXXXXXXX.log')"
-for retry in $(seq 100 -1 0); do
+for retry in $(seq 300 -1 0); do
     if [ "$retry" -le 0 ]; then
         rm -rf "$BUILD_LOG" "$GENERATED_DOCKERFILE"
         echo "Out of retries."
