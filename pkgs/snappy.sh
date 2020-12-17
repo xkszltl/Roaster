@@ -11,6 +11,8 @@
     until git clone --depth 1 --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd snappy
 
+    . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
+
     # ------------------------------------------------------------
 
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
@@ -43,6 +45,7 @@
             -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
             -DSNAPPY_BUILD_TESTS=OFF                \
+            -DSNAPPY_REQUIRE_AVX2=ON                \
             -G"Ninja"                               \
             ..
 
