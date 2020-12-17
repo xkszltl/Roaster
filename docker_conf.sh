@@ -18,8 +18,8 @@ sudo mkdir -p '/etc/systemd/system/docker.service.d'
 echo "# This file is auto-generated and may be overwritten.
 
 [Service]
-Environment=\"HTTP_PROXY=$CRED_USR_PRIVOXY_ADDR:$CRED_USR_PRIVOXY_PORT\"
-Environment=\"HTTPS_PROXY=$CRED_USR_PRIVOXY_ADDR:$CRED_USR_PRIVOXY_PORT\"
+# Environment=\"HTTP_PROXY=$CRED_USR_PRIVOXY_ADDR:$CRED_USR_PRIVOXY_PORT\"
+# Environment=\"HTTPS_PROXY=$CRED_USR_PRIVOXY_ADDR:$CRED_USR_PRIVOXY_PORT\"
 Environment=\"NO_PROXY=127.0.0.1,::1,localhost,docker.codingcafe.org,git.codingcafe.org\"
 " | sudo tee '/etc/systemd/system/docker.service.d/http-proxy.conf'
 
