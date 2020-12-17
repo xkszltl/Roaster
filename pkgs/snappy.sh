@@ -37,6 +37,7 @@
 
         # TODO: Enable test once the gtest linking issue is fixed (already in PR)
         cmake                                       \
+            -DBENCHMARK_ENABLE_INSTALL=OFF          \
             -DBUILD_SHARED_LIBS=ON                  \
             -DCMAKE_BUILD_TYPE=Release              \
             -DCMAKE_C_COMPILER="$CC"                \
@@ -44,6 +45,8 @@
             -DCMAKE_C{,XX}_COMPILER_LAUNCHER=ccache \
             -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
+            -DINSTALL_GMOCK=OFF                     \
+            -DINSTALL_GTEST=OFF                     \
             -DSNAPPY_BUILD_TESTS=OFF                \
             -DSNAPPY_REQUIRE_AVX2=ON                \
             -G"Ninja"                               \

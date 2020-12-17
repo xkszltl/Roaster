@@ -35,6 +35,7 @@ pushd build
 #   - /GL doesn't work for unknown reason.
 $gtest_dll="/DGTEST_LINKED_AS_SHARED_LIBRARY=1"
 cmake                                                               `
+    -DBENCHMARK_ENABLE_INSTALL=OFF                                  `
     -DBUILD_SHARED_LIBS=ON                                          `
     -DCMAKE_BUILD_TYPE=Release                                      `
     -DCMAKE_C_FLAGS="/DNOMINMAX /MP /Zi ${gtest_dll}"               `
@@ -46,6 +47,8 @@ cmake                                                               `
     -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental" `
     -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                 `
     -DGTEST_ROOT="${Env:ProgramFiles}/googletest-distribution"      `
+    -DINSTALL_GMOCK=OFF                                             `
+    -DINSTALL_GTEST=OFF                                             `
     -DSNAPPY_REQUIRE_AVX2=ON                                        `
     -G"Ninja"                                                       `
     ..
