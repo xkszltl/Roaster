@@ -37,9 +37,11 @@
         # Known issues:
         #   - Retry due to potentially broken dependency graph.
         #     https://github.com/facebook/zstd/issues/2380
+        #   - Parallel build does not work since v1.4.8.
+        #     https://github.com/facebook/zstd/issues/2436
         for retry in $(seq 3 -1 0); do
             [ "$retry" -gt 0 ]
-            make all -j$(nproc) && break
+            make allmost manual && make -C contrib/pzstd all -j$(nproc) && make -C contrib/largeNbDicts all -j$(nproc) && break
         done
         # Only run quick tests (check) by default.
         # make test -j$(nproc)
