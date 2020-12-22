@@ -27,7 +27,7 @@ echo "# This file is auto-generated and may be overwritten.
 
 [Service]
 Environment=\"BUILDKIT_STEP_LOG_MAX_SIZE=1073741824\"
-Environment=\"BUILDKIT_STEP_LOG_MAX_SPEED=1048576\"
+Environment=\"BUILDKIT_STEP_LOG_MAX_SPEED=134217728\"
 " | sudo tee '/etc/systemd/system/docker.service.d/buildkit.conf'
 
 sudo systemctl daemon-reload || true
