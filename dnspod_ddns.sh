@@ -31,7 +31,7 @@ cd "$LastDir"
 
 while true; do
     echo '========================================'
-    for Rec in def {snmp,httpbin,ifcfg,jsonip}.c{t,u}cc; do
+    for Rec in def {snmp,httpbin,ifcfg,ipify,jsonip}.c{t,u}cc; do
         # IP=`curl -s ns1.dnspod.net:6666 $Interface`
         if grep -q '^snmp\.' <<< "$Rec"; then
             grep -q '\.ctcc$' <<< "$Rec" && Interface='Dialer10'
@@ -41,6 +41,8 @@ while true; do
             IP=$(curl -sSL 'https://httpbin.org/ip' --interface "$(sed -n 's/^.*\.//p' <<<$Rec)" | jq -er '.origin') || echo 'ERROR: Failed to retrieve IP for "'"$Rec"'"'
         elif grep -q '^ifcfg\.' <<< "$Rec"; then
             IP=$(curl -sSL 'https://ifcfg.net/' --interface "$(sed -n 's/^.*\.//p' <<<$Rec)") || echo 'ERROR: Failed to retrieve IP for "'"$Rec"'"'
+        elif grep -q '^ipify\.' <<< "$Rec"; then
+            IP=$(curl -sSL 'https://api.ipify.org?format=json' --interface "$(sed -n 's/^.*\.//p' <<<$Rec)" | jq -er '.ip') || echo 'ERROR: Failed to retrieve IP for "'"$Rec"'"'
         elif grep -q '^jsonip\.' <<< "$Rec"; then
             IP=$(curl -sSL 'https://jsonip.com' --interface "$(sed -n 's/^.*\.//p' <<<$Rec)" | jq -er '.ip') || echo 'ERROR: Failed to retrieve IP for "'"$Rec"'"'
         else
