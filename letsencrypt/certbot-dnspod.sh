@@ -6,7 +6,9 @@ set -e
 # Configuration
 # ================================================================
 
-. "$(dirname "$0")/pkgs/env/cred.sh"
+[ "$ROOT_DIR" ] || export ROOT_DIR="$(dirname "$0")/.."
+cd "$ROOT_DIR"
+. "pkgs/env/cred.sh"
 
 TokenDnspodCN="$CRED_USR_DNSPOD_CN_LE_KEY,$CRED_USR_DNSPOD_CN_LE_SECRET"
 TokenGoDaddy="$CRED_USR_GODADDY_LE_KEY:$CRED_USR_GODADDY_LE_SECRET"
