@@ -25,6 +25,12 @@ export CRED_DEF_DNSPOD_INTL_SECRET='e1a8a$f14dc5dcbafd83680b3d2a553c4d553d'
 export CRED_DEF_DNSCOM_KEY='123456789abcdef0123456789abcdef0'
 export CRED_DEF_DNSCOM_SECRET='123456789abcdef0123456789abcdef0'
 
+export CRED_DEF_GODADDY_TEST_KEY='1234567890abcdef0123456789abcdef'
+export CRED_DEF_GODADDY_TEST_SECRET='1234567890abcdef0123456789abcdef'
+
+export CRED_DEF_GODADDY_KEY='1234567890abcdef0123456789abcdef'
+export CRED_DEF_GODADDY_SECRET='1234567890abcdef0123456789abcdef'
+
 ############################################################
 # Load User-defined Credentials
 ############################################################
