@@ -10,6 +10,9 @@ set -e
 cd "$ROOT_DIR"
 . 'pkgs/env/cred.sh'
 
+TokenCloudflareAccount="$CRED_USR_CLOUDFLARE_KEY"
+TokenCloudflare="$CRED_USR_CLOUDFLARE_SECRET"
+
 TokenDnspodCN="$CRED_USR_DNSPOD_CN_KEY,$CRED_USR_DNSPOD_CN_SECRET"
 TokenDnspodIntl="$CRED_USR_DNSPOD_INTL_KEY,$CRED_USR_DNSPOD_INTL_SECRET"
 
@@ -32,7 +35,9 @@ cd "$LastDir"
 while true; do
     echo '========================================'
     for Rec in def {snmp,httpbin,ifcfg,ipify,jsonip}.c{t,u}cc; do
+        IP='0.0.0.0'
         # IP=`curl -s ns1.dnspod.net:6666 $Interface`
+
         if grep -q '^snmp\.' <<< "$Rec"; then
             grep -q '\.ctcc$' <<< "$Rec" && Interface='Dialer10'
             grep -q '\.cucc$' <<< "$Rec" && Interface='Dialer20'
@@ -56,11 +61,91 @@ while true; do
             continue
         fi
 
+        # Cloudflare
+        set +e
+        (
+            set -e
+            set +x
+            [ "$TokenCloudflare"        ]
+            [ "$TokenCloudflareAccount" ]
+            API="https://api.cloudflare.com/client/v4"
+            Token="Authorization: Bearer $TokenCloudflare"
+            mkdir -p "Cloudflare"
+            cd "$_"
+            ZoneID="$(set -e
+                curl "$API/zones?account.id=$TokenCloudflareAccount&name=$Domain"   \
+                    -H "Content-Type: application/json"                             \
+                    -H "$Token"                                                     \
+                    -sSLX GET                                                       \
+                | jq -Se 'select(.success)'                                         \
+                | jq -er '.result[0].id')"
+            [ "$ZoneID" ]
+            RecID="$(set -e
+                curl "$API/zones/$ZoneID/dns_records?name=$Rec.$Domain&type=A"  \
+                    -H "Content-Type: application/json"                         \
+                    -H "$Token"                                                 \
+                    -sSLX GET                                                   \
+                | jq -Se 'select(.success)'                                     \
+                | jq -r '.result[0].id'                                         \
+                | sed 's/^null$//')"
+            if [ ! "$RecID" ]; then
+                echo "[Cloudflare] Create $Rec.$Domain ($IP)"
+                RecID="$(set -e
+                    curl "$API/zones/$ZoneID/dns_records"   \
+                        -H "Content-Type: application/json" \
+                        -H "$Token"                         \
+                        -sSLX POST                          \
+                        -d "$(set -e
+                            echo '{}'                       \
+                            | jq -e ".content = \"$IP\""    \
+                            | jq -e ".name = \"$Rec\""      \
+                            | jq -e ".ttl = 120"            \
+                            | jq -e ".type = \"A\""         \
+                            | jq -Sce)"                     \
+                    | jq -Se 'select(.success)'             \
+                    | jq -er '.result.id')"
+            fi
+            [ "$RecID" ]
+            Record="$(curl "$API/zones/$ZoneID/dns_records/$RecID"  \
+                    -H "Content-Type: application/json"             \
+                    -H "$Token"                                     \
+                    -sSLX GET                                       \
+                | jq -Se 'select(.success)')"
+            if [ ! -e "$Rec" ]; then
+                jq -er '.result.content' <<< "$Record" > "$Rec"
+                echo "[Cloudflare] Set $Rec.$Domain to $(cat "$Rec")"
+            fi
+            LastIP="$(cat "$Rec")"
+            if [ "$(sed 's/\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)/\1\*2\^24\+\2\*2\^16\+\3\*2\^8\+\4/' <<< "$IP" | bc)" -eq "$(sed 's/\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)/\1\*2\^24\+\2\*2\^16\+\3\*2\^8\+\4/' <<< "$LastIP" | bc)" ]; then
+                echo "[Cloudflare] Nothing change for $Rec.$Domain ($IP)"
+            else
+                echo "[Cloudflare] Update $Rec.$Domain ($LastIP -> $IP)"
+                Res="$(set -e
+                    curl "$API/zones/$ZoneID/dns_records/$RecID"    \
+                        -H "Content-Type: application/json"         \
+                        -H "$Token"                                 \
+                        -sSLX PUT                                   \
+                        -d "$(set -e
+                            echo '{}'                               \
+                            | jq -e ".content = \"$IP\""            \
+                            | jq -e ".name = \"$Rec\""              \
+                            | jq -e ".ttl = 120"                    \
+                            | jq -e ".type = \"A\""                 \
+                            | jq -Sce)"                             \
+                    | jq -Se 'select(.success)')"
+                [ "$Res" ]
+                rm -rf "$Rec"
+            fi
+        )
+        [ "$?" -eq 0 ] || echo "ERROR: Failed to update [Cloudflare]"
+        set -e
+
         # Dnspod China
         set +e
         (
             set -e
             set +x
+            [ "$TokenDnspodCN" ]
             API="https://dnsapi.cn"
             Token="login_token=$TokenDnspodCN"
             mkdir -p "Dnspod/CN"
@@ -110,6 +195,7 @@ while true; do
         (
             set -e
             set +x
+            [ "$TokenDnspodIntl" ]
             API="https://api.dnspod.com"
             Token="user_token=$TokenDnspodIntl"
             mkdir -p "Dnspod/Intl"
@@ -158,6 +244,8 @@ while true; do
         (
             set -e
             set +x
+            [ "$TokenDNSCOMKey"    ]
+            [ "$TokenDNSCOMSecret" ]
             API="https://www.dns.com/api"
             Token="apiKey=$TokenDNSCOMKey"
             mkdir -p "DNS.com"
@@ -177,6 +265,7 @@ while true; do
         (
             set -e
             set +x
+            [ "$TokenGoDaddy" ]
             API="https://api.godaddy.com/v1/domains"
             Token="Authorization: sso-key $TokenGoDaddy"
             mkdir -p "GoDaddy"
