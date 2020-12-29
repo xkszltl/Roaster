@@ -27,7 +27,7 @@ pushd "$root"
 
 # Update the URL as new version releases.
 $trt_mirror="https://github.com/xkszltl/Roaster/releases/download/trt"
-$trt_name="TensorRT-7.2.1.6.Windows10.x86_64.cuda-$((nvcc --version) -match ' release ([0-9\.]*)' -replace '.* release ([0-9\.]*).*','${1}').cudnn8.0.zip"
+$trt_name="TensorRT-7.2.2.3.Windows10.x86_64.cuda-$((nvcc --version) -match ' release ([0-9\.]*)' -replace '.* release ([0-9\.]*).*','${1}').cudnn8.0.zip"
 
 if (-not (Test-Path "../${trt_name}"))
 {
