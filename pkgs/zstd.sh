@@ -49,10 +49,10 @@
             make check -j$(nproc)
             make PREFIX="$INSTALL_ABS" install -j
         else
-            mkdir -p build
-            cd $_
+            mkdir -p build-cmake
+            cd "$_"
 
-            cmake                                       \
+            "$TOOLCHAIN/cmake"                          \
                 -DBUILD_TESTING=ON                      \
                 -DCMAKE_BUILD_TYPE=Release              \
                 -DCMAKE_C_COMPILER="$CC"                \
@@ -68,9 +68,9 @@
                 -G"Ninja"                               \
                 ../build/cmake
 
-            time cmake --build .
-            time ctest --label-exclude Medium --output-on-failure --verbose
-            time cmake --build . --target install
+            time "$TOOLCHAIN/cmake" --build .
+            time "$TOOLCHAIN/ctest" --label-exclude Medium --output-on-failure --verbose
+            time "$TOOLCHAIN/cmake" --build . --target install
         fi
     )
 
