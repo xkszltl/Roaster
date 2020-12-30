@@ -43,7 +43,7 @@
         #     Bazel if preferred and no enough CMake support.
         #     See https://github.com/grpc/grpc/issues/18974
         # --------------------------------------------------------
-        cmake                                       \
+        "$TOOLCHAIN/cmake"                          \
             -DBUILD_SHARED_LIBS=ON                  \
             -DCMAKE_BUILD_TYPE=Release              \
             -DCMAKE_C_COMPILER="$CC"                \
@@ -64,8 +64,8 @@
             -G"Ninja"                               \
             ..
 
-        time cmake --build .
-        time cmake --build . --target install
+        time "$TOOLCHAIN/cmake" --build .
+        time "$TOOLCHAIN/cmake" --build . --target install
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"

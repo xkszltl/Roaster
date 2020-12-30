@@ -31,7 +31,7 @@
         mkdir -p build
         cd $_
 
-        cmake                                       \
+        "$TOOLCHAIN/cmake"                          \
             -DCMAKE_BUILD_TYPE=Release              \
             -DCMAKE_C_COMPILER="$CC"                \
             -DCMAKE_CXX_COMPILER="$CXX"             \
@@ -44,10 +44,10 @@
             -G"Ninja"                               \
             ..
 
-        time cmake --build . --target blas
+        time "$TOOLCHAIN/cmake" --build . --target blas
         # Check may take hours.
-        # time cmake --build . --target check
-        time cmake --build . --target install
+        # time "$TOOLCHAIN/cmake" --build . --target check
+        time "$TOOLCHAIN/cmake" --build . --target install
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"

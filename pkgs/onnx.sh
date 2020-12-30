@@ -68,7 +68,7 @@
         mkdir -p build
         cd $_
 
-        cmake                                       \
+        "$TOOLCHAIN/cmake"                          \
             -DBENCHMARK_ENABLE_LTO=ON               \
             -DBUILD_ONNX_PYTHON=ON                  \
             -DBUILD_SHARED_LIBS=ON                  \
@@ -85,8 +85,8 @@
             -G"Ninja"                               \
             ..
 
-        time cmake --build .
-        time cmake --build . --target install
+        time "$TOOLCHAIN/cmake" --build .
+        time "$TOOLCHAIN/cmake" --build . --target install
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"

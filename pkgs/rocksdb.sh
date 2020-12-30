@@ -48,7 +48,7 @@
             #     Benchmark requires testharness: https://github.com/facebook/rocksdb/issues/6769
             #   - RocksDB enables ccache automatically via RULE_LAUNCH_COMPILE and RULE_LAUNCH_LINK.
             #     https://github.com/facebook/rocksdb/issues/7623
-            cmake                                       \
+            "$TOOLCHAIN/cmake"                          \
                 -DCMAKE_BUILD_TYPE=Release              \
                 -DCMAKE_C_COMPILER="$CC"                \
                 -DCMAKE_CXX_COMPILER="$CXX"             \
@@ -76,9 +76,9 @@
                 -DWITH_ZSTD=ON                          \
                 -G"Ninja"                               \
                 ..
-            time cmake --build .
-            # time cmake --build . --target check
-            time cmake --build . --target install
+            time "$TOOLCHAIN/cmake" --build .
+            # time "$TOOLCHAIN/cmake" --build . --target check
+            time "$TOOLCHAIN/cmake" --build . --target install
         else
             . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
             export CC="$TOOLCHAIN/$CC"

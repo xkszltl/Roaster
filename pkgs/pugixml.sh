@@ -31,7 +31,7 @@
         mkdir -p build
         cd $_
 
-        cmake                                       \
+        "$TOOLCHAIN/cmake"                          \
             -DBUILD_SHARED_AND_STATIC_LIBS=ON       \
             -DBUILD_SHARED_LIBS=ON                  \
             -DBUILD_TESTS=ON                        \
@@ -43,8 +43,8 @@
             -G"Ninja"                               \
             ..
 
-        time cmake --build .
-        time cmake --build . --target install
+        time "$TOOLCHAIN/cmake" --build .
+        time "$TOOLCHAIN/cmake" --build . --target install
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"

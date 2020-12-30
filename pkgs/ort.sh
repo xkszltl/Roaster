@@ -97,7 +97,7 @@
         # --------------------------------------------------------
         mkdir -p '../include/onnxruntime/core/providers/shared'
         # -DCMAKE_{C,CXX,CUDA}_COMPILER_{AR,RANLIB}="--plugin=$("$CC" --print-file-name=liblto_plugin.so)"
-        cmake                                                   \
+        "$TOOLCHAIN/cmake"                                      \
             -DCMAKE_AR="$(which "$AR")"                         \
             -DCMAKE_BUILD_TYPE=Release                          \
             -DCMAKE_C_COMPILER="$CC"                            \
@@ -141,8 +141,8 @@
             -G"Ninja"                                           \
             ../cmake
 
-        time cmake --build .
-        time cmake --build . --target install
+        time "$TOOLCHAIN/cmake" --build .
+        time "$TOOLCHAIN/cmake" --build . --target install
 
         # Install unit tests.
         find . -maxdepth 1 -name 'onnxruntime_*test*' -type f -executable | xargs cp -dnrt "$INSTALL_ABS/bin/"
@@ -174,7 +174,7 @@
             if [ -e 'models.zip' ]; then
                 unzip -o models.zip -d ../models
                 rm -rf models.zip
-                time cmake --build . --target test || ! nvidia-smi
+                time "$TOOLCHAIN/ctest" --output-on-failure || ! nvidia-smi
             fi
         fi
 

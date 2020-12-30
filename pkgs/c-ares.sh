@@ -31,7 +31,7 @@
         mkdir -p build
         cd $_
 
-        cmake                                       \
+        "$TOOLCHAIN/cmake"                          \
             -DCARES_SHARED=ON                       \
             -DCARES_STATIC=ON                       \
             -DCARES_BUILD_TESTS=ON                  \
@@ -45,10 +45,10 @@
             -G"Ninja"                               \
             ..
 
-        time cmake --build .
+        time "$TOOLCHAIN/cmake" --build .
         # Test may fail due to network partitioning or bad DNS.
-        time cmake --build . --target test || true
-        time cmake --build . --target install
+        time "$TOOLCHAIN/ctest" --output-on-failure || true
+        time "$TOOLCHAIN/cmake" --build . --target install
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"

@@ -40,7 +40,7 @@
         cd $_
 
         # Ninja build is partially broken: https://github.com/simdjson/simdjson/issues/977
-        cmake                                       \
+        "$TOOLCHAIN/cmake"                          \
             -DCMAKE_BUILD_TYPE=Release              \
             -DCMAKE_C_COMPILER="$CC"                \
             -DCMAKE_CXX_COMPILER="$CXX"             \
@@ -52,11 +52,11 @@
             -G"Unix Makefiles"                      \
             ..
 
-        time cmake --build . -- -j"$(nproc)"
+        time "$TOOLCHAIN/cmake" --build . -- -j"$(nproc)"
         # Known issues:
         #   - checkperf test may fail when running under load.
-        CTEST_PARALLEL_LEVEL="$(nproc)" time cmake --build . --target test || time cmake --build . --target test || true
-        time cmake --build . --target install -- -j
+        time "$TOOLCHAIN/ctest" --output-on-failure -j"$(nproc)" || time "$TOOLCHAIN/ctest" --output-on-failure || true
+        time "$TOOLCHAIN/cmake" --build . --target install -- -j
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"

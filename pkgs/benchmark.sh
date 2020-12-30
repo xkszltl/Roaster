@@ -35,7 +35,7 @@
         mkdir -p build
         cd $_
 
-        cmake                                       \
+        "$TOOLCHAIN/cmake"                          \
             -DBENCHMARK_DOWNLOAD_DEPENDENCIES=ON    \
             -DBENCHMARK_ENABLE_ASSEMBLY_TESTS=OFF   \
             -DBENCHMARK_ENABLE_LTO=ON               \
@@ -49,9 +49,9 @@
             -G"Ninja"                               \
             ..
 
-        time cmake --build .
-        CTEST_PARALLEL_LEVEL="$(nproc)" time cmake --build . --target test
-        time cmake --build . --target install
+        time "$TOOLCHAIN/cmake" --build .
+        time "$TOOLCHAIN/ctest" --output-on-failure -j"$(nproc)"
+        time "$TOOLCHAIN/cmake" --build . --target install
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"

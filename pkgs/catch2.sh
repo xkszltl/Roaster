@@ -33,7 +33,7 @@
         cd $_
 
         # TODO: Currently "ApprovalTests" failed with Ninja.
-        cmake                                       \
+        "$TOOLCHAIN/cmake"                          \
             -DCATCH_BUILD_EXAMPLES=ON               \
             -DCATCH_BUILD_EXTRA_TESTS=ON            \
             -DCMAKE_BUILD_TYPE=Release              \
@@ -45,9 +45,9 @@
             -G"Unix Makefiles"                      \
             ..
 
-        time cmake --build . -- -j"$(nproc)"
-        time cmake --build . --target test || true
-        time cmake --build . --target install -- -j
+        time "$TOOLCHAIN/cmake" --build . -- -j"$(nproc)"
+        time "$TOOLCHAIN/ctest" --output-on-failure || true
+        time "$TOOLCHAIN/cmake" --build . --target install -- -j
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"

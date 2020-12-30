@@ -36,7 +36,7 @@
         cd $_
 
         # TODO: Enable test once the gtest linking issue is fixed (already in PR)
-        cmake                                       \
+        "$TOOLCHAIN/cmake"                          \
             -DBENCHMARK_ENABLE_INSTALL=OFF          \
             -DBUILD_SHARED_LIBS=ON                  \
             -DCMAKE_BUILD_TYPE=Release              \
@@ -51,9 +51,9 @@
             -G"Ninja"                               \
             ..
 
-        time cmake --build .
-        # CTEST_PARALLEL_LEVEL="$(nproc)" time cmake --build . --target test
-        time cmake --build . --target install
+        time "$TOOLCHAIN/cmake" --build .
+        # time "$TOOLCHAIN/ctest" --output-on-failure -j"$(nproc)"
+        time "$TOOLCHAIN/cmake" --build . --target install
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"

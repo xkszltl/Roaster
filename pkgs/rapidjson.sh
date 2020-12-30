@@ -38,7 +38,7 @@
         # Known issues:
         #   - CMAKE_C{,XX}_COMPILER_LAUNCHER conflict with RULE_LAUNCH_COMPILE set automatically.
         #     https://github.com/Tencent/rapidjson/issues/1794
-        cmake                                           \
+        "$TOOLCHAIN/cmake"                              \
             -DCMAKE_BUILD_TYPE=Release                  \
             -DCMAKE_C_COMPILER="$CC"                    \
             -DCMAKE_CXX_COMPILER="$CXX"                 \
@@ -51,10 +51,10 @@
             -G"Ninja"                                   \
             ..
 
-        time cmake --build .
+        time "$TOOLCHAIN/cmake" --build .
         # Valgrind unit test may fail: https://github.com/Tencent/rapidjson/issues/1520
-        time cmake --build . --target test || true
-        time cmake --build . --target install
+        time "$TOOLCHAIN/ctest" --output-on-failure || true
+        time "$TOOLCHAIN/cmake" --build . --target install
 
         # Exclude GTest files.
         pushd "$INSTALL_ROOT"

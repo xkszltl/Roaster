@@ -94,7 +94,7 @@
         #     https://github.com/pytorch/pytorch/issues/43030
         for i in $(seq 2); do
             NCCL_ROOT_DIR='/usr'                                \
-            cmake                                               \
+            "$TOOLCHAIN/cmake"                                  \
                 -DATEN_NO_TEST=ON                               \
                 -DBLAS=MKL                                      \
                 -DBUILD_BINARY=ON                               \
@@ -139,14 +139,14 @@
                 -DWITH_BLAS=mkl                                 \
                 -G"Ninja"                                       \
                 ..
-            time cmake --build . --target rebuild_cache
+            time "$TOOLCHAIN/cmake" --build . --target rebuild_cache
         done
-        time cmake --build . --target rebuild_cache
+        time "$TOOLCHAIN/cmake" --build . --target rebuild_cache
         grep '^BUILD_PYTHON:BOOL=ON' CMakeCache.txt
 
-        time cmake --build . --target
-        time cmake --build . --target install
-        CTEST_PARALLEL_LEVEL="$(nproc)" time cmake --build . --target test || ! nvidia-smi
+        time "$TOOLCHAIN/cmake" --build . --target
+        time "$TOOLCHAIN/cmake" --build . --target install
+        time "$TOOLCHAIN/ctest" --output-on-failure -j"$(nproc)" || ! nvidia-smi
 
         # Known issues:
         #   - setup.py assumes lib installed in-source:

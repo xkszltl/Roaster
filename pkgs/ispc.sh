@@ -25,7 +25,7 @@
         mkdir -p build
         cd $_
 
-        cmake                                                   \
+        "$TOOLCHAIN/cmake"                                      \
             -DCMAKE_BUILD_TYPE=Release                          \
             -DCMAKE_C_COMPILER="clang"                          \
             -DCMAKE_CXX_COMPILER="clang++"                      \
@@ -39,10 +39,10 @@
             -G"Ninja"                                           \
             ..
 
-        time cmake --build .
-        time cmake --build . --target check-all
-        CTEST_PARALLEL_LEVEL="$(nproc)" time cmake --build . --target test
-        time cmake --build . --target install
+        time "$TOOLCHAIN/cmake" --build .
+        time "$TOOLCHAIN/cmake" --build . --target check-all
+        time "$TOOLCHAIN/ctest" --output-on-failure -j"$(nproc)"
+        time "$TOOLCHAIN/cmake" --build . --target install
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"

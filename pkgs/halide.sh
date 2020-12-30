@@ -45,7 +45,7 @@
         mkdir -p build
         cd $_
 
-        cmake                                                   \
+        "$TOOLCHAIN/cmake"                                      \
             -DCMAKE_{EXE,SHARED}_LINKER_FLAGS="-fuse-ld=lld"    \
             -DCMAKE_BUILD_TYPE=Release                          \
             -DCMAKE_C_COMPILER="$CC"                            \
@@ -59,10 +59,10 @@
             ..
 
         set +e
-        time cmake --build . || exit 1
-        time cmake --build . --target test
+        time "$TOOLCHAIN/cmake" --build . || exit 1
+        time "$TOOLCHAIN/ctest" --output-on-failure
         set -e
-        time cmake --build . --target install
+        time "$TOOLCHAIN/cmake" --build . --target install
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"

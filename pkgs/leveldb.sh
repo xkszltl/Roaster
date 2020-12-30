@@ -41,7 +41,7 @@
             cd $_
 
             # Use -fPIC since cmake script only creates static lib.
-            cmake                                       \
+            "$TOOLCHAIN/cmake"                          \
                 -DCMAKE_BUILD_TYPE=Release              \
                 -DCMAKE_C_COMPILER="$CC"                    \
                 -DCMAKE_CXX_COMPILER="$CXX"                 \
@@ -51,10 +51,10 @@
                 -G"Ninja"                               \
                 ..
 
-            time cmake --build .
+            time "$TOOLCHAIN/cmake" --build .
             # Parallel test not fully supported.
-            time cmake --build . --target test
-            time cmake --build . --target install
+            time "$TOOLCHAIN/ctest" --output-on-failure
+            time "$TOOLCHAIN/cmake" --build . --target install
             ./db_bench
         else
             make -j$(nproc)

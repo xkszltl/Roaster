@@ -59,7 +59,7 @@
             mkdir -p build
             cd $_
 
-            cmake                                       \
+            "$TOOLCHAIN/cmake"                          \
                 -DBUILD_SHARED_LIBS=ON                  \
                 -DCMAKE_BUILD_TYPE=Release              \
                 -DCMAKE_C_COMPILER="$CC"                \
@@ -72,9 +72,9 @@
                 -G"Ninja"                               \
                 ../cmake
 
-            time cmake --build .
-            time cmake --build . --target check
-            time cmake --build . --target install
+            time "$TOOLCHAIN/cmake" --build .
+            time "$TOOLCHAIN/cmake" --build . --target check
+            time "$TOOLCHAIN/cmake" --build . --target install
         fi
     )
 

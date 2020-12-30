@@ -40,7 +40,7 @@
         cd $_
 
         export CCACHE_SLOPPINESS='include_file_ctime,include_file_mtime'
-        cmake                                               \
+        "$TOOLCHAIN/cmake"                                  \
             -G"Ninja"                                       \
             -DBLAS=MKL                                      \
             -DCMAKE_BUILD_TYPE=Release                      \
@@ -57,15 +57,15 @@
             -Dpython_version=3                              \
             ..
 
-        time cmake --build .
-        time cmake --build . --target runtest || ! nvidia-smi
-        time cmake --build . --target install
+        time "$TOOLCHAIN/cmake" --build .
+        time "$TOOLCHAIN/cmake" --build . --target runtest || ! nvidia-smi
+        time "$TOOLCHAIN/cmake" --build . --target install
 
         # --------------------------------------------------------
         # Tag with version detected from cmake cache
         # --------------------------------------------------------
 
-        cmake -LA -N . | sed -n 's/^CAFFE_TARGET_VERSION:.*=//p' | xargs git tag -f
+        "$TOOLCHAIN/cmake" -LA -N . | sed -n 's/^CAFFE_TARGET_VERSION:.*=//p' | xargs git tag -f
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"

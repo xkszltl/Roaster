@@ -46,7 +46,7 @@
         mkdir -p build
         cd $_
 
-        cmake                                       \
+        "$TOOLCHAIN/cmake"                          \
             -DCMAKE_BUILD_TYPE=Release              \
             -DCMAKE_C_COMPILER="$CC"                \
             -DCMAKE_CXX_COMPILER="$CXX"             \
@@ -56,16 +56,16 @@
             -G"Ninja"                               \
             ..
 
-        time cmake --build .
+        time "$TOOLCHAIN/cmake" --build .
 
         # --------------------------------------------------
         # PyTest crashed recently (Jan 2019):
         #     INTERNALERROR > pluggy.manager.PluginValidationError: unknown hook 'pytest_namespace' in plugin
         # Bypass test temporarily and wait for a fix.
         # --------------------------------------------------
-        time cmake --build . --target pytest || true
+        time "$TOOLCHAIN/cmake" --build . --target pytest || true
 
-        time cmake --build . --target install
+        time "$TOOLCHAIN/cmake" --build . --target install
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"

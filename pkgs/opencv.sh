@@ -61,7 +61,7 @@
         #   - Separable CUDA causes symbol redefinition.
         # --------------------------------------------------------
 
-        cmake                                               \
+        "$TOOLCHAIN/cmake"                                  \
             -DBUILD_PROTOBUF=OFF                            \
             -DBUILD_WITH_DEBUG_INFO=ON                      \
             -DBUILD_opencv_world=OFF                        \
@@ -117,8 +117,8 @@
             -G"Ninja"                                       \
             ..
 
-        time cmake --build . --target install
-        # time cmake --build . --target package
+        time "$TOOLCHAIN/cmake" --build . --target install
+        # time "$TOOLCHAIN/cmake" --build . --target package
         # sudo dnf install -y ./OpenCV*.rpm || sudo dnf update -y ./OpenCV*.rpm || sudo rpm -ivh --nodeps ./OpenCV*.rpm || sudo rpm -Uvh --nodeps ./OpenCV*.rpm
     )
 
