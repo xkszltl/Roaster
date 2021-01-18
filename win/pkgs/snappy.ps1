@@ -26,14 +26,8 @@ mkdir build
 pushd build
 
 # Known issues:
-#   - FindGTest does not cover our installation path.
-#     https://gitlab.kitware.com/cmake/cmake/-/issues/21556
-#   - Snappy uses GTest through cmake var, not target.
-#     GTEST_LIBRARY_TYPE is only set for target property.
-#     https://gitlab.kitware.com/cmake/cmake/-/blob/v3.19.1/Modules/FindGTest.cmake#L222-225
 #   - Need additional /DNOMINMAX for std::max in unit tests.
 #   - /GL doesn't work for unknown reason.
-$gtest_dll="/DGTEST_LINKED_AS_SHARED_LIBRARY=1"
 cmake                                                               `
     -DBENCHMARK_ENABLE_INSTALL=OFF                                  `
     -DBUILD_SHARED_LIBS=ON                                          `
@@ -46,7 +40,6 @@ cmake                                                               `
     -DCMAKE_PDB_OUTPUT_DIRECTORY="${PWD}/pdb"                       `
     -DCMAKE_SHARED_LINKER_FLAGS="/DEBUG:FASTLINK /LTCG:incremental" `
     -DCMAKE_STATIC_LINKER_FLAGS="/LTCG:incremental"                 `
-    -DGTEST_ROOT="${Env:ProgramFiles}/googletest-distribution"      `
     -DINSTALL_GTEST=OFF                                             `
     -DSNAPPY_REQUIRE_AVX2=ON                                        `
     -G"Ninja"                                                       `
