@@ -6,500 +6,688 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)/../lib/native/lib/Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opencv_alphamat440.lib;opencv_aruco440.lib;opencv_bgsegm440.lib;opencv_bioinspired440.lib;opencv_calib3d440.lib;opencv_ccalib440.lib;opencv_core440.lib;opencv_datasets440.lib;opencv_dpm440.lib;opencv_face440.lib;opencv_features2d440.lib;opencv_flann440.lib;opencv_freetype440.lib;opencv_fuzzy440.lib;opencv_gapi440.lib;opencv_hfs440.lib;opencv_highgui440.lib;opencv_img_hash440.lib;opencv_imgcodecs440.lib;opencv_imgproc440.lib;opencv_intensity_transform440.lib;opencv_line_descriptor440.lib;opencv_ml440.lib;opencv_objdetect440.lib;opencv_optflow440.lib;opencv_phase_unwrapping440.lib;opencv_photo440.lib;opencv_plot440.lib;opencv_quality440.lib;opencv_rapid440.lib;opencv_reg440.lib;opencv_rgbd440.lib;opencv_saliency440.lib;opencv_sfm440.lib;opencv_shape440.lib;opencv_stereo440.lib;opencv_stitching440.lib;opencv_structured_light440.lib;opencv_superres440.lib;opencv_surface_matching440.lib;opencv_tracking440.lib;opencv_video440.lib;opencv_videoio440.lib;opencv_videostab440.lib;opencv_xfeatures2d440.lib;opencv_ximgproc440.lib;opencv_xobjdetect440.lib;opencv_xphoto440.lib;correspondence.lib;multiview.lib;numeric.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opencv_alphamat451.lib;opencv_aruco451.lib;opencv_bgsegm451.lib;opencv_bioinspired451.lib;opencv_calib;d451.lib;opencv_ccalib;51.lib;opencv_core451.lib;opencv_datasets451.lib;opencv_dpm451.lib;opencv_face451.lib;opencv_features2d451.lib;opencv_flann451.lib;opencv_freetype451.lib;opencv_fuzzy451.lib;opencv_gapi451.lib;opencv_hfs451.lib;opencv_highgui451.lib;opencv_img_hash451.lib;opencv_imgcodecs451.lib;opencv_imgproc451.lib;opencv_intensity_transform451.lib;opencv_line_descriptor451.lib;opencv_ml451.lib;opencv_objdetect451.lib;opencv_optflow451.lib;opencv_phase_unwrapping451.lib;opencv_photo451.lib;opencv_plot451.lib;opencv_quality451.lib;opencv_rapid451.lib;opencv_reg451.lib;opencv_rgbd451.lib;opencv_saliency451.lib;opencv_shape451.lib;opencv_stereo451.lib;opencv_stitching451.lib;opencv_structured_light451.lib;opencv_superres451.lib;opencv_surface_matching451.lib;opencv_tracking451.lib;opencv_video451.lib;opencv_videoio451.lib;opencv_videostab451.lib;opencv_xfeatures2d451.lib;opencv_ximgproc451.lib;opencv_xobjdetect451.lib;opencv_xphoto451.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/IlmImf.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>IlmImf.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/ippiw.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>ippiw.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/ittnotify.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>ittnotify.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/libjasper.pdb">
-      <Link>libjasper.pdb</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/libjpeg-turbo.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>libjpeg-turbo.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/libpng.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>libopenjp2.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>libpng.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/libtiff.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>libtiff.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/libwebp.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>libwebp.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_alphamat440.pdb">
-      <Link>opencv_alphamat440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_alphamat451.lib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_annotation.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_alphamat451.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_annotation.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_aruco440.pdb">
-      <Link>opencv_aruco440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_aruco451.lib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_bgsegm440.pdb">
-      <Link>opencv_bgsegm440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_aruco451.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_bioinspired440.pdb">
-      <Link>opencv_bioinspired440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_bgsegm451.lib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_calib3d440.pdb">
-      <Link>opencv_calib3d440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_bgsegm451.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_ccalib440.pdb">
-      <Link>opencv_ccalib440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_bioinspired451.lib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_core440.pdb">
-      <Link>opencv_core440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_bioinspired451.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_datasets440.pdb">
-      <Link>opencv_datasets440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_calib3d451.lib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_dpm440.pdb">
-      <Link>opencv_dpm440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_calib3d451.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_face440.pdb">
-      <Link>opencv_face440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_ccalib451.lib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_features2d440.pdb">
-      <Link>opencv_features2d440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_ccalib451.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_flann440.pdb">
-      <Link>opencv_flann440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_core451.lib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_freetype440.pdb">
-      <Link>opencv_freetype440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_core451.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_fuzzy440.pdb">
-      <Link>opencv_fuzzy440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_datasets451.lib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_gapi440.pdb">
-      <Link>opencv_gapi440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_datasets451.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_hfs440.pdb">
-      <Link>opencv_hfs440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_dpm451.lib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_highgui440.pdb">
-      <Link>opencv_highgui440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_dpm451.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_img_hash440.pdb">
-      <Link>opencv_img_hash440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_face451.lib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_imgcodecs440.pdb">
-      <Link>opencv_imgcodecs440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_face451.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_imgproc440.pdb">
-      <Link>opencv_imgproc440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_features2d451.lib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_intensity_transform440.pdb">
-      <Link>opencv_intensity_transform440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_features2d451.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_interactive-calibration.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_flann451.lib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_flann451.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_freetype451.lib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_freetype451.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_fuzzy451.lib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_fuzzy451.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_gapi451.lib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_gapi451.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_hfs451.lib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_hfs451.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_highgui451.lib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_highgui451.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_img_hash451.lib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_img_hash451.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_imgcodecs451.lib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_imgcodecs451.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_imgproc451.lib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_imgproc451.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_intensity_transform451.lib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_intensity_transform451.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_interactive-calibration.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_line_descriptor440.pdb">
-      <Link>opencv_line_descriptor440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_line_descriptor451.lib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_ml440.pdb">
-      <Link>opencv_ml440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_line_descriptor451.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_objdetect440.pdb">
-      <Link>opencv_objdetect440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_ml451.lib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_optflow440.pdb">
-      <Link>opencv_optflow440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_ml451.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_perf_bioinspired.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_objdetect451.lib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_objdetect451.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_optflow451.lib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_optflow451.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_perf_bioinspired.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_perf_calib3d.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_perf_calib3d.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_perf_core.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_perf_core.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_perf_features2d.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_perf_features2d.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_perf_gapi.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_perf_gapi.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_perf_imgcodecs.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_perf_imgcodecs.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_perf_imgproc.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_perf_imgproc.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_perf_line_descriptor.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_perf_line_descriptor.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_perf_objdetect.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_perf_objdetect.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_perf_optflow.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_perf_optflow.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_perf_photo.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_perf_photo.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_perf_reg.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_perf_reg.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_perf_stereo.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_perf_rgbd.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_perf_stereo.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_perf_stitching.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_perf_stitching.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_perf_superres.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_perf_superres.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_perf_tracking.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_perf_tracking.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_perf_video.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_perf_video.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_perf_videoio.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_perf_videoio.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_perf_xfeatures2d.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_perf_xfeatures2d.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_perf_ximgproc.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_perf_ximgproc.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_perf_xphoto.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_perf_xphoto.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_phase_unwrapping440.pdb">
-      <Link>opencv_phase_unwrapping440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_phase_unwrapping451.lib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_photo440.pdb">
-      <Link>opencv_photo440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_phase_unwrapping451.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_plot440.pdb">
-      <Link>opencv_plot440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_photo451.lib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_quality440.pdb">
-      <Link>opencv_quality440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_photo451.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_rapid440.pdb">
-      <Link>opencv_rapid440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_plot451.lib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_reg440.pdb">
-      <Link>opencv_reg440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_plot451.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_rgbd440.pdb">
-      <Link>opencv_rgbd440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_quality451.lib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_saliency440.pdb">
-      <Link>opencv_saliency440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_quality451.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_sfm440.pdb">
-      <Link>opencv_sfm440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_rapid451.lib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_shape440.pdb">
-      <Link>opencv_shape440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_rapid451.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_stereo440.pdb">
-      <Link>opencv_stereo440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_reg451.lib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_stitching440.pdb">
-      <Link>opencv_stitching440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_reg451.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_structured_light440.pdb">
-      <Link>opencv_structured_light440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_rgbd451.lib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_superres440.pdb">
-      <Link>opencv_superres440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_rgbd451.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_surface_matching440.pdb">
-      <Link>opencv_surface_matching440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_saliency451.lib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_aruco.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_saliency451.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_shape451.lib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_shape451.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_stereo451.lib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_stereo451.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_stitching451.lib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_stitching451.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_structured_light451.lib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_structured_light451.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_superres451.lib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_superres451.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_surface_matching451.lib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_surface_matching451.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_aruco.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_bgsegm.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_bgsegm.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_bioinspired.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_bioinspired.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_calib3d.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_calib3d.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_core.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_core.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_face.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_face.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_features2d.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_features2d.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_flann.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_flann.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_fuzzy.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_fuzzy.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_gapi.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_gapi.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_highgui.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_highgui.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_img_hash.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_img_hash.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_imgcodecs.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_imgcodecs.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_imgproc.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_imgproc.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_intensity_transform.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_intensity_transform.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_line_descriptor.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_line_descriptor.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_ml.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_ml.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_objdetect.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_objdetect.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_optflow.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_optflow.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_phase_unwrapping.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_phase_unwrapping.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_photo.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_photo.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_quality.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_quality.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_rapid.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_rapid.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_reg.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_reg.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_rgbd.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_rgbd.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_saliency.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_saliency.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_sfm.pdb">
-      <Link>opencv_test_sfm.pdb</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_shape.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_shape.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_stereo.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_stereo.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_stitching.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_stitching.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_structured_light.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_structured_light.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_superres.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_superres.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_tracking.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_tracking.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_video.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_video.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_videoio.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_videoio.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_videostab.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_videostab.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_xfeatures2d.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_xfeatures2d.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_ximgproc.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_ximgproc.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_test_xphoto.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_test_xphoto.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_tracking440.pdb">
-      <Link>opencv_tracking440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_tracking451.lib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_version.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_tracking451.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_version.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_version_win32.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_version_win32.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_video440.pdb">
-      <Link>opencv_video440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_video451.lib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_videoio440.pdb">
-      <Link>opencv_videoio440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_video451.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_videostab440.pdb">
-      <Link>opencv_videostab440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_videoio451.lib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_visualisation.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_videoio451.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_videostab451.lib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_videostab451.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_visualisation.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_waldboost_detector.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>opencv_waldboost_detector.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_xfeatures2d440.pdb">
-      <Link>opencv_xfeatures2d440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_xfeatures2d451.lib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_ximgproc440.pdb">
-      <Link>opencv_ximgproc440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_xfeatures2d451.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_xobjdetect440.pdb">
-      <Link>opencv_xobjdetect440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_ximgproc451.lib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/opencv_xphoto440.pdb">
-      <Link>opencv_xphoto440.pdb</Link>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_ximgproc451.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/quirc.pdb">
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_xobjdetect451.lib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_xobjdetect451.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_xphoto451.lib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>opencv_xphoto451.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
       <Link>quirc.pdb</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)/../lib/native/lib/Release/">
+      <Link>zlib.pdb</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
