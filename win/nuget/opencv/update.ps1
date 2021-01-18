@@ -1,4 +1,4 @@
-#!/usr/bin/env powershell
+#!/usr/bin/pwsh
 
 $ErrorActionPreference="Stop"
 
