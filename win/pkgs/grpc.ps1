@@ -43,7 +43,6 @@ cmake                                                               `
     -DgRPC_BENCHMARK_PROVIDER=package                               `
     -DgRPC_BUILD_TESTS=OFF                                          `
     -DgRPC_CARES_PROVIDER=package                                   `
-    -DgRPC_GFLAGS_PROVIDER=package                                  `
     -DgRPC_INSTALL=ON                                               `
     -DgRPC_PROTOBUF_PACKAGE_TYPE=CONFIG                             `
     -DgRPC_PROTOBUF_PROVIDER=package                                `
