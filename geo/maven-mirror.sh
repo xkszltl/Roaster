@@ -15,7 +15,7 @@ echo '----------------------------------------------------------------'
 echo '              Measure link quality to maven mirrors             '
 echo '----------------------------------------------------------------'
 
-TOPK=3 . "$ROOT_DIR/geo/best-httping.sh"                                \
+TOPK=5 . "$ROOT_DIR/geo/best-httping.sh"                                \
     https://maven-central-asia.storage-download.googleapis.com/maven2/  \
     https://maven-central-eu.storage-download.googleapis.com/maven2/    \
     https://maven-central.storage-download.googleapis.com/maven2/       \
