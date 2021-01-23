@@ -21,7 +21,19 @@
             sudo scl enable rh-ruby26 'gem install --no-document ./fpm-*.gem'
             # Dependency ffi-1.13 requires ruby 2.3 while stock version is 2.0.
             sudo gem install 'ffi:<1.13'
-            sudo gem install --no-document ./fpm-*.gem
+            # fpm 1.12.0 has git dependency requiring ruby>=2.3.
+            sudo gem install --no-document ./fpm-*.gem || true
+            # Export SCL installation.
+            for cmd in '/usr/local/bin/fpm'; do
+                cat << EOF | sed 's/^[[:space:]]*//' | sudo tee "$cmd"
+                    #!/bin/bash
+
+                    . scl_source enable rh-ruby26
+                    "\$(basename "\$0")" "\$@"
+                    exit "\$?"
+EOF
+                sudo chmod +x '/usr/local/bin/fpm'
+            done
             ;;
         *)
             gem build fpm.gemspec
@@ -29,6 +41,7 @@
             ;;
         esac
     )
+    fpm --version
 
     # ------------------------------------------------------------
 
