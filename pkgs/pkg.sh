@@ -87,6 +87,7 @@ for subset in pkg-{stable,skip,all}; do
                 [!] {docker-{ce,compose},container-selinux}{,-*}
                 createrepo{,_c}{,-*}
                 environment-modules{,-*}
+                slurm{,-*}
                 munge{,-*}
 
                 [!] scl-utils{,-*}
