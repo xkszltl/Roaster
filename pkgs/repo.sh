@@ -130,7 +130,10 @@
                 curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$cuda_repo_pin" | sudo tee '/etc/apt/preferences.d/cuda-repository-pin-600'
                 until [ "$cuda_repo_file_pubkey" ]; do cuda_repo_file_pubkey="$(set -xe && curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$cuda_repo" | sed -n "s/.*href='\([^']*\.pub\).*/\1/p" | sort -V | tail -n1)"; done
                 cuda_repo_pubkey="$cuda_repo/$cuda_repo_file_pubkey"
-                sudo APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key adv --fetch-keys "$cuda_repo_pubkey"
+                # Known issues:
+                #   - "apt-key adv --fetch-keys" does not exit with non-zero code on network error.
+                # sudo APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key adv --fetch-keys "$cuda_repo_pubkey"
+                curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$cuda_repo_pubkey" | sudo apt-key add -
                 until sudo add-apt-repository "deb $cuda_repo/ /"; do echo "Retrying"; sleep 5; done
             ) && break
             echo "Retry. $(expr "$retry" - 1) time(s) left."
