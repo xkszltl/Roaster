@@ -5,6 +5,14 @@
 [ -e $STAGE/cuda ] && ( set -xe
     cd $SCRATCH
 
+    # Need to push nvidia.cn very hard, before we have mirror for Ubuntu.
+    case "$DISTRO_ID" in
+    'debian' | 'linuxmint' | 'ubuntu')
+        DEB_MAX_ATTEMPT=1000
+        PKG_MAX_ATTEMPT=1000
+        ;;
+    esac
+
     export CUDA_VER_MAJOR="11"
     export CUDA_VER_MINOR="1"
     case "$DISTRO_ID" in
