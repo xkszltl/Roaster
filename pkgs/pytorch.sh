@@ -118,7 +118,7 @@
                 -DNCCL_ROOT='/usr/'                             \
                 -DNCCL_ROOT_DIR='/usr/'                         \
                 -DPYTHON_EXECUTABLE="$(which python3)"          \
-                -DTORCH_CUDA_ARCH_LIST="Pascal;Volta;Tuning"    \
+                -DTORCH_CUDA_ARCH_LIST="Pascal;Volta;Turing"    \
                 -DUSE_FBGEMM=ON                                 \
                 -DUSE_GFLAGS=ON                                 \
                 -DUSE_GLOG=ON                                   \
