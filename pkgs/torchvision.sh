@@ -9,7 +9,7 @@
         python/typing                               \
         benjaminp/six                               \
         python-pillow/Pillow                        \
-        numpy/numpy,v
+        numpy/numpy,v1.19.
 
     # ------------------------------------------------------------
 

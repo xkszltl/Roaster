@@ -10,7 +10,7 @@
         cython/cython                               \
         yaml/pyyaml                                 \
         pytest-dev/pytest                           \
-        numpy/numpy,v                               \
+        numpy/numpy,v1.19.                          \
         afq984/python-cxxfilt,master                \
         docopt/docopt                               \
         tqdm/py-make,v                              \

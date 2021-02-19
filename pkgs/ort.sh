@@ -10,7 +10,7 @@
         benjaminp/six                               \
         pytest-dev/pytest                           \
         pycqa/flake8                                \
-        numpy/numpy,v
+        numpy/numpy,v1.19.
 
     # ------------------------------------------------------------
 

@@ -12,7 +12,7 @@
         yaml/pyyaml                                 \
         pytest-dev/pytest                           \
         Frozenball/pytest-sugar,master              \
-        numpy/numpy,v                               \
+        numpy/numpy,v1.19.                          \
         micheles/decorator                          \
         networkx/networkx,networkx-
     "$ROOT_DIR/pkgs/utils/pip_install_from_wheel.sh" dataclasses
