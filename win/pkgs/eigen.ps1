@@ -7,7 +7,7 @@ $ErrorActionPreference="Stop"
 . "$PSScriptRoot/env/toolchain.ps1"
 
 pushd ${Env:SCRATCH}
-$repo="${Env:GIT_MIRROR}/eigenteam/eigen-git-mirror.git"
+$repo="https://gitlab.com/libeigen/eigen.git"
 $proj="$($repo -replace '.*/','' -replace '.git$','')"
 $root="${Env:SCRATCH}/$proj"
 
