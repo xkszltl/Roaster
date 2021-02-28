@@ -17,6 +17,7 @@ set shiftwidth=4
 set tabstop=4
 set guifont=Courier_New
 set cinoptions=:0,g0
+colorscheme default
 nmap <F2> :vs %:r.in <CR>
 autocmd FileType cpp nmap <F5> :!./%:r < %:r.in <CR>
 autocmd FileType cpp nmap <F6> :!./%:r <CR>
