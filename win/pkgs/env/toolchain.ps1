@@ -3,10 +3,16 @@
 if (-Not $Env:ROASTER_TOOLCHAIN_COMMITED)
 {
     # ================================================================================
-    # Restore system default PATH, including potential updates.
+    # Restore environment variables, including potential updates.
     # ================================================================================
-
-    ${Env:PATH}=[System.Environment]::GetEnvironmentVariable("PATH","Machine")
+    foreach ($env in [System.Environment]::GetEnvironmentVariables("Machine").GetEnumerator())
+    {
+        if ($env.Name -eq "PATH" -or $env.Name.StartsWith("CUDA"))
+        {
+            Write-Host "Restore environment var $($env.Name) to $($env.Value)"
+            [Environment]::SetEnvironmentVariable($env.Name, $env.Value)
+        }
+    }
 
     # ================================================================================
     # Path longer than 260 may resolve to some obscure errors.

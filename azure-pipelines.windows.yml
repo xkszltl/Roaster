@@ -43,6 +43,8 @@ stages:
     - job: env
       steps:
       - powershell: |
+          ${Env:PATH}=[System.Environment]::GetEnvironmentVariable("PATH","Machine")
+
           cmake --version
           nvcc -V
           python -V
