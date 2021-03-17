@@ -42,7 +42,7 @@ Move-Item -Force "${trt_name}.extracting.d/TensorRT-*" "tensorrt"
 rm -Force -Recurse "${trt_name}.extracting.d"
 
 rm -Force -Recurse -ErrorAction SilentlyContinue -WarningAction SilentlyContinue "${Env:ProgramFiles}/tensorrt"
-Move-Item -Force "tensorrt" "${Env:ProgramFiles}/tensorrt"
+Copy-Item -Recurse -Force "tensorrt" "${Env:ProgramFiles}/tensorrt"
 Get-ChildItem "${Env:ProgramFiles}/tensorrt" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 
 popd
