@@ -139,6 +139,7 @@ stages:
 
     - job: opencv
       dependsOn: grpc
+      timeoutInMinutes: "120"
       steps:
       - template: azure-pipelines/build_stage.windows.yml
 
@@ -154,6 +155,6 @@ stages:
 
     - job: ort
       dependsOn: onnx
-      timeoutInMinutes: "1440"
+      timeoutInMinutes: "240"
       steps:
       - template: azure-pipelines/build_stage.windows.yml
