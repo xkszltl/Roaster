@@ -188,7 +188,11 @@ if (-Not $Env:ROASTER_TOOLCHAIN_COMMITED)
             exit 1
         }
 
-        Invoke-Expression $($(cmd /c "`"${VS_HOME}/VC/Auxiliary/Build/vcvarsall.bat`" x64 10.0.16299.0 & set") -Match '^.+=' -Replace '^','${Env:' -Replace '=','}="' -Replace '$','"' | Out-String)
+        foreach ($env in $(cmd /c "`"${VS_HOME}/VC/Auxiliary/Build/vcvarsall.bat`" x64 10.0.16299.0 & set") -Match '^.+=')
+        {
+            $name, $value = $env.Split("=", 2)
+            [Environment]::SetEnvironmentVariable($name, $value)
+        }
 
         if ((${Env:VCToolsVersion} -eq $null) -or -not ${Env:VCToolsVersion}.StartsWith("14.2"))
         {
