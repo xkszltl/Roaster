@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Roaster.utf8proc.v142.dyn.x64</id>
+    <version>$version$</version>
+    <title>Roaster.utf8proc.v142.dyn.x64</title>
+    <authors>JuliaLang.org</authors>
+    <owners>Yangyang Lu</owners>
+    <licenseUrl>https://github.com/JuliaStrings/utf8proc/blob/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/JuliaStrings/utf8proc</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>utf8proc is a small, clean C library that supports Unicode processing of UTF-8 data.</summary>
+    <description>utf8proc is a small, clean C library that provides Unicode normalization, case-folding, and other operations for data in the UTF-8 encoding, supporting Unicode version 13.</description>
+    <releaseNotes>https://juliastrings.github.io/utf8proc/releases/</releaseNotes>
+    <copyright>Copyright 2014-2019</copyright>
+    <tags>utf8proc native C++ v142 dyn</tags>
+  </metadata>
+  <files>
+    <file src="Roaster.utf8proc.v142.dyn.x64.targets" target="build\Roaster.utf8proc.v142.dyn.x64.targets" />
+    <file src="utf8proc\bin\*"                        target="lib\native\lib\Release\" />
+    <file src="utf8proc\include\**\*"                 target="lib\native\include" />
+    <file src="utf8proc\lib\*"                        target="lib\native\lib\Release\" />
+  </files>
+</package>

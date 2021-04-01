@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Roaster.harfbuzz.v142.dyn.x64</id>
+    <version>$version$</version>
+    <title>Roaster.harfbuzz.v142.dyn.x64</title>
+    <authors>freedesktop.org</authors>
+    <owners>Tongliang Liao</owners>
+    <licenseUrl>https://github.com/harfbuzz/harfbuzz/blob/master/COPYING</licenseUrl>
+    <projectUrl>https://www.freedesktop.org/wiki/Software/HarfBuzz/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>HarfBuzz is a text shaping engine.</summary>
+    <description>It primarily supports OpenType, but also Apple Advanced Typography. HarfBuzz is used in Android, Chrome, ChromeOS, Firefox, GNOME, GTK+, KDE, LibreOffice, OpenJDK, PlayStation, Qt, XeTeX, and other places.</description>
+    <releaseNotes>https://github.com/harfbuzz/harfbuzz/blob/master/NEWS</releaseNotes>
+    <copyright>Copyright 1998</copyright>
+    <tags>harfbuzz native C++ v142 dyn</tags>
+  </metadata>
+  <files>
+    <file src="Roaster.harfbuzz.v142.dyn.x64.targets"   target="build\Roaster.harfbuzz.v142.dyn.x64.targets" />
+    <file src="harfbuzz\bin\*"                          target="lib\native\lib\Release\" />
+    <file src="harfbuzz\include\**\*"                   target="lib\native\include" />
+    <file src="harfbuzz\lib\*"                          target="lib\native\lib\Release\" />
+    <file src="harfbuzz\lib\cmake\**\*"                 target="lib\native\cmake\" />
+  </files>
+</package>

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Roaster.eigen.v142.dyn.x64</id>
+    <version>$version$</version>
+    <title>Roaster.eigen.v142.dyn.x64</title>
+    <authors>Eigen</authors>
+    <owners>Tongliang Liao</owners>
+    <licenseUrl>http://eigen.tuxfamily.org/index.php?title=Main_Page#License</licenseUrl>
+    <projectUrl>http://eigen.tuxfamily.org/index.php?title=Main_Page</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>Eigen is a C++ template library for linear algebra: matrices, vectors, numerical solvers, and related algorithms.</summary>
+    <description>http://eigen.tuxfamily.org/index.php?title=Main_Page#Overview</description>
+    <releaseNotes>http://eigen.tuxfamily.org/index.php?title=ChangeLog</releaseNotes>
+    <copyright>Copyright 2012</copyright>
+    <tags>eigen native C++ v142 dyn</tags>
+  </metadata>
+  <files>
+    <file src="Roaster.eigen.v142.dyn.x64.targets"  target="build\Roaster.eigen.v142.dyn.x64.targets" />
+    <file src="eigen\include\eigen3\**\*"           target="lib\native\include" />
+    <file src="eigen\share\eigen3\cmake\**\*"       target="lib\native\cmake\" />
+  </files>
+</package>

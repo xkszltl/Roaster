@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Roaster.caffe2.v142.dyn.x64</id>
+    <version>$version$</version>
+    <title>Roaster.caffe2.v142.dyn.x64</title>
+    <authors>Facebook Inc</authors>
+    <owners>Tongliang Liao</owners>
+    <licenseUrl>https://github.com/pytorch/pytorch/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://pytorch.org/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>Caffe2 is a lightweight, modular, and scalable deep learning framework.</summary>
+    <description>Building on the original Caffe, Caffe2 is designed with expression, speed, and modularity in mind.</description>
+    <releaseNotes>https://pytorch.org/blog/</releaseNotes>
+    <copyright>Copyright 2001</copyright>
+    <tags>caffe2 native C++ v142 dyn</tags>
+    <dependencies>
+      <dependency id="Roaster.pytorch.v142.dyn.x64" version="[$version$]" />
+    </dependencies>
+  </metadata>
+  <files />
+</package>

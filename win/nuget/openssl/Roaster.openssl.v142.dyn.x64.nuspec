@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Roaster.openssl.v142.dyn.x64</id>
+    <version>$version$</version>
+    <title>Roaster.openssl.v142.dyn.x64</title>
+    <authors>The OpenSSL Project</authors>
+    <owners>Tongliang Liao</owners>
+    <licenseUrl>https://www.openssl.org/source/license.html</licenseUrl>
+    <projectUrl>https://www.openssl.org</projectUrl>
+    <iconUrl>https://www.openssl.org/favicon.ico</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>OpenSSL is a robust, commercial-grade, and full-featured toolkit for the Transport Layer Security (TLS) and Secure Sockets Layer (SSL) protocols. It is also a general-purpose cryptography library.</summary>
+    <description>OpenSSL is a robust, commercial-grade, and full-featured toolkit for the Transport Layer Security (TLS) and Secure Sockets Layer (SSL) protocols. It is also a general-purpose cryptography library. For more information about the team and community around the project, or to start making your own contributions, start with the community page. To get the latest news, download the source, and so on, please see the sidebar or the buttons at the top of every page.
+    OpenSSL is licensed under an Apache-style license, which basically means that you are free to get and use it for commercial and non-commercial purposes subject to some simple license conditions.
+    For a list of vulnerabilities, and the releases in which they were found and fixes, see our Vulnerabilities page.</description>
+    <releaseNotes>OpenSSL 1.1.1 https://www.openssl.org/news/openssl-1.1.1-notes.html</releaseNotes>
+    <copyright>Copyright 1998-2018</copyright>
+    <tags>openssl native C++ v142 dyn</tags>
+    <dependencies>
+      <dependency id="Roaster.zlib.v142.dyn.x64" version="[$version$]" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="Roaster.openssl.v142.dyn.x64.targets"    target="build\Roaster.openssl.v142.dyn.x64.targets" />
+    <file src="openssl\bin\**\*"                        target="lib\native\lib\Release\" />
+    <file src="openssl\include\**\*"                    target="lib\native\include" />
+    <file src="openssl\lib\**\*"                        target="lib\native\lib\Release\" />
+  </files>
+</package>
