@@ -2,12 +2,40 @@ parameters:
   - name: stage_name
     type: string
     default: ''
+  - name: packages
+    type: string
+    default: ''
 
 steps:
 - powershell: |
     if ("${{ parameters.stage_name }}") {
-      .\gitlab-ci\build_stage.ps1 "${{ parameters.stage_name }}" "${Env:Agent_TempDirectory}/roaster-scratch"
+      .\gitlab-ci\build_stage.ps1 "${{ parameters.stage_name }}"  "${Env:Agent_TempDirectory}/roaster-scratch"
     } else {
-      .\gitlab-ci\build_stage.ps1 "$Env:SYSTEM_JOBDISPLAYNAME" "${Env:Agent_TempDirectory}/roaster-scratch"
+      .\gitlab-ci\build_stage.ps1 "$Env:SYSTEM_JOBDISPLAYNAME"    "${Env:Agent_TempDirectory}/roaster-scratch"
     }
   displayName: "Build on Windows"
+
+- ${{ if ne(parameters.packages, 'none') }}:
+  - powershell: |
+      if ("${{ parameters.packages }}") {
+        .\gitlab-ci\pack.ps1 "${{ parameters.packages }}" "${Env:Agent_TempDirectory}/pkgs"
+      } elseif ("${{ parameters.stage_name }}") {
+        .\gitlab-ci\pack.ps1 "${{ parameters.stage_name }}" "${Env:Agent_TempDirectory}/pkgs"
+      } else {
+        .\gitlab-ci\pack.ps1 "$Env:SYSTEM_JOBDISPLAYNAME" "${Env:Agent_TempDirectory}/pkgs"
+      }
+    displayName: "Preapre packages"
+
+  - task: NuGetCommand@2
+    displayName: "Create nuget packages"
+    inputs:
+      command: 'pack'
+      packagesToPack: '$(Agent.TempDirectory)/pkgs/**/*.nuspec'
+      versioningScheme: 'byEnvVar'
+      versionEnvVar: BUILD_BUILDNUMBER
+
+  - task: PublishBuildArtifacts@1
+    displayName: "Publish artifacts"
+    inputs:
+      pathToPublish: $(Build.ArtifactStagingDirectory)
+      artifactName: nupkgs

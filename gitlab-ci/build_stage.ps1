@@ -20,7 +20,7 @@ foreach ($pkg in $stage.Split(","))
         . "pkgs/env/toolchain.ps1"
     }
     
-    Write-Host "Install $pkg"
+    Write-Host "Build $pkg"
     
     $path = "pkgs/$pkg.ps1"
     if ($(Test-Path $path -ErrorAction SilentlyContinue))

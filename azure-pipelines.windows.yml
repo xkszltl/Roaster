@@ -29,7 +29,9 @@ stages:
             }
 
             $full_version = $tag.TrimStart($versionPrefix) + $nullable_iter + '-T' + $time + $hash
-            ##vso[build.updatebuildnumber]$full_version
+            Write-Host "Generate version $full_version"
+            Write-Host "##vso[build.updatebuildnumber]$full_version"
+          displayName: "Set build number"
 
     - job: build
       dependsOn: versioning
@@ -37,6 +39,7 @@ stages:
       - template: azure-pipelines/build_stage.windows.yml
         parameters:
           stage_name: vsbuildtools,cmake
+          packages: none
 
     - job: tool
       dependsOn: build
@@ -44,6 +47,7 @@ stages:
       - template: azure-pipelines/build_stage.windows.yml
         parameters:
           stage_name: zlib,openssl,c-ares,curl
+          packages: zlib,openssl
 
     - job: gpu
       dependsOn: tool
@@ -51,6 +55,7 @@ stages:
       - template: azure-pipelines/build_stage.windows.yml
         parameters:
           stage_name: cuda,cudnn,tensorrt
+          packages: cu*,tensorrt
 
     - job: mkl
       dependsOn: gpu
@@ -58,6 +63,7 @@ stages:
       - template: azure-pipelines/build_stage.windows.yml
         parameters:
           stage_name: intel,mklml
+          packages: mkl,mkl-dev,mklml
 
 - stage: build
   dependsOn: prep
@@ -78,11 +84,14 @@ stages:
       - template: azure-pipelines/build_stage.windows.yml
         parameters:
           stage_name: freetype
+          packages: none
 
     - job: harfbuzz
       dependsOn: freetype_1
       steps:
       - template: azure-pipelines/build_stage.windows.yml
+        parameters:
+          packages: none
 
     - job: freetype_2
       dependsOn: harfbuzz
@@ -101,6 +110,8 @@ stages:
       dependsOn: boost
       steps:
       - template: azure-pipelines/build_stage.windows.yml
+        parameters:
+          packages: jsoncpp*
 
     - job: utf8proc
       dependsOn: jsoncpp
@@ -116,6 +127,8 @@ stages:
       dependsOn: eigen
       steps:
       - template: azure-pipelines/build_stage.windows.yml
+        parameters:
+          packages: none
 
     - job: mkl_dnn
       dependsOn: pybind11
@@ -123,6 +136,7 @@ stages:
       - template: azure-pipelines/build_stage.windows.yml
         parameters:
           stage_name: mkl-dnn
+          packages: mkldnn
 
     - job: gflags
       dependsOn: mkl_dnn
@@ -143,6 +157,8 @@ stages:
       dependsOn: gtest
       steps:
       - template: azure-pipelines/build_stage.windows.yml
+        parameters:
+          packages: none
 
     - job: snappy
       dependsOn: benchmark
@@ -153,6 +169,8 @@ stages:
       dependsOn: snappy
       steps:
       - template: azure-pipelines/build_stage.windows.yml
+        parameters:
+          packages: protobuf*
 
     - job: grpc
       dependsOn: protobuf
@@ -164,11 +182,15 @@ stages:
       timeoutInMinutes: "720"
       steps:
       - template: azure-pipelines/build_stage.windows.yml
+        parameters:
+          packages: opencv*
 
     - job: rocksdb
       dependsOn: opencv
       steps:
       - template: azure-pipelines/build_stage.windows.yml
+        parameters:
+          packages: rocksdb*
 
     - job: onnx
       dependsOn: rocksdb
@@ -180,3 +202,5 @@ stages:
       timeoutInMinutes: "720"
       steps:
       - template: azure-pipelines/build_stage.windows.yml
+        parameters:
+          packages: ort*
