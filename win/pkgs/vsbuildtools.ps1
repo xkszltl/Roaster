@@ -5,7 +5,7 @@ $ErrorActionPreference="Stop"
 $vs_where = "${Env:ProgramFiles(x86)}/Microsoft Visual Studio/Installer/vswhere.exe"
 if (Test-Path $vs_where)
 {
-    $vs_home = & $vs_where -latest -products * -property installationPath
+    $vs_home = & $vs_where -all -latest -products * -property installationPath
     if ($vs_home)
     {
         Write-Host "Found existing VS installation under `"$vs_home`". Skip installation."
@@ -19,6 +19,7 @@ Invoke-WebRequest -Uri "https://aka.ms/vs/16/release/vs_buildtools.exe" -OutFile
     --nocache                                                           `
     --norestart                                                         `
     --wait                                                              `
+    --quiet                                                             `
     --add "Microsoft.VisualStudio.Workload.VCTools;includeRecommended"  `
     --add "Microsoft.VisualStudio.Component.Windows10SDK.16299" | Out-Null
 

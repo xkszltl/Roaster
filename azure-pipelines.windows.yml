@@ -43,6 +43,8 @@ stages:
     - job: env
       steps:
       - powershell: |
+          ${Env:PATH}=[System.Environment]::GetEnvironmentVariable("PATH","Machine")
+
           cmake --version
           nvcc -V
           python -V
@@ -137,6 +139,7 @@ stages:
 
     - job: opencv
       dependsOn: grpc
+      timeoutInMinutes: "720"
       steps:
       - template: azure-pipelines/build_stage.windows.yml
 
@@ -152,6 +155,6 @@ stages:
 
     - job: ort
       dependsOn: onnx
-      timeoutInMinutes: "1440"
+      timeoutInMinutes: "720"
       steps:
       - template: azure-pipelines/build_stage.windows.yml

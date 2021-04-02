@@ -21,7 +21,7 @@ if (Test-Path "$root")
 $latest_ver = 'v' + $($(git ls-remote --tags "$repo") -match '.*refs/tags/v[0-9\.]*$' -replace '.*refs/tags/v','' | sort {[Version]$_})[-1]
 
 $cmake_url = "${Env:GIT_MIRROR_GITHUB}/Kitware/CMake/releases/download/$latest_ver"
-$cmake_name = "cmake-$($latest_ver -replace '^v','')-win64-x64.msi"
+$cmake_name = "cmake-$($latest_ver -replace '^v','')-windows-x86_64.msi"
 if (-not $(Test-Path "$cmake_name"))
 {
     $uri = "$cmake_url/$cmake_name"

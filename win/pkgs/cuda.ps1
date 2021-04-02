@@ -31,7 +31,7 @@ ${Env:CUDA_PATH}=[System.Environment]::GetEnvironmentVariable("CUDA_PATH","Machi
 if (${Env:VSCMD_VER} -ne $null)
 {
     $vs_where = "${Env:ProgramFiles(x86)}/Microsoft Visual Studio/Installer/vswhere.exe"
-    $vs_home = & $vs_where -latest -products 'Microsoft.VisualStudio.Product.BuildTools' -property installationPath
+    $vs_home = & $vs_where -all -latest -products 'Microsoft.VisualStudio.Product.BuildTools' -property installationPath
     if ($vs_home)
     {
         $cuda_vsext_dir = "${Env:CUDA_PATH}/extras/visual_studio_integration/MSBuildExtensions"
