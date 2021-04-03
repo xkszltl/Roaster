@@ -8,7 +8,7 @@ pool:
   - Agent.OS -equals Windows_NT
 
 stages:
-- stage: prep
+- stage: version
   jobs:
     - job: versioning
       steps:
@@ -33,8 +33,10 @@ stages:
             Write-Host "##vso[build.updatebuildnumber]$full_version"
           displayName: "Set build number"
 
+- stage: prep
+  dependsOn: version
+  jobs:
     - job: build
-      dependsOn: versioning
       steps:
       - template: azure-pipelines/build_stage.windows.yml
         parameters:
