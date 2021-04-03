@@ -24,10 +24,10 @@
   <files>
     <file src="Roaster.cuda.v142.dyn.x64.targets"       target="build\Roaster.cuda.v142.dyn.x64.targets" />
     <file src="cuda\*.txt"                              target="lib\native\lib\Release\" />
-    <file src="cuda\Sanitizer\include\**\*"             target="lib\native\include" />
-    <file src="cuda\Sanitizer\**\*.bat"                 target="lib\native\lib\Release\" />
-    <file src="cuda\Sanitizer\**\*.dll"                 target="lib\native\lib\Release\" />
-    <file src="cuda\Sanitizer\**\*.exe"                 target="lib\native\lib\Release\" />
+    <file src="cuda\compute-sanitizer\include\**\*"     target="lib\native\include" />
+    <file src="cuda\compute-sanitizer\**\*.bat"         target="lib\native\lib\Release\" />
+    <file src="cuda\compute-sanitizer\**\*.dll"         target="lib\native\lib\Release\" />
+    <file src="cuda\compute-sanitizer\**\*.exe"         target="lib\native\lib\Release\" />
     <file src="cuda\bin\**\*"                           target="lib\native\lib\Release\" exclude="**\cublas*;**\cudnn*;**\cufft*;**\cusolver*;**\cusparse*" />
     <file src="cuda\extras\CUPTI\include\**\*"          target="lib\native\include" />
     <file src="cuda\extras\CUPTI\lib64\**\*"            target="lib\native\lib\Release\" />
