@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Roaster.gtest.v142.dyn.x64</id>
+    <version>$version$</version>
+    <title>Roaster.gtest.v142.dyn.x64</title>
+    <authors>Google Inc.</authors>
+    <owners>Yateng Hong</owners>
+    <licenseUrl>https://github.com/google/googletest/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/google/googletest</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>Googletest - Google Testing and Mocking Framework.</summary>
+    <description>GoogleTest is Google’s C++ testing and mocking framework.</description>
+    <tags>gtest native C++ v142 dyn</tags>
+  </metadata>
+  <files>
+    <file src="Roaster.gtest.v142.dyn.x64.targets"  target="build\Roaster.gtest.v142.dyn.x64.targets" />
+    <file src="gtest\bin\**\*"                       target="lib\native\lib\Release\" />
+    <file src="gtest\include\**\*"                   target="lib\native\include" />
+    <file src="gtest\lib\**\*"                       target="lib\native\lib\Release\" />
+  </files>
+</package>

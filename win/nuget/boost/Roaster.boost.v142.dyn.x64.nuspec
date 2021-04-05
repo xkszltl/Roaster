@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Roaster.boost.v142.dyn.x64</id>
+    <version>$version$</version>
+    <title>Roaster.boost.v142.dyn.x64</title>
+    <authors>Boost</authors>
+    <owners>Yateng Hong</owners>
+    <licenseUrl>https://www.boost.org/users/license.html</licenseUrl>
+    <projectUrl>https://www.boost.org</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>Boost provides free peer-reviewed portable C++ source libraries.</summary>
+    <description>We emphasize libraries that work well with the C++ Standard Library. Boost libraries are intended to be widely useful, and usable across a broad spectrum of applications. The Boost license encourages the use of Boost libraries for all users with minimal restrictions.</description>
+    <tags>boost native C++ v142 dyn</tags>
+  </metadata>
+  <files>
+    <file src="Roaster.boost.v142.dyn.x64.targets"    target="build\Roaster.boost.v142.dyn.x64.targets" />
+    <file src="boost\include\**\*"                    target="lib\native\include\" />
+    <file src="boost\lib\**\*"                        target="lib\native\lib\" />
+  </files>
+</package>

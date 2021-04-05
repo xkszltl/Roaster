@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Roaster.protobuf.v142.dyn.x64</id>
+    <version>$version$</version>
+    <title>Roaster.protobuf.v142.dyn.x64</title>
+    <authors>Google Inc.</authors>
+    <owners>Tongliang Liao</owners>
+    <licenseUrl>https://github.com/protocolbuffers/protobuf/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://developers.google.com/protocol-buffers/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>Protocol Buffers - Google's data interchange format</summary>
+    <description>Protocol Buffers (a.k.a., protobuf) are Google's language-neutral, platform-neutral, extensible mechanism for serializing structured data. You can find protobuf's documentation on the Google Developers site.</description>
+    <releaseNotes>https://github.com/protocolbuffers/protobuf/blob/master/CHANGES.txt</releaseNotes>
+    <copyright>Copyright 2008</copyright>
+    <tags>protobuf native C++ v142 dyn</tags>
+    <dependencies>
+      <dependency id="Roaster.zlib.v142.dyn.x64" version="[$version$]" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="Roaster.protobuf.v142.dyn.x64.targets"   target="build\Roaster.protobuf.v142.dyn.x64.targets" />
+    <file src="protobuf\bin\*.dll"                      target="lib\native\lib\Release\" />
+    <file src="protobuf\bin\*.exe"                      target="lib\native\lib\Release\" />
+  </files>
+</package>

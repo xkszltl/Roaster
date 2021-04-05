@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Roaster.cusparse.v142.dyn.x64</id>
+    <version>$version$</version>
+    <title>Roaster.cusparse.v142.dyn.x64</title>
+    <authors>NVIDIA Corporation</authors>
+    <owners>Tongliang Liao</owners>
+    <licenseUrl>https://docs.nvidia.com/cuda/eula/index.html</licenseUrl>
+    <projectUrl>https://developer.nvidia.com/cuda-zone</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>CUDA is a parallel computing platform and programming model developed by NVIDIA for general computing on graphical processing units (GPUs). With CUDA, developers are able to dramatically speed up computing applications by harnessing the power of GPUs.</summary>
+    <description>In GPU-accelerated applications, the sequential part of the workload runs on the CPU – which is optimized for single-threaded performance – while the compute intensive portion of the application runs on thousands of GPU cores in parallel. When using CUDA, developers program in popular languages such as C, C++, Fortran, Python and MATLAB and express parallelism through extensions in the form of a few basic keywords.</description>
+    <releaseNotes>https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html</releaseNotes>
+    <copyright>Copyright 2015-2020</copyright>
+    <tags>cuda cusparse native C++ v142 dyn</tags>
+  </metadata>
+  <files>
+    <file src="Roaster.cusparse.v142.dyn.x64.targets"   target="build\Roaster.cusparse.v142.dyn.x64.targets" />
+    <file src="cusparse\*.txt"                          target="lib\native\lib\Release\" />
+    <file src="cusparse\bin\**\cusparse*"               target="lib\native\lib\Release\" />
+    <file src="cusparse\include\**\cusparse*"           target="lib\native\include" />
+    <file src="cusparse\lib\x64\**\cusparse*"           target="lib\native\lib\Release\" />
+    <file src="cusparse\src\**\cusparse*"               target="lib\native\src" />
+  </files>
+</package>

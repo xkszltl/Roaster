@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Roaster.ort.v142.dyn.x64</id>
+    <version>$version$</version>
+    <title>Roaster.ort.v142.dyn.x64</title>
+    <authors>Microsoft Corporation</authors>
+    <owners>Tongliang Liao</owners>
+    <licenseUrl>https://github.com/Microsoft/onnxruntime/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/microsoft/onnxruntime</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>ONNX Runtime is an open-source scoring engine for Open Neural Network Exchange (ONNX) models.</summary>
+    <description>ONNX is an open format for machine learning (ML) models that is supported by various ML and DNN frameworks and tools. This format makes it easier to interoperate between frameworks and to maximize the reach of your hardware optimization investments. Learn more about ONNX on https://onnx.ai or view the Github Repo.</description>
+    <releaseNotes>https://github.com/microsoft/onnxruntime</releaseNotes>
+    <copyright>Copyright 2018</copyright>
+    <tags>ort onnxruntime native C++ v142 dyn</tags>
+    <dependencies>
+      <dependency id="Roaster.cuda.v142.dyn.x64"      version="[$version$]" />
+      <dependency id="Roaster.cudnn.v142.dyn.x64"     version="[$version$]" />
+      <dependency id="Roaster.mklml.v142.dyn.x64"     version="[$version$]" />
+      <dependency id="Roaster.tensorrt.v142.dyn.x64"  version="[$version$]" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="Roaster.ort.v142.dyn.x64.targets"    target="build\Roaster.ort.v142.dyn.x64.targets" />
+    <file src="ort\bin\**\*.dll"                    target="lib\native\lib\Release\" />
+    <file src="ort\bin\**\*.exe"                    target="lib\native\lib\Release\" />
+  </files>
+</package>

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Roaster.cream-dev.v142.dyn.x64</id>
+    <version>$version$</version>
+    <title>Roaster.cream-dev.v142.dyn.x64</title>
+    <authors>Microsoft Corporation</authors>
+    <owners>Tongliang Liao</owners>
+    <licenseUrl>https://dev.azure.com/msresearch/OneOCR/_git/Cream</licenseUrl>
+    <projectUrl>https://dev.azure.com/msresearch/OneOCR/_git/Cream</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>Cream is a plugin library build on top of Caffe2.</summary>
+    <description>Cream is a plugin library build on top of Caffe2.</description>
+    <releaseNotes>https://dev.azure.com/msresearch/OneOCR/_git/Cream</releaseNotes>
+    <copyright>Copyright 2018</copyright>
+    <tags>cream native C++ v142 dyn</tags>
+    <dependencies>
+      <dependency id="Roaster.caffe2-dev.v142.dyn.x64" version="[$version$]" />
+      <dependency id="Roaster.cream.v142.dyn.x64" version="[$version$]" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="Roaster.cream-dev.v142.dyn.x64.targets"  target="build\Roaster.cream-dev.v142.dyn.x64.targets" />
+    <file src="cream-dev\include\**\*"                  target="lib\native\include" />
+    <file src="cream-dev\lib\**\*"                      target="lib\native\lib\Release\" />
+    <file src="cream-dev\share\**\*"                    target="lib\native\cmake\" />
+    <file src="cream-dev\bin\**\*.exe"                  target="lib\native\lib\Release\" />
+    <file src="cream-dev\bin\**\*.pdb"                  target="lib\native\lib\Release\" />
+  </files>
+</package>

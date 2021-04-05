@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Roaster.pytorch-debuginfo.v142.dyn.x64</id>
+    <version>$version$</version>
+    <title>Roaster.pytorch-debuginfo.v142.dyn.x64</title>
+    <authors>Facebook Inc</authors>
+    <owners>Tongliang Liao</owners>
+    <licenseUrl>https://github.com/pytorch/pytorch/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://pytorch.org/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>PyTorch is a Python package that provides two high-level features: Tensor computation (like NumPy) with strong GPU acceleration; Deep neural networks built on a tape-based autograd system.</summary>
+    <description>Usually PyTorch is used either as: a replacement for NumPy to use the power of GPUs; a deep learning research platform that provides maximum flexibility and speed.</description>
+    <releaseNotes>https://pytorch.org/blog/</releaseNotes>
+    <copyright>Copyright 2001</copyright>
+    <tags>pytorch native C++ v142 dyn</tags>
+    <dependencies>
+      <dependency id="Roaster.pytorch.v142.dyn.x64" version="[$version$]" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="Roaster.pytorch-debuginfo.v142.dyn.x64.targets"  target="build\Roaster.pytorch-debuginfo.v142.dyn.x64.targets" />
+    <file src="pytorch-debuginfo\bin\**\*.pdb"                  target="lib\native\lib\Release\" />
+    <file src="pytorch-debuginfo\lib\*.pdb"                     target="lib\native\lib\Release\" />
+    <file src="pytorch-debuginfo\test\**\*.pdb"                 target="lib\native\lib\Release\" />
+  </files>
+</package>
