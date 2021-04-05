@@ -9,8 +9,8 @@
     <licenseUrl>https://github.com/google/googletest/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/google/googletest</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <summary>Google Test.</summary>
-    <description>Google Test.</description>
+    <summary>Googletest - Google Testing and Mocking Framework.</summary>
+    <description>GoogleTest is Google’s C++ testing and mocking framework.</description>
     <tags>gtest native C++ v142 dyn</tags>
   </metadata>
   <files>
