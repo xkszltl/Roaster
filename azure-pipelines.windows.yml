@@ -41,7 +41,7 @@ stages:
       - template: azure-pipelines/build_stage.windows.yml
         parameters:
           stage_name: vsbuildtools,cmake
-          packages: none
+          packages: c-ares
 
     - job: tool
       dependsOn: build
@@ -57,7 +57,7 @@ stages:
       - template: azure-pipelines/build_stage.windows.yml
         parameters:
           stage_name: cuda,cudnn,tensorrt
-          packages: cu*,tensorrt
+          packages: cu*,!curl,tensorrt
 
     - job: mkl
       dependsOn: gpu
