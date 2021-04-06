@@ -49,7 +49,7 @@ stages:
       - template: azure-pipelines/build_stage.windows.yml
         parameters:
           stage_name: zlib,openssl,c-ares,curl
-          packages: zlib,openssl
+          packages: zlib,openssl,c-ares
 
     - job: gpu
       dependsOn: tool
