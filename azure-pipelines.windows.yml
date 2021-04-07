@@ -41,7 +41,7 @@ stages:
       - template: azure-pipelines/build_stage.windows.yml
         parameters:
           stage_name: vsbuildtools,cmake
-          packages: c-ares
+          packages: none
 
     - job: tool
       dependsOn: build
