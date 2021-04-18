@@ -75,7 +75,7 @@
             "server":           "0.0.0.0",
             "server_port":      '"$CRED_USR_SS_PORT"',
             "password":         "'"$CRED_USR_SS_PWD"'",
-            "method":           "aes-256-gcm",
+            "method":           "chacha20-ietf-poly1305",
             "fast_open":        true
         }' > 'ssserver.json'
 
@@ -86,7 +86,7 @@
             "local_address":    "127.0.0.1",
             "local_port":       1080,
             "password":         "'"$CRED_USR_SS_PWD"'",
-            "method":           "aes-256-gcm",
+            "method":           "chacha20-ietf-poly1305",
             "fast_open":        true
         }' > 'sslocal.json'
     )
