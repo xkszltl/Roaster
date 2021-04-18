@@ -196,7 +196,7 @@ ROCm-Developer-Tools/HIP,\
 ryd/chaosvpn,\
 SchedMD/slurm,\
 scipy/scipy{,-mathjax,-sphinx-theme},\
-shadowsocks/{ShadowsocksX-NG,libQtShadowsocks,shadowsocks{,-go,-libev,-manager,-windows},v2ray-plugin},\
+shadowsocks/{ShadowsocksX-NG,ipset,lib{QtShadowsocks,bloom,cork},shadowsocks{,-go,-libev,-manager,-windows},v2ray-plugin},\
 shibatch/sleef,\
 simdjson/simdjson,\
 sivel/{go-speedtest,speedtest-cli},\
