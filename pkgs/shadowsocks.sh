@@ -5,17 +5,62 @@
 [ -e $STAGE/ss ] && ( set -xe
     cd "$SCRATCH"
 
-    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" shadowsocks/shadowsocks,master
-
     # ------------------------------------------------------------
 
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" shadowsocks/shadowsocks,master
-    until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
+    SS_IMPL="-libev";
+
+    [ "$SS_IMPL" ] || "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" shadowsocks/shadowsocks,master
+
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" "shadowsocks/shadowsocks$SS_IMPL,master"
+
+    until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO" shadowsocks; do echo 'Retrying'; done
     cd shadowsocks
+
+    echo 'install(TARGETS bloom-shared cork-shared ipset-shared LIBRARY DESTINATION lib)' >> CMakeLists.txt
+    git commit -am 'Patch https://github.com/shadowsocks/shadowsocks-libev/issues/2808 for missing 3rd-party shared libs in installation.'
+
+    . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
 
     # ------------------------------------------------------------
 
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
+
+    if [ "_$SS_IMPL" = '_-libev' ]; then
+    (
+        set -e
+
+        case "$DISTRO_ID" in
+        'centos' | 'fedora' | 'rhel')
+            set +xe
+            . scl_source enable devtoolset-9 || exit 1
+            set -xe
+            export CC="gcc" CXX="g++"
+            ;;
+        'ubuntu')
+            export CC="gcc-8" CXX="g++-8"
+            ;;
+        esac
+
+        . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
+
+        mkdir -p build
+        cd $_
+
+        "$TOOLCHAIN/cmake"                          \
+            -DCMAKE_BUILD_TYPE=Release              \
+            -DCMAKE_C_COMPILER="$CC"                \
+            -DCMAKE_CXX_COMPILER="$CXX"             \
+            -DCMAKE_C{,XX}_COMPILER_LAUNCHER=ccache \
+            -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
+            -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
+            -DWITH_STATIC=OFF                       \
+            -G"Ninja"                               \
+            ..
+
+        time "$TOOLCHAIN/cmake" --build .
+        time "$TOOLCHAIN/cmake" --build . --target install
+    )
+    fi
 
     # ------------------------------------------------------------
     # Config
@@ -62,7 +107,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/local/bin/ssserver -c /etc/shadowsocks/ssserver.json
+ExecStart=/usr/local/bin/$([ "_$SS_IMPL" = '_-libev' ] && echo ss-server || echo ssserver) -c /etc/shadowsocks/ssserver.json
 User=nobody
 
 [Install]
@@ -78,7 +123,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/local/bin/sslocal -c /etc/shadowsocks/sslocal.json
+ExecStart=/usr/local/bin/$([ "_$SS_IMPL" = '_-libev' ] && echo ss-local || echo sslocal) -c /etc/shadowsocks/sslocal.json
 User=nobody
 
 [Install]
