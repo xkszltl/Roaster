@@ -72,7 +72,7 @@
 
         jq -n '
         {
-            "server":           "0.0.0.0",
+            "server":           ["0.0.0.0","::0"],
             "server_port":      '"$CRED_USR_SS_PORT"',
             "password":         "'"$CRED_USR_SS_PWD"'",
             "method":           "chacha20-ietf-poly1305",
