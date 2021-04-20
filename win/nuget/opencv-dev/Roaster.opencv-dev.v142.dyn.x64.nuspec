@@ -27,5 +27,6 @@
     <file src="opencv-dev\x64\vc16\bin\**\*.pdb"        target="lib\native\lib\Release\" />
     <file src="opencv-dev\x64\vc16\lib\**\*.lib"        target="lib\native\lib\Release\" />
     <file src="opencv-dev\x64\vc16\lib\**\*.pdb"        target="lib\native\lib\Release\" />
+    <file src="opencv-dev\x64\vc16\lib\**\*.cmake"      target="lib\native\lib\Release\" />
   </files>
 </package>
