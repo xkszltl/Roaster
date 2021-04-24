@@ -39,24 +39,23 @@
         mkdir -p build
         cd $_
 
-        # Ninja build is partially broken: https://github.com/simdjson/simdjson/issues/977
         "$TOOLCHAIN/cmake"                          \
+            -DBUILD_SHARED_LIBS=ON                  \
             -DCMAKE_BUILD_TYPE=Release              \
             -DCMAKE_C_COMPILER="$CC"                \
             -DCMAKE_CXX_COMPILER="$CXX"             \
             -DCMAKE_C{,XX}_COMPILER_LAUNCHER=ccache \
             -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
-            -DSIMDJSON_BUILD_STATIC=OFF             \
             -DSIMDJSON_COMPETITION=OFF              \
-            -G"Unix Makefiles"                      \
+            -GNinja                                 \
             ..
 
-        time "$TOOLCHAIN/cmake" --build . -- -j"$(nproc)"
+        time "$TOOLCHAIN/cmake" --build .
         # Known issues:
         #   - checkperf test may fail when running under load.
         time "$TOOLCHAIN/ctest" --output-on-failure -j"$(nproc)" || time "$TOOLCHAIN/ctest" --output-on-failure || true
-        time "$TOOLCHAIN/cmake" --build . --target install -- -j
+        time "$TOOLCHAIN/cmake" --build . --target install
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
