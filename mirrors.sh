@@ -195,6 +195,7 @@ RMerl/{am-toolchains,asuswrt-merlin.ng},\
 ROCm-Developer-Tools/HIP,\
 ryd/chaosvpn,\
 SchedMD/slurm,\
+scikit-learn/{enhancement_proposals,examples-data,scikit-learn{,-benchmarks}},\
 scipy/scipy{,-mathjax,-sphinx-theme},\
 shadowsocks/{ShadowsocksX-NG,ipset,lib{QtShadowsocks,bloom,cork},shadowsocks{,-go,-libev,-manager,-windows},v2ray-plugin},\
 shibatch/sleef,\
