@@ -142,6 +142,7 @@ jemalloc/jemalloc,\
 jordansissel/fpm,\
 joseph-henry/lwip{,-contrib},\
 JuliaStrings/utf8proc,\
+keras-team/{autokeras,governance,keras{,-applications,-autodoc,-contrib,-cv,-docs-{ja,ko,zh},-io,-nlp,-preprocessing,-tuner}},\
 Kitware/{CMake,VTK},\
 libav/libav,\
 libuv/libuv,\
