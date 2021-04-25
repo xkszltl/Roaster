@@ -52,7 +52,7 @@ export CREATEREPO='createrepo_c
     $(pwd)
 '
 
-export ROUTE='10.0.0.$([ $(expr $RANDOM % 13) -lt 9 ] && echo 12 || echo 11)'
+export ROUTE='10.0.0.$([ $(expr $RANDOM % "$(expr 20 + 10 - 2)") -lt "$(expr 20 - 1)" ] && echo 11 || echo 12)'
 
 export REPO_TASKS=$(jq -n '
     {

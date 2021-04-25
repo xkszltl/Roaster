@@ -7,7 +7,7 @@ export dst="/media/Matrix/Data/ESA/Gaia"
 export conn=100
 export bandwidth=110
 
-export ROUTE='10.0.0.$([ $(expr $RANDOM % 12) -lt 8 ] && echo 12 || echo 11)'
+export ROUTE='10.0.0.$([ $(expr $RANDOM % "$(expr 20 + 10 - 2)") -lt "$(expr 20 - 1)" ] && echo 11 || echo 12)'
 
 export meta=$(mktemp -d)
 echo "Use \"$meta\" for metadata."
