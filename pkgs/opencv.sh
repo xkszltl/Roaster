@@ -5,7 +5,9 @@
 [ -e $STAGE/opencv ] && ( set -xe
     cd $SCRATCH
 
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" opencv/opencv,
+    # OpenCV 4.5.2 is broken due to a OpenEXR related regression.
+    # - https://github.com/opencv/opencv/issues/19925
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" opencv/opencv,4.5.1
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd opencv
 
