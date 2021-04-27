@@ -51,15 +51,15 @@ Write-Host -NoNewline "Scanning for latest release of cuDNN "
 
 for ($i=8; ($i -ge 8) -and (-not (Test-Path cudnn.zip)); $i--)
 {
-    for ($j=0; ($j -ge 0) -and (-not (Test-Path cudnn.zip)); $j--)
+    for ($j=2; ($j -ge 0) -and (-not (Test-Path cudnn.zip)); $j--)
     {
-        for ($k=5; ($k -ge 0) -and (-not (Test-Path cudnn.zip)); $k--)
+        for ($k=0; ($k -ge 0) -and (-not (Test-Path cudnn.zip)); $k--)
         {
-            for ($l=39; ($l -ge 0) -and (-not (Test-Path cudnn.zip)); $l--)
+            for ($l=53; ($l -ge 0) -and (-not (Test-Path cudnn.zip)); $l--)
             {
                 $cudnn_name="cudnn-$((nvcc --version) -match ' release ([0-9\.]*)' -replace '.* release ([0-9\.]*).*','${1}')-windows-x64-v${i}.${j}.${k}.${l}.zip"
                 # No cuDNN for CUDA 11.2 currently.
-                $cudnn_name=("$cudnn_name" -replace '11.2','11.1')
+                $cudnn_name=("$cudnn_name" -replace '11.2','11.3')
                 Write-Host -NoNewline '.'
                 $ErrorActionPreference="SlightlyContinue"
                 & "${Env:ProgramFiles}/CURL/bin/curl.exe" -fksSIL "${cudnn_url}/v${i}.${j}.${k}/${cudnn_name}" | Out-Null

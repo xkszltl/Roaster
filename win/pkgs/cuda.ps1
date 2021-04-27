@@ -11,7 +11,7 @@ if (-not $(Test-Path $DownloadDir))
     Exit 1
 }
 
-$ver = "11.2.0"
+$ver = "11.3.0"
 $exe = "cuda_${ver}_win10_network.exe"
 if (-not $(Test-Path "${DownloadDir}/${exe}"))
 {
