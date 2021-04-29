@@ -87,7 +87,6 @@ Copy-Item -Recurse -Force ${Env:SCRATCH}\abseil\include ${Env:ProgramFiles(x86)}
 
 popd
 
-
 # Remove-Item cannot remove symlink.
 cmd /c rmdir /S /Q spm-core-include
 cmd /c rmdir /S /Q spm-cpp-include
