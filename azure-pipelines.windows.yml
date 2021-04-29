@@ -92,8 +92,6 @@ stages:
       dependsOn: freetype_1
       steps:
       - template: azure-pipelines/build_stage.windows.yml
-        parameters:
-          packages: none
 
     - job: freetype_2
       dependsOn: harfbuzz
