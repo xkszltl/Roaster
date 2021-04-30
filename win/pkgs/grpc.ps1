@@ -75,7 +75,11 @@ popd
 mkdir ../third_party/abseil-cpp/build
 pushd ../third_party/abseil-cpp/build
 
-cmake -DCMAKE_INSTALL_PREFIX="${Env:SCRATCH}\abseil" ..
+cmake                                               `
+    -DCMAKE_INSTALL_PREFIX="${Env:SCRATCH}/abseil"  `
+    -G"Ninja"                                       `
+    ..
+
 cmake --build . --config Release --target install
 if (-Not $?)
 {
@@ -83,7 +87,7 @@ if (-Not $?)
     exit 1
 }
 
-Copy-Item -Recurse -Force ${Env:SCRATCH}\abseil\include ${Env:ProgramFiles(x86)}\grpc
+Copy-Item -Recurse -Force "${Env:SCRATCH}/abseil/include" "${Env:ProgramFiles(x86)}/grpc"
 
 popd
 
