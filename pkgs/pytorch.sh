@@ -210,16 +210,19 @@
         # --------------------------------------------------------
         # Relocate site-package installation.
         # --------------------------------------------------------
+        PY_SITE_PKGS_SRC_DIR="lib/python$(python3 --version 2>&1 | sed -n 's/^[^0-9]*\([0-9][0-9]*\.[0-9][0-9]*\).*/\1/p' | head -n1)/site-packages"
+        PY_SITE_PKGS_DST_DIR="$PY_SITE_PKGS_SRC_DIR"
         case "$DISTRO_ID" in
-        'centos' | 'fedora' | 'rhel')
-            PY_SITE_PKGS_DIR="lib/python$(python3 --version 2>&1 | sed -n 's/^[^0-9]*\([0-9][0-9]*\.[0-9][0-9]*\).*/\1/p' | head -n1)/site-packages"
-            ;;
-        'ubuntu')
-            PY_SITE_PKGS_DIR="lib/python3/dist-packages"
+        'debian' | 'linuxmint' | 'ubuntu')
+            # PyTorch is moving away from distutils.
+            # - https://github.com/pytorch/pytorch/pull/57040
+            # Version before that install to dist-packages.
+            # Version afterward should be relocated to dist-packages for visibility of Debian Python.
+            [ -d "$INSTALL_ABS/$PY_SITE_PKGS_SRC_DIR/caffe2" ] && PY_SITE_PKGS_DST_DIR="$PY_SITE_PKGS_SRC_DIR/../dist-packages" || PY_SITE_PKGS_SRC_DIR='lib/python3/dist-packages'
             ;;
         esac
-        mkdir -p "$(readlink -m "$INSTALL_ROOT/$(dirname "$(which python3)")/../$PY_SITE_PKGS_DIR")"
-        mv -f {"$INSTALL_ABS","$(readlink -m "$INSTALL_ROOT/$(dirname "$(which python3)")/..")"}"/$PY_SITE_PKGS_DIR/caffe2"
+        mkdir -p "$(readlink -m "$INSTALL_ROOT/$(dirname "$(which python3)")/../$PY_SITE_PKGS_DST_DIR")"
+        mv -f {"$INSTALL_ABS/$PY_SITE_PKGS_SRC_DIR","$(readlink -m "$INSTALL_ROOT/$(dirname "$(which python3)")/..")/$PY_SITE_PKGS_DST_DIR"}'/caffe2'
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
