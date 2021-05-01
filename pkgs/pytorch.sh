@@ -218,11 +218,11 @@
             # - https://github.com/pytorch/pytorch/pull/57040
             # Version before that install to dist-packages.
             # Version afterward should be relocated to dist-packages for visibility of Debian Python.
-            [ -d "$INSTALL_ABS/$PY_SITE_PKGS_SRC_DIR/caffe2" ] && PY_SITE_PKGS_DST_DIR="$PY_SITE_PKGS_SRC_DIR/../dist-packages" || PY_SITE_PKGS_SRC_DIR='lib/python3/dist-packages'
+            [ -d "$INSTALL_ABS/$PY_SITE_PKGS_SRC_DIR/caffe2" ] && PY_SITE_PKGS_DST_DIR="$(realpath -m "$PY_SITE_PKGS_SRC_DIR/../dist-packages")" || PY_SITE_PKGS_SRC_DIR='lib/python3/dist-packages'
             ;;
         esac
-        mkdir -p "$(readlink -m "$INSTALL_ROOT/$(dirname "$(which python3)")/../$PY_SITE_PKGS_DST_DIR")"
-        mv -f {"$INSTALL_ABS/$PY_SITE_PKGS_SRC_DIR","$(readlink -m "$INSTALL_ROOT/$(dirname "$(which python3)")/..")/$PY_SITE_PKGS_DST_DIR"}'/caffe2'
+        mkdir -p "$(realpath -m "$INSTALL_ROOT/$(dirname "$(which python3)")/../$PY_SITE_PKGS_DST_DIR")"
+        mv -f {"$INSTALL_ABS/$PY_SITE_PKGS_SRC_DIR","$(realpath -m "$INSTALL_ROOT/$(dirname "$(which python3)")/../$PY_SITE_PKGS_DST_DIR")"}'/caffe2'
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
