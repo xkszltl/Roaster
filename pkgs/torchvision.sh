@@ -60,7 +60,7 @@
         (
             set -xe
             export FORCE_CUDA=1
-            export TORCH_CUDA_ARCH_LIST="Pascal;Volta"
+            export TORCH_CUDA_ARCH_LIST="Pascal;Volta;Turing"
             "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" ../
         )
 
