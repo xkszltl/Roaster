@@ -28,7 +28,7 @@
         esac
 
         cuda_nvcc="$(which nvcc || echo /usr/local/cuda/bin/nvcc)"
-        cuda_root="$("$cuda_nvcc" --version > /dev/null && readlink -e "$(dirname "$cuda_nvcc")/..")"
+        cuda_root="$("$cuda_nvcc" --version > /dev/null && realpath -e "$(dirname "$cuda_nvcc")/..")"
 
         ./autogen.pl
         ./configure                             \

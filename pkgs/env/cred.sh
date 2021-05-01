@@ -46,7 +46,7 @@ export CRED_DEF_GODADDY_SECRET='1234567890abcdef0123456789abcdef'
 
 [ "$ROOT_DIR" ]
 
-cred_usr="$(readlink -m "$ROOT_DIR/cred/env-cred-usr.sh")"
+cred_usr="$(realpath -m "$ROOT_DIR/cred/env-cred-usr.sh")"
 if [ -x "$cred_usr" ]; then
     echo "Load user-defined credential from \"$cred_usr\"."
     . "$cred_usr"

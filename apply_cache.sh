@@ -13,7 +13,7 @@ if [ $# -le 0 ]; then
     exit $?
 fi
 
-export ROOT_DIR="$(readlink -e "$(dirname $0)")"
+export ROOT_DIR="$(realpath -e "$(dirname $0)")"
 
 [ "$RPM_CACHE_REPO" ] || export RPM_CACHE_REPO="/etc/yum.repos.d/codingcafe-cache.repo"
 

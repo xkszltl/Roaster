@@ -114,7 +114,7 @@
             -Donnxruntime_BUILD_CSHARP=OFF                      \
             -Donnxruntime_BUILD_FOR_NATIVE_MACHINE="$($TOOLCHAIN_CPU_NATIVE && echo 'ON' || echo 'OFF')"                    \
             -Donnxruntime_BUILD_SHARED_LIB=ON                   \
-            -Donnxruntime_CUDA_HOME="$(readlink -e "$(dirname "$(which nvcc)")/..")"                                        \
+            -Donnxruntime_CUDA_HOME="$(realpath -e "$(dirname "$(which nvcc)")/..")"                                        \
             -Donnxruntime_CUDNN_HOME='/usr'                     \
             -Donnxruntime_ENABLE_LANGUAGE_INTEROP_OPS=ON        \
             -Donnxruntime_ENABLE_LTO=ON                         \

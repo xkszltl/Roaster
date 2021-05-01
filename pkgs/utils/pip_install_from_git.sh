@@ -5,8 +5,8 @@ set -e
 if [ ! "$ROOT_DIR" ]; then
     echo '$ROOT_DIR is not defined.'
     echo 'Running in standalone mode.'
-    export ROOT_DIR="$(readlink -e "$(dirname "$0")")"
-    until [ -x "$ROOT_DIR/setup.sh" ] && [ -d "$ROOT_DIR/pkgs" ]; do export ROOT_DIR=$(readlink -e "$ROOT_DIR/.."); done
+    export ROOT_DIR="$(realpath -e "$(dirname "$0")")"
+    until [ -x "$ROOT_DIR/setup.sh" ] && [ -d "$ROOT_DIR/pkgs" ]; do export ROOT_DIR=$(realpath -e "$ROOT_DIR/.."); done
     [ "_$ROOT_DIR" != "_$(readlink -f "$ROOT_DIR/..")" ]
     echo 'Set $ROOT_DIR to "'"$ROOT_DIR"'".'
     . <(sed 's/^\(..*\)/export DISTRO_\1/' '/etc/os-release')
@@ -20,7 +20,7 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
         . "$ROOT_DIR/pkgs/utils/git/version.sh" "$i"
         URL="git+$GIT_REPO@$GIT_TAG"
     else
-        URL="$(readlink -e $PKG_PATH)"
+        URL="$(realpath -e $PKG_PATH)"
         [ -d "$URL" ]
         USE_LOCAL_GIT=true
     fi

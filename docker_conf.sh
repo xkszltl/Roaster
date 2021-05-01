@@ -4,7 +4,7 @@ set -e
 
 sudo echo 'Permission granted.'
 
-export ROOT_DIR="$(readlink -e "$(dirname "$0")")"
+export ROOT_DIR="$(realpath -e "$(dirname "$0")")"
 
 cd "$ROOT_DIR"
 . pkgs/env/cred.sh

@@ -3,7 +3,7 @@
 set -e
 
 cd "$(dirname "$0")"
-[ "$ROOT_DIR" ] || export ROOT_DIR="$(readlink -e ..)"
+[ "$ROOT_DIR" ] || export ROOT_DIR="$(realpath -e ..)"
 [ "$ROOT_DIR" ]
 cd "$ROOT_DIR"
 

@@ -5,8 +5,8 @@ set -e
 if [ ! "$ROOT_DIR" ]; then
     echo '$ROOT_DIR is not defined.'
     echo 'Running in standalone mode.'
-    export ROOT_DIR="$(readlink -e "$(dirname "$0")")"
-    until [ -x "$ROOT_DIR/setup.sh" ] && [ -d "$ROOT_DIR/pkgs" ]; do export ROOT_DIR=$(readlink -e "$ROOT_DIR/.."); done
+    export ROOT_DIR="$(realpath -e "$(dirname "$0")")"
+    until [ -x "$ROOT_DIR/setup.sh" ] && [ -d "$ROOT_DIR/pkgs" ]; do export ROOT_DIR=$(realpath -e "$ROOT_DIR/.."); done
     [ "_$ROOT_DIR" != "_$(readlink -f "$ROOT_DIR/..")" ]
     echo 'Set $ROOT_DIR to "'"$ROOT_DIR"'".'
 fi

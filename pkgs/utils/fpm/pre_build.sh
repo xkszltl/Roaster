@@ -13,8 +13,8 @@ export INSTALL_ROOT="$(mktemp -dp . 'install.XXXXXXXXXX')/root"
 mkdir -p "$INSTALL_ROOT"
 export INSTALL_REL="$INSTALL_ROOT/$INSTALL_PREFIX"
 mkdir -p "$INSTALL_REL"
-export INSTALL_ABS=$(readlink -e "$INSTALL_REL")
-export INSTALL_ROOT="$(readlink -e "$INSTALL_ROOT")"
+export INSTALL_ABS=$(realpath -e "$INSTALL_REL")
+export INSTALL_ROOT="$(realpath -e "$INSTALL_ROOT")"
 
 # ----------------------------------------------------------------
 # Add fpm hook directory.

@@ -30,7 +30,7 @@ case "$DISTRO_ID" in
     ;;
 esac
 
-export PKG_PATH="$(find "$INSTALL_ROOT/.." -maxdepth 1 -type f -name "$PKG_NAME[\\-_]*.$PKG_TYPE" | xargs readlink -e)"
+export PKG_PATH="$(find "$INSTALL_ROOT/.." -maxdepth 1 -type f -name "$PKG_NAME[\\-_]*.$PKG_TYPE" | xargs realpath -e)"
 
 if [ ! "$PKG_PATH" ]; then
     echo "[ERROR] No package file found for \"$PKG_NAME\"."

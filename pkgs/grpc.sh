@@ -49,7 +49,7 @@
             -DCMAKE_C_COMPILER="$CC"                \
             -DCMAKE_CXX_COMPILER="$CXX"             \
             -DCMAKE_C{,XX}_COMPILER_LAUNCHER=ccache \
-            -DCMAKE_C{,XX}_FLAGS="-I'$(readlink -e "../third_party/upb")' -fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
+            -DCMAKE_C{,XX}_FLAGS="-I'$(realpath -e "../third_party/upb")' -fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
             -DGFLAGS_USE_TARGET_NAMESPACE=ON        \
             -DgRPC_BUILD_TESTS=OFF                  \

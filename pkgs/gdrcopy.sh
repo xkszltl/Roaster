@@ -28,7 +28,7 @@
         export CFLAGS="  $CFLAGS   -O3 -fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"
         export CXXFLAGS="$CXXFLAGS -O3 -fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"
 
-        export CUDA="$(readlink -e "$(dirname "$(which nvcc)")/..")"
+        export CUDA="$(realpath -e "$(dirname "$(which nvcc)")/..")"
 
         make CUDA="$CUDA" -j$(nproc)
         make CUDA="$CUDA" PREFIX="$INSTALL_ABS" install -j

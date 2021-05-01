@@ -33,7 +33,7 @@ fi
 
 # ----------------------------------------------------------------
 
-export ROOT_DIR="$(readlink -e "$(dirname "$0")")"
+export ROOT_DIR="$(realpath -e "$(dirname "$0")")"
 
 export STAGE='/etc/roaster/stage'
 

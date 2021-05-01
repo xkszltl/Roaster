@@ -109,7 +109,7 @@
         export CXX="$TOOLCHAIN/$CXX"
         export LD="$TOOLCHAIN/ld"
 
-        export PROTOC="$(readlink -e ./protoc)"
+        export PROTOC="$(realpath -e ./protoc)"
 
         pushd python
         git clean -dfx .
