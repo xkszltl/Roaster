@@ -53,7 +53,7 @@
             -G"Ninja"                                       \
             ..
 
-        time "$TOOLCHAIN/cmake" --build . --target
+        time "$TOOLCHAIN/cmake" --build .
         time "$TOOLCHAIN/cmake" --build . --target install
 
         (
