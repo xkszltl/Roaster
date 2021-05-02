@@ -6,7 +6,6 @@
     cd $SCRATCH
 
     "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  \
-        python/typing                               \
         benjaminp/six                               \
         python-pillow/Pillow                        \
         numpy/numpy,v1.19.

@@ -6,7 +6,6 @@
     cd $SCRATCH
 
     "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  \
-        python/typing                               \
         cython/cython                               \
         yaml/pyyaml                                 \
         pytest-dev/pytest                           \
