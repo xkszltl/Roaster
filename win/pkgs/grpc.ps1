@@ -68,6 +68,29 @@ cmd /c xcopy /i /f /y "pdb\*.pdb" "${Env:ProgramFiles(x86)}\grpc\bin"
 Get-ChildItem "${Env:ProgramFiles(x86)}/grpc" -Filter *.dll -Recurse | Foreach-Object { New-Item -Force -ItemType SymbolicLink -Path "${Env:SystemRoot}\System32\$_" -Value $_.FullName }
 
 popd
+
+# Known issue:
+#   - abseil header is not installed via grpc
+#     https://github.com/grpc/grpc/issues/25949
+mkdir third_party/abseil-cpp/build
+pushd third_party/abseil-cpp/build
+
+cmake                                               `
+    -DCMAKE_INSTALL_PREFIX="${Env:SCRATCH}/abseil"  `
+    -G"Ninja"                                       `
+    ..
+
+cmake --build . --config Release --target install
+if (-Not $?)
+{
+    Write-Host "Failed to build abseil."
+    exit 1
+}
+
+Copy-Item -Recurse -Force "${Env:SCRATCH}/abseil/include" "${Env:ProgramFiles(x86)}/grpc"
+
+popd
+
 # Remove-Item cannot remove symlink.
 cmd /c rmdir /S /Q spm-core-include
 cmd /c rmdir /S /Q spm-cpp-include
