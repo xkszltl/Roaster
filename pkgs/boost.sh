@@ -16,23 +16,27 @@
         [ $HTTPS_PROXY ] && export https_proxy=$HTTPS_PROXY
     fi
 
-    # Bintray has monthly data cap.
-    # See https://github.com/boostorg/boost/issues/299
+    # - Bintray has been replaced by JFrog Artifactory Since May 2021.
+    # - Bintray has monthly data cap.
+    #   See https://github.com/boostorg/boost/issues/299
+    export BOOST_MIRROR_JFROG='https://boostorg.jfrog.io/artifactory/main/release'
     export BOOST_MIRROR_BINTRAY='https://dl.bintray.com/boostorg/release'
     export BOOST_MIRROR_SOURCEFORGE='https://nchc.dl.sourceforge.net/project/boost/boost'
     MAX_FALLBACK=3
     for i in $(seq "$MAX_FALLBACK"); do
         export BOOST_VERSION="$(
-            curl -sSL "$BOOST_MIRROR_BINTRAY"                                       \
+            curl -sSL "$BOOST_MIRROR_JFROG"                                         \
             | sed -n 's/.*href[[:space:]]*=[[:space:]]*"\([0-9\.]*\)\/*".*/\1/p'    \
             | sort -V                                                               \
             | tail -n "$i"                                                          \
             | head -n1
         )"
         [ "$BOOST_VERSION" ] || continue
-        BOOST_URL="$BOOST_MIRROR_BINTRAY/$BOOST_VERSION/source/boost_$(sed 's/[^0-9]/_/g' <<<"$BOOST_VERSION").tar.bz2"
+        BOOST_URL="$BOOST_MIRROR_JFROG/$BOOST_VERSION/source/boost_$(sed 's/[^0-9]/_/g' <<<"$BOOST_VERSION").tar.bz2"
         curl -fsSIL "$BOOST_URL" && break
         BOOST_URL="$BOOST_MIRROR_SOURCEFORGE/$BOOST_VERSION/boost_$(sed 's/[^0-9]/_/g' <<<"$BOOST_VERSION").tar.bz2"
+        curl -fsSIL "$BOOST_URL" && break
+        BOOST_URL="$BOOST_MIRROR_BINTRAY/$BOOST_VERSION/source/boost_$(sed 's/[^0-9]/_/g' <<<"$BOOST_VERSION").tar.bz2"
         curl -fsSIL "$BOOST_URL" && break
     done
     [ "$BOOST_URL" ]
