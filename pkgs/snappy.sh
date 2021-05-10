@@ -11,6 +11,12 @@
     until git clone --depth 1 --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd snappy
 
+    # Patch build error in 1.1.9.
+    # - https://github.com/google/snappy/pull/128
+    git remote add github 'https://github.com/google/snappy.git'
+    git fetch github pull/128/head
+    git cherry-pick FETCH_HEAD
+
     . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
 
     # ------------------------------------------------------------
