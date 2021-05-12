@@ -82,7 +82,8 @@
                 set -e
                 case "$DISTRO_ID" in
                 'centos' | 'fedora' | 'rhel')
-                    $RPM_INSTALL "cuda-$CUDA_VER_MAJOR.$CUDA_VER_MINOR.*"
+                    $RPM_INSTALL "cuda-$CUDA_VER_MAJOR.$CUDA_VER_MINOR.*" 'nvidia-driver-latest-dkms'
+                    $RPM_INSTALL 'cuda-drivers'
                     ;;
                 'debian' | 'linuxmint' | 'ubuntu')
                     apt-cache show "cuda-toolkit-$CUDA_VER_MAJRO-$CUDA_VER_MINOR"   \
