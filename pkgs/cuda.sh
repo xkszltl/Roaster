@@ -113,13 +113,17 @@
                 $RPM_INSTALL                                                            \
                     libcudnn8{,-devel}"-*-*cuda$CUDA_VER_MAJOR.$CUDA_VER_MINOR"         \
                     libnccl{,-devel,-static}"-*-*cuda$CUDA_VER_MAJOR.$CUDA_VER_MINOR"   \
-                    libnv{infer{,-plugin},{,onnx}parsers}-devel"-*-*cuda$(sed 's/11\.[12]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR")"
+                    libnv{infer{,-plugin},{,onnx}parsers}{7,-devel}"-7.*-*cuda$(sed 's/11\.[23]/11\.1/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR")"
+                : || $RPM_INSTALL                                                       \
+                    libnv{infer{,-plugin},{,onnx}parsers}{8,-devel}"-8.*-*cuda$(sed 's/11\.[12]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR")"
                 ;;
             'debian' | 'linuxmint' | 'ubuntu')
                 sudo DEBIAN_FRONTEND=noninteractive apt-get install --allow-downgrades -y   \
                     libcudnn8{,-dev}"=*+cuda$CUDA_VER_MAJOR.$CUDA_VER_MINOR"                \
                     libnccl{2,-dev}"=*+cuda$CUDA_VER_MAJOR.$CUDA_VER_MINOR"                 \
-                    libnv{infer{,-plugin},{,onnx}parsers}{8,-dev}"=*+cuda$(sed 's/11\.[12]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR")"
+                    libnv{infer{,-plugin},{,onnx}parsers}{7,-dev}"=7.*+cuda$(sed 's/11\.[23]/11\.1/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR")"
+                : || sudo DEBIAN_FRONTEND=noninteractive apt-get install --allow-downgrades -y  \
+                    libnv{infer{,-plugin},{,onnx}parsers}{8,-dev}"=8.*+cuda$(sed 's/11\.[12]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR")"
                 ;;
             esac
         ) && break
