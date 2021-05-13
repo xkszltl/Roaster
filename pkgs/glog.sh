@@ -11,6 +11,18 @@
 
     # ------------------------------------------------------------
 
+    # Known issues:
+    #   - Expose IsGoogleLoggingInitialized() API in v0.5.0.
+    #     https://github.com/google/glog/pull/651
+    PATCHES='initapi'
+    git remote add xkszltl 'https://github.com/xkszltl/glog.git'
+    for i in $PATCHES; do
+        git fetch xkszltl initapi
+        git cherry-pick FETCH_HEAD
+    done
+
+    # ------------------------------------------------------------
+
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
     (
