@@ -38,6 +38,17 @@
 
     . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
 
+    # Patch for TensorRT 8.
+    (
+        set -xe
+        pushd 'cmake/external/onnx-tensorrt'
+        git remote add xkszltl 'https://github.com/xkszltl/onnx-tensorrt.git'
+        git fetch xkszltl rm_myelin
+        git cherry-pick FETCH_HEAD
+        popd
+        git commit -m 'Patch onnx-tensorrt for TensorRT 8.' 'cmake/external/onnx-tensorrt'
+    )
+
     (
         set -xe
 
