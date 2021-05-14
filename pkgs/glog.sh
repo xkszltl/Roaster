@@ -14,11 +14,10 @@
     # Known issues:
     #   - Expose IsGoogleLoggingInitialized() API in v0.5.0.
     #     https://github.com/google/glog/pull/651
-    PATCHES='initapi'
-    git remote add xkszltl 'https://github.com/xkszltl/glog.git'
+    PATCHES='81e0d61'
+    git fetch master
     for i in $PATCHES; do
-        git fetch xkszltl initapi
-        git cherry-pick FETCH_HEAD
+        git cherry-pick "$i"
     done
 
     # ------------------------------------------------------------
