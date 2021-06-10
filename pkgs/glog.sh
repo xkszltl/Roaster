@@ -15,7 +15,7 @@
     #   - Expose IsGoogleLoggingInitialized() API in v0.5.0.
     #     https://github.com/google/glog/pull/651
     PATCHES='81e0d61'
-    git fetch master
+    git fetch origin master
     for i in $PATCHES; do
         git cherry-pick "$i"
     done
