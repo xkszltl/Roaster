@@ -54,7 +54,7 @@
             -G"Ninja"                                       \
             ..
 
-        time "$TOOLCHAIN/cmake" --build . --target
+        time "$TOOLCHAIN/cmake" --build .
         time "$TOOLCHAIN/cmake" --build . --target install
         time "$TOOLCHAIN/ctest" --output-on-failure -j"$(nproc)"
     )

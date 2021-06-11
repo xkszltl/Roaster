@@ -143,7 +143,7 @@
         time "$TOOLCHAIN/cmake" --build . --target rebuild_cache
         grep '^BUILD_PYTHON:BOOL=ON' CMakeCache.txt
 
-        time "$TOOLCHAIN/cmake" --build . --target
+        time "$TOOLCHAIN/cmake" --build .
         time "$TOOLCHAIN/cmake" --build . --target install
         time "$TOOLCHAIN/ctest" --output-on-failure -j"$(nproc)" || ! nvidia-smi
 
