@@ -24,7 +24,7 @@
 
     git remote add patch https://github.com/xkszltl/pytorch.git
 
-    PATCHES="lstm rnn_arg"
+    PATCHES="lstm rnn_arg cache_py"
 
     git pull --no-edit patch $PATCHES
 
