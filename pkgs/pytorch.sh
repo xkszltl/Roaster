@@ -91,6 +91,7 @@
         #     Probably because PYTHON_* variables are partially cached.
         #     This may be a cmake bug.
         #     https://github.com/pytorch/pytorch/issues/43030
+        ONESHOT=false
         for i in $(seq 2); do
             NCCL_ROOT_DIR='/usr'                                \
             "$TOOLCHAIN/cmake"                                  \
@@ -138,13 +139,18 @@
                 -DWITH_BLAS=mkl                                 \
                 -G"Ninja"                                       \
                 ..
+            grep '^BUILD_PYTHON:BOOL=ON' CMakeCache.txt
+            ! $ONESHOT || break
             time "$TOOLCHAIN/cmake" --build . --target rebuild_cache
+            grep '^BUILD_PYTHON:BOOL=ON' CMakeCache.txt
         done
-        time "$TOOLCHAIN/cmake" --build . --target rebuild_cache
+        $ONESHOT || time "$TOOLCHAIN/cmake" --build . --target rebuild_cache
         grep '^BUILD_PYTHON:BOOL=ON' CMakeCache.txt
 
-        time "$TOOLCHAIN/cmake" --build .
+        $ONESHOT || time "$TOOLCHAIN/cmake" --build .
         time "$TOOLCHAIN/cmake" --build . --target install
+        grep '^BUILD_PYTHON:BOOL=ON' CMakeCache.txt
+
         time "$TOOLCHAIN/ctest" --output-on-failure -j"$(nproc)" || ! nvidia-smi
 
         # Known issues:
