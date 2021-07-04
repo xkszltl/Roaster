@@ -110,6 +110,7 @@ RUN set -e; \
             ruby-all-dev \
             sed \
             {selinux-policy,policycoreutils}{,'-*'} \
+            socat \
             strace \
             software-properties-common \
             subversion-tools \

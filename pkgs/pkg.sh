@@ -64,6 +64,7 @@ for subset in pkg-{stable,skip,all}; do
                 [!] {traceroute,mtr,rsync,tcpdump,whois,net-snmp}{,-*}
                 torsocks{,-*}
                 [!] {core,diff,elf,find,ib,ip,pci,usb,yum-}utils{,-*}
+                [!] socat
                 nextgen-yum4{,-*}
                 dnf-plugins-{core,ovl,versionlock}{,-*}
                 yum-plugin-versionlock{,-*}
