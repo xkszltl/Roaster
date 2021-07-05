@@ -5,7 +5,7 @@
 [ -e $STAGE/glog ] && ( set -xe
     cd $SCRATCH
 
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" google/glog,v
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" google/glog,v0.4.
     until git clone --depth 1 --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd glog
 
@@ -14,11 +14,12 @@
     # Known issues:
     #   - Expose IsGoogleLoggingInitialized() API in v0.5.0.
     #     https://github.com/google/glog/pull/651
-    PATCHES='81e0d61'
-    git fetch origin master
-    for i in $PATCHES; do
-        git cherry-pick "$i"
-    done
+    #   - Disable patch for v0.4.
+    # PATCHES='81e0d61'
+    # git fetch origin master
+    # for i in $PATCHES; do
+    #     git cherry-pick "$i"
+    # done
 
     # ------------------------------------------------------------
 
