@@ -18,11 +18,6 @@
     until git clone -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd onnxruntime
 
-    # Patch DNNL+TRT issues in 1.7.
-    # - https://github.com/microsoft/onnxruntime/issues/7005
-    git fetch origin master
-    git cherry-pick 17f91ff
-
     git remote add patch https://github.com/xkszltl/onnxruntime.git
 
     PATCHES=""
