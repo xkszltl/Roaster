@@ -95,7 +95,10 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
                 exit 1
                 ;;
             esac
-            /usr/bin/sudo -E PATH="$PATH" "$py" -m pip install --no-clean --use-feature=in-tree-build -Uv "$URL" || /usr/bin/sudo -E PATH="$PATH" "$py" -m pip install --no-clean --use-feature=in-tree-build -IUv "$URL"
+            for opt in '' '-I' ';'; do
+                [ "_$opt" != '_;' ]
+                /usr/bin/sudo -E PATH="$PATH" "$py" -m pip install --no-clean $([ ! "$USE_LOCAL_GIT" ] || echo '--use-feature=in-tree-build') -Uv $opt "$URL" || continue
+            done
         )
 
         CACHE_VALID=false
