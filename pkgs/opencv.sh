@@ -9,11 +9,6 @@
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd opencv
 
-    # OpenCV 4.5.2 is broken due to a OpenEXR related regression.
-    # - https://github.com/opencv/opencv/issues/19925
-    git fetch origin master
-    git cherry-pick 083a7c8f
-
     # ------------------------------------------------------------
 
     git submodule add "../opencv_contrib.git" contrib
