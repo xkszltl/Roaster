@@ -32,9 +32,6 @@
     #     git pull --no-edit --rebase patch "$i"
     # done
 
-    rm -f 'pyproject.toml'
-    git commit -am 'Mitigate `pip install` regression from https://github.com/pytorch/pytorch/pull/60408'
-
     . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
 
     if [ -d '/usr/local/src/mkl-dnn' ]; then
