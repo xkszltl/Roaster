@@ -5,6 +5,7 @@
 [ -e $STAGE/pytorch ] && ( set -xe
     cd $SCRATCH
 
+    # NetworkX 2.6 does not support Python 3.7.
     "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  \
         cython/cython                               \
         benjaminp/six                               \
@@ -13,7 +14,7 @@
         Frozenball/pytest-sugar,master              \
         numpy/numpy,v1.19.                          \
         micheles/decorator                          \
-        networkx/networkx,networkx-
+        networkx/networkx,networkx-2.5.
     "$ROOT_DIR/pkgs/utils/pip_install_from_wheel.sh" dataclasses
 
     # ------------------------------------------------------------
