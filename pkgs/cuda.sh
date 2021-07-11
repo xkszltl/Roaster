@@ -14,7 +14,7 @@
     esac
 
     export CUDA_VER_MAJOR="11"
-    export CUDA_VER_MINOR="3"
+    export CUDA_VER_MINOR="4"
     case "$DISTRO_ID" in
     'centos' | 'fedora' | 'rhel')
         sudo dnf makecache
@@ -104,26 +104,27 @@
     export CUDA_VER_MINOR="$(cut -d'.' -f2 <<< "$CUDA_VER")"
     export CUDA_VER_BUILD="$(cut -d'.' -f3 <<< "$CUDA_VER")"
 
+    # CUDA version re-mapping should be maintained according to the latest release.
     for attempt in $(seq "$PKG_MAX_ATTEMPT" -1 0); do
         [ "$attempt" -gt 0 ]
         (
             set -e
             case "$DISTRO_ID" in
             'centos' | 'fedora' | 'rhel')
-                $RPM_INSTALL                                                            \
-                    libcudnn8{,-devel}"-*-*cuda$CUDA_VER_MAJOR.$CUDA_VER_MINOR"         \
-                    libnccl{,-devel,-static}"-*-*cuda$CUDA_VER_MAJOR.$CUDA_VER_MINOR"   \
+                $RPM_INSTALL                                                                                            \
+                    libcudnn8{,-devel}"-*-*cuda$CUDA_VER_MAJOR.$CUDA_VER_MINOR"                                         \
+                    libnccl{,-devel,-static}"-*-*cuda$(sed 's/11\.[1-3]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR")" \
                     libnv{infer{,-plugin},{,onnx}parsers}{7,-devel}"-7.*-*cuda$(sed 's/11\.[23]/11\.1/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR")"
-                : || $RPM_INSTALL                                                       \
-                    libnv{infer{,-plugin},{,onnx}parsers}{8,-devel}"-8.*-*cuda$(sed 's/11\.[12]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR")"
+                : || $RPM_INSTALL                                                                                       \
+                    libnv{infer{,-plugin},{,onnx}parsers}{8,-devel}"-8.*-*cuda$(sed 's/11\.[12]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.4/11\.3/')"
                 ;;
             'debian' | 'linuxmint' | 'ubuntu')
-                sudo DEBIAN_FRONTEND=noninteractive apt-get install --allow-downgrades -y   \
-                    libcudnn8{,-dev}"=*+cuda$CUDA_VER_MAJOR.$CUDA_VER_MINOR"                \
-                    libnccl{2,-dev}"=*+cuda$CUDA_VER_MAJOR.$CUDA_VER_MINOR"                 \
+                sudo DEBIAN_FRONTEND=noninteractive apt-get install --allow-downgrades -y                               \
+                    libcudnn8{,-dev}"=*+cuda$CUDA_VER_MAJOR.$CUDA_VER_MINOR"                                            \
+                    libnccl{2,-dev}"=*+cuda$(sed 's/11\.[1-3]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR")"           \
                     libnv{infer{,-plugin},{,onnx}parsers}{7,-dev}"=7.*+cuda$(sed 's/11\.[23]/11\.1/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR")"
-                : || sudo DEBIAN_FRONTEND=noninteractive apt-get install --allow-downgrades -y  \
-                    libnv{infer{,-plugin},{,onnx}parsers}{8,-dev}"=8.*+cuda$(sed 's/11\.[12]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR")"
+                : || sudo DEBIAN_FRONTEND=noninteractive apt-get install --allow-downgrades -y                          \
+                    libnv{infer{,-plugin},{,onnx}parsers}{8,-dev}"=8.*+cuda$(sed 's/11\.[12]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.4/11\.3/')"
                 ;;
             esac
         ) && break
