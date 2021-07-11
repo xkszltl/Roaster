@@ -48,10 +48,10 @@
     rm -rf ~/.tmux/plugins/tpm
     git clone "$GIT_MIRROR/tmux-plugins/tpm.git" ~/.tmux/plugins/tpm
     cat << EOF > ~/.tmux.conf
-set -g @plugin 'tmux-plugins/tpm'
-set -g @plugin 'tmux-plugins/tmux-sensible'
-set -g @plugin 'tmux-plugins/tmux-resurrect'
-set -g @plugin 'tmux-plugins/tmux-continuum'
+set -g @plugin '$GIT_MIRROR/tmux-plugins/tpm.git'
+set -g @plugin '$GIT_MIRROR/tmux-plugins/tmux-sensible.git'
+set -g @plugin '$GIT_MIRROR/tmux-plugins/tmux-resurrect.git'
+set -g @plugin '$GIT_MIRROR/tmux-plugins/tmux-continuum.git'
 
 set -g @resurrect-processes 'watch "/usr/bin/python3 /usr/bin/glances"'
 set -g @continuum-restore 'on'
@@ -63,6 +63,7 @@ EOF
 
     TMUX_PLUGIN_MANAGER_PATH=~/.tmux/plugins/ ~/.tmux/plugins/tpm/bin/install_plugins
     TMUX_PLUGIN_MANAGER_PATH=~/.tmux/plugins/ ~/.tmux/plugins/tpm/bin/update_plugins all
+    sed -i "s/$(sed 's/\([\\\/\.\-]\)/\\\1/g' <<< "$GIT_MIRROR")/$(sed 's/\([\\\/\.\-]\)/\\\1/g' <<< "$GIT_MIRROR_GITHUB")/" ~/.tmux.conf
 )
 sudo rm -vf $STAGE/tmux
 sync || true
