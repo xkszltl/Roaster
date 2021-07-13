@@ -15,6 +15,11 @@
     git fetch origin master
     git merge 4ec5648
 
+    if [ "_$GIT_MIRROR" = "_$GIT_MIRROR_CODINGCAFE" ] && grep '^https://' <<< "$GIT_MIRROR_CODINGCAFE" >/dev/null; then
+        sed -i 's/"'"$(sed 's/\([\\\/\.\-]\)/\\\1/g' <<< 'https://github.com/${GITHUB_REPO}/archive/${COMMIT}.zip')"'"/"'"$(sed 's/\([\\\/\.\-]\)/\\\1/g' <<< "$GIT_MIRROR_CODINGCAFE"'/${GITHUB_REPO}/-/archive/${COMMIT}.zip')"'"/' dependencies/import.cmake
+        ! git diff --exit-code --name-only || git commit -am 'Work around github connection requirements.'
+    fi
+
     . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
 
     # ------------------------------------------------------------
