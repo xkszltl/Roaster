@@ -61,6 +61,7 @@ if [ ! "'"$PATTERN"'" ] || grep "'"$PATTERN"'" <<< "$SRC_DIR"; then
     # git push --mirror origin 2>&1
     # git push -f --all  --prune origin 2>&1
     # git push -f --tags --prune origin 2>&1
+    git push -f         origin 2>&1
     git push -f --prune origin 2>&1
     git config remote.origin.mirror true
 fi
