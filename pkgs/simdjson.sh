@@ -11,10 +11,6 @@
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd simdjson
 
-    # Patch for https://github.com/simdjson/simdjson/issues/977
-    git fetch origin master
-    git merge 4ec5648
-
     if [ "_$GIT_MIRROR" = "_$GIT_MIRROR_CODINGCAFE" ] && grep '^https://' <<< "$GIT_MIRROR_CODINGCAFE" >/dev/null; then
         sed -i 's/"'"$(sed 's/\([\\\/\.\-]\)/\\\1/g' <<< 'https://github.com/${GITHUB_REPO}/archive/${COMMIT}.zip')"'"/"'"$(sed 's/\([\\\/\.\-]\)/\\\1/g' <<< "$GIT_MIRROR_CODINGCAFE"'/${GITHUB_REPO}/-/archive/${COMMIT}.zip')"'"/' dependencies/import.cmake
         ! git diff --exit-code --name-only || git commit -am 'Work around github connection requirements.'
