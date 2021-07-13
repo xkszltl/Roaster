@@ -14,7 +14,7 @@
     cd protobuf
 
     PATCHES=""
-    git remote add patch "https://github.com/xkszltl/protobuf.git"
+    git remote add patch "$GIT_MIRROR/xkszltl/protobuf.git"
     for i in $PATCHES; do
         git fetch patch
         git cherry-pick "patch/$i"

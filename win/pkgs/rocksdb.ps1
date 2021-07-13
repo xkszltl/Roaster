@@ -24,7 +24,7 @@ git clone --single-branch -b "$latest_ver" "$repo"
 
 pushd "$root"
 
-git remote add patch https://github.com/xkszltl/rocksdb.git
+git remote add patch "${Env:GIT_MIRROR}/xkszltl/rocksdb.git"
 git fetch patch
 git cherry-pick "patch/export"
 git cherry-pick "patch/find"

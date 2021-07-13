@@ -15,7 +15,7 @@
 
     . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
 
-    git remote add patch 'https://github.com/xkszltl/pybind11.git'
+    git remote add patch "$GIT_MIRROR/xkszltl/pybind11.git"
     PATCHES=""
     for i in $PATCHES; do
         git fetch patch "$i"

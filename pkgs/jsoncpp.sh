@@ -12,7 +12,7 @@
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd jsoncpp
 
-    git remote add patch "https://github.com/xkszltl/jsoncpp.git"
+    git remote add patch "$GIT_MIRROR_GITHUB/xkszltl/jsoncpp.git"
     git fetch patch
 
     # ------------------------------------------------------------

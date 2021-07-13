@@ -56,7 +56,7 @@ git fetch origin master
 git cherry-pick 0978d2b
 git cherry-pick 7250562
 
-git remote add patch https://github.com/xkszltl/onnxruntime.git
+git remote add patch "${Env:GIT_MIRROR}/xkszltl/onnxruntime.git"
 git fetch patch
 
 # ================================================================================
@@ -110,7 +110,7 @@ if ($update_protobuf)
     git fetch --tags
     $pb_latest_ver='v' + $($(git tag) -match '^v[0-9\.]*$' -replace '^v','' | sort {[Version]$_})[-1]
     git checkout "$pb_latest_ver"
-    git remote add patch https://github.com/xkszltl/protobuf.git
+    git remote add patch "${Env:GIT_MIRROR}/xkszltl/protobuf.git"
     git fetch patch
     git submodule update --init
     popd

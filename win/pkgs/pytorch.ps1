@@ -27,7 +27,7 @@ pushd "$root"
 # Patch
 # ================================================================================
 
-git remote add patch https://github.com/xkszltl/pytorch.git
+git remote add patch "${Env:GIT_MIRROR}/xkszltl/pytorch.git"
 git fetch patch
 git pull patch lstm
 
@@ -45,7 +45,7 @@ pushd third_party/protobuf
 git fetch --tags
 $pb_latest_ver='v' + $($(git tag) -match '^v[0-9\.]*$' -replace '^v','' | sort {[Version]$_})[-1]
 git checkout "$pb_latest_ver"
-git remote add patch https://github.com/xkszltl/protobuf.git
+git remote add patch "${Env:GIT_MIRROR}/xkszltl/protobuf.git"
 git fetch patch
 # git cherry-pick patch/constexpr-3.7
 git submodule update --init

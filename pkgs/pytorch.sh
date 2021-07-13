@@ -23,7 +23,7 @@
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd pytorch
 
-    git remote add patch https://github.com/xkszltl/pytorch.git
+    git remote add patch "$GIT_MIRROR/xkszltl/pytorch.git"
 
     PATCHES="lstm rnn_arg"
 

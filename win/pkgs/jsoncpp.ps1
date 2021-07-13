@@ -26,7 +26,7 @@ $latest_ver="master"
 git clone --single-branch -b "$latest_ver" "$repo"
 pushd "$root"
 
-git remote add patch "https://github.com/xkszltl/jsoncpp.git"
+git remote add patch "${Env:GIT_MIRROR}/xkszltl/jsoncpp.git"
 git fetch patch
 
 mkdir build

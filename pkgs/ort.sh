@@ -20,7 +20,7 @@
 
     PATCHES=""
     if [ "$PATCHES" ]; then
-        git remote add patch https://github.com/xkszltl/onnxruntime.git
+        git remote add patch "$GIT_MIRROR/xkszltl/onnxruntime.git"
         git fetch patch
         for i in $PATCHES; do
             # git pull --no-edit --rebase patch "$i"
@@ -37,7 +37,7 @@
     (
         set -xe
         pushd 'cmake/external/onnx-tensorrt'
-        git remote add xkszltl 'https://github.com/xkszltl/onnx-tensorrt.git'
+        git remote add xkszltl "$GIT_MIRROR/xkszltl/onnx-tensorrt.git"
         git fetch xkszltl rm_myelin
         git cherry-pick FETCH_HEAD
         popd
