@@ -14,7 +14,7 @@
     # Patch build error in 1.1.9.
     # - https://github.com/google/snappy/pull/128
     git remote add github 'https://github.com/google/snappy.git'
-    for attempt in $(100 -1 0); do
+    for attempt in $(seq 100 -1 0); do
         [ "$attempt" -gt 0 ]
         git fetch github pull/128/head && break
         echo "Retrying... $(expr "$attempt" - 1) chance(s) left."
