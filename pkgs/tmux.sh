@@ -61,8 +61,18 @@ set -g mouse on
 run -b '~/.tmux/plugins/tpm/tpm'
 EOF
 
-    TMUX_PLUGIN_MANAGER_PATH=~/.tmux/plugins/ ~/.tmux/plugins/tpm/bin/install_plugins
-    TMUX_PLUGIN_MANAGER_PATH=~/.tmux/plugins/ ~/.tmux/plugins/tpm/bin/update_plugins all
+    for attempt in $(seq 10 -1 0); do
+        [ "$attempt" -gt 0 ]
+        TMUX_PLUGIN_MANAGER_PATH=~/.tmux/plugins/ ~/.tmux/plugins/tpm/bin/install_plugins && break
+        echo "Retrying... $(expr "$attempt" - 1) chance(s) left."
+        sleep 3
+    done
+    for attempt in $(seq 10 -1 0); do
+        [ "$attempt" -gt 0 ]
+        TMUX_PLUGIN_MANAGER_PATH=~/.tmux/plugins/ ~/.tmux/plugins/tpm/bin/update_plugins all && break
+        echo "Retrying... $(expr "$attempt" - 1) chance(s) left."
+        sleep 3
+    done
     sed -i "s/$(sed 's/\([\\\/\.\-]\)/\\\1/g' <<< "$GIT_MIRROR")/$(sed 's/\([\\\/\.\-]\)/\\\1/g' <<< "$GIT_MIRROR_GITHUB")/" ~/.tmux.conf
 )
 sudo rm -vf $STAGE/tmux
