@@ -40,34 +40,42 @@ set +x
                 [ "$HTTPS_PROXY" ] && export https_proxy="$HTTPS_PROXY"
 
                 for i in 01org/mkl-dnn=intel/mkl-dnn google/upb=protocolbuffers/upb lyft/protoc-gen-validate=envoyproxy/protoc-gen-validate philsquared/Catch=catchorg/Catch2; do
-                    sed -i "s/$(sed 's/\([\/\.]\)/\\\1/g' <<< "$i" | tr '=' '/')/" .gitmodules
+                    sed -i "s/$(sed 's/\([\\\/\.\-]\)/\\\1/g' <<< "$i" | tr '=' '/')/" .gitmodules
                 done
-                for i in $("$ROOT_DIR/mirror-list.sh"); do
+                for i in $("$ROOT_DIR/mirror-list.sh" | sed 's/ /,/g'); do
                     # Case-insensitive with escape.
                     Ii="$(paste -d' '                   \
-                            <(cut -d' ' -f3 <<< "$i  " | tr 'a-z' 'A-Z' | sed 's/\(.\)/\1 /g' | xargs -n1)  \
-                            <(cut -d' ' -f3 <<< "$i  " | tr 'A-Z' 'a-z' | sed 's/\(.\)/\1 /g' | xargs -n1)  \
+                            <(cut -d',' -f3 <<< "$i,," | tr 'a-z' 'A-Z' | sed 's/\(.\)/\1 /g' | xargs -n1)  \
+                            <(cut -d',' -f3 <<< "$i,," | tr 'A-Z' 'a-z' | sed 's/\(.\)/\1 /g' | xargs -n1)  \
                         | sed 's/\(.\) \(.\)/\[\1\2\]/' \
                         | sed 's/^\[[^A-Za-z]/\[/'      \
                         | paste -sd' ' -                \
                         | sed 's/ //g'                  \
-                        | sed 's/\([\/\.\-]\)/\\\1/g')"
-                    sed -i "s/$(cut -d' ' -f1 <<< "$i" | sed 's/\([\/\.]\)/\\\1/g')\($(sed 's/\([\/\.]\)/\\\1/g' <<< "$Ii")\)[\/]*/$(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR/$(cut -d' ' -f2 <<< "$i ")/$(cut -d' ' -f3 <<< "$i  ").git" | sed 's/\/\/*/\//g')/" .gitmodules
-                    sed -i "s/\($(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR")\/.*\.git\)\.git[[:space:]]*$/\1/" .gitmodules
+                        | sed 's/\([\\\/\.\-]\)/\\\1/g')"
+                    grep "$Ii" .gitmodules >/dev/null || continue
+                    set -x
+                    origin_esc="$(cut -d',' -f1 <<< "$i" | sed 's/\/*$/\//' | sed 's/\([\\\/\.\-]\)/\\\1/g')"
+                    mirror_esc="$(sed 's/\([^:]\/\)\/*/\1/g' <<< "$GIT_MIRROR/$(cut -d, -f2 <<< "$i,")/$(cut -d, -f3 <<< "$i,,").git" | sed 's/\([\\\/\.\-]\)/\\\1/g')"
+                    sed -i 's/'"$origin_esc"'\('"$Ii"'\)\.git[\/]*[[:space:]]*$/'"$mirror_esc"'/' .gitmodules
+                    sed -i 's/'"$origin_esc"'\('"$Ii"'\)[\/]*[[:space:]]*$/'"$mirror_esc"'/'      .gitmodules
+                    sed -i 's/\('"$(sed 's/\([\\\/\.\-]\)/\\\1/g' <<< "$GIT_MIRROR")"'\/.*\.git\)\.git[[:space:]]*$/\1/' .gitmodules
+                    set +x
                 done
 
                 # TODO:
                 #     This is a temporary solution for sourceware.org mirroring.
                 #     Should use config file instead ASAP.
                 # for i in $(sed -n 's/^\([[:alnum:]][^\/[:space:]]*\),.*/\1/p' "$ROOT_DIR/mirrors.sh"); do
-                #     sed -i "s/[^[:space:]]*:\/\/[^\/].*\(\/$i\.git\)[\/]*/$(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR")\/sourceware\1.git/" .gitmodules
-                #     sed -i "s/\($(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR")\/sourceware\/$i\.git\)\.git[[:space:]]*$/\1/" .gitmodules
+                #     sed -i "s/[^[:space:]]*:\/\/[^\/].*\(\/$i\.git\)[\/]*/$(sed 's/\([\\\/\.\-]\)/\\\1/g' <<< "$GIT_MIRROR")\/sourceware\1.git/" .gitmodules
+                #     sed -i "s/\($(sed 's/\([\\\/\.\-]\)/\\\1/g' <<< "$GIT_MIRROR")\/sourceware\/$i\.git\)\.git[[:space:]]*$/\1/" .gitmodules
                 # done
 
                 # gRPC->bloaty->libFuzzer is hosted on googlesource.com, not always accessible.
                 #   - https://github.com/grpc/grpc/issues/24926
                 # Use a mirror on gitee for now.
                 sed -i 's/https:\/\/.*\/chromium\/llvm\-project\/llvm\/lib\/Fuzzer/https:\/\/gitee\.com\/local-grpc\/Fuzzer\.git/' .gitmodules
+
+                git --no-pager diff .gitmodules
             fi
 
             git submodule init
