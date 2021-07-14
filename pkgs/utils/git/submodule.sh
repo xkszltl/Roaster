@@ -1,8 +1,20 @@
 #!/bin/bash
 
+
 set +x
 
 (
+    if [ ! "$ROOT_DIR" ]; then
+        echo '$ROOT_DIR is not defined.'
+        echo 'Running in standalone mode.'
+        export ROOT_DIR="$(realpath -e "$(dirname "$0")")"
+        until [ -x "$ROOT_DIR/setup.sh" ] && [ -d "$ROOT_DIR/pkgs" ]; do export ROOT_DIR=$(realpath -e "$ROOT_DIR/.."); done
+        [ "_$ROOT_DIR" != "_$(readlink -f "$ROOT_DIR/..")" ]
+        echo 'Set $ROOT_DIR to "'"$ROOT_DIR"'".'
+    fi
+
+    [ "$GIT_MIRROR" ] || . "$ROOT_DIR/pkgs/env/mirror.sh"
+
     case "$DISTRO_ID" in
     'centos' | 'fedora' | 'rhel')
         set +e
@@ -26,29 +38,32 @@ set +x
                 [ "$HTTP_PROXY" ] && export HTTPS_PROXY="$HTTP_PROXY"
                 [ "$HTTP_PROXY" ] && export http_proxy="$HTTP_PROXY"
                 [ "$HTTPS_PROXY" ] && export https_proxy="$HTTPS_PROXY"
+
                 for i in 01org/mkl-dnn=intel/mkl-dnn google/upb=protocolbuffers/upb lyft/protoc-gen-validate=envoyproxy/protoc-gen-validate philsquared/Catch=catchorg/Catch2; do
                     sed -i "s/$(sed 's/\([\/\.]\)/\\\1/g' <<< "$i" | tr '=' '/')/" .gitmodules
                 done
-                for i in $(sed -n 's/^\([[:alnum:]][^\/[:space:]]*\)\/[^\/[:space:]].*,.*/\1/p' "$ROOT_DIR/mirrors.sh"); do
+                for i in $("$ROOT_DIR/mirror-list.sh"); do
                     # Case-insensitive with escape.
                     Ii="$(paste -d' '                   \
-                            <(tr a-z A-Z <<< "$i" | sed 's/\(.\)/\1 /g' | xargs -n1)    \
-                            <(tr A-Z a-z <<< "$i" | sed 's/\(.\)/\1 /g' | xargs -n1)    \
+                            <(cut -d' ' -f3 <<< "$i  " | tr 'a-z' 'A-Z' | sed 's/\(.\)/\1 /g' | xargs -n1)  \
+                            <(cut -d' ' -f3 <<< "$i  " | tr 'A-Z' 'a-z' | sed 's/\(.\)/\1 /g' | xargs -n1)  \
                         | sed 's/\(.\) \(.\)/\[\1\2\]/' \
                         | sed 's/^\[[^A-Za-z]/\[/'      \
                         | paste -sd' ' -                \
                         | sed 's/ //g'                  \
                         | sed 's/\([\/\.\-]\)/\\\1/g')"
-                    sed -i "s/[^[:space:]]*:\/\/[^\/]*\(\/$Ii\/.*[^\/]\)[\/]*/$(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR")\1.git/" .gitmodules
-                    sed -i "s/\($(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR")\/$Ii\/.*\.git\)\.git[[:space:]]*$/\1/" .gitmodules
+                    sed -i "s/$(cut -d' ' -f1 <<< "$i" | sed 's/\([\/\.]\)/\\\1/g')\($(sed 's/\([\/\.]\)/\\\1/g' <<< "$Ii")\)[\/]*/$(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR/$(cut -d' ' -f2 <<< "$i ")/$(cut -d' ' -f3 <<< "$i  ").git" | sed 's/\/\/*/\//g')/" .gitmodules
+                    sed -i "s/\($(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR")\/.*\.git\)\.git[[:space:]]*$/\1/" .gitmodules
                 done
+
                 # TODO:
                 #     This is a temporary solution for sourceware.org mirroring.
                 #     Should use config file instead ASAP.
-                for i in $(sed -n 's/^\([[:alnum:]][^\/[:space:]]*\),.*/\1/p' "$ROOT_DIR/mirrors.sh"); do
-                    sed -i "s/[^[:space:]]*:\/\/[^\/].*\(\/$i\.git\)[\/]*/$(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR")\/sourceware\1.git/" .gitmodules
-                    sed -i "s/\($(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR")\/sourceware\/$i\.git\)\.git[[:space:]]*$/\1/" .gitmodules
-                done
+                # for i in $(sed -n 's/^\([[:alnum:]][^\/[:space:]]*\),.*/\1/p' "$ROOT_DIR/mirrors.sh"); do
+                #     sed -i "s/[^[:space:]]*:\/\/[^\/].*\(\/$i\.git\)[\/]*/$(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR")\/sourceware\1.git/" .gitmodules
+                #     sed -i "s/\($(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR")\/sourceware\/$i\.git\)\.git[[:space:]]*$/\1/" .gitmodules
+                # done
+
                 # gRPC->bloaty->libFuzzer is hosted on googlesource.com, not always accessible.
                 #   - https://github.com/grpc/grpc/issues/24926
                 # Use a mirror on gitee for now.
