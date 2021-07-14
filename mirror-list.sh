@@ -24,7 +24,7 @@ c-ares/c-ares,\
 caffe2/{caffe2,models},\
 catchorg/{Catch2,Clara},\
 ccache/ccache,\
-census-instrumentation/{opencensus-{cpp,csharp,erlang,go,java,js-core,node,php,proto,python,ruby,service,specs,web,website}},\
+census-instrumentation/opencensus-{cpp,csharp,erlang,go,java,js-core,node,php,proto,python,ruby,service,specs,web,website},\
 chadaustin/sajson,\
 chromium/{ballista,chromium,gyp,pdfium,vs-chromium},\
 Cisco-Talos/clamav-{bytecode-compiler,devel,faq,safebrowsing},\
