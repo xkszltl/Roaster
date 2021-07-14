@@ -80,7 +80,7 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
 
         # Clone git repo using local mirror.
         if [ "_$URL" = "_git+$GIT_REPO@$GIT_TAG" ]; then
-            [ "$SCRATCH" ] && [ -d "$SCRATCH" ] && SCRATCH_TMPDIR="$SCRATCH" || SCRATCH_TMPDIR=''
+            [ "$SCRATCH" ] && [ -d "$SCRATCH" ] && SCRATCH_TMPDIR='' || SCRATCH_TMPDIR="$(mktemp -d)"
             [ ! "$SCRATCH_TMPDIR" ] || SCRATCH="$SCRATCH_TMPDIR"
             PIP_CLONE_TMPDIR="$(mktemp -d "$SCRATCH/mirrored-pip-XXXXXX")"
             (
