@@ -78,8 +78,27 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
             continue
         fi
 
+        # Clone git repo using local mirror.
+        if [ "_$URL" = "_git+$GIT_REPO@$GIT_TAG" ]; then
+            [ "$SCRATCH" ] && [ -d "$SCRATCH" ] && SCRATCH_TMPDIR="$SCRATCH" || SCRATCH_TMPDIR=''
+            [ ! "$SCRATCH_TMPDIR" ] || SCRATCH="$SCRATCH_TMPDIR"
+            PIP_CLONE_TMPDIR="$(mktemp -d "$SCRATCH/mirrored-pip-XXXXXX")"
+            (
+                set -e
+                cd "$PIP_CLONE_TMPDIR"
+                git clone --depth 1 --single-branch -b "$GIT_TAG" "$GIT_REPO"
+                cd "$(basename "$GIT_REPO" | sed 's/\.git$//')"
+                "$ROOT_DIR/pkgs/utils/git/submodule.sh"
+            )
+            URL="$(realpath -e "$PIP_CLONE_TMPDIR/$(basename "$GIT_REPO" | sed 's/\.git$//')")"
+            [ "$URL" ]
+            [ -d "$URL" ]
+            USE_LOCAL_GIT=true
+        fi
+
         (
             set -e
+
             case "$DISTRO_ID" in
             'centos' | 'fedora' | 'rhel')
                 set +e
@@ -100,6 +119,9 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
                 ! /usr/bin/sudo -E PATH="$PATH" "$py" -m pip install --no-clean $([ ! "$USE_LOCAL_GIT" ] || echo '--use-feature=in-tree-build') -Uv $opt "$URL" || break
             done
         )
+
+        [ ! "$PIP_CLONE_TMPDIR" ] || rm -rf "$PIP_CLONE_TMPDIR"
+        [ ! "$SCRATCH_TMPDIR"   ] || rm -rf "$SCRATCH_TMPDIR"
 
         CACHE_VALID=false
     )
