@@ -19,7 +19,7 @@ echo 'Roaster packages:'
 echo '```'
 case "$DISTRO_ID" in
 "centos" | "fedora" | "rhel")
-    rpm -qa 'roaster-*'
+    rpm -qa 'roaster-*' | sort
     ;;
 "debian" | "linuxmint" | "ubuntu")
     dpkg -l 'roaster-*' | grep '^ii' | sed 's/  */ /g' | cut -d' ' -f2,3
@@ -31,7 +31,10 @@ echo 'Nvidia packages:'
 echo '```'
 case "$DISTRO_ID" in
 "centos" | "fedora" | "rhel")
-    rpm -qa {cuda,lib{cudnn,nvinfer,nccl}}'*'
+    rpm -qa 'cuda*' | sort
+    rpm -qa 'libcudnn*' | sort
+    rpm -qa 'libnvinfer*' | sort
+    rpm -qa 'libnccl*' | sort
     ;;
 "debian" | "linuxmint" | "ubuntu")
     dpkg -l {cuda,lib{cudnn,nvinfer,nccl}}'*' | grep '^ii' | sed 's/  */ /g' | cut -d' ' -f2,3
