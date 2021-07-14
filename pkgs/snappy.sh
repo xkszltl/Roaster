@@ -14,7 +14,12 @@
     # Patch build error in 1.1.9.
     # - https://github.com/google/snappy/pull/128
     git remote add github 'https://github.com/google/snappy.git'
-    git fetch github pull/128/head
+    for attempt in $(100 -1 0); do
+        [ "$attempt" -gt 0 ]
+        git fetch github pull/128/head && break
+        echo "Retrying... $(expr "$attempt" - 1) chance(s) left."
+        sleep 3
+    done
     git cherry-pick FETCH_HEAD
 
     . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
