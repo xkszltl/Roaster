@@ -93,7 +93,6 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
             URL="$(realpath -e "$PIP_CLONE_TMPDIR/$(basename "$GIT_REPO" | sed 's/\.git$//')")"
             [ "$URL" ]
             [ -d "$URL" ]
-            USE_LOCAL_GIT=true
         fi
 
         (
