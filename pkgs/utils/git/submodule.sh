@@ -53,13 +53,12 @@ set +x
                         | sed 's/ //g'                  \
                         | sed 's/\([\\\/\.\-]\)/\\\1/g')"
                     grep "$Ii" .gitmodules >/dev/null || continue
-                    set -x
                     origin_esc="$(cut -d',' -f1 <<< "$i" | sed 's/\/*$/\//' | sed 's/\([\\\/\.\-]\)/\\\1/g')"
                     mirror_esc="$(sed 's/\([^:]\/\)\/*/\1/g' <<< "$GIT_MIRROR/$(cut -d, -f2 <<< "$i,")/$(cut -d, -f3 <<< "$i,,").git" | sed 's/\([\\\/\.\-]\)/\\\1/g')"
+                    echo "Candidate submodule detection pattern \"$origin_esc$Ii\" -> \"$mirror_esc\"."
                     sed -i 's/'"$origin_esc"'\('"$Ii"'\)\.git[\/]*[[:space:]]*$/'"$mirror_esc"'/' .gitmodules
                     sed -i 's/'"$origin_esc"'\('"$Ii"'\)[\/]*[[:space:]]*$/'"$mirror_esc"'/'      .gitmodules
                     sed -i 's/\('"$(sed 's/\([\\\/\.\-]\)/\\\1/g' <<< "$GIT_MIRROR")"'\/.*\.git\)\.git[[:space:]]*$/\1/' .gitmodules
-                    set +x
                 done
 
                 # TODO:
