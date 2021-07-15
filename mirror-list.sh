@@ -45,6 +45,7 @@ dropbox/json11,\
 eigenteam/eigen-git-mirror,\
 elnormous/{HTTPRequest,ouzel,OuzelShadingLanguage,SoftwareRenderer},\
 emil-e/rapidcheck,\
+emscripten-core/{emscripten{,-ci,-fastcomp{,-clang}},emsdk,posixtestsuite},\
 envoyproxy/{data-plane-api,envoy,{go,java}-control-plane,nighthawk,protoc-gen-validate},\
 esnme/ujson4c,\
 facebook/{rocksdb,zstd},\
