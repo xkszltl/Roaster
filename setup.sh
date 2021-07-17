@@ -230,6 +230,7 @@ if $IS_CONTAINER; then
     "debian" | "linuxmint" | "ubuntu")
         sudo apt-get autoremove -y
         sudo apt-get clean
+        sudo rm -rf /var/lib/apt/lists/*
         ;;
     esac
 fi
