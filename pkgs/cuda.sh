@@ -127,6 +127,9 @@
                     libnv{infer{,-plugin},{,onnx}parsers}{8,-dev}"=8.*+cuda$(sed 's/11\.[12]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.4/11\.3/')"
                 ;;
             esac
+            ldconfig -p | grep libcudnn
+            ldconfig -p | grep libnvinfer
+            ldconfig -p | grep libnccl
         ) && break
         echo "Retrying... $(expr "$attempt" - 1) chance(s) left."
     done
