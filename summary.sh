@@ -3,6 +3,8 @@
 set +x
 set -e
 
+cd "$(dirname "$0")"
+
 [ ! -e '/etc/os-release' ] || . <(sed 's/^\(..*\)/export DISTRO_\1/' '/etc/os-release')
 
 echo 'Highlights:'
