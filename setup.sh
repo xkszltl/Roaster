@@ -224,6 +224,8 @@ if $IS_CONTAINER; then
         sudo dnf clean all --enablerepo='*'
         sudo yum clean all
         sudo rm -rf /var/cache/yum
+        # DNF may log GB of data here.
+        sudo rm -rf /var/log/dnf.librepo.log
         ;;
     "debian" | "linuxmint" | "ubuntu")
         sudo apt-get autoremove -y
