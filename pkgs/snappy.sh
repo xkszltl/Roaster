@@ -8,19 +8,13 @@
     # ------------------------------------------------------------
 
     . "$ROOT_DIR/pkgs/utils/git/version.sh" google/snappy,
-    until git clone -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
+    until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd snappy
 
-    # Patch build error in 1.1.9.
+    # Patch build error in 1.1.9 and master above it.
     # - https://github.com/google/snappy/pull/128
-    git remote add github 'https://github.com/google/snappy.git'
-    for attempt in $(seq 100 -1 0); do
-        [ "$attempt" -gt 0 ]
-        git fetch github pull/128/head && break
-        echo "Retrying... $(expr "$attempt" - 1) chance(s) left."
-        sleep 3
-    done
-    git cherry-pick FETCH_HEAD
+    git grep --name-only 'AdvanceToNextTag' | xargs -n1 sed -i 's/^\([[:space:]]*\)\(size_t AdvanceToNextTag[[:alnum:]_]*(\)/\1inline \2/'
+    git commit -am 'Patch for missing-inline erorr in AdvanceToNextTag().'
 
     . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
 
