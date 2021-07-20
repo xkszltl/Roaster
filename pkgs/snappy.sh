@@ -13,8 +13,8 @@
 
     # Patch build error in 1.1.9 and master above it.
     # - https://github.com/google/snappy/pull/128
-    git grep --name-only 'AdvanceToNextTag' | xargs -n1 sed -i 's/^\([[:space:]]*\)\(size_t AdvanceToNextTag[[:alnum:]_]*(\)/\1inline \2/'
-    git commit -am 'Patch for missing-inline erorr in AdvanceToNextTag().'
+    git grep --name-only 'AdvanceToNextTag' | xargs -rn1 sed -i 's/^\([[:space:]]*\)\(size_t AdvanceToNextTag[[:alnum:]_]*(\)/\1inline \2/'
+    git diff --exit-code || git commit -am 'Patch for missing-inline erorr in AdvanceToNextTag().'
 
     . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
 
