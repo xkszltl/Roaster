@@ -172,7 +172,7 @@ zserge/jsmn,\
 },\
 https://gitlab.com/\ /\ {\
 libeigen/eigen,\
-NVIDIA/{cloud-native/{cnt-docs,go-nvlib,k8s-driver-manager,mig-parted},container-{images/{caffe,cuda{,-ppc64le,gl},digits,dockerhub-manifests,driver,l4t-base,mps,opencl,opengl,samples,video-codec-sdk,vulkan},infrastructure/{aws-kube-ci,github-app,signer},toolkit/{container-{config,runtime,toolkit},gpu-monitoring-tools,libnvidia-container,nvidia-docker}},dlsyseng/{slurm,spank_fstab},headers/{cuda,cudnn},hpc/slurm-mig-discovery,kubernetes/{device-plugin,gpu-{feature-discovery,operator}},cuda},\
+NVIDIA/{cloud-native/{cnt-docs,go-nvlib,k8s-driver-manager,mig-parted},container-{images/{caffe,cuda{,-ppc64le,gl},digits,dockerhub-manifests,driver,l4t-base,mps,opencl,opengl,samples,video-codec-sdk,vulkan},infrastructure/{aws-kube-ci,github-app},toolkit/{container-{config,runtime,toolkit},gpu-monitoring-tools,libnvidia-container,nvidia-docker}},dlsyseng/{slurm,spank_fstab},headers/{cuda,cudnn},hpc/slurm-mig-discovery,kubernetes/{device-plugin,gpu-{feature-discovery,operator}},cuda},\
 pycqa/flake8,\
 },\
 https://gitlab.alpinelinux.org/\ /\ {\
