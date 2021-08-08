@@ -396,7 +396,7 @@ name=[Cache] runner_gitlab-runner
 baseurl=https://repo.codingcafe.org/gitlab/gitlab-runner/el/$releasever/$basearch
 gpgcheck=0
 gpgkey=https://packages.gitlab.com/runner/gitlab-runner/gpgkey
-       https://packages.gitlab.com/runner/gitlab-runner/gpgkey/runner-gitlab-runner-366915F31B487241.pub.gpg
+       https://packages.gitlab.com/runner/gitlab-runner/gpgkey/runner-gitlab-runner-4C80FB51394521E9.pub.gpg
 sslverify=1
 sslcacert=/etc/pki/tls/certs/ca-bundle.crt
 metadata_expire=300
@@ -408,7 +408,7 @@ name=[Cache] runner_gitlab-runner-source
 baseurl=https://repo.codingcafe.org/gitlab/gitlab-runner/el/$releasever/SRPMS
 gpgcheck=0
 gpgkey=https://packages.gitlab.com/runner/gitlab-runner/gpgkey
-       https://packages.gitlab.com/runner/gitlab-runner/gpgkey/runner-gitlab-runner-366915F31B487241.pub.gpg
+       https://packages.gitlab.com/runner/gitlab-runner/gpgkey/runner-gitlab-runner-4C80FB51394521E9.pub.gpg
 sslverify=1
 sslcacert=/etc/pki/tls/certs/ca-bundle.crt
 metadata_expire=300
