@@ -20,6 +20,7 @@ RUN set -e; \
         [ "$attempt" -gt 0 ]; \
         sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
             asciidoc \
+            apcupsd \
             autoconf{,-archive} automake autopoint \
             axel \
             bash-completion \
@@ -89,6 +90,7 @@ RUN set -e; \
             mtr \
             net-tools \
             ninja-build \
+            nut \
             nvidia-container-runtime \
             openssh-{client,server} \
             pandoc \

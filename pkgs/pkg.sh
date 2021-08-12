@@ -62,6 +62,7 @@ for subset in pkg-{stable,skip,all}; do
                 {f,tc,dhc,htt,libo,io}ping{,-*}
                 hping3{,-*}
                 [!] {traceroute,mtr,rsync,tcpdump,whois,net-snmp}{,-*}
+                [!] {apcupsd,nut}{,-*}
                 torsocks{,-*}
                 [!] {core,diff,elf,find,ib,ip,pci,usb,yum-}utils{,-*}
                 [!] socat
