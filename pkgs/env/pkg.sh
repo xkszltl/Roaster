@@ -32,6 +32,7 @@ esac
 
 export RPM_BLACKLIST=$(echo "
     *-debuginfo
+    git-cola
     libasan2
     python-lexicon
     python2-ansible-runner
