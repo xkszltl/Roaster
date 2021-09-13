@@ -90,7 +90,6 @@ RUN set -e; \
             mtr \
             net-tools \
             ninja-build \
-            nut-server \
             nvidia-container-runtime \
             openssh-{client,server} \
             pandoc \
