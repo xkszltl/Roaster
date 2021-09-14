@@ -41,6 +41,7 @@ dmlc/{dlpack,dmlc-core,gluon-cv,gluon-nlp,HalideIR,tvm,xgboost},\
 docker/docker-ce,\
 docopt/docopt,\
 dotnet/{cli,core{,-setup,clr,fx},source-build,standard},\
+driazati/breakpad,\
 dropbox/json11,\
 eigenteam/eigen-git-mirror,\
 elnormous/{HTTPRequest,ouzel,OuzelShadingLanguage,SoftwareRenderer},\
@@ -62,7 +63,7 @@ giampaolo/psutil,\
 github/{git-lfs,gitignore},\
 golang/{appengine,benchmarks,dep,example,freetype,glog,go{,frontend},groupcache,leveldb,mock,oauth2,protobuf,snappy,term,winstrap},\
 goldmann/docker-squash,\
-google/{benchmark,bloaty,boringssl,flatbuffers,gemmlowp,glog,googletest,gtest-parallel,jax,leveldb,libnop,libprotobuf-mutator,nsync,python-fire,protobuf,re2,skia,snappy,upb,XNNPACK},\
+google/{benchmark,bloaty,boringssl,breakpad,flatbuffers,gemmlowp,glog,googletest,gtest-parallel,jax,leveldb,libnop,libprotobuf-mutator,nsync,python-fire,protobuf,re2,skia,snappy,upb,XNNPACK},\
 googleapis/googleapis,\
 GoogleContainerTools/{base-images-docker,container-{debug-support,diff,structure-test},distroless,jib{,-extensions},kaniko,kpt{,-functions-{catalog,sdk}},skaffold},\
 googlefonts/{fontmake,noto-{cjk,emoji,fonts,sans-hebrew,source},nototools,robotoslab},\
@@ -104,6 +105,7 @@ Microsoft/{azure-pipelines-yaml,BuildXL,calculator,cascadia-code,CNTK,cppwinrt,d
 mikeando/fastjson,\
 moby/{buildkit,moby},\
 mono/{libgdiplus,linker,mono{,-tools,develop,torrent}},\
+mreineck/{ducc,libsharp,pocketfft},\
 nanopb/nanopb,\
 NervanaSystems/{coach,distiller,neon,ngraph},\
 networkx/networkx,\
