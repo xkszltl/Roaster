@@ -377,7 +377,7 @@ parallel -j0 --line-buffer --bar 'bash -c '"'"'
     repo_bn="$(basename "$repo")"
     mkdir -p "repoid"
     pushd "repoid"
-    ln -sf "../$path" "./$repo_bn"
+    ln -sfT "../$path" "./$repo_bn"
     "$DRY" || eval $CLEAN_CACHE $repo
     for rest in $(seq "$retries" -1 -1); do
         if [ "$rest" -ge 0 ] && "$use_proxy" || [ "$rest" -ne 0 ] && ! "$use_proxy" ; then
