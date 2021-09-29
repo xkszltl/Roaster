@@ -16,18 +16,10 @@
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
     (
-        case "$DISTRO_ID" in
-        'centos' | 'fedora' | 'rhel')
-            export CC="gcc" CXX="g++"
-            ;;
-        'ubuntu')
-            export CC="gcc-8" CXX="g++-8"
-            ;;
-        esac
-
         set -xe
 
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
+        . "$ROOT_DIR/pkgs/utils/fpm/distro_cc.sh"
 
         export CFLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"
         ./autogen.sh
