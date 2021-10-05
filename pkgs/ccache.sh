@@ -18,6 +18,8 @@
     (
         . "$ROOT_DIR/pkgs/utils/fpm/distro_cc.sh"
 
+        export PKG_CONFIG_PATH="/usr/local/lib64/pkgconfig:/usr/local/lib/pkgconfig:/usr/local/lib32/pkgconfig:$PKG_CONFIG_PATH"
+
         # CCache 4.0 has switched to CMake.
         if false; then
             time ./autogen.sh
@@ -37,6 +39,7 @@
                 -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
                 -DENABLE_IPO=ON                         \
                 -DENABLE_TESTING=ON                     \
+                -DHIREDIS_FROM_INTERNET=OFF             \
                 -DZSTD_FROM_INTERNET=OFF                \
                 -G"Ninja"                               \
                 ..
