@@ -40,6 +40,7 @@
                 -DENABLE_IPO=ON                         \
                 -DENABLE_TESTING=ON                     \
                 -DHIREDIS_FROM_INTERNET=OFF             \
+                -DREDIS_STORAGE_BACKEND=OFF             \
                 -DZSTD_FROM_INTERNET=OFF                \
                 -G"Ninja"                               \
                 ..
