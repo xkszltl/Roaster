@@ -139,6 +139,7 @@ python-attrs/attrs,\
 pytorch/{audio,botorch,captum,cppdocs,cpuinfo,elastic,examples,fairseq,FBGEMM,glow,ignite,kineto,pytorch,QNNPACK,serve,tensorpipe,text,translate,tutorials,vision,xla},\
 RadeonOpenCompute/{hcc,ROCm-Device-Libs,ROCR-Runtime},\
 reactos/{rapps-db,reactos{,dbg},RosBE,wine},\
+redis/{redis{,-{benchmarks-specification,doc,debian,hashes,io,rb,rcp,snap,specifications}},hiredis{,-node,-py,-rb},jedis},\
 RMerl/{am-toolchains,asuswrt-merlin.ng},\
 ROCm-Developer-Tools/HIP,\
 ryd/chaosvpn,\
