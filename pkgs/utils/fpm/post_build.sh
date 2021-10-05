@@ -10,6 +10,9 @@
 
 pushd "$INSTALL_ROOT"
 
+# Relocate pkg-config.
+find "./$INSTALL_PREFIX" -name '*.pc' -type f | xargs -r sed -i "s/$(sed 's/\/*$//' <<< "$INSTALL_ROOT" | sed 's/\([\\\/\.\-]\)/\\\1/g')//g"
+
 export PKG_LD_CONF_DIR="/etc/ld.so.conf.d/roaster.conf.d"
 
 mkdir -p "./$PKG_LD_CONF_DIR"
