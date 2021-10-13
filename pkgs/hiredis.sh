@@ -45,7 +45,8 @@
             ..
 
         time "$TOOLCHAIN/cmake" --build .
-        time "$TOOLCHAIN/ctest" --output-on-failure -j"$(nproc)"
+        # Need a server to run client tests.
+        ! which redis-server >/dev/null 2>&1 || time "$TOOLCHAIN/ctest" --output-on-failure -j"$(nproc)"
         time "$TOOLCHAIN/cmake" --build . --target install
     )
 
