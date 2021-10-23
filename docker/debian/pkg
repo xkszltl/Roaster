@@ -72,7 +72,7 @@ RUN set -e; \
             lib{atlas-base,boost-all,bz2,cairo2,edit,eigen3,ffi,gflags,gif,google-glog,grpc++,gtest,harfbuzz,hiredis,hwloc,jemalloc,jpeg,jsoncpp,lapack,leveldb,lmdb,lzma,ncurses5,openblas,opencv,pango1.0,png,rados,rocksdb,snappy,ssl,tiff,utf8proc,yaml}-dev \
             libevent-dev \
             libfreetype{6,-dev} \
-            libjpeg{-turbo-progs,62-dev} \
+            libjpeg{-turbo-progs,62-turbo-dev} \
             liblz4-dev liblz4-tool \
             libnuma-dev numactl numad \
             libpapi-dev papi-tools \
