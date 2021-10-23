@@ -66,7 +66,6 @@ RUN set -e; \
             iproute2{,-doc} \
             'iputils-*' \
             jq \
-            language-pack-{ar,de,en,es,fr,it,ja,ko,pt,ru,zh-han{s,t}} \
             lcov \
             ldap-utils slapd \
             lib{asan{5,6},lsan0,tsan0,ubsan1} \
