@@ -22,7 +22,7 @@
         . "$ROOT_DIR/pkgs/utils/fpm/distro_cc.sh"
 
         set +xe
-        . /opt/intel/tbb/bin/tbbvars.sh intel64
+        . "/opt/intel/$([ -x '/opt/intel/oneapi/tbb/latest/env/vars.sh' ] && echo 'oneapi/tbb/latest/env/vars.sh' || echo 'tbb/bin/tbbvars.sh')" intel64
         set -xe
 
         mkdir -p build

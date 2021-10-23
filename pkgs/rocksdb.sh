@@ -27,7 +27,7 @@
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
         . "$ROOT_DIR/pkgs/utils/fpm/distro_cc.sh"
 
-        # . /opt/intel/tbb/bin/tbbvars.sh intel64
+        # . "/opt/intel/$([ -x '/opt/intel/oneapi/tbb/latest/env/vars.sh' ] && echo 'oneapi/tbb/latest/env/vars.sh' || echo 'tbb/bin/tbbvars.sh')" intel64
 
         if true; then
             mkdir -p build

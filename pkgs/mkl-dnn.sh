@@ -19,8 +19,8 @@
         . "$ROOT_DIR/pkgs/utils/fpm/distro_cc.sh"
 
         set +xe
-        . "/opt/intel/compilers_and_libraries/$(uname -s | tr '[A-Z]' '[a-z]')/bin/compilervars.sh" intel64
-        . /opt/intel/mkl/bin/mklvars.sh intel64
+        . "/opt/intel/$([ -x '/opt/intel/oneapi/compiler/latest/env/vars.sh' ] && echo 'oneapi/compiler/latest/env/vars.sh' || echo "compilers_and_libraries/$(uname -s | tr '[A-Z]' '[a-z]')/bin/compilervars.sh")" intel64
+        . "/opt/intel/$([ -x '/opt/intel/oneapi/mkl/latest/env/vars.sh' ] && echo 'oneapi/mkl/latest/env/vars.sh' || echo 'mkl/bin/mklvars.sh')" intel64
         set -xe
 
         mkdir -p build
