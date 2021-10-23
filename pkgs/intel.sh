@@ -14,6 +14,9 @@
         sudo DEBIAN_FRONTEND=noninteractive apt-get install -y intel-basekit
         sudo DEBIAN_FRONTEND=noninteractive apt-get install -y intel-hpckit
         sudo DEBIAN_FRONTEND=noninteractive apt-get install -y intel-iotkit
+        sudo DEBIAN_FRONTEND=noninteractive apt-get install -y intel-dlfdkit
+        sudo DEBIAN_FRONTEND=noninteractive apt-get install -y intel-aikit
+        sudo DEBIAN_FRONTEND=noninteractive apt-get install -y intel-renderkit
         ;;
     *)
         cd $SCRATCH
