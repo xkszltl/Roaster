@@ -50,7 +50,6 @@ RUN set -e; \
             gfortran{,-{9,10}} \
             giflib-tools libgif-dev \
             git{,-{extras,lfs}} \
-            glances \
             gnome-keyring{,'-*'} \
             gnuplot \
             gperf \
@@ -99,7 +98,6 @@ RUN set -e; \
             pciutils \
             pigz \
             powertop \
-            prelink \
             procps \
             pv \
             pybind11-dev \
