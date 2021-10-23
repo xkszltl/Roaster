@@ -1,10 +1,10 @@
 # syntax=docker/dockerfile:experimental
 
-FROM docker.codingcafe.org/xkszltl/roaster/ubuntu:stage-auth
+FROM docker.codingcafe.org/xkszltl/roaster/ubuntu:stage-intel
 
 ARG LABEL_BUILD_ID=Undefined
 LABEL BUILD_ID=$LABEL_BUILD_ID
 
 COPY [".", "/etc/roaster/scripts"]
 
-RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh lz4 zstd cmake hiredis ccache c-ares axel intel ipt cuda ucx ompi
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh lz4 zstd cmake hiredis ccache c-ares axel ipt cuda ucx ompi

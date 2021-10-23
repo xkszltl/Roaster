@@ -18,7 +18,7 @@ export BASE_DISTRO=debian
 
 [ "$CI_COMMIT_REF_NAME" ] || export CI_COMMIT_REF_NAME=build-init
 
-for CI_JOB_STAGE in init repo font pkg auth infra llvm util misc dl ort edit finish; do
+for CI_JOB_STAGE in init repo font pkg auth intel infra llvm util misc dl ort edit finish; do
     export CI_JOB_STAGE
 
     [ "$FIRST_STAGE" ] || [ "_$(sed 's/^[^\-]*\-//' <<< "$CI_COMMIT_REF_NAME")" = "_$CI_JOB_STAGE" ] || continue
