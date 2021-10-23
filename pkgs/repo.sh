@@ -83,12 +83,19 @@
         sudo sed -i 's/http:\/\//https:\/\//' '/etc/yum.repos.d/nvidia-machine-learning.repo'
         RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" nvidia-machine-learning
 
+        # Intel oneAPI.
+        sudo dnf config-manager --add-repo "$ROOT_DIR/repos/oneAPI.repo"
+        # RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" oneAPI
+
+        # Docker-CE.
         sudo dnf config-manager --add-repo "https://download.docker.com/linux/centos/docker-ce.repo"
         RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" docker-ce-stable{,-source,-debuginfo}
 
+        # Nvidia docker.
         sudo dnf config-manager --add-repo "https://nvidia.github.io/nvidia-docker/$DISTRO_ID$DISTRO_VERSION_ID/nvidia-docker.repo"
         RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" libnvidia-container nvidia-{container-runtime,docker}
 
+        # GitLab.
         curl -sSL --retry 1000 $curl_connref --retry-delay 1 "https://packages.gitlab.com/install/repositories/runner/gitlab-ci-multi-runner/script.rpm.sh" | sudo bash
         RPM_PRIORITY=2 "$ROOT_DIR/apply_cache.sh" runner_gitlab-ci-multi-runner{,-source}
 
