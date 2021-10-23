@@ -90,11 +90,24 @@ if ! which sudo; then
 
     case "$DISTRO_ID" in
     "centos" | "fedora" | "rhel")
-        dnf install -y findutils procps-ng sudo || yum install -y findutils procps-ng sudo
+        dnf install -y makecache || yum install -y makecache
+        dnf install -y sudo || yum install -y sudo
         ;;
     "debian" | "linuxmint" | "ubuntu")
         apt-get update -y
-        apt-get install -y findutils procps sudo
+        DEBIAN_FRONTEND=noninteractive apt-get install -y sudo
+        ;;
+    esac
+fi
+
+if ! which ps || ! which xargs; then
+    case "$DISTRO_ID" in
+    "centos" | "fedora" | "rhel")
+        sudo dnf install -y findutils procps-ng || sudo yum install -y findutils procps-ng
+        ;;
+    "debian" | "linuxmint" | "ubuntu")
+        sudo apt-get update -y
+        sudo DEBIAN_FRONTEND=noninteractive apt-get install -y findutils procps
         ;;
     esac
 fi
