@@ -102,11 +102,8 @@
         sudo dnf update -y || true
         ;;
     "debian" | "linuxmint" | "ubuntu")
-        if [ "_$DISTRO_ID" = '_debian' ]; then
-            until sudo add-apt-repository 'contrib'; do echo "Retrying"; sleep 5; done
-        fi
         sudo apt-get update -y
-        sudo apt-get upgrade -y
+        sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
         sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
             apt-{file,transport-https,utils} \
             ca-certificates \
@@ -114,6 +111,11 @@
             curl \
             gnupg-agent \
             software-properties-common
+        if [ "_$DISTRO_ID" = '_debian' ]; then
+            until sudo add-apt-repository 'contrib'; do echo "Retrying"; sleep 5; done
+            sudo apt-get update -y
+            sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
+        fi
         curl_connref="$(! which curl >/dev/null 2>/dev/null || curl --help -v | sed -n 's/.*\(\-\-retry\-connrefused\).*/\1/p' | head -n1)"
 
         for retry in $(seq 20 -1 0); do
@@ -140,6 +142,7 @@
                 # sudo APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key adv --fetch-keys "$cuda_repo_pubkey"
                 curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$cuda_repo_pubkey" | sudo apt-key add -
                 until sudo add-apt-repository "deb $cuda_repo/ /"; do echo "Retrying"; sleep 5; done
+                sudo apt-get update -y
             ) && break
             echo "Retry. $(expr "$retry" - 1) time(s) left."
             sleep 5
