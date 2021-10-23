@@ -68,7 +68,7 @@ RUN set -e; \
             language-pack-{ar,de,en,es,fr,it,ja,ko,pt,ru,zh-han{s,t}} \
             lcov \
             ldap-utils slapd \
-            lib{asan{0,2,3,4,5},tsan0,ubsan{0,1}} \
+            lib{asan{0,2,3,4,5},lsan0,tsan0,ubsan{0,1}} \
             lib{atlas-base,boost-all,bz2,cairo2,edit,eigen3,ffi,gflags,gif,google-glog,grpc++,gtest,harfbuzz,hiredis,hwloc,jemalloc,jpeg{,-turbo8},jsoncpp,lapack,leveldb,lmdb,lzma,ncurses5,openblas,opencv,pango1.0,png,rados,rocksdb,snappy,ssl,tiff,utf8proc,yaml}-dev \
             libevent-dev \
             libfreetype6{,-dev} \
@@ -104,29 +104,29 @@ RUN set -e; \
             pv \
             pybind11-dev \
             python3{,-pip} \
-            qt5-default \
+            qt5-default qtbase5-dev \
             rapidjson-dev \
-            redis-server \
+            redis{,-tools} \
             rdma-core rdmacm-utils librdmacm{1,-dev} \
             rsync \
             ruby-all-dev \
             sed \
-            {selinux-policy,policycoreutils}{,'-*'} \
+            {selinux-basics,policy{,coreutils}'-*'} se{manage,module}-utils \
             socat \
             strace \
             software-properties-common \
             subversion-tools \
             tar \
             time \
-            tmux \
+            tmux{,-plugin-manager} \
             tree \
             tuned{,'-*'} \
             txt2man \
             usbutils \
             util-linux \
             uuid-{dev,runtime} \
-            valgrind \
-            vim \
+            valgrind{,-mpi} \
+            vim{,-gtk3} \
             wget \
             whois \
             xz-utils pxz \
