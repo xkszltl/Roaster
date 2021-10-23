@@ -78,7 +78,7 @@
         esac
 
         set +xe
-        . "/opt/intel/$([ -x '/opt/intel/oneapi/mkl/latest/env/vars.sh' ] && echo 'oneapi/mkl/latest/env/vars.sh' || echo 'mkl/bin/mklvars.sh')" intel64
+        . "/opt/intel/$([ -e '/opt/intel/oneapi/mkl/latest/env/vars.sh' ] && echo 'oneapi/mkl/latest/env/vars.sh' || echo 'mkl/bin/mklvars.sh')" intel64
         set -xe
 
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
