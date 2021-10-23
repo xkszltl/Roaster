@@ -90,11 +90,11 @@ if ! which sudo; then
 
     case "$DISTRO_ID" in
     "centos" | "fedora" | "rhel")
-        dnf install -y sudo || yum install -y sudo
+        dnf install -y findutils procps-ng sudo || yum install -y findutils procps-ng sudo
         ;;
     "debian" | "linuxmint" | "ubuntu")
         apt-get update -y
-        apt-get install -y sudo
+        apt-get install -y findutils procps sudo
         ;;
     esac
 fi
