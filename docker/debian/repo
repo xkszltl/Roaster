@@ -1,0 +1,8 @@
+FROM docker.codingcafe.org/xkszltl/roaster/ubuntu:stage-init
+
+ARG LABEL_BUILD_ID=Undefined
+LABEL BUILD_ID=$LABEL_BUILD_ID
+
+COPY [".", "/etc/roaster/scripts"]
+
+RUN /etc/roaster/scripts/setup.sh repo

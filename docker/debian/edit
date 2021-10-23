@@ -1,0 +1,12 @@
+FROM docker.codingcafe.org/xkszltl/roaster/ubuntu:stage-ort
+
+ARG LABEL_BUILD_ID=Undefined
+LABEL BUILD_ID=$LABEL_BUILD_ID
+
+COPY [".", "/etc/roaster/scripts"]
+
+# Drop mirrors used in build.
+RUN set -e; \
+    rm -rf ~/.m2/settings.xml;
+
+RUN updatedb
