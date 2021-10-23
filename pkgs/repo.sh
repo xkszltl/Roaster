@@ -149,6 +149,7 @@
         done
 
         for retry in $(seq 20 -1 0); do
+            [ "_$DISTRO_ID" != '_debian' ] || break
             [ "$retry" -gt 0 ]
             (
                 set -xe
