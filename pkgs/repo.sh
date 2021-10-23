@@ -102,6 +102,9 @@
         sudo dnf update -y || true
         ;;
     "debian" | "linuxmint" | "ubuntu")
+        if [ "_$DISTRO_ID" = '_debian' ]; then
+            until sudo add-apt-repository 'contrib'; do echo "Retrying"; sleep 5; done
+        fi
         sudo apt-get update -y
         sudo apt-get upgrade -y
         sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
@@ -125,9 +128,11 @@
                 cuda_repo="https://developer.download.nvidia.com/compute/cuda/repos"
                 until [ "$cuda_repo_file_dist" ]; do cuda_repo_file_dist="$(set -xe && curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$cuda_repo" | sed -n "s/.*href='\($(sed 's/\.//g' <<< "$DISTRO_ID$DISTRO_VERSION_ID")[^']*\)\/.*/\1/p" | sort -V | tail -n1 || sleep 5)"; done
                 cuda_repo="$cuda_repo/$cuda_repo_file_dist/x86_64"
-                until [ "$cuda_repo_file_pin" ]; do cuda_repo_file_pin="$(set -xe && curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$cuda_repo" | sed -n "s/.*href='\(cuda-$DISTRO_ID$(sed 's/\.//g' <<< "$DISTRO_VERSION_ID")[^']*\.pin\).*/\1/p" | sort -V | tail -n1 || sleep 5)"; done
-                cuda_repo_pin="$cuda_repo/$cuda_repo_file_pin"
-                curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$cuda_repo_pin" | sudo tee '/etc/apt/preferences.d/cuda-repository-pin-600'
+                if [ "_$DISTRO_ID" != '_debian' ]; then
+                    until [ "$cuda_repo_file_pin" ]; do cuda_repo_file_pin="$(set -xe && curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$cuda_repo" | sed -n "s/.*href='\(cuda-$DISTRO_ID$(sed 's/\.//g' <<< "$DISTRO_VERSION_ID")[^']*\.pin\).*/\1/p" | sort -V | tail -n1 || sleep 5)"; done
+                    cuda_repo_pin="$cuda_repo/$cuda_repo_file_pin"
+                    curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$cuda_repo_pin" | sudo tee '/etc/apt/preferences.d/cuda-repository-pin-600'
+                fi
                 until [ "$cuda_repo_file_pubkey" ]; do cuda_repo_file_pubkey="$(set -xe && curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$cuda_repo" | sed -n "s/.*href='\([^']*\.pub\).*/\1/p" | sort -V | tail -n1)"; done
                 cuda_repo_pubkey="$cuda_repo/$cuda_repo_file_pubkey"
                 # Known issues:
