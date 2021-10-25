@@ -7,7 +7,7 @@ export CCACHE_NOHASHDIR=true
 export TOOLCHAIN="$(readlink -f "$INSTALL_ROOT/../toolchain")"
 mkdir -p "$TOOLCHAIN"
 
-for cmd in c{c,++} g{cc,++}{,-{,1,2}{0,1,2,3,4,5,6,7,8,9}} clang{,++}{,-{,1,2}{0,1,2,3,4,5,6,7,8,9}} nvcc ld{,.lld}; do
+for cmd in c{c,++} g{cc{,-{ar,ranlib}},++,fortran}{,-{,1,2}{0,1,2,3,4,5,6,7,8,9}} clang{,++}{,-{,1,2}{0,1,2,3,4,5,6,7,8,9}} nvcc ld{,.lld} ar ranlib; do
     which "$cmd" 2> /dev/null || continue
     if which ccache > /dev/null 2> /dev/null; then
         ln -sf "$(which ccache)" "$TOOLCHAIN/$cmd"
