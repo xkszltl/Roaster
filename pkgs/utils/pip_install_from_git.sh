@@ -50,7 +50,7 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
             . scl_source enable $(cut -d',' -f1 <<< "$py") || exit 1
             set -e
             ;;
-        'ubuntu')
+        'debian' | 'linuxmint' | 'ubuntu')
             # Skip SCL Python.
             [ "$(cut -d',' -f1 <<< "$py")" ] && exit 0
             ;;
@@ -98,21 +98,8 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
         (
             set -e
 
-            case "$DISTRO_ID" in
-            'centos' | 'fedora' | 'rhel')
-                set +e
-                . scl_source enable devtoolset-9 || exit 1
-                set -e
-                export CC="$(which gcc)" CXX="$(which g++)"
-                ;;
-            'ubuntu')
-                export CC="$(which gcc-8)" CXX="$(which g++-8)"
-                ;;
-            *)
-                echo "Unknown DISTRO_ID \"$DISTRO_ID\"."
-                exit 1
-                ;;
-            esac
+            . "$ROOT_DIR/pkgs/utils/fpm/distro_cc.sh"
+            set +x
             for opt in '' '-I' ';'; do
                 [ "_$opt" != '_;' ]
                 ! /usr/bin/sudo -E PATH="$PATH" "$py" -m pip install --no-clean $([ ! "$USE_LOCAL_GIT" ] || echo '--use-feature=in-tree-build') -Uv $opt "$URL" || break
