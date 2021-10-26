@@ -52,7 +52,7 @@ set +x
                             | sed 's/.*[^0-9]\([0-9]*\)[[:space:]]*%[[:space:]]*packet loss.*/\1/'  \
                             | sed 's/$/ 1000/'                                                      \
                             | xargs -n1                                                             \
-                            | head -n1"                                                             \
+                            | head -n1                                                              \
                         )" -ge 50 ] || continue
                     sed -i "s/$(sed 's/\([\\\/\.\-]\)/\\\1/g' <<< "$i" | tr '=' '/')/" .gitmodules
                 done
