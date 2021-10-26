@@ -98,8 +98,8 @@
                 -DCMAKE_{C,CXX,CUDA}_COMPILER_LAUNCHER=ccache   \
                 -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g1 $($TOOLCHAIN_CPU_NATIVE || echo '-march=haswell -mtune=generic')"  \
                 -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"           \
-                -DINTEL_COMPILER_DIR="/opt/intel/oneapi/compiler/latest"    \
-                -DINTEL_{MKL,OMP}_DIR="/opt/intel/oneapi/mkl/latest"        \
+                $([ -e '/opt/intel/oneapi/compiler/latest/env/vars.sh' ] && echo -DINTEL_COMPILER_DIR="/opt/intel/oneapi/compiler/latest")  \
+                $([ -e '/opt/intel/oneapi/mkl/latest/env/vars.sh'      ] && echo -DINTEL_{MKL,OMP}_DIR="/opt/intel/oneapi/mkl/latest")      \
                 -DCMAKE_POLICY_DEFAULT_CMP0003=NEW              \
                 -DCMAKE_POLICY_DEFAULT_CMP0060=NEW              \
                 -DCMAKE_VERBOSE_MAKEFILE=ON                     \
