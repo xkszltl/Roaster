@@ -14,17 +14,10 @@
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
     (
-        case "$DISTRO_ID" in
-        'centos' | 'fedora' | 'rhel')
-            set +xe
-            . scl_source enable devtoolset-9 || exit 1
-            set -xe
-            export CC="ccache $(which gcc)" CXX="ccache $(which g++)"
-            ;;
-        'ubuntu')
-            export CC="ccache $(which gcc-8)" CXX="ccache $(which g++-8)"
-            ;;
-        esac
+        . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
+        . "$ROOT_DIR/pkgs/utils/fpm/distro_cc.sh"
+
+        export CC="ccache $CC" CXX="ccache $CXX"
         export CFLAGS="  $CFLAGS   -O3 -fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"
         export CXXFLAGS="$CXXFLAGS -O3 -fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"
 
@@ -36,11 +29,9 @@
         case "$DISTRO_ID" in
         'centos' | 'fedora' | 'rhel')
             packages/build-rpm-packages.sh
-            export CC="ccache $(which gcc)" CXX="ccache $(which g++)"
             ;;
-        'ubuntu')
+        'debian' | 'linuxmint' | 'ubuntu')
             packages/build-deb-packages.sh
-            export CC="ccache $(which gcc-8)" CXX="ccache $(which g++-8)"
             ;;
         esac
     )

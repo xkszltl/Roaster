@@ -63,17 +63,23 @@
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
     (
+        . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
+        . "$ROOT_DIR/pkgs/utils/fpm/distro_cc.sh"
         case "$DISTRO_ID" in
         'centos' | 'fedora' | 'rhel')
             set +xe
             . scl_source enable devtoolset-9 rh-dotnet31 || exit 1
             set -xe
-            export CC="gcc" CXX="g++"
-            export AR="gcc-ar" RANLIB="gcc-ranlib"
+            export AR="$(which gcc-ar)" RANLIB="$(which gcc-ranlib)"
             ;;
-        'ubuntu')
-            export CC="gcc-8" CXX="g++-8"
-            export AR="gcc-ar-8" RANLIB="gcc-ranlib-8"
+        debian-10 | ubuntu-18.* | ubuntu-19.*)
+            export AR="$(which gcc-ar-8)" RANLIB="$(which gcc-ranlib-8)"
+            ;;
+        debian-11 | ubuntu-20.* | ubuntu-21.*)
+            export AR="$(which gcc-ar-10)" RANLIB="$(which gcc-ranlib-10)"
+            ;;
+        *)
+            export AR="$(which ar)" RANLIB="$(which ranlib)"
             ;;
         esac
 
@@ -197,7 +203,7 @@
                 [ "$(rpm -qa "roaster-$i")" ] || continue
                 rpm -ql "roaster-$i" | sed -n 's/^\//\.\//p' | xargs rm -rf
                 ;;
-            'ubuntu')
+            'debian' | 'linuxmint' | 'ubuntu')
                 dpkg -l "roaster-$i" && dpkg -L "roaster-$i" | xargs -n1 | xargs -i -n1 find {} -maxdepth 0 -not -type d | sed -n 's/^\//\.\//p' | xargs rm -rf
                 ;;
             esac
