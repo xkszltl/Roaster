@@ -30,7 +30,8 @@ census-instrumentation/opencensus-{cpp,csharp,erlang,go,java,js-core,node,php,pr
 chadaustin/sajson,\
 chromium/{ballista,chromium,gyp,pdfium,vs-chromium},\
 Cisco-Talos/clamav-{bytecode-compiler,devel,faq,safebrowsing},\
-cncf/{cnf-conformance,landscape,sig-{app-delivery,contributor-strategy,network,observability,runtime,security{,-events}},udpa},\
+civetweb/civetweb,\
+cncf/{cnf-conformance,landscape,sig-{app-delivery,contributor-strategy,network,observability,runtime,security{,-events}},udpa,xds},\
 cocodataset/{cocoapi,panopticapi},\
 containerd/containerd,\
 cplusplus/{draft,papers},\
@@ -87,6 +88,7 @@ jemalloc/jemalloc,\
 jordansissel/fpm,\
 joseph-henry/lwip{,-contrib},\
 JuliaStrings/utf8proc,\
+jupp0r/prometheus-cpp,\
 keras-team/{autokeras,governance,keras{,-applications,-autodoc,-contrib,-cv,-docs-{ja,ko,zh},-io,-nlp,-preprocessing,-tuner}},\
 Kitware/{CMake,VTK},\
 libav/libav,\
@@ -124,6 +126,7 @@ open-source-parsers/jsoncpp,\
 opencv/{ade,cvat,dldt,open_model_zoo,opencv{,_{3rdparty,contrib,extra}},openvino_training_extensions},\
 OpenFOAM/{{OpenFOAM,ThirdParty}-{{2.{0,1,2,3,4},3.0,4,5}.x,6,7,dev},OpenFOAM-{Intel,Solidification},OpenQBMM},\
 openssl/openssl,\
+open-telemetry/{opentelemetry-{collector,cpp,dotnet,go,java,js,log-collection,operator,proto,python,specification},oteps},\
 openucx/{shmem-opensnapi,sparkucx,torch-ucc,ucc{,_spec},ucx,xccl,xucg},\
 openwrt/{luci,openwrt,packages,targets,telephony,video},\
 PeachPy/enum34,\
