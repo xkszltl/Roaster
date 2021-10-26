@@ -25,15 +25,27 @@
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
     (
-        case "$DISTRO_ID" in
-        'centos' | 'fedora' | 'rhel')
+        case "$DISTRO_ID-$DISTRO_VERSION_ID" in
+        centos-* | fedora-* | rhel-*)
             # set +xe
             # . scl_source enable llvm-toolset-7 || exit 1
             # set -xe
             export CC="clang" CXX="clang++"
             ;;
-        'ubuntu')
+        debian-10 | ubuntu-18.* | ubuntu-19.*)
             export CC="clang-7" CXX="clang++-7"
+            ;;
+        debian-11)
+            export CC="clang-11" CXX="clang++-11"
+            ;;
+        ubuntu-20.*)
+            export CC="clang-10" CXX="clang++-10"
+            ;;
+        ubuntu-21.04)
+            export CC="clang-11" CXX="clang++-11"
+            ;;
+        ubuntu-21.10)
+            export CC="clang-13" CXX="clang++-13"
             ;;
         *)
             export CC="clang" CXX="clang++"
