@@ -47,12 +47,12 @@ set +x
                 # Alternative repos for availability.
                 for i in chromium.googlesource.com=github.com/xkszltl; do
                     grep "$(cut -d'=' -f1 <<< "$i" | sed 's/\([\\\/\.\-]\)/\\\1/g')" .gitmodules || continue
-                    [ "$(sudo ping -W1 -n $(sudo ping -nfc 10 localhost > /dev/null && echo '-fc100' || echo '-i0.2 -c10') "$(cut -d'=' -f1 <<< "$i")"
-                            | sed -n '/ms$/p'                                                       \
-                            | sed 's/.*[^0-9]\([0-9]*\)[[:space:]]*%[[:space:]]*packet loss.*/\1/'  \
-                            | sed 's/$/ 1000/'                                                      \
-                            | xargs -n1                                                             \
-                            | head -n1                                                              \
+                    [ "$(sudo ping -W1 -n $(sudo ping -nfc 10 localhost > /dev/null && echo '-fc100' || echo '-i0.2 -c10') "$(cut -d'=' -f1 <<< "$i")"  \
+                            | sed -n '/ms$/p'                                                                                                           \
+                            | sed 's/.*[^0-9]\([0-9]*\)[[:space:]]*%[[:space:]]*packet loss.*/\1/'                                                      \
+                            | sed 's/$/ 1000/'                                                                                                          \
+                            | xargs -n1                                                                                                                 \
+                            | head -n1                                                                                                                  \
                         )" -ge 50 ] || continue
                     sed -i "s/$(sed 's/\([\\\/\.\-]\)/\\\1/g' <<< "$i" | tr '=' '/')/" .gitmodules
                 done
