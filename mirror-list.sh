@@ -166,7 +166,7 @@ v2ray/{dist,ext,geoip,homebrew-v2ray,v2ray-core,V2RayN},\
 vivkin/gason,\
 wjakob/clang-cindex-python3,\
 xianyi/OpenBLAS,\
-xkszltl/{glog,jsoncpp,hiredis,leveldb,onnx-tensorrt,onnxruntime,protobuf,pthreadpool,pybind11,pytorch,rocksdb,simdjson,utf8proc,vision,xucg},\
+xkszltl/{glog,jsoncpp,hiredis,leveldb,linux-syscall-support,onnx-tensorrt,onnxruntime,protobuf,pthreadpool,pybind11,pytorch,rocksdb,simdjson,utf8proc,vision,xucg},\
 yaml/pyyaml,\
 Yangqing/ios-cmake,\
 yixuan/{LBFGSpp,MiniDNN,recosystem,spectra},\
