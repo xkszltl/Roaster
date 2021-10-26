@@ -7,7 +7,8 @@
 
     # ------------------------------------------------------------
 
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" facebook/rocksdb,v
+    # Pin to 6.24 due to https://github.com/facebook/rocksdb/issues/9078
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" facebook/rocksdb,v6.24.
     until git clone -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd rocksdb
 
