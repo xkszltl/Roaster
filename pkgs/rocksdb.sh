@@ -7,12 +7,16 @@
 
     # ------------------------------------------------------------
 
-    # Pin to 6.24 due to https://github.com/facebook/rocksdb/issues/9078
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" facebook/rocksdb,v6.24.
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" facebook/rocksdb,v
     until git clone -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd rocksdb
 
     # ------------------------------------------------------------
+
+    # Patch v6.25 and v6.26 for rados.
+    # - https://github.com/facebook/rocksdb/issues/9078
+    # - https://github.com/facebook/rocksdb/commit/92e2399669df3fdc6c8573f9a4adf09e50a2796f
+    git cherry-pick 92e2399
 
     # git remote add patch "$GIT_MIRROR_GITHUB/xkszltl/rocksdb.git"
     # git fetch patch
