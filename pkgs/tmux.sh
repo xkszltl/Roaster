@@ -41,6 +41,7 @@
     git clone "$GIT_MIRROR/tmux-plugins/tpm.git" ~/.tmux/plugins/tpm
     cat << EOF > ~/.tmux.conf
 set -g @plugin '$GIT_MIRROR/tmux-plugins/tpm.git'
+set -g @plugin '$GIT_MIRROR/tmux-plugins/tmux-test.git'
 set -g @plugin '$GIT_MIRROR/tmux-plugins/tmux-sensible.git'
 set -g @plugin '$GIT_MIRROR/tmux-plugins/tmux-resurrect.git'
 set -g @plugin '$GIT_MIRROR/tmux-plugins/tmux-continuum.git'
