@@ -11,8 +11,10 @@ if [ ! "$ROOT_DIR" ]; then
     echo 'Set $ROOT_DIR to "'"$ROOT_DIR"'".'
 fi
 
+. "$ROOT_DIR/geo/pip-mirror.sh"
+
 for i in setuptools pip wheel $@; do
     for py in $(which python3); do
-        sudo "$py" -m pip install -U "$i" || sudo "$py" -m pip install -IU "$i"
+        sudo -E PIP_INDEX_URL="$PIP_INDEX_URL" "$py" -m pip install -U "$i" || sudo PIP_INDEX_URL="$PIP_INDEX_URL" "$py" -m pip install -IU "$i"
     done
 done

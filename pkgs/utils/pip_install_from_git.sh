@@ -12,6 +12,8 @@ if [ ! "$ROOT_DIR" ]; then
     . <(sed 's/^\(..*\)/export DISTRO_\1/' '/etc/os-release')
 fi
 
+. "$ROOT_DIR/geo/pip-mirror.sh"
+
 CACHE_VALID=false
 
 for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; do
@@ -102,7 +104,7 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
             set +x
             for opt in '' '-I' ';'; do
                 [ "_$opt" != '_;' ]
-                ! /usr/bin/sudo -E PATH="$PATH" "$py" -m pip install --no-clean $([ ! "$USE_LOCAL_GIT" ] || echo '--use-feature=in-tree-build') -Uv $opt "$URL" || break
+                ! /usr/bin/sudo -E PATH="$PATH" PIP_INDEX_URL="$PIP_INDEX_URL" "$py" -m pip install --no-clean $([ ! "$USE_LOCAL_GIT" ] || echo '--use-feature=in-tree-build') -Uv $opt "$URL" || break
             done
         )
 
