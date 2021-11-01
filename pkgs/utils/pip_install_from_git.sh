@@ -111,8 +111,9 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
         if [ "$PIP_CLONE_TMPDIR" ]; then
             (
                 set -e
-                cd "$PIP_CLONE_TMPDIR"
+                pushd "$PIP_CLONE_TMPDIR/$(basename "$GIT_REPO" | sed 's/\.git$//')"
                 sudo git clean -dfx
+                sudo git submodule foreach --recursive git clean -dfx
             )
             rm -rf "$PIP_CLONE_TMPDIR"
         fi
