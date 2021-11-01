@@ -106,7 +106,14 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
             done
         )
 
-        [ ! "$PIP_CLONE_TMPDIR" ] || rm -rf "$PIP_CLONE_TMPDIR"
+        if [ "$PIP_CLONE_TMPDIR" ]; then
+            (
+                set -e
+                cd "$PIP_CLONE_TMPDIR"
+                sudo git clean -dfx
+            )
+            rm -rf "$PIP_CLONE_TMPDIR"
+        fi
         [ ! "$SCRATCH_TMPDIR"   ] || rm -rf "$SCRATCH_TMPDIR"
 
         CACHE_VALID=false
