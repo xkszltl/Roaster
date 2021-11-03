@@ -116,7 +116,7 @@ for i in pypa/setuptools,v pypa/{pip,wheel} PythonCharmers/python-future,v $@; d
                 sudo git submodule foreach --recursive git clean -dfx
             )
             rm -rf "$PIP_CLONE_TMPDIR"
-        else
+        else if ! grep '^[[:alnum:]]' <<< "$URL" > /dev/null; then
             sudo chown -R "$(stat -c '%u:%g' "$URL")" "$URL"
         fi
         [ ! "$SCRATCH_TMPDIR"   ] || rm -rf "$SCRATCH_TMPDIR"
