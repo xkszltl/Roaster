@@ -78,6 +78,7 @@ RUN set -e; \
             libprotobuf-dev protobuf-compiler \
             libpugixml-dev pugixml-doc\
             libtool \
+            libudns-dev udns-utils \
             {llvm,clang{,-{format,tidy,tools}},lld}{,-9,-11} llvm-{9,11}-tools lldb{,-11} lib{c++{,abi},omp}{,-11}-dev \
             locales \
             locate \

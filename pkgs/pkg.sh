@@ -122,7 +122,7 @@ for subset in pkg-{stable,skip,all}; do
                 open{blas,cv,ldap,ni,ssh}{,-*}
                 {atlas,eigen3}{,-*}
                 lapack{,64}{,-*}
-                {libsodium,mbedtls}{,-*}
+                {libsodium,mbedtls,udns}{,-*}
                 libev{,-devel,-source,-debuginfo}
                 libevent{,-*}
                 utf8proc{,-*}
