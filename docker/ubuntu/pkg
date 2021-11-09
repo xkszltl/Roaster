@@ -118,6 +118,7 @@ RUN set -e; \
             strace \
             software-properties-common \
             subversion-tools \
+            sysfsutils \
             tar \
             time \
             tmux{,-plugin-manager} \
