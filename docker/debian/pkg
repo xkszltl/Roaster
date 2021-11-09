@@ -130,6 +130,7 @@ RUN set -e; \
             wget \
             whois \
             xz-utils \
+            zfs-{dkms,initramfs,test} zfsutils-linux \
             zstd libzstd-dev \
         && break; \
         echo "Retrying... $(expr "$attempt" - 1) chance(s) left."; \
