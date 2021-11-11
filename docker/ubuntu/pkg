@@ -110,6 +110,7 @@ RUN set -e; \
             rapidjson-dev \
             redis{,-tools} \
             rdma-core rdmacm-utils librdmacm{1,-dev} \
+            rng-tools5 \
             rsync \
             ruby-all-dev \
             sed \

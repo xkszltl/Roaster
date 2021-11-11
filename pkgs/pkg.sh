@@ -74,6 +74,7 @@ for subset in pkg-{stable,skip,all}; do
                 [!] util-linux{,-*}
                 [!] moreutils{,-debuginfo}
                 [!] papi{,-*}
+                [!] rng-tools{,-debuginfo}
                 rpmdevtools
                 rpm-build
                 cyrus-imapd{,-*}
