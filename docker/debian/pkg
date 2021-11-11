@@ -110,7 +110,7 @@ RUN set -e; \
             rng-tools5 \
             rsync \
             ruby-all-dev \
-            samba{,-dev} smbldap-tools \
+            samba{,-dev} smbclient smbldap-tools \
             sed \
             {selinux-basics,policy{,coreutils}'-*'} se{manage,module}-utils \
             socat \
