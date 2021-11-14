@@ -221,6 +221,12 @@ for subset in pkg-{stable,skip,all}; do
         if [ "_$subset" = '_pkg-skip' ] || [ "_$subset" = '_pkg-all' ]; then
             "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" giampaolo/psutil,release- nicolargo/glances,v
         fi
+
+        # ------------------------------------------------------------
+        # Setup firewall rules.
+        # ------------------------------------------------------------
+
+        sudo firewall-cmd --permanent --add-port=3551/tcp || $IS_CONTAINER
     )
     sudo rm -vf $STAGE/$subset
     sync || true
