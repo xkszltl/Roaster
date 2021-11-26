@@ -72,6 +72,7 @@ for subset in pkg-{stable,skip,all}; do
                 {bridge,crypto}-utils{,-*}
                 [!] man-pages
                 [!] util-linux{,-*}
+                [!] expect{,-devel,-debuginfo}
                 [!] moreutils{,-debuginfo}
                 [!] papi{,-*}
                 [!] rng-tools{,-debuginfo}
