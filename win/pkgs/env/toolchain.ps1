@@ -31,7 +31,33 @@ if (-Not $Env:ROASTER_TOOLCHAIN_COMMITED)
 
     if (${Env:PERL_HOME} -eq $null -or -not $(Test-Path ${Env:PERL_HOME}/perl.exe -ErrorAction SilentlyContinue))
     {
+        ${Env:PERL_HOME} = Join-Path C:/Strawberry/perl bin
+    }
+
+    if (${Env:PERL_HOME} -eq $null -or -not $(Test-Path ${Env:PERL_HOME}/perl.exe -ErrorAction SilentlyContinue))
+    {
         ${Env:PERL_HOME} = Join-Path C:/Perl64 bin
+    }
+
+    if (${Env:PERL_HOME} -eq $null -or -not $(Test-Path ${Env:PERL_HOME}/perl.exe -ErrorAction SilentlyContinue))
+    {
+        $perl_ver="5.32.1.1"
+        $DownloadURL = "https://strawberryperl.com/download/${perl_ver}/strawberry-perl-${perl_ver}-64bit.msi"
+        $DownloadPath = "${Env:SCRATCH}/strawberry-perl-${perl_ver}-64bit.msi"
+        Write-Host "Downloading StrawberryPerl..."
+        Invoke-WebRequest -Uri $DownloadURL -OutFile $DownloadPath
+        Write-Host "Installing StrawberryPerl..."
+        & msiexec /i $DownloadPath /passive | Out-Null
+        if ($(Test-Path C:/Strawberry/perl/bin/perl.exe -ErrorAction SilentlyContinue))
+        {
+            ${Env:PERL_HOME} = Join-Path C:/Strawberry/perl bin
+            Write-Host "StrawberryPerl installed successfully."
+        }
+        else
+        {
+            Write-Host "StrawberryPerl installation Failed. Please install manually: ${DownloadURL}"
+            exit 1
+        }
     }
 
     if (${Env:PERL_HOME} -eq $null -or -not $(Test-Path ${Env:PERL_HOME}/perl.exe -ErrorAction SilentlyContinue))
