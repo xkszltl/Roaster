@@ -90,8 +90,8 @@ if ! which sudo; then
 
     case "$DISTRO_ID" in
     "centos" | "fedora" | "rhel")
-        dnf install -y makecache || yum install -y makecache
-        dnf install -y sudo || yum install -y sudo
+        which dnf >/dev/null 2>&1 && dnf install -y makecache || yum install -y makecache
+        which dnf >/dev/null 2>&1 && dnf install -y sudo      || yum install -y sudo
         ;;
     "debian" | "linuxmint" | "ubuntu")
         apt-get update -y
@@ -103,7 +103,7 @@ fi
 if ! which ps || ! which xargs; then
     case "$DISTRO_ID" in
     "centos" | "fedora" | "rhel")
-        sudo dnf install -y findutils procps-ng || sudo yum install -y findutils procps-ng
+        sudo which dnf >/dev/null 2>&1 && sudo dnf install -y findutils procps-ng || sudo yum install -y findutils procps-ng
         ;;
     "debian" | "linuxmint" | "ubuntu")
         sudo apt-get update -y
@@ -234,8 +234,8 @@ which ccache 2>/dev/null >/dev/null && ccache -s
 if $IS_CONTAINER; then
     case "$DISTRO_ID" in
     "centos" | "fedora" | "rhel")
-        sudo dnf autoremove -y || sudo yum autoremove -y
-        sudo dnf clean all --enablerepo='*'
+        sudo which dnf >/dev/null 2>&1 && sudo dnf autoremove -y || sudo yum autoremove -y
+        ! sudo which dnf >/dev/null 2>&1 || sudo dnf clean all --enablerepo='*'
         sudo yum clean all
         sudo rm -rf /var/cache/yum
         # DNF may log GB of data here.
