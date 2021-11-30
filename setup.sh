@@ -90,8 +90,8 @@ if ! which sudo; then
 
     case "$DISTRO_ID" in
     "centos" | "fedora" | "rhel")
-        which dnf >/dev/null 2>&1 && dnf install -y makecache || yum install -y makecache
-        which dnf >/dev/null 2>&1 && dnf install -y sudo      || yum install -y sudo
+        which dnf >/dev/null 2>&1 && dnf makecache -y || yum makecache -y
+        which dnf >/dev/null 2>&1 && dnf install -y sudo || yum install -y sudo
         ;;
     "debian" | "linuxmint" | "ubuntu")
         apt-get update -y
@@ -103,6 +103,7 @@ fi
 if ! which ps || ! which xargs; then
     case "$DISTRO_ID" in
     "centos" | "fedora" | "rhel")
+        sudo which dnf >/dev/null 2>&1 && dnf makecache -y || yum makecache -y
         sudo which dnf >/dev/null 2>&1 && sudo dnf install -y findutils procps-ng || sudo yum install -y findutils procps-ng
         ;;
     "debian" | "linuxmint" | "ubuntu")
