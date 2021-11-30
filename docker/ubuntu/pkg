@@ -117,7 +117,7 @@ RUN set -e; \
             ruby-all-dev \
             samba{,-dev} smbclient smbldap-tools \
             sed \
-            {selinux-basics,policy{,coreutils}'-*'} se{manage,module}-utils \
+            {selinux-basics,{selinux-policy,policycoreutils}'-*'} se{manage,module}-utils \
             socat \
             strace \
             software-properties-common \
