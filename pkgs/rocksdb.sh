@@ -13,19 +13,6 @@
 
     # ------------------------------------------------------------
 
-    # Patch v6.25 and v6.26 for rados.
-    # - https://github.com/facebook/rocksdb/issues/9078
-    # - https://github.com/facebook/rocksdb/commit/92e2399669df3fdc6c8573f9a4adf09e50a2796f
-    git cherry-pick 92e2399
-
-    # git remote add patch "$GIT_MIRROR_GITHUB/xkszltl/rocksdb.git"
-    # git fetch patch
-    # for i in; do
-    #     git cherry-pick "patch/$i"
-    # done
-
-    # ------------------------------------------------------------
-
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
     (
