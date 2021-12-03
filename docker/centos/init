@@ -28,6 +28,15 @@ ENV LD_LIBRARY_PATH=/usr/local/nvidia/lib64:/usr/local/nvidia/lib:${LD_LIBRARY_P
 ENV NVIDIA_DRIVER_CAPABILITIES=compute,graphics,utility,video
 ENV NVIDIA_VISIBLE_DEVICES=all
 
+# Pre-installed which has been removed from docker.
+RUN set -e; \
+    yum makecache -y; \
+    yum install -y which; \
+    yum autoremove -y; \
+    yum clean all; \
+    rm -rf /var/cache/yum; \
+    truncate -s0 ~/.bash_history
+
 VOLUME ["/var/log"]
 
 COPY [".", "/etc/roaster/scripts"]
