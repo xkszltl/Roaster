@@ -19,6 +19,12 @@
     git remote add patch "$GIT_MIRROR/xkszltl/vision.git"
     git fetch patch
 
+    # Known issues:
+    #   - Incomplete pyproject.toml can triggers a broken PEP 518 isolated build.
+    #     https://github.com/pytorch/vision/issues/4542
+    rm -f pyproject.toml
+    git commit pyproject.toml -m 'Disable PEP 518 due to the incomplete "pyproject.toml".'
+
     # ------------------------------------------------------------
 
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
