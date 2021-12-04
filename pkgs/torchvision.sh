@@ -39,7 +39,7 @@
             -DCMAKE_{C,CXX,CUDA}_COMPILER_LAUNCHER=ccache   \
             -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"           \
-            -DWITH_CUDA=ON                                  \
+            -DWITH_CUDA="$(which nvcc >/dev/null 2>&1 && echo 'ON' || echo 'OFF')"          \
             -G"Ninja"                                       \
             ..
 
@@ -48,7 +48,7 @@
 
         (
             set -xe
-            export FORCE_CUDA=1
+            export FORCE_CUDA="$(! which nvcc >/dev/null 2>&1 || echo '1')"
             export TORCH_CUDA_ARCH_LIST="Pascal;Volta;Turing"
             "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" ../
         )
