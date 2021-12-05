@@ -3,7 +3,7 @@
 # ================================================================
 
 export GIT_MIRROR_GITHUB="1,https://github.com"
-export GIT_MIRROR_CODINGCAFE="10000,https://git.codingcafe.org/Mirrors"
+export GIT_MIRROR_CODINGCAFE="500,https://git.codingcafe.org/Mirrors"
 
 # ----------------------------------------------------------------
 
