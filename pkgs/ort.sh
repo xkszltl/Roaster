@@ -179,9 +179,10 @@
 
         python3 ../setup.py bdist_wheel
         pushd dist
+        . "$ROOT_DIR/geo/pip-mirror.sh"
         # ../../rename_manylinux.sh
-        # sudo python3 -m pip install -IU ./*-manylinux1_*.whl
-        sudo python3 -m pip install -IU ./onnxruntime-*-linux_*.whl
+        # sudo PIP_INDEX_URL="$PIP_INDEX_URL" python3 -m pip install -IU ./*-manylinux1_*.whl
+        sudo PIP_INDEX_URL="$PIP_INDEX_URL" python3 -m pip install -IU ./onnxruntime-*-linux_*.whl
         popd
 
         # Exclude MKL-DNN/ONNX files.
