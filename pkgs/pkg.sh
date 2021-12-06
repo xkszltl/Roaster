@@ -81,7 +81,7 @@ for subset in pkg-{stable,skip,all}; do
                 cyrus-imapd{,-*}
                 GeoIP{,-*}
                 [!] {device-mapper,lvm2}{,-*}
-                {d,sys}stat{,-*}
+                {d,if,sys}stat{,-*}
                 [!]kernel-tools{,-*}
                 {lm_sensors,hddtemp,smartmontools,lsscsi,bmon}{,-*}
                 [!]tuned{,-*}

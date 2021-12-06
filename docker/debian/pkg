@@ -62,6 +62,7 @@ RUN set -e; \
             httping \
             ibutils infiniband-diags \
             icu-devtools \
+            ifstat \
             iftop \
             iotop \
             iproute2{,-doc} \
