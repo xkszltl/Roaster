@@ -21,6 +21,7 @@ RUN set -e; \
         sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
             asciidoc \
             apcupsd \
+            apt-mirror \
             autoconf{,-archive} automake autopoint \
             axel \
             bash-completion \
