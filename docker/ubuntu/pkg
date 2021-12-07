@@ -37,6 +37,7 @@ RUN set -e; \
             coreutils \
             cpio \
             curl \
+            debmirror \
             default-jdk ant maven \
             diffutils \
             docker-{ce,compose} \

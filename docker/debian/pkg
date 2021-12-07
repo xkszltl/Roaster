@@ -37,6 +37,7 @@ RUN set -e; \
             coreutils \
             cpio \
             curl \
+            debmirror \
             default-jdk ant maven \
             diffutils \
             docker-{ce,compose} \
@@ -44,6 +45,7 @@ RUN set -e; \
             expect \
             firewalld \
             flex \
+            ftpsync \
             fuse libfuse-dev \
             g++{,-{9,10}} \
             gawk \
