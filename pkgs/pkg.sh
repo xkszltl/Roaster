@@ -20,7 +20,7 @@ for subset in pkg-{stable,skip,all}; do
         # ------------------------------------------------------------
         for attempt in $(seq $RPM_MAX_ATTEMPT -1 0); do
             echo "
-                [!] devtoolset-{7,8,9}{,-*}
+                [!] devtoolset-{8,9}{,-*}
                 [!] llvm-toolset-7{,-*}
 
                 qpid-cpp-client{,-*}
