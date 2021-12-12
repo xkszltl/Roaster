@@ -379,8 +379,12 @@ parallel -j0 --line-buffer --bar 'bash -c '"'"'
     pushd "repoid"
     ln -sfT "../$path" "./$repo_bn"
     "$DRY" || eval $CLEAN_CACHE $repo
-    for rest in $(seq "$retries" -1 -1); do
-        if [ "$rest" -ge 0 ] && "$use_proxy" || [ "$rest" -ne 0 ] && ! "$use_proxy" ; then
+    for rest in $(seq "$retries" -1 -1) _; do
+        if [ "_$rest" = "__" ]; then
+            echo "Failed to download repo after $(expr "$retries" + 1) time(s) of retry."
+            exit 1
+        fi
+        if ([ "$rest" -ge 0 ] && "$use_proxy") || ([ "$rest" -lt 0 ] && ! "$use_proxy") ; then
             export HTTP_PROXY="proxy.codingcafe.org:8118"
             [ "$HTTP_PROXY"  ] && export HTTPS_PROXY="$HTTP_PROXY"
             [ "$HTTP_PROXY"  ] && export http_proxy="$HTTP_PROXY"
