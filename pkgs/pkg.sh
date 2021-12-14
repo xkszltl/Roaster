@@ -29,7 +29,7 @@ for subset in pkg-{stable,skip,all}; do
                 openmpi{,-{devel,debuginfo}}
                 mpich-3.{0,2}{,-{devel,doc,debuginfo}}
                 java-11-openjdk{,-*}
-                rh-dotnet{21,22,31}{,-{lttng-ust,userspace-rcu}{,-{devel,-debuginfo}}}
+                rh-dotnet{21,22,31}{,-{lttng-ust,userspace-rcu}{,-{devel,debuginfo}}}
                 octave{,-*}
                 [!] {gdb,{l,s}trace}{,-*}
                 [!] {pax-utils,prelink}{,-*}
@@ -40,7 +40,6 @@ for subset in pkg-{stable,skip,all}; do
                 doxygen{,-*}
                 pandoc{,-*}
                 swig{,-*}
-                sphinx{,-*}
 
                 [!] vim{,-*}
                 dos2unix{,-*}
