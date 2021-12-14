@@ -96,7 +96,7 @@
         RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" libnvidia-container nvidia-{container-runtime,docker}
 
         # GitLab.
-        curl -sSL --retry 1000 $curl_connref --retry-delay 1 "https://packages.gitlab.com/install/repositories/runner/gitlab-ci-multi-runner/script.rpm.sh" | sudo bash
+        curl -sSL --retry 1000 $curl_connref --retry-delay 1 "https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.rpm.sh" | sudo bash
         RPM_PRIORITY=2 "$ROOT_DIR/apply_cache.sh" runner_gitlab-runner{,-source}
 
         sudo rm -rvf /etc/yum.repos.d/gitlab_gitlab-ce.repo
