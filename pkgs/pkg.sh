@@ -30,11 +30,15 @@ for subset in pkg-{stable,skip,all}; do
                 mpich-3.{0,2}{,-{devel,doc}}
                 java-11-openjdk{,-*}
                 rh-dotnet{21,22,31}{,-{lttng-ust,userspace-rcu}{,-{devel,debuginfo}}}
-                octave{,-*}
+                octave{,-{control,devel,doc,GeographicLib,general,image,io,signal,statistics}}
                 [!] {gdb,{l,s}trace}{,-*}
                 [!] {pax-utils,prelink}{,-*}
                 {gperf,gperftools,valgrind,perf}{,-*}
-                {make,ninja-build,cmake{,3},autoconf,libtool}{,-*}
+                [!] autoconf{,-archive}
+                [!] libtool{,-ltdl{,-devel}}
+                [!] make
+                ninja-build
+                cmake{{,-{fedora,gui}},3{,-{data,doc,gui}}}
                 {ant,maven}{,-*}
                 {git,rh-git218,subversion,mercurial}{,-*}
                 doxygen{,-*}
