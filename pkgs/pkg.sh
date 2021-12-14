@@ -168,8 +168,6 @@ for subset in pkg-{stable,skip,all}; do
 
                 privoxy{,-*}
 
-                XXXXXXXX_wine
-
                 [!] libselinux{,-*}
                 [!] se{troubleshoot,tools}{,-*}
                 [!] {selinux-policy,policycoreutils}{,-*}
