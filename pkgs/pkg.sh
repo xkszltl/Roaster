@@ -118,7 +118,7 @@ for subset in pkg-{stable,skip,all}; do
                 cairo{,-*}
                 gnuplot{,-debuginfo,-doc}
                 {freetype,harfbuzz,pango}{,-*}
-                {zlib,libzip,{,lib}zstd,lz4,{,p}{bzip2,xz},pigz,cpio,tar,snappy,unrar}{,-*}
+                {zlib,libzip,{,lib}zstd,lz4,{,p}{bzip2,xz},pigz,cpio,tar,snappy}{,-*}
                 [!] libaio{,-*}
                 lib{telnet,ssh{,2},curl,ffi,edit,icu,xslt}{,-*}
                 httpd24-libcurl{,-*}
