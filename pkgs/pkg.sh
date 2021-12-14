@@ -27,7 +27,7 @@ for subset in pkg-{stable,skip,all}; do
                 [!] gcc{,-*}
                 {distcc,ccache}{,-*}
                 openmpi{,-{devel,debuginfo}}
-                mpich-3.{0,2}{,-{devel,doc,debuginfo}}
+                mpich-3.{0,2}{,-{devel,doc}}
                 java-11-openjdk{,-*}
                 rh-dotnet{21,22,31}{,-{lttng-ust,userspace-rcu}{,-{devel,debuginfo}}}
                 octave{,-*}
