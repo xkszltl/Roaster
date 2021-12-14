@@ -144,7 +144,7 @@ for subset in pkg-{stable,skip,all}; do
                 ImageMagick{,-*}
                 qt5-*
                 yasm{,-*}
-                docbook{,5,2X}{,-*}
+                docbook{{,5}-*,2X}
                 txt2man
                 nagios{,-selinux,-devel,-debuginfo,-plugins-all}
                 {nrpe,nsca}
