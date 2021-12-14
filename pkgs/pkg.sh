@@ -26,9 +26,10 @@ for subset in pkg-{stable,skip,all}; do
                 qpid-cpp-client{,-*}
                 [!] gcc{,-*}
                 {distcc,ccache}{,-*}
-                {openmpi,mpich-3.{0,2}}{,-devel,-doc,-debuginfo}
+                openmpi{,-{devel,debuginfo}}
+                mpich-3.{0,2}{,-{devel,doc,debuginfo}}
                 java-11-openjdk{,-*}
-                rh-dotnet{21,22,31}{,-lttng-ust,-userspace-rcu}{,-devel,-debuginfo}
+                rh-dotnet{21,22,31}{,-{lttng-ust,userspace-rcu}{,-{devel,-debuginfo}}}
                 octave{,-*}
                 [!] {gdb,{l,s}trace}{,-*}
                 [!] {pax-utils,prelink}{,-*}
@@ -67,7 +68,7 @@ for subset in pkg-{stable,skip,all}; do
                 [!] {core,diff,elf,find,ib,ip,pci,sysfs,usb,yum-}utils{,-*}
                 [!] socat
                 nextgen-yum4{,-*}
-                dnf-plugins-{core,ovl,versionlock}{,-*}
+                dnf-plugins-core
                 yum-plugin-versionlock{,-*}
                 {bridge,crypto}-utils{,-*}
                 [!] man-pages
