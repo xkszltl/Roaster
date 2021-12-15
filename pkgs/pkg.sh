@@ -106,7 +106,7 @@ for subset in pkg-{stable,skip,all}; do
                 icu{,-*}
                 [!] {glibc{,-devel},libgcc}
                 [!] {gmp,mpfr,libmpc}{,-*}
-                [!] lib{asan,lsan,tsan,ubsan}{,-debuginfo}
+                [!] lib{asan,lsan,tsan,ubsan}
                 lib{exif,jpeg-turbo,tiff,png,gomp,gphoto2}{,-*}
                 lcov{,-*}
                 giflib{,-*}
