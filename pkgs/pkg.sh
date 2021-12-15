@@ -158,7 +158,7 @@ for subset in pkg-{stable,skip,all}; do
 
                 {fio,{file,sys}bench}{,-*}
 
-                [!] {,pam_}krb5{,-*}
+                [!] {krb5-*,pam_krb5}
                 [!] {sudo,nss,sssd,authconfig}{,-*}
                 gnome-keyring{,-*}
 
