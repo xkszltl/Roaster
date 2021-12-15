@@ -19,6 +19,7 @@ case "$(. <(sed 's/^\(..*\)/export DISTRO_\1/' '/etc/os-release') && bash -c 'pr
 esac
 
 # TODO: Fix the following issue:
+#   - boost-python3-debuginfo conflicts with boost-debuginfo itself.
 #   - LLVM may select the wrong gcc toolchain without libgcc_s integrated.
 #     The correct choice is x86_64-redhat-linux instead of x86_64-linux-gnu.
 #   - python-lexicon conflict with python2-dns-lexicon
@@ -28,7 +29,8 @@ esac
 #   - rh-ruby26-rubygem-bundler-doc has version mismatch between 1.16/1.17.
 
 export RPM_BLACKLIST=$(echo "
-    devtoolset-8*-debuginfo
+    boost-python3-debuginfo
+    devtoolset-*-debuginfo
     libreoffice*-debuginfo
     qt5*-debuginfo
     git-cola
