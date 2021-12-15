@@ -28,6 +28,7 @@ esac
 #   - rh-ruby26-rubygem-bundler-doc has version mismatch between 1.16/1.17.
 
 export RPM_BLACKLIST=$(echo "
+    devtoolset-8*-debuginfo
     libreoffice*-debuginfo
     qt5*-debuginfo
     git-cola
