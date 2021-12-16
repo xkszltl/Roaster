@@ -27,7 +27,7 @@
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
         . "$ROOT_DIR/pkgs/utils/fpm/distro_cc.sh"
 
-        export CC="ccache $CC" CXX="ccache $CXX"
+        export CC="$TOOLCHAIN/$(basename "$CC")" CXX="$TOOLCHAIN/$(basename "$CXX")"
         export CFLAGS="  $CFLAGS   -O3 -fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"
         export CXXFLAGS="$CXXFLAGS -O3 -fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"
 
