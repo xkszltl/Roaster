@@ -51,6 +51,13 @@
             # Use mirrored download path in opencv cmake.
             (
                 set -xe
+                case "$DISTRO_ID-$DISTRO_VERSION_ID" in
+                centos-* | fedora-* | rhel-*)
+                    set +xe
+                    . scl_source enable rh-git218
+                    set -xe
+                    ;;
+                esac
                 GITHUB_RAW='https://raw.githubusercontent.com'
                 git grep --name-only --recurse-submodules "$GITHUB_RAW" -- '*.cmake' '*/CMakeLists.txt' \
                 | xargs -n1 sed -i "s/$(sed 's/\([\\\/\.\-]\)/\\\1/g' <<< "$GITHUB_RAW")\(\/[^\/]*\/[^\/]*\)/$(sed 's/\([\\\/\.\-]\)/\\\1/g' <<< "$GIT_MIRROR")\1\/raw/"
