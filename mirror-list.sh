@@ -135,7 +135,7 @@ protocolbuffers/{protobuf,upb},\
 pybind/pybind11,\
 PythonCharmers/python-future,\
 python-pillow/{Pillow,pillow-perf,Sane},\
-pypa/{pip,pipenv,setuptools,virtualenv,warehouse,wheel},\
+pypa/{packaging,pip,pipenv,setuptools{,_scm},virtualenv,warehouse,wheel},\
 pytest-dev/{pluggy,py,pytest},\
 python/typing,\
 python-attrs/attrs,\
