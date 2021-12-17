@@ -18,7 +18,9 @@ TOPK=2 . "$ROOT_DIR/geo/best-httping.sh"            \
     https://mirrors.163.com/pypi/simple             \
     https://mirrors.aliyun.com/pypi/simple          \
     https://mirrors.cloud.tencent.com/pypi/simple   \
+    https://mirrors.cqu.edu.cn/pypi/web/simple      \
     https://mirrors.ustc.edu.cn/pypi/web/simple     \
+    https://mirrors.zju.edu.cn/pypi/web/simple      \
     https://pypi.tuna.tsinghua.edu.cn/simple        \
 [ "$LINK_QUALITY" ]
 
