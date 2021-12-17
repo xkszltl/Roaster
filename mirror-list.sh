@@ -136,6 +136,7 @@ pybind/pybind11,\
 PythonCharmers/python-future,\
 python-pillow/{Pillow,pillow-perf,Sane},\
 pypa/{packaging,pip,pipenv,setuptools{,_scm},virtualenv,warehouse,wheel},\
+pyparsing/pyparsing,\
 pytest-dev/{pluggy,py,pytest},\
 python/typing,\
 python-attrs/attrs,\
