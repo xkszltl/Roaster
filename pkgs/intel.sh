@@ -29,10 +29,10 @@
         parallel -j0 --line-buffer --bar 'bash -c '"'"'
             set -xe
             if [ "{}" = "_" ]; then
-                if [ -d '/opt/intel' ] && rpm -qf '/opt/intel'; then
-                    sudo dnf remove -y $(rpm -qf '/opt/intel' | sed -n '/^intel-/p')
+                if [ -d "/opt/intel" ] && rpm -qf "/opt/intel"; then
+                    sudo dnf remove -y $(rpm -qf "/opt/intel" | sed -n "/^intel-/p")
                 fi
-                sudo rm -rf '/opt/intel'
+                sudo rm -rf "/opt/intel"
             else
                 if [ '"_$GIT_MIRROR"' = '"_$GIT_MIRROR_CODINGCAFE"' ]; then
                     URL="'"$INTEL_REPO"'/$(curl -sSL '"$INTEL_REPO"'/ | sed -n "s/.*href=\"\([^\"]*l_{}[^\"]*\)\".*/\1/p" | sort -V | tail -n1)"
