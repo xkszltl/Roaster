@@ -90,7 +90,7 @@ for subset in pkg-{stable,skip,all}; do
                 {lm_sensors,hddtemp,smartmontools,lsscsi,bmon}{,-*}
                 [!]tuned{,-*}
                 [!] {{e2fs,btrfs-,xfs,ntfs}progs,xfsdump,nfs-utils}{,-*}
-                [!] fuse{,-devel,-libs}
+                [!] fuse{,3}{,-devel,-libs}
                 dd{,_}rescue{,-*}
                 [!] {docker-{ce,compose},container-selinux}{,-*}
                 createrepo{,_c}{,-*}
