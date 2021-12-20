@@ -1,0 +1,9 @@
+[Unit]
+Description=Debian repo mirroring daemon
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=exec
+ExecStart=ftpsync
+User=root

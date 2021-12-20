@@ -1,0 +1,12 @@
+[Unit]
+Description=ZFS scrub timer
+
+[Timer]
+OnCalendar=Mon *-*-* 00:00:00
+# OnCalendar=daily
+# OnCalendar=weekly
+# OnCalendar=monthly
+Unit=zfs-scrub.service
+
+[Install]
+WantedBy=multi-user.target

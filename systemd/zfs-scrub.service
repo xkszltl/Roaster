@@ -1,0 +1,14 @@
+[Unit]
+Description=ZFS scrub daemon
+After=zfs.target
+Wants=zfs.target
+
+[Service]
+Type=exec
+ExecStartPre=zpool status -v
+ExecStartPre=-/bin/bash -c 'set -e; zpool list -Ho name | xargs -r zpool scrub -s || zpool status -v'
+ExecStart=/bin/bash -c 'set -e; zpool list -Ho name | xargs -r zpool scrub -w'
+ExecStop=-/bin/bash -c 'set -e; zpool list -Ho name | xargs -r zpool scrub -s'
+ExecStopPost=zpool status -v
+OOMPolicy=stop
+User=root

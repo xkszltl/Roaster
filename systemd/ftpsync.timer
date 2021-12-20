@@ -1,0 +1,13 @@
+[Unit]
+Description=Debian repo mirroring timer
+After=network-online.target
+Wants=network-online.target
+
+[Timer]
+OnCalendar=*-*-* 02:00:00
+# OnCalendar=hourly
+# OnCalendar=weekly
+Unit=ftpsync.service
+
+[Install]
+WantedBy=multi-user.target
