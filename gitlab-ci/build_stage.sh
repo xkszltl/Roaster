@@ -44,13 +44,18 @@ sed -i "s/^FROM docker\.codingcafe\.org\/.*:/FROM $(sed 's/\([\\\/\.\-]\)/\\\1/g
 # sed -i 's/^\([[:space:]]*#[[:space:]]*syntax=docker\/dockerfile:experimental[[:space:]]*\)$//' "$GENERATED_DOCKERFILE"
 
 BUILD_LOG="$(mktemp --tmpdir 'roaster-docker-build.XXXXXXXXXX.log')"
-for retry in $(seq 300 -1 0); do
+retry_all=300
+retry_build=3
+for retry in $(seq "$retry_all" -1 0); do
+    # Overall retry counter/log.
+    [ "$retry" -eq "$retry_all" ] || printf '\033[36m[INFO] %d retries left overall.\033[0m\n' "$retry" >&2
     if [ "$retry" -le 0 ]; then
         rm -rf "$BUILD_LOG" "$GENERATED_DOCKERFILE"
         printf '\033[31m[ERROR] Out of retries.\033[0m\n' >&2
         exit 1
     fi
 
+    # Build.
     LABEL_BUILD_ID="$(uuidgen)"
     (
         set -xe
@@ -74,7 +79,7 @@ for retry in $(seq 300 -1 0); do
     ) 2>&1 | tee "$BUILD_LOG"
     DUMP_ID="$(sudo docker ps -aq --filter="label=BUILD_ID=$LABEL_BUILD_ID" --filter="status=exited" | head -n1)"
 
-    # Success
+    # Success.
     if [ "_$(tail -n1 "$BUILD_LOG")" = '_Exited with code 0.' ]; then
         [ "$DUMP_ID" ] && time sudo docker rm "$DUMP_ID"
         break
@@ -86,6 +91,7 @@ for retry in $(seq 300 -1 0); do
         continue
     fi
 
+    # Save breakpoint.
     printf '\033[31m[ERROR] Docker build failed. Save breakpoint snapshot.\033[0m\n' >&2
     if [ "$DUMP_ID" ]; then
         time sudo docker commit "$DUMP_ID" "$CI_REGISTRY_IMAGE/$BASE_DISTRO:breakpoint"
@@ -95,6 +101,10 @@ for retry in $(seq 300 -1 0); do
         printf '\033[33m[WARNING] Dump container with BUILD_ID="%s" is not found.\033[0m\n' "$LABEL_BUILD_ID" >&2
     fi
     rm -rf "$BUILD_LOG" "$GENERATED_DOCKERFILE"
-    exit 1
+
+    # Build-specific retry counter/log.
+    retry_build="$(expr "$retry_build" - 1)"
+    printf '\033[36m[INFO] %d retries left for build issues.\033[0m\n' "$retry_build" >&2
+    [ "$retry_build" -gt 0 ] || exit 1
 done
 rm -rf "$BUILD_LOG" "$GENERATED_DOCKERFILE"
