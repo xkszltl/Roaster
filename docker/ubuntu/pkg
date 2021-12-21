@@ -45,7 +45,7 @@ RUN set -e; \
             expect \
             firewalld \
             flex \
-            fuse libfuse{,3}-dev \
+            fuse libfuse-dev \
             g++{,-{4,5,6,7,8}} \
             gawk \
             gcc{,-{5,6,7,8}}-multilib \
