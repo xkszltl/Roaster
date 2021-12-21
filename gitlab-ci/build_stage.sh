@@ -2,12 +2,12 @@
 
 set -xe
 
-[ "$BASE_DISTRO" ] || BASE_DISTRO=centos
+[ "$BASE_DISTRO"        ] || BASE_DISTRO=centos
 
-# [ "$GITLAB_CI" ]
+# [ "$GITLAB_CI"          ]
 [ "$CI_COMMIT_REF_NAME" ]
-[ "$CI_JOB_STAGE" ]
-[ "$CI_REGISTRY_IMAGE" ]
+[ "$CI_JOB_STAGE"       ]
+[ "$CI_REGISTRY_IMAGE"  ]
 
 set +x
 if [ "$CI_REGISTRY" ] && [ "$CI_REGISTRY_USER" ] && [ "$CI_REGISTRY_PASSWORD" ]; then
@@ -25,10 +25,10 @@ stage="$(sed 's/^[^\-]*-//' <<< "$CI_COMMIT_REF_NAME")";
 GENERATED_DOCKERFILE="$(mktemp --tmpdir 'Dockerfile.generated.XXXXXXXX')"
 
 if [ "_$cmd" = "_resume" ] && [ "_$stage" = "_$CI_JOB_STAGE" ]; then
-    echo "Resume stage \"$CI_JOB_STAGE\"."
+    printf '\033[36m[INFO] Resume stage "%s".\033[0m\n' "$CI_JOB_STAGE" >&2
     cat "docker/$BASE_DISTRO/resume" > "$GENERATED_DOCKERFILE"
 else
-    echo "Build stage \"$CI_JOB_STAGE\"."
+    printf '\033[36m[INFO] Build stage "%s".\033[0m\n'  "$CI_JOB_STAGE" >&2
     cat "docker/$BASE_DISTRO/$CI_JOB_STAGE" > "$GENERATED_DOCKERFILE"
 fi
 
@@ -47,7 +47,7 @@ BUILD_LOG="$(mktemp --tmpdir 'roaster-docker-build.XXXXXXXXXX.log')"
 for retry in $(seq 300 -1 0); do
     if [ "$retry" -le 0 ]; then
         rm -rf "$BUILD_LOG" "$GENERATED_DOCKERFILE"
-        echo "Out of retries."
+        printf '\033[31m[ERROR] Out of retries.\033[0m\n' >&2
         exit 1
     fi
 
@@ -82,17 +82,17 @@ for retry in $(seq 300 -1 0); do
 
     # Work around docker buildkit issue: https://github.com/moby/buildkit/issues/1309
     if grep 'failed to solve with frontend dockerfile.v0: failed to solve with frontend gateway.v0: frontend grpc server closed unexpectedly' "$BUILD_LOG"; then
-        echo "Docker buildkit issue. $(expr "$retry" - 1) retries remaining."
+        printf '\033[31m[ERROR] Docker buildkit issue. %d retries remaining.\033[0m\n' "$(expr "$retry" - 1)" >&2
         continue
     fi
 
-    echo 'Docker build failed. Save breakpoint snapshot.' 1>&2
+    printf '\033[31m[ERROR] Docker build failed. Save breakpoint snapshot.\033[0m\n' >&2
     if [ "$DUMP_ID" ]; then
         time sudo docker commit "$DUMP_ID" "$CI_REGISTRY_IMAGE/$BASE_DISTRO:breakpoint"
         time sudo docker push "$_"
-        echo "Failed to build. Dump container is saved as breakpoint."
+        printf '\033[33m[WARNING] Failed to build. Dump container is saved as breakpoint.\033[0m\n' >&2
     else
-        echo "Dump container with BUILD_ID=$LABEL_BUILD_ID is not found."
+        printf '\033[33m[WARNING] Dump container with BUILD_ID="%s" is not found.\033[0m\n' "$LABEL_BUILD_ID" >&2
     fi
     rm -rf "$BUILD_LOG" "$GENERATED_DOCKERFILE"
     exit 1

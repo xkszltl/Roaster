@@ -3,7 +3,7 @@
 set -xe
 
 if [ ! "$CI_REGISTRY_IMAGE" ]; then
-    echo "Please set environment variable CI_REGISTRY_IMAGE to a docker registry."
+    printf '\033[31m[ERROR] Please set environment variable CI_REGISTRY_IMAGE to a docker registry.\033[0m\n' >&2
     exit 1
 fi
 
@@ -41,4 +41,4 @@ for CI_JOB_STAGE in init repo font pkg-{stable,skip,all} tex ss intel infra llvm
 done
 wait
 
-echo "Image \"$CI_REGISTRY_IMAGE/$BASE_DISTRO\" is ready."
+printf '\033[32m[INFO] Image "%s" is ready.\033[0m\n' "$CI_REGISTRY_IMAGE/$BASE_DISTRO" >&2

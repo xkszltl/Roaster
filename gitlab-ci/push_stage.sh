@@ -2,10 +2,10 @@
 
 set -xe
 
-[ "$BASE_DISTRO" ] || BASE_DISTRO=centos
+[ "$BASE_DISTRO"       ] || BASE_DISTRO=centos
 
-# [ "$GITLAB_CI" ]
-[ "$CI_JOB_NAME" ]
+# [ "$GITLAB_CI"         ]
+[ "$CI_JOB_NAME"       ]
 [ "$CI_REGISTRY_IMAGE" ]
 
 set +x
