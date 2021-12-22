@@ -42,6 +42,7 @@ RUN set -e; \
             diffutils \
             docker-{ce,compose} \
             dos2unix \
+            dstat \
             expect \
             firewalld \
             flex \
@@ -126,6 +127,7 @@ RUN set -e; \
             software-properties-common \
             subversion-tools \
             sysfsutils \
+            sysstat \
             tar \
             time \
             tmux{,-plugin-manager} \
