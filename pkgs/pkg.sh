@@ -55,6 +55,7 @@ for subset in pkg-{stable,skip,all}; do
                 jq{,-*}
                 [!] {tree,whereami,mlocate,lsof}{,-*}
                 [!] {ftp{,lib},telnet,tftp,rsh}{,-debuginfo}
+                [!] libteam{,-{devel,doc}} teamd{,-devel}
                 {h,if,io,latency,power,tip}top{,-*}
                 iproute{,-*}
                 {ibutils,infiniband-diags}{,-*}

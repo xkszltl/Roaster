@@ -65,6 +65,7 @@ RUN set -e; \
             httping \
             ibutils infiniband-diags \
             icu-devtools \
+            ifenslave \
             ifstat \
             iftop \
             iotop \
@@ -83,6 +84,7 @@ RUN set -e; \
             libpapi-dev papi-tools \
             libprotobuf-dev protobuf-compiler \
             libpugixml-dev pugixml-doc\
+            libteam-{dev,utils} \
             libtool \
             libudns-dev udns-utils \
             llvm-10{,-tools} {clang{,-{format,tidy,tools}},lld,lldb}-10 lib{c++{,abi},omp}-10-dev \
