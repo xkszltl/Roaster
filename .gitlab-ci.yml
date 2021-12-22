@@ -10,6 +10,7 @@ stages:
   - font
   - pkg-stable
   - pkg-skip
+  - pkg-all
   - tex
   - ss
   - infra
@@ -114,9 +115,21 @@ pkg-skip:
   <<: *docker_cpu_build_stage
 
 push-pkg-skip:
-  stage: tex
+  stage: pkg-all
   only:
     - /^(build|resume)-(init|repo|font|pkg-(stable|skip))$/
+  <<: *docker_push_stage
+
+pkg-all:
+  stage: pkg-all
+  only:
+    - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all))$/
+  <<: *docker_cpu_build_stage
+
+push-pkg-all:
+  stage: tex
+  only:
+    - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all))$/
   <<: *docker_push_stage
 
 tex:
