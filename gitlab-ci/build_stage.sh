@@ -100,11 +100,13 @@ for retry in $(seq "$retry_all" -1 0); do
     else
         printf '\033[33m[WARNING] Dump container with BUILD_ID="%s" is not found.\033[0m\n' "$LABEL_BUILD_ID" >&2
     fi
-    rm -rf "$BUILD_LOG" "$GENERATED_DOCKERFILE"
 
     # Build-specific retry counter/log.
     retry_build="$(expr "$retry_build" - 1)"
     printf '\033[36m[INFO] %d retries left for build issues.\033[0m\n' "$retry_build" >&2
-    [ "$retry_build" -gt 0 ] || exit 1
+    if [ "$retry_build" -le 0 ]; then
+        rm -rf "$BUILD_LOG" "$GENERATED_DOCKERFILE"
+        exit 1
+    fi
 done
 rm -rf "$BUILD_LOG" "$GENERATED_DOCKERFILE"
