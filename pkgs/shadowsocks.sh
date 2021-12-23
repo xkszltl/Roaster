@@ -182,7 +182,7 @@ export SS_PORT='$CRED_USR_SS_PORT/tcp'
 
 systemctl enable firewalld || $IS_CONTAINER
 systemctl --no-pager status firewalld || systemctl start firewalld || $IS_CONTAINER
-if [ -f '/etc/shadowsocks/ssserver.json' ]; then
+if [ -f '/usr/lib/systemd/system/shadowsocks.service' ]; then
     firewall-cmd --permanent --delete-service=ss || true
     if firewall-cmd --permanent --new-service=ss; then
         firewall-cmd --permanent --service=ss --set-short='Shadowsocks'
@@ -197,12 +197,12 @@ fi
 firewall-cmd --reload || $IS_CONTAINER
 
 for i in shadowsocks shadowsocks-client; do
-    if [ -f '/etc/shadowsocks/ssserver.json' ]; then
-        systemctl enable \$i
-        systemctl start \$i || $IS_CONTAINER
+    if [ -f "/usr/lib/systemd/system/\$i" ]; then
+        systemctl enable "\$i"
+        systemctl start "\$i" || $IS_CONTAINER
     else
-        systemctl disable \$i
-        systemctl stop \$i || $IS_CONTAINER
+        systemctl disable "\$i"
+        systemctl stop "\$i" || $IS_CONTAINER
     fi
 done
 "
