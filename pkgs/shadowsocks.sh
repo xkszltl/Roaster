@@ -181,7 +181,7 @@ EOF
 export SS_PORT='$CRED_USR_SS_PORT/tcp'
 
 systemctl enable firewalld || $IS_CONTAINER
-systemctl status firewalld || systemctl start firewalld || $IS_CONTAINER
+systemctl --no-pager status firewalld || systemctl start firewalld || $IS_CONTAINER
 if [ -f '/etc/shadowsocks/ssserver.json' ]; then
     firewall-cmd --permanent --delete-service=ss || true
     if firewall-cmd --permanent --new-service=ss; then
