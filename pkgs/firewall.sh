@@ -5,6 +5,11 @@
 [ -e $STAGE/firewall ] && ( set -xe
     cd $SCRATCH
 
+    if ! sudo firewall-cmd --state; then
+        sudo systemctl enable firewalld || $IS_CONTAINER
+        sudo systemctl --no-pager status firewalld || sudo systemctl start firewalld || $IS_CONTAINER
+    fi
+
     sudo firewall-cmd --permanent --delete-service=afp || true
     if sudo firewall-cmd --permanent --new-service=afp; then
         sudo firewall-cmd --permanent --service=afp --set-short='Apple Filing Protocol'
