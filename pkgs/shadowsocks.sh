@@ -197,7 +197,7 @@ fi
 firewall-cmd --reload || $IS_CONTAINER
 
 for i in shadowsocks shadowsocks-client; do
-    if [ -f "/usr/lib/systemd/system/\$i" ]; then
+    if [ -f "/usr/lib/systemd/system/\$i.service" ]; then
         systemctl enable "\$i"
         systemctl start "\$i" || $IS_CONTAINER
     else
