@@ -155,4 +155,4 @@ RUN set -e; \
     sudo update-alternatives --set liblapack.so.3-x86_64-linux-gnu /usr/lib/x86_64-linux-gnu/atlas/liblapack.so.3; \
     sudo parallel --will-cite < /dev/null; \
     truncate -s0 ~/.bash_history;
-RUN /etc/roaster/scripts/setup.sh fpm
+RUN /etc/roaster/scripts/setup.sh fpm firewall

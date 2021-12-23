@@ -161,6 +161,7 @@ for i in $(echo "
     font
     pkg
     fpm
+    firewall
     auth
     vim
     tmux
