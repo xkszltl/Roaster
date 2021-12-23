@@ -24,6 +24,8 @@
         $IS_CONTAINER
     fi
     sudo firewall-cmd --reload || $IS_CONTAINER
+
+    sudo firewall-cmd --list-all || $IS_CONTAINER
 )
 sudo rm -vf $STAGE/firewall
 sync || true
