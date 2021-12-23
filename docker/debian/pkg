@@ -70,6 +70,7 @@ RUN set -e; \
             ifstat \
             iftop \
             iotop \
+            iperf{,3} libiperf-dev \
             iproute2{,-doc} \
             'iputils-*' \
             jq \

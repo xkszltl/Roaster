@@ -81,6 +81,7 @@ for subset in pkg-{stable,skip,all}; do
                 [!] moreutils{,-debuginfo}
                 [!] papi{,-*}
                 [!] rng-tools{,-debuginfo}
+                iperf{,3{,-devel}}
                 rpmdevtools
                 rpm-build
                 cyrus-imapd{,-*}
