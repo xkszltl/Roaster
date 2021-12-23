@@ -183,9 +183,16 @@ export SS_PORT='$CRED_USR_SS_PORT/tcp'
 systemctl enable firewalld || $IS_CONTAINER
 systemctl status firewalld || systemctl start firewalld || $IS_CONTAINER
 if [ -f '/etc/shadowsocks/ssserver.json' ]; then
-    firewall-cmd --permanent --add-port="\$SS_PORT" || $IS_CONTAINER
+    firewall-cmd --permanent --delete-service=ss || true
+    if firewall-cmd --permanent --new-service=ss; then
+        firewall-cmd --permanent --service=ss --set-short='Shadowsocks'
+        firewall-cmd --permanent --service=ss --set-description='Shadowsocks-libev is a lightweight secured SOCKS5 proxy for embedded devices and low-end boxes.'
+        firewall-cmd --permanent --service=ss --add-port="\$SS_PORT"
+    else
+        $IS_CONTAINER
+    fi
 else
-    firewall-cmd --permanent --remove-port="\$SS_PORT" || $IS_CONTAINER
+    firewall-cmd --permanent --delete-service=ss || $IS_CONTAINER
 fi
 firewall-cmd --reload || $IS_CONTAINER
 
