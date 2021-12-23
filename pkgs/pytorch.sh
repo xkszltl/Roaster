@@ -7,6 +7,7 @@
 
     # NetworkX 2.6 does not support Python 3.7.
     "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  \
+        pypa/packaging                              \
         cython/cython                               \
         benjaminp/six                               \
         yaml/pyyaml                                 \
