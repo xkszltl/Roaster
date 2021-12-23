@@ -196,7 +196,7 @@ else
 fi
 firewall-cmd --reload || $IS_CONTAINER
 
-for i in shadowsocks{,-client}; do
+for i in shadowsocks shadowsocks-client; do
     if [ -f '/etc/shadowsocks/ssserver.json' ]; then
         systemctl enable \$i
         systemctl start \$i || $IS_CONTAINER
