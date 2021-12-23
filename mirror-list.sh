@@ -31,7 +31,7 @@ chadaustin/sajson,\
 chromium/{ballista,chromium,gyp,pdfium,vs-chromium},\
 Cisco-Talos/clamav-{bytecode-compiler,devel,faq,safebrowsing},\
 civetweb/civetweb,\
-cncf/{cnf-conformance,landscape,sig-{app-delivery,contributor-strategy,network,observability,runtime,security{,-events}},udpa,xds},\
+cncf/{landscape,sig-{app-delivery,contributor-strategy,network,observability,runtime,security{,-events}},cnf-testsuite,udpa,xds},\
 cocodataset/{cocoapi,panopticapi},\
 containerd/containerd,\
 cplusplus/{draft,papers},\
