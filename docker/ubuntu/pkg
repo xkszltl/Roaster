@@ -78,7 +78,7 @@ RUN set -e; \
             lcov \
             ldap-utils slapd \
             lib{asan{0,2,3,4,5},lsan0,tsan0,ubsan{0,1}} \
-            lib{atlas-base,boost-all,bz2,cairo2,edit,eigen3,ev,ffi,gflags,gif,google-glog,grpc++,gtest,harfbuzz,hiredis,hwloc,jemalloc,jpeg{,-turbo8},jsoncpp,lapack,leveldb,lmdb,lzma,mbedtls,ncurses5,openblas,opencv,pango1.0,png,rados,rocksdb,snappy,sodium,ssl,tiff,utf8proc,yaml}-dev \
+            lib{atlas-base,boost-all,bz2,cairo2,c-ares,edit,eigen3,ev,ffi,gflags,gif,google-glog,grpc++,gtest,harfbuzz,hiredis,hwloc,jemalloc,jpeg{,-turbo8},jsoncpp,lapack,leveldb,lmdb,lzma,mbedtls,ncurses5,openblas,opencv,pango1.0,png,rados,rocksdb,snappy,sodium,ssl,tiff,utf8proc,yaml}-dev \
             libevent-dev \
             libfreetype6{,-dev} \
             liblz4-dev liblz4-tool \
