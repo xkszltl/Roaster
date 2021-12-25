@@ -46,6 +46,7 @@
         for i in ./*.cmake; do
             sed -i "s/$(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR_GITHUB")\(\/..*\/.*\.git\)/$(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR")\1/" "$i"
         done
+        git --no-pager diff
     )
 
     # ------------------------------------------------------------
