@@ -19,7 +19,10 @@
     until git clone -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd onnxruntime
 
-    PATCHES=""
+    # Known issues:
+    #   - Missing .git in URL.
+    #     https://github.com/microsoft/onnxruntime/pull/10132
+    PATCHES="suffix"
     if [ "$PATCHES" ]; then
         git remote add patch "$GIT_MIRROR/xkszltl/onnxruntime.git"
         git fetch patch
