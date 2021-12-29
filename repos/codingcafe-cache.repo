@@ -242,7 +242,7 @@ enabled=0
 
 [cache-oneAPI]
 name=[Cache] Intel oneAPI repository
-baseurl=https://repo.codingcafe.org/intel/oneapi
+baseurl=https://repo.codingcafe.org/intel/
 gpgcheck=1
 gpgkey=https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
 priority=1
