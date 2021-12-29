@@ -21,6 +21,10 @@
 
         until sudo yum install -y nextgen-yum4 dnf-plugins-core; do echo 'Retrying'; done
         sudo dnf config-manager --save --setopt=fastestmirror=true
+        sudo dnf config-manager --save --setopt=ip_resolve=IPv4
+        sudo dnf config-manager --save --setopt=max_parallel_downloads=20
+        sudo dnf config-manager --save --setopt=minrate=10k
+        sudo dnf config-manager --save --setopt=retries=20
 
         until sudo dnf makecache -y; do echo 'Retrying'; done
         until sudo dnf install -y bc {core,find,ip}utils curl kernel-headers; do echo 'Retrying'; done
