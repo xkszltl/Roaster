@@ -11,8 +11,9 @@
         until sudo yum makecache -y; do echo 'Retrying'; done
         until sudo yum install -y sed yum-{plugin-{fastestmirror,priorities},utils}; do echo 'Retrying'; done
 
-        sudo yum-config-manager --save --setopt=tsflags=
         $IS_CONTAINER || sudo yum-config-manager --save --setopt=installonly_limit=3
+        sudo yum-config-manager --save --setopt=ip_resolve=IPv4
+        sudo yum-config-manager --save --setopt=tsflags=
 
         # Hack to skip repo caching.
         [ "_$GIT_MIRROR" = "_$GIT_MIRROR_CODINGCAFE" ] || export RPM_CACHE_REPO="$ROOT_DIR/non-exist-file"
