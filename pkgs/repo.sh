@@ -85,7 +85,7 @@
 
         # Intel oneAPI.
         sudo dnf config-manager --add-repo "$ROOT_DIR/repos/oneAPI.repo"
-        # RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" oneAPI
+        RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" oneAPI
 
         # Docker-CE.
         sudo dnf config-manager --add-repo "https://download.docker.com/linux/centos/docker-ce.repo"
