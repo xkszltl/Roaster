@@ -7,7 +7,7 @@
     case "$DISTRO_ID" in
     'centos' | 'rhel')
         for attempt in $(seq "$RPM_MAX_ATTEMPT" -1 0); do
-            if [ "$attempt" -gt 0 ]; then
+            if [ "$attempt" -le 0 ]; then
                 printf '\033[31m[ERROR] Out of retries.\033[0m\n'
                 exit 1
             fi
@@ -15,7 +15,7 @@
             expr "$attempt" - 1 | xargs printf '\033[33m[WARNING] %d retries left.\033[0m\n' 
         done
         for attempt in $(seq "$RPM_MAX_ATTEMPT" -1 0); do
-            if [ "$attempt" -gt 0 ]; then
+            if [ "$attempt" -le 0 ]; then
                 printf '\033[31m[ERROR] Out of retries.\033[0m\n'
                 exit 1
             fi
@@ -23,7 +23,7 @@
             expr "$attempt" - 1 | xargs printf '\033[33m[WARNING] %d retries left.\033[0m\n' 
         done
         for attempt in $(seq "$RPM_MAX_ATTEMPT" -1 0); do
-            if [ "$attempt" -gt 0 ]; then
+            if [ "$attempt" -le 0 ]; then
                 printf '\033[31m[ERROR] Out of retries.\033[0m\n'
                 exit 1
             fi
@@ -31,7 +31,7 @@
             expr "$attempt" - 1 | xargs printf '\033[33m[WARNING] %d retries left.\033[0m\n' 
         done
         for attempt in $(seq "$RPM_MAX_ATTEMPT" -1 0); do
-            if [ "$attempt" -gt 0 ]; then
+            if [ "$attempt" -le 0 ]; then
                 printf '\033[31m[ERROR] Out of retries.\033[0m\n'
                 exit 1
             fi
@@ -39,7 +39,7 @@
             expr "$attempt" - 1 | xargs printf '\033[33m[WARNING] %d retries left.\033[0m\n' 
         done
         for attempt in $(seq "$RPM_MAX_ATTEMPT" -1 0); do
-            if [ "$attempt" -gt 0 ]; then
+            if [ "$attempt" -le 0 ]; then
                 printf '\033[31m[ERROR] Out of retries.\033[0m\n'
                 exit 1
             fi
@@ -48,7 +48,7 @@
         done
         for kit in base hpc iot dlfd ai render; do
             for attempt in $(seq "$RPM_MAX_ATTEMPT" -1 0); do
-                if [ "$attempt" -gt 0 ]; then
+                if [ "$attempt" -le 0 ]; then
                     printf '\033[31m[ERROR] Out of retries.\033[0m\n'
                     exit 1
                 fi
@@ -59,7 +59,7 @@
         ;;
     'debian' | 'linuxmint' | 'ubuntu')
         for attempt in $(seq "$DEB_MAX_ATTEMPT" -1 0); do
-            if [ "$attempt" -gt 0 ]; then
+            if [ "$attempt" -le 0 ]; then
                 printf '\033[31m[ERROR] Out of retries.\033[0m\n'
                 exit 1
             fi
@@ -67,7 +67,7 @@
             expr "$attempt" - 1 | xargs printf '\033[33m[WARNING] %d retries left.\033[0m\n' 
         done
         for attempt in $(seq "$DEB_MAX_ATTEMPT" -1 0); do
-            if [ "$attempt" -gt 0 ]; then
+            if [ "$attempt" -le 0 ]; then
                 printf '\033[31m[ERROR] Out of retries.\033[0m\n'
                 exit 1
             fi
@@ -75,7 +75,7 @@
             expr "$attempt" - 1 | xargs printf '\033[33m[WARNING] %d retries left.\033[0m\n' 
         done
         for attempt in $(seq "$DEB_MAX_ATTEMPT" -1 0); do
-            if [ "$attempt" -gt 0 ]; then
+            if [ "$attempt" -le 0 ]; then
                 printf '\033[31m[ERROR] Out of retries.\033[0m\n'
                 exit 1
             fi
@@ -83,7 +83,7 @@
             expr "$attempt" - 1 | xargs printf '\033[33m[WARNING] %d retries left.\033[0m\n' 
         done
         for attempt in $(seq "$DEB_MAX_ATTEMPT" -1 0); do
-            if [ "$attempt" -gt 0 ]; then
+            if [ "$attempt" -le 0 ]; then
                 printf '\033[31m[ERROR] Out of retries.\033[0m\n'
                 exit 1
             fi
@@ -91,7 +91,7 @@
             expr "$attempt" - 1 | xargs printf '\033[33m[WARNING] %d retries left.\033[0m\n' 
         done
         for attempt in $(seq "$DEB_MAX_ATTEMPT" -1 0); do
-            if [ "$attempt" -gt 0 ]; then
+            if [ "$attempt" -le 0 ]; then
                 printf '\033[31m[ERROR] Out of retries.\033[0m\n'
                 exit 1
             fi
@@ -100,7 +100,7 @@
         done
         for kit in base hpc iot dlfd ai render; do
             for attempt in $(seq "$DEB_MAX_ATTEMPT" -1 0); do
-                if [ "$attempt" -gt 0 ]; then
+                if [ "$attempt" -le 0 ]; then
                     printf '\033[31m[ERROR] Out of retries.\033[0m\n'
                     exit 1
                 fi
