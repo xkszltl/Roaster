@@ -12,7 +12,6 @@
         until sudo yum install -y sed yum-{plugin-{fastestmirror,priorities},utils}; do echo 'Retrying'; done
 
         $IS_CONTAINER || sudo yum-config-manager --save --setopt=installonly_limit=3
-        sudo yum-config-manager --save --setopt=ip_resolve=IPv4
         sudo yum-config-manager --save --setopt=tsflags=
 
         # Hack to skip repo caching.
@@ -22,7 +21,6 @@
 
         until sudo yum install -y nextgen-yum4 dnf-plugins-core; do echo 'Retrying'; done
         sudo dnf config-manager --save --setopt=fastestmirror=true
-        sudo dnf config-manager --save --setopt=ip_resolve=IPv4
         sudo dnf config-manager --save --setopt=max_parallel_downloads=20
         sudo dnf config-manager --save --setopt=minrate=10k
         sudo dnf config-manager --save --setopt=retries=20
