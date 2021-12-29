@@ -84,7 +84,7 @@ parallel -j0 --line-buffer --bar 'bash -c '"'"'
 '"'" ::: CTAN gnu
 
 # ----------------------------------------------------------------
-# Intel Repository Mirroring
+# Intel Legacy Repository Mirroring
 # ----------------------------------------------------------------
 
 parallel -j0 --line-buffer --bar 'bash -c '"'"'
@@ -191,6 +191,18 @@ for i in elrepo{,-testing,-kernel,-extras}; do
         "retries":  '$DEF_RETRIES'
     }')
 done
+
+# ----------------------------------------------------------------
+# Intel oneAPI
+# ----------------------------------------------------------------
+
+export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
+{
+    "repo":         "'"oneAPI"'",
+    "path":         "'"intel"'",
+    "retries":      10,
+    "sync_args":    "--delete --newest-only"
+}')
 
 # ----------------------------------------------------------------
 # CUDA Repository Mirroring Task
@@ -355,18 +367,6 @@ for i in =$(uname -i) -source=SRPMS; do
         "sync_args":    "--newest-only"
     }')
 done
-
-# ----------------------------------------------------------------
-# Intel oneAPI
-# ----------------------------------------------------------------
-
-export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
-{
-    "repo":         "'"oneAPI"'",
-    "path":         "'"intel"'",
-    "retries":      10,
-    "sync_args":    "--delete --newest-only"
-}')
 
 # ----------------------------------------------------------------
 # Task Execution
