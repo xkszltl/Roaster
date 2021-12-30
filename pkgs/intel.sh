@@ -5,106 +5,54 @@
 [ -e $STAGE/intel ] && ( set -xe
     # Group packages separately to allow easy cherry-picking.
     case "$DISTRO_ID" in
-    'centos' | 'fedora' | 'rhel')
-        for attempt in $(seq "$RPM_MAX_ATTEMPT" -1 0); do
+    'centos' | 'debian' | 'fedora' | 'linuxmint' | 'rhel' | 'ubuntu')
+        for attempt in $(seq "$PKG_MAX_ATTEMPT" -1 0); do
             if [ "$attempt" -le 0 ]; then
                 printf '\033[31m[ERROR] Out of retries.\033[0m\n'
                 exit 1
             fi
-            ! $RPM_UPDATE || break
+            ! $PKG_UPDATE || break
             expr "$attempt" - 1 | xargs printf '\033[33m[WARNING] %d retries left.\033[0m\n' 
         done
-        for attempt in $(seq "$RPM_MAX_ATTEMPT" -1 0); do
+        for attempt in $(seq "$PKG_MAX_ATTEMPT" -1 0); do
             if [ "$attempt" -le 0 ]; then
                 printf '\033[31m[ERROR] Out of retries.\033[0m\n'
                 exit 1
             fi
-            ! $RPM_INSTALL intel-oneapi-{ccl,dal,dnnl,ipp{,cp},mkl,mpi,tbb}{,-devel} || break
+            ! $PKG_INSTALL intel-oneapi-{ccl,dal,dnnl,ipp{,cp},mkl,mpi,tbb}{,-devel} || break
             expr "$attempt" - 1 | xargs printf '\033[33m[WARNING] %d retries left.\033[0m\n' 
         done
-        for attempt in $(seq "$RPM_MAX_ATTEMPT" -1 0); do
+        for attempt in $(seq "$PKG_MAX_ATTEMPT" -1 0); do
             if [ "$attempt" -le 0 ]; then
                 printf '\033[31m[ERROR] Out of retries.\033[0m\n'
                 exit 1
             fi
-            ! $RPM_INSTALL intel-oneapi-{advisor,inspector,vtune} || break
+            ! $PKG_INSTALL intel-oneapi-{advisor,inspector,vtune} || break
             expr "$attempt" - 1 | xargs printf '\033[33m[WARNING] %d retries left.\033[0m\n' 
         done
-        for attempt in $(seq "$RPM_MAX_ATTEMPT" -1 0); do
+        for attempt in $(seq "$PKG_MAX_ATTEMPT" -1 0); do
             if [ "$attempt" -le 0 ]; then
                 printf '\033[31m[ERROR] Out of retries.\033[0m\n'
                 exit 1
             fi
-            ! $RPM_INSTALL intel-oneapi-{compiler-{dpcpp-cpp{,-and-cpp-classic},fortran},dpcpp-{ct,debugger},libdpstd-devel} || break
+            ! $PKG_INSTALL intel-oneapi-{compiler-{dpcpp-cpp{,-and-cpp-classic},fortran},dpcpp-{ct,debugger},libdpstd-devel} || break
             expr "$attempt" - 1 | xargs printf '\033[33m[WARNING] %d retries left.\033[0m\n' 
         done
-        for attempt in $(seq "$RPM_MAX_ATTEMPT" -1 0); do
+        for attempt in $(seq "$PKG_MAX_ATTEMPT" -1 0); do
             if [ "$attempt" -le 0 ]; then
                 printf '\033[31m[ERROR] Out of retries.\033[0m\n'
                 exit 1
             fi
-            ! $RPM_INSTALL intel-oneapi-dev-utilities intel-oneapi-diagnostics-utility || break
+            ! $PKG_INSTALL intel-oneapi-dev-utilities intel-oneapi-diagnostics-utility || break
             expr "$attempt" - 1 | xargs printf '\033[33m[WARNING] %d retries left.\033[0m\n' 
         done
         for kit in base hpc iot dlfd ai render; do
-            for attempt in $(seq "$RPM_MAX_ATTEMPT" -1 0); do
+            for attempt in $(seq "$PKG_MAX_ATTEMPT" -1 0); do
                 if [ "$attempt" -le 0 ]; then
                     printf '\033[31m[ERROR] Out of retries.\033[0m\n'
                     exit 1
                 fi
-                ! $RPM_INSTALL intel-"$kit"kit || break
-                expr "$attempt" - 1 | xargs printf '\033[33m[WARNING] %d retries left.\033[0m\n' 
-            done
-        done
-        ;;
-    'debian' | 'linuxmint' | 'ubuntu')
-        for attempt in $(seq "$DEB_MAX_ATTEMPT" -1 0); do
-            if [ "$attempt" -le 0 ]; then
-                printf '\033[31m[ERROR] Out of retries.\033[0m\n'
-                exit 1
-            fi
-            ! sudo apt-get update -y || break
-            expr "$attempt" - 1 | xargs printf '\033[33m[WARNING] %d retries left.\033[0m\n' 
-        done
-        for attempt in $(seq "$DEB_MAX_ATTEMPT" -1 0); do
-            if [ "$attempt" -le 0 ]; then
-                printf '\033[31m[ERROR] Out of retries.\033[0m\n'
-                exit 1
-            fi
-            ! sudo DEBIAN_FRONTEND=noninteractive apt-get install -y intel-oneapi-{ccl,dal,dnnl,ipp{,cp},mkl,mpi,tbb}{,-devel} || break
-            expr "$attempt" - 1 | xargs printf '\033[33m[WARNING] %d retries left.\033[0m\n' 
-        done
-        for attempt in $(seq "$DEB_MAX_ATTEMPT" -1 0); do
-            if [ "$attempt" -le 0 ]; then
-                printf '\033[31m[ERROR] Out of retries.\033[0m\n'
-                exit 1
-            fi
-            ! sudo DEBIAN_FRONTEND=noninteractive apt-get install -y intel-oneapi-{advisor,inspector,vtune} || break
-            expr "$attempt" - 1 | xargs printf '\033[33m[WARNING] %d retries left.\033[0m\n' 
-        done
-        for attempt in $(seq "$DEB_MAX_ATTEMPT" -1 0); do
-            if [ "$attempt" -le 0 ]; then
-                printf '\033[31m[ERROR] Out of retries.\033[0m\n'
-                exit 1
-            fi
-            ! sudo DEBIAN_FRONTEND=noninteractive apt-get install -y intel-oneapi-{compiler-{dpcpp-cpp{,-and-cpp-classic},fortran},dpcpp-{ct,debugger},libdpstd-devel} || break
-            expr "$attempt" - 1 | xargs printf '\033[33m[WARNING] %d retries left.\033[0m\n' 
-        done
-        for attempt in $(seq "$DEB_MAX_ATTEMPT" -1 0); do
-            if [ "$attempt" -le 0 ]; then
-                printf '\033[31m[ERROR] Out of retries.\033[0m\n'
-                exit 1
-            fi
-            ! sudo DEBIAN_FRONTEND=noninteractive apt-get install -y intel-oneapi-dev-utilities intel-oneapi-diagnostics-utility || break
-            expr "$attempt" - 1 | xargs printf '\033[33m[WARNING] %d retries left.\033[0m\n' 
-        done
-        for kit in base hpc iot dlfd ai render; do
-            for attempt in $(seq "$DEB_MAX_ATTEMPT" -1 0); do
-                if [ "$attempt" -le 0 ]; then
-                    printf '\033[31m[ERROR] Out of retries.\033[0m\n'
-                    exit 1
-                fi
-                ! sudo DEBIAN_FRONTEND=noninteractive apt-get install -y intel-"$kit"kit || break
+                ! $PKG_INSTALL intel-"$kit"kit || break
                 expr "$attempt" - 1 | xargs printf '\033[33m[WARNING] %d retries left.\033[0m\n' 
             done
         done
