@@ -18,6 +18,11 @@ case "$(. <(sed 's/^\(..*\)/export DISTRO_\1/' '/etc/os-release') && bash -c 'pr
     ;;
 esac
 
+export DEB_REFRESH="sudo DEBIAN_FRONTEND=noninteractive apt-get update -y"
+export DEB_UPDATE="sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y"
+export DEB_INSTALL="sudo DEBIAN_FRONTEND=noninteractive apt-get install -y"
+export DEB_REINSTALL="sudo DEBIAN_FRONTEND=noninteractive apt-get reinstall -y"
+
 # TODO: Fix the following issue:
 #   - boost-python3-debuginfo conflicts with boost-debuginfo itself.
 #   - LLVM may select the wrong gcc toolchain without libgcc_s integrated.
@@ -42,6 +47,7 @@ export RPM_BLACKLIST=$(echo "
 
 export RPM_CACHE_ARGS=$([ -f "$RPM_CACHE_REPO" ] && echo "--disableplugin=axelget,fastestmirror")
 
-export RPM_INSTALL="sudo dnf install -y $RPM_CACHE_ARGS --nogpgcheck $RPM_BLACKLIST"
+export RPM_REFRESH="sudo dnf makecache -y"
 export RPM_UPDATE="sudo dnf update -y $RPM_CACHE_ARGS --nogpgcheck $RPM_BLACKLIST"
+export RPM_INSTALL="sudo dnf install -y $RPM_CACHE_ARGS --nogpgcheck $RPM_BLACKLIST"
 export RPM_REINSTALL="sudo dnf reinstall -y $RPM_CACHE_ARGS --nogpgcheck $RPM_BLACKLIST"
