@@ -3,6 +3,7 @@
 # ================================================================
 
 [ -e $STAGE/intel ] && ( set -xe
+    $PKG_REFRESH
     # Group packages separately to allow easy cherry-picking.
     case "$DISTRO_ID" in
     'centos' | 'debian' | 'fedora' | 'linuxmint' | 'rhel' | 'ubuntu')
