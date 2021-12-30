@@ -5,7 +5,7 @@
 [ -e $STAGE/intel ] && ( set -xe
     # Group packages separately to allow easy cherry-picking.
     case "$DISTRO_ID" in
-    'centos' | 'rhel')
+    'centos' | 'fedora' | 'rhel')
         for attempt in $(seq "$RPM_MAX_ATTEMPT" -1 0); do
             if [ "$attempt" -le 0 ]; then
                 printf '\033[31m[ERROR] Out of retries.\033[0m\n'
