@@ -5,19 +5,6 @@
 export DEB_MAX_ATTEMPT=10
 export RPM_MAX_ATTEMPT=10
 
-# Note: Do not leak $DISTRO_* because this script is only for package management environment.
-case "$(. <(sed 's/^\(..*\)/export DISTRO_\1/' '/etc/os-release') && bash -c 'printf "$DISTRO_ID"')" in
-'centos' | 'fedora' | 'rhel')
-    export PKG_MAX_ATTEMPT="$RPM_MAX_ATTEMPT"
-    ;;
-'debian' | 'linuxmint' | 'ubuntu')
-    export PKG_MAX_ATTEMPT="$DEB_MAX_ATTEMPT"
-    ;;
-*)
-    export PKG_MAX_ATTEMPT=10
-    ;;
-esac
-
 export DEB_REFRESH="sudo DEBIAN_FRONTEND=noninteractive apt-get update -y"
 export DEB_UPDATE="sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y"
 export DEB_INSTALL="sudo DEBIAN_FRONTEND=noninteractive apt-get install -y"
@@ -51,3 +38,24 @@ export RPM_REFRESH="sudo dnf makecache -y"
 export RPM_UPDATE="sudo dnf update -y $RPM_CACHE_ARGS --nogpgcheck $RPM_BLACKLIST"
 export RPM_INSTALL="sudo dnf install -y $RPM_CACHE_ARGS --nogpgcheck $RPM_BLACKLIST"
 export RPM_REINSTALL="sudo dnf reinstall -y $RPM_CACHE_ARGS --nogpgcheck $RPM_BLACKLIST"
+
+# Note: Do not leak $DISTRO_* because this script is only for package management environment.
+case "$(. <(sed 's/^\(..*\)/export DISTRO_\1/' '/etc/os-release') && bash -c 'printf "$DISTRO_ID"')" in
+'centos' | 'fedora' | 'rhel')
+    export PKG_MAX_ATTEMPT="$RPM_MAX_ATTEMPT"
+    export PKG_REFRESH="$RPM_REFRESH"
+    export PKG_UPDATE="$RPM_UPDATE"
+    export PKG_INSTALL="$RPM_INSTALL"
+    export PKG_REINSTALL="$RPM_REINSTALL"
+    ;;
+'debian' | 'linuxmint' | 'ubuntu')
+    export PKG_MAX_ATTEMPT="$DEB_MAX_ATTEMPT"
+    export PKG_REFRESH="$DEB_REFRESH"
+    export PKG_UPDATE="$DEB_UPDATE"
+    export PKG_INSTALL="$DEB_INSTALL"
+    export PKG_REINSTALL="$DEB_REINSTALL"
+    ;;
+*)
+    export PKG_MAX_ATTEMPT=10
+    ;;
+esac
