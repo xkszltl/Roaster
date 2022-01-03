@@ -32,6 +32,10 @@ Domain='codingcafe.org'
 LastDir="$(mktemp -d)"
 cd "$LastDir"
 
+for cmd in curl grep jq snmpwalk sed xargs; do
+    which "$cmd" >/dev/null
+done
+
 while true; do
     echo '========================================'
     for Rec in def {snmp,httpbin,ifcfg,ipify,jsonip}.c{t,u}cc; do
