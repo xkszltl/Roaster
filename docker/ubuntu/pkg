@@ -125,6 +125,7 @@ RUN set -e; \
             samba{,-dev} smbclient smbldap-tools \
             sed \
             {selinux-basics,{selinux-policy,policycoreutils}'-*'} se{manage,module}-utils \
+            snmp \
             socat \
             strace \
             software-properties-common \
