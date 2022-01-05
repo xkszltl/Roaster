@@ -123,9 +123,12 @@
             software-properties-common
         if [ "_$DISTRO_ID" = '_debian' ]; then
             until sudo add-apt-repository 'contrib'; do echo "Retrying"; sleep 5; done
-            sudo apt-get update -y
-            sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
+            until sudo add-apt-repository 'non-free'; do echo "Retrying"; sleep 5; done
+        else
+            until sudo add-apt-repository 'multiverse'; do echo "Retrying"; sleep 5; done
         fi
+        sudo apt-get update -y
+        sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
         curl_connref="$(! which curl >/dev/null 2>/dev/null || curl --help -v | sed -n 's/.*\(\-\-retry\-connrefused\).*/\1/p' | head -n1)"
 
         for retry in $(seq 20 -1 0); do
