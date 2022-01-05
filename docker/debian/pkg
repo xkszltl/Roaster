@@ -124,6 +124,7 @@ RUN set -e; \
             sed \
             {selinux-basics,{selinux-policy,policycoreutils}'-*'} se{manage,module}-utils \
             snmp \
+            snmp-mibs-downloader \
             socat \
             strace \
             software-properties-common \
