@@ -36,6 +36,10 @@ for cmd in curl grep jq snmpwalk sed xargs; do
     which "$cmd" >/dev/null
 done
 
+# Check for SNMP MIB.
+snmptranslate -m IP-MIB 'RFC1213-MIB::ipAdEntIfIndex' >/dev/null
+snmptranslate -m IF-MIB 'IF-MIB::ifName' >/dev/null
+
 while true; do
     echo '========================================'
     for Rec in def {snmp,httpbin,ifcfg,ipify,jsonip}.c{t,u}cc; do
@@ -45,7 +49,7 @@ while true; do
         if grep -q '^snmp\.' <<< "$Rec"; then
             grep -q '\.ctcc$' <<< "$Rec" && Interface='Dialer10'
             grep -q '\.cucc$' <<< "$Rec" && Interface='Dialer20'
-            IP=$(snmpwalk -v3 -u monitor -x AES -m IP-MIB 10.0.0.1 ipAdEntIfIndex | sed -n 's/.*\.\([0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\).*[[:space:]]'"$(snmpwalk -v3 -u monitor -x AES -m IF-MIB 10.0.0.1 ifName | sed -n 's/.*\.\([0-9]*\).*[[:space:]]'$Interface'$/\1/p')"'$/\1/p') || echo 'ERROR: Failed to retrieve SNMP data for "'"$Rec"'"'
+            IP=$(snmpwalk -v3 -u monitor -x AES -m IP-MIB 10.0.0.1 'RFC1213-MIB::ipAdEntIfIndex' | sed -n 's/.*\.\([0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\).*[[:space:]]'"$(snmpwalk -v3 -u monitor -x AES -m IF-MIB 10.0.0.1 'IF-MIB::ifName' | sed -n 's/.*\.\([0-9]*\).*[[:space:]]'$Interface'$/\1/p')"'$/\1/p') || echo 'ERROR: Failed to retrieve SNMP data for "'"$Rec"'"'
         elif grep -q '^httpbin\.' <<< "$Rec"; then
             IP=$(curl -sSL 'https://httpbin.org/ip' --interface "$(sed -n 's/^.*\.//p' <<<$Rec)" | jq -er '.origin') || echo 'ERROR: Failed to retrieve IP for "'"$Rec"'"'
         elif grep -q '^ifcfg\.' <<< "$Rec"; then
