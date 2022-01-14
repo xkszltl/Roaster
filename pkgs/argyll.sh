@@ -30,7 +30,7 @@
     find '../share/argyll/bin' -maxdepth 1 -executable -type f | xargs -n1 ln -sf
     popd
 
-    DESC='2.3.0-0-0000000' "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
+    DESC='2.3.0-0-0000000' FPM_ARG_PROVIDES='argyllcms' "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
 
     # ------------------------------------------------------------
 

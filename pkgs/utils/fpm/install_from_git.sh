@@ -30,21 +30,23 @@ case "$DISTRO_ID" in
     ;;
 esac
 
-time fpm                                                                    \
-    --after-install "$INSTALL_ROOT/../fpm/post_install_gen.sh"              \
-    --after-remove "$INSTALL_ROOT/../fpm/post_install_gen.sh"               \
-    --chdir "$INSTALL_ROOT"                                                 \
-    --exclude-file "$INSTALL_ROOT/../fpm/exclude.conf"                      \
-    --input-type dir                                                        \
-    --iteration "$(sed 's/.*\-\([0-9]*\)\-[[:alnum:]]*$/\1/' <<< "$DESC")"  \
-    --name "roaster-$(basename $(pwd) | tr '[:upper:]' '[:lower:]')"        \
-    --output-type "$PKG_TYPE"                                               \
-    --package "$INSTALL_ROOT/.."                                            \
-    --deb-compression gz                                                    \
-    --rpm-compression "$(false && echo xzmt || echo none)"                  \
-    --rpm-digest sha512                                                     \
+time fpm                                                                                    \
+    --after-install "$INSTALL_ROOT/../fpm/post_install_gen.sh"                              \
+    --after-remove "$INSTALL_ROOT/../fpm/post_install_gen.sh"                               \
+    --chdir "$INSTALL_ROOT"                                                                 \
+    --exclude-file "$INSTALL_ROOT/../fpm/exclude.conf"                                      \
+    --input-type dir                                                                        \
+    --iteration "$(sed 's/.*\-\([0-9]*\)\-[[:alnum:]]*$/\1/' <<< "$DESC")"                  \
+    --name "roaster-$(basename $(pwd) | tr '[:upper:]' '[:lower:]')"                        \
+    --output-type "$PKG_TYPE"                                                               \
+    --package "$INSTALL_ROOT/.."                                                            \
+    $(xargs -n1 <<< "$FPM_ARG_PROVIDES" | sed 's/^\(..*\)/\-\-provides \1/')                \
+    --deb-compression gz                                                                    \
+    --rpm-autoprov                                                                          \
+    --rpm-compression "$(false && echo xzmt || echo none)"                                  \
+    --rpm-digest sha512                                                                     \
     --rpm-dist "$(git rev-parse --short --verify HEAD 2>/dev/null | sed 's/^\(.\)/g\1/')"   \
-    --vendor "CodingCafe"                                                   \
+    --vendor "CodingCafe"                                                                   \
     --version "$(sed 's/\-[0-9]*\-[[:alnum:]]*$//' <<< "$DESC" | sed 's/[_\-]/\./g' | sed 's/[^0-9\.]//g' | sed 's/^[^0-9]*\(.*[0-9]\)[^0-9]*$/\1/')"
 
 "$ROOT_DIR/pkgs/utils/fpm/install.sh"
