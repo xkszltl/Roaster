@@ -145,6 +145,7 @@ for subset in pkg-{stable,skip,all}; do
                 zeromq{,-*}
                 ImageMagick{,-*}
                 qt5-*
+                wxPython{,-{devel,docs}}
                 yasm{,-*}
                 docbook{{,5}-*,2X}
                 txt2man
