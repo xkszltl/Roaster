@@ -186,6 +186,7 @@ for i in $(echo "
     ucx
     openmpi
     nccl
+    argyll
     llvm
     boost
     jemalloc
