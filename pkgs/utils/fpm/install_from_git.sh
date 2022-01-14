@@ -8,7 +8,7 @@ set -xe
 
 . "$ROOT_DIR/pkgs/utils/fpm/post_build.sh"
 
-DESC="$(git describe --long --match '*[0-9]*[_.-]*[0-9]' --tags || echo 0.0-0-0000000)"
+[ "$DESC" ] || DESC="$(git describe --long --match '*[0-9]*[_.-]*[0-9]' --tags || echo 0.0-0-0000000)"
 
 for i in {"$ROOT_DIR/pkgs/utils","$INSTALL_ROOT/.."}'/fpm/post_install.sh'; do
     [ -f "$i" ] || continue
@@ -43,7 +43,7 @@ time fpm                                                                    \
     --deb-compression gz                                                    \
     --rpm-compression "$(false && echo xzmt || echo none)"                  \
     --rpm-digest sha512                                                     \
-    --rpm-dist "g$(git rev-parse --short --verify HEAD)"                    \
+    --rpm-dist "$(git rev-parse --short --verify HEAD 2>/dev/null | sed 's/^\(.\)/g\1/')"   \
     --vendor "CodingCafe"                                                   \
     --version "$(sed 's/\-[0-9]*\-[[:alnum:]]*$//' <<< "$DESC" | sed 's/[_\-]/\./g' | sed 's/[^0-9\.]//g' | sed 's/^[^0-9]*\(.*[0-9]\)[^0-9]*$/\1/')"
 
