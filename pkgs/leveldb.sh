@@ -10,7 +10,7 @@
     until git clone --depth 1 --no-checkout --no-single-branch $GIT_MIRROR/google/leveldb.git; do echo 'Retrying'; done
     cd leveldb
     # No new release for years.
-    git checkout master
+    git checkout main
 
     . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
 
