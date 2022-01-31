@@ -9,7 +9,7 @@
 
     # ------------------------------------------------------------
 
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" onnx/onnx,master
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" onnx/onnx,main
     until git clone -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
 
     cd onnx
