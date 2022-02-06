@@ -36,20 +36,18 @@
 
     # ------------------------------------------------------------
 
-    # Known issues:
-    # - PyTorch 1.11 dropped support for Python 3.6.
-    #   https://github.com/pytorch/pytorch/pull/70493
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" "pytorch/pytorch,$(python3 --version | cut -d' ' -f2 | grep '^3\.[0-6]\.' >/dev/null && echo 'v1.10.' || echo 'master')"
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" pytorch/pytorch,master
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd pytorch
 
     # Known issues:
+    # - PyTorch 1.11 dropped support for Python 3.6.
+    #   https://github.com/pytorch/pytorch/pull/70493
     # - PyTorch 1.10 only supports up to CUDA 11.4.
     #   https://discuss.pytorch.org/t/compiling-1-10-1-from-source-with-gcc-11-and-cuda-11-5/140971
     #   While it is fixed in master, that requires Python 3.7 not available everywhere.
     #   https://github.com/pytorch/pytorch/pull/66219
-    git fetch origin master
-    git cherry-pick --allow-empty b8dfb45a
+    python3 --version | cut -d' ' -f2 | grep '^3\.[0-6]\.' >/dev/null && git checkout 025cd69 || :
 
     git remote add patch "$GIT_MIRROR/xkszltl/pytorch.git"
 
