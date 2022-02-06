@@ -43,6 +43,14 @@
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd pytorch
 
+    # Known issues:
+    # - PyTorch 1.10 only supports up to CUDA 11.4.
+    #   https://discuss.pytorch.org/t/compiling-1-10-1-from-source-with-gcc-11-and-cuda-11-5/140971
+    #   While it is fixed in master, that requires Python 3.7 not available everywhere.
+    #   https://github.com/pytorch/pytorch/pull/66219
+    git fetch origin master
+    git cherry-pick --allow-empty b8dfb45a
+
     git remote add patch "$GIT_MIRROR/xkszltl/pytorch.git"
 
     PATCHES="lstm rnn_arg"
