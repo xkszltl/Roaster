@@ -26,6 +26,11 @@
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd vision
 
+    # Known issues:
+    # - Torchvision removed the support of Python 3.6 after 0.11.3
+    #   https://github.com/pytorch/vision/pull/5161
+    python3 --version | cut -d' ' -f2 | grep '^3\.6' >/dev/null && git checkout 8c546f6 || :
+
     git remote add patch "$GIT_MIRROR/xkszltl/vision.git"
     git fetch patch
 
