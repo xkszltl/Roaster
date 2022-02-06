@@ -14,7 +14,7 @@
         "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  numpy/numpy,v1.21.
         ;;
     *)
-        "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  numpy/numpy
+        "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  numpy/numpy,v
         ;;
     esac
 
