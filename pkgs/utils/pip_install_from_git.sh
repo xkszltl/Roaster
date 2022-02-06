@@ -17,7 +17,7 @@ fi
 CACHE_VALID=false
 
 # Pip 22 requires Python 3.7.
-for i in pypa/setuptools,v "pypa/pip,$(grep -e 'centos7' -e 'debian9' -e 'ubuntu18.04' <<< "$DISTRO_ID$DISTRO_VERSION_ID" >/dev/null && echo '21.' || :)" pypa/wheel PythonCharmers/python-future,v $@; do
+for i in pypa/setuptools,v "pypa/pip,$(python3 --version | cut -d' ' -f2 | grep '^3\.[0-6]\.' >/dev/null && echo '21.' || :)" pypa/wheel PythonCharmers/python-future,v $@; do
     PKG_PATH="$(cut -d, -f1 <<< "$i,")"
     if grep '^[[:alnum:]]' <<< "$PKG_PATH" > /dev/null; then
         . "$ROOT_DIR/pkgs/utils/git/version.sh" "$i"

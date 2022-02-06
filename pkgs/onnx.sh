@@ -5,7 +5,18 @@
 [ -e $STAGE/onnx ] && ( set -xe
     cd $SCRATCH
 
-    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" cython/cython benjaminp/six numpy/numpy,v1.19.
+    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" cython/cython benjaminp/six
+    case "$(python3 --version | cut -d' ' -f2 | cut -d. -f-2)" in
+    '3.6')
+        "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  numpy/numpy,v1.19.
+        ;;
+    '3.7')
+        "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  numpy/numpy,v1.21.
+        ;;
+    *)
+        "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  numpy/numpy
+        ;;
+    esac
 
     # ------------------------------------------------------------
 

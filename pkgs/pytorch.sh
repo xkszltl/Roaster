@@ -13,14 +13,33 @@
         yaml/pyyaml                                 \
         pytest-dev/pytest                           \
         Frozenball/pytest-sugar,master              \
-        numpy/numpy,v1.19.                          \
         micheles/decorator                          \
-        networkx/networkx,networkx-2.5.
-    "$ROOT_DIR/pkgs/utils/pip_install_from_wheel.sh" dataclasses
+    case "$(python3 --version | cut -d' ' -f2 | cut -d. -f-2)" in
+    '3.6')
+        "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  \
+            numpy/numpy,v1.19.                          \
+            networkx/networkx,networkx-2.5.
+        # dataclasses is not part Python 3.6.
+        "$ROOT_DIR/pkgs/utils/pip_install_from_wheel.sh" dataclasses
+        ;;
+    '3.7')
+        "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  \
+            numpy/numpy,v1.21.                          \
+            networkx/networkx,networkx-
+        ;;
+    *)
+        "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  \
+            numpy/numpy                                 \
+            networkx/networkx,networkx-
+        ;;
+    esac
 
     # ------------------------------------------------------------
 
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" pytorch/pytorch,master
+    # Known issues:
+    # - PyTorch 1.11 dropped support for Python 3.6.
+    #   https://github.com/pytorch/pytorch/pull/70493
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" "pytorch/pytorch,$(python3 --version | cut -d' ' -f2 | grep '^3\.[0-6]\.' >/dev/null && echo '1.10.' || echo 'master')"
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd pytorch
 
