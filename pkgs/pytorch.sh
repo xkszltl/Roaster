@@ -159,6 +159,10 @@
         $ONESHOT || time "$TOOLCHAIN/cmake" --build . --target rebuild_cache
         grep '^BUILD_PYTHON:BOOL=ON' CMakeCache.txt
 
+        # Work around missing TensorBody.h issue:
+        # - https://github.com/pytorch/pytorch/issues/69360
+        time "$TOOLCHAIN/cmake" --build . --target 'aten/src/ATen/TensorBody.h'
+
         $ONESHOT || time "$TOOLCHAIN/cmake" --build .
         time "$TOOLCHAIN/cmake" --build . --target install
         grep '^BUILD_PYTHON:BOOL=ON' CMakeCache.txt
