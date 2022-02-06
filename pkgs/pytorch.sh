@@ -161,7 +161,7 @@
 
         # Work around missing TensorBody.h issue:
         # - https://github.com/pytorch/pytorch/issues/69360
-        time "$TOOLCHAIN/cmake" --build . --target 'aten/src/ATen/TensorBody.h'
+        time "$TOOLCHAIN/cmake" --build . --target 'aten/src/ATen/core/TensorBody.h'
 
         $ONESHOT || time "$TOOLCHAIN/cmake" --build .
         time "$TOOLCHAIN/cmake" --build . --target install
