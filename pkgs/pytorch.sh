@@ -13,7 +13,7 @@
         yaml/pyyaml                                 \
         pytest-dev/pytest                           \
         Frozenball/pytest-sugar,master              \
-        micheles/decorator                          \
+        micheles/decorator
     case "$(python3 --version | cut -d' ' -f2 | cut -d. -f-2)" in
     '3.6')
         "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  \
