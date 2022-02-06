@@ -39,7 +39,7 @@
     # Known issues:
     # - PyTorch 1.11 dropped support for Python 3.6.
     #   https://github.com/pytorch/pytorch/pull/70493
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" "pytorch/pytorch,$(python3 --version | cut -d' ' -f2 | grep '^3\.[0-6]\.' >/dev/null && echo '1.10.' || echo 'master')"
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" "pytorch/pytorch,$(python3 --version | cut -d' ' -f2 | grep '^3\.[0-6]\.' >/dev/null && echo 'v1.10.' || echo 'master')"
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd pytorch
 
