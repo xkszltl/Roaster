@@ -72,34 +72,35 @@ case "$PKG_TYPE" in
 "rpm")
     PKG_YUM_SEQ="reinstall install downgrade update"
     rpm -q "$PKG_NAME" || PKG_YUM_SEQ="install"
+    PKG_YUM_CMD="$(which dnf >/dev/null 2>&1 && echo 'dnf' || echo 'yum')"
 
     # Remove legacy.
-    sudo dnf remove -y "$(sed 's/^[^\-]*\-/codingcafe\-/' <<< "$PKG_NAME")" || true
+    sudo "$PKG_YUM_CMD" remove -y "$(sed 's/^[^\-]*\-/codingcafe\-/' <<< "$PKG_NAME")" || true
 
     for i in $PKG_YUM_SEQ _; do
         [ "$i" != '_' ]
-        echo "[INFO] Trying with \"dnf $i\"."
-        sudo dnf "$i" -y "$PKG_PATH" && break
-        echo "[INFO] Does not succeed with \"dnf $i\"."
+        echo "[INFO] Trying with \"$PKG_YUM_CMD $i\"."
+        sudo "$PKG_YUM_CMD" "$i" -y "$PKG_PATH" && break
+        echo "[INFO] Does not succeed with \"$PKG_YUM_CMD $i\"."
     done
     ;;
 "deb")
     PKG_APT_SEQ="install reinstall upgrade"
 
     # Remove legacy.
-    sudo apt-get remove -y "$(sed 's/^[^\-]\-/codingcafe\-/' <<< "$PKG_NAME")" || true
+    sudo DEBIAN_FRONTEND=noninteractive apt-get remove -y "$(sed 's/^[^\-]\-/codingcafe\-/' <<< "$PKG_NAME")" || true
 
     for i in $PKG_APT_SEQ _; do
         [ "$i" != '_' ]
         echo "[INFO] Trying with \"apt-get $i\"."
         if [ "$i" = "reinstall" ]; then
-            sudo apt-get remove -y "$PKG_NAME" && sudo apt-get install -y "$PKG_PATH" && break
+            sudo DEBIAN_FRONTEND=noninteractive apt-get remove -y "$PKG_NAME" && sudo apt-get install -y "$PKG_PATH" && break
         else
-            sudo apt-get "$i" -y "$PKG_PATH" && break
+            sudo DEBIAN_FRONTEND=noninteractive apt-get "$i" -y "$PKG_PATH" && break
         fi
         echo "[INFO] Does not succeed with \"apt-get $i\"."
     done
-    sudo apt-get install -fy
+    sudo DEBIAN_FRONTEND=noninteractive apt-get install -fy
     ;;
 esac
 # ----------------------------------------------------------------
