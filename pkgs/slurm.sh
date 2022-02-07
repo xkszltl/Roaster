@@ -34,7 +34,7 @@
 
     rm -rf "$SCRATCH/slurm"*
 
-    "$RPM_INSTALL" "$HOME/rpmbuild/RPMS/$(uname -i)/slurm"{,-*}'.rpm'
+    $RPM_INSTALL "$HOME/rpmbuild/RPMS/$(uname -i)/slurm"{,-*}'.rpm'
     rm -rf "$HOME/rpmbuild"
 )
 sudo rm -vf $STAGE/slurm
