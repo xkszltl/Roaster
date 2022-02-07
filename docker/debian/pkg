@@ -26,6 +26,7 @@ RUN set -e; \
             axel \
             bash-completion \
             bc \
+            bind9-dnsutils \
             binutils \
             bison \
             bmon \

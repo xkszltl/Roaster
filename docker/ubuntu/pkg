@@ -40,6 +40,7 @@ RUN set -e; \
             debmirror \
             default-jdk ant maven \
             diffutils \
+            dnsutils \
             docker-{ce,compose} \
             dos2unix \
             dstat \

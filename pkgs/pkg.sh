@@ -69,7 +69,7 @@ for subset in pkg-{stable,skip,all}; do
                 [!] {traceroute,mtr,rsync,tcpdump,whois,net-snmp}{,-*}
                 [!] {apcupsd,nut}{,-*}
                 torsocks{,-*}
-                [!] {core,diff,elf,find,ib,ip,pci,sysfs,usb,yum-}utils{,-*}
+                [!] {bind,core,diff,elf,find,ib,ip,pci,sysfs,usb,yum-}utils{,-*}
                 [!] socat
                 nextgen-yum4{,-*}
                 dnf-plugins-core
