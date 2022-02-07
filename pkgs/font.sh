@@ -44,7 +44,7 @@
 
     sudo fc-cache -fv
 
-    sudo dnf autoremove -y
+    sudo "$(which dnf >/dev/null 2>&1 && echo 'dnf' || echo 'yum')" autoremove -y
 )
 sudo rm -vf $STAGE/font
 sync || true

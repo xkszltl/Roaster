@@ -132,7 +132,7 @@
 
         time "$TOOLCHAIN/cmake" --build . --target install
         # time "$TOOLCHAIN/cmake" --build . --target package
-        # sudo dnf install -y ./OpenCV*.rpm || sudo dnf update -y ./OpenCV*.rpm || sudo rpm -ivh --nodeps ./OpenCV*.rpm || sudo rpm -Uvh --nodeps ./OpenCV*.rpm
+        # sudo $RPM_INSTALL ./OpenCV*.rpm || sudo $RPM_UPDATE -y ./OpenCV*.rpm || sudo rpm -ivh --nodeps ./OpenCV*.rpm || sudo rpm -Uvh --nodeps ./OpenCV*.rpm
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
