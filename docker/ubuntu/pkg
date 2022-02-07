@@ -156,6 +156,8 @@ RUN set -e; \
     sudo apt-get clean; \
     sudo update-alternatives --set libblas.so.3-x86_64-linux-gnu /usr/lib/x86_64-linux-gnu/atlas/libblas.so.3; \
     sudo update-alternatives --set liblapack.so.3-x86_64-linux-gnu /usr/lib/x86_64-linux-gnu/atlas/liblapack.so.3; \
-    sudo parallel --will-cite < /dev/null; \
+    if which parallel 2>/dev/null; then \
+        sudo parallel --citation <<< 'will cite' || sudo parallel --will-cite < /dev/null; \
+    fi; \
     truncate -s0 ~/.bash_history;
 RUN /etc/roaster/scripts/setup.sh fpm firewall
