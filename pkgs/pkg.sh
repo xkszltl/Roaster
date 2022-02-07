@@ -212,7 +212,9 @@ for subset in pkg-{stable,skip,all}; do
         # Cite parallel.
         # ------------------------------------------------------------
 
-        which parallel 2>/dev/null && sudo parallel --will-cite < /dev/null
+        if which parallel 2>/dev/null; then
+            sudo parallel --citation <<< 'will cite' || sudo parallel --will-cite < /dev/null
+        fi
 
         # ------------------------------------------------------------
         # Remove suspicious python modules that can cause pip>=10 to crash.
