@@ -69,17 +69,17 @@
     (
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
         . "$ROOT_DIR/pkgs/utils/fpm/distro_cc.sh"
-        case "$DISTRO_ID" in
-        'centos' | 'fedora' | 'rhel')
+        case "$DISTRO_ID-$DISTRO_VERSION_ID" in
+        'centos-'* | 'fedora-'* | 'rhel-'* | 'scientific-'*)
             set +xe
             . scl_source enable devtoolset-9 rh-dotnet31 || exit 1
             set -xe
             export AR="$(which gcc-ar)" RANLIB="$(which gcc-ranlib)"
             ;;
-        debian-10 | ubuntu-18.* | ubuntu-19.*)
+        'debian-10' | 'ubuntu-18.'* | 'ubuntu-19.'*)
             export AR="$(which gcc-ar-8)" RANLIB="$(which gcc-ranlib-8)"
             ;;
-        debian-11 | ubuntu-20.* | ubuntu-21.*)
+        'debian-11 '| 'ubuntu-20.'* | 'ubuntu-21.'*)
             export AR="$(which gcc-ar-10)" RANLIB="$(which gcc-ranlib-10)"
             ;;
         *)
@@ -204,7 +204,7 @@
         pushd "$INSTALL_ROOT"
         for i in mkl-dnn onnx; do
             case "$DISTRO_ID" in
-            'centos' | 'fedora' | 'rhel')
+            'centos' | 'fedora' | 'rhel' | 'scientific')
                 [ "$(rpm -qa "roaster-$i")" ] || continue
                 rpm -ql "roaster-$i" | sed -n 's/^\//\.\//p' | xargs rm -rf
                 ;;

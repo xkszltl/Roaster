@@ -78,18 +78,18 @@
         py="$py,"
 
         case "$DISTRO_ID-$DISTRO_VERSION_ID" in
-        centos-* | fedora-* | rhel-*)
+        'centos-'* | 'fedora-'* | 'rhel-'* | 'scientific-'*)
             set +xe
             . scl_source enable devtoolset-9 $(cut -d',' -f1 <<< "$py") || exit 1
             set -xe
             export CC="gcc" CXX="g++"
             ;;
-        debian-10 | ubuntu-18.* | ubuntu-19.*)
+        'debian-10' | 'ubuntu-18.'* | 'ubuntu-19.'*)
             # Skip SCL Python.
             [ "$(cut -d',' -f1 <<< "$py")" ] && continue
             export CC="gcc-8" CXX="g++-8" FC="gfortran-8"
             ;;
-        debian-11 | ubuntu-20.* | ubuntu-21.*)
+        'debian-11' | 'ubuntu-20.'* | 'ubuntu-21.'*)
             # Skip SCL Python.
             [ "$(cut -d',' -f1 <<< "$py")" ] && continue
             export CC="gcc-10" CXX="g++-10" FC="gfortran-10"

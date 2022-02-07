@@ -19,7 +19,7 @@ for i in {"$ROOT_DIR/pkgs/utils","$INSTALL_ROOT/.."}'/fpm/post_install.sh'; do
 done > "$INSTALL_ROOT/../fpm/post_install_gen.sh"
 
 case "$DISTRO_ID" in
-"centos" | "fedora" | "rhel")
+"centos" | "fedora" | "rhel" | 'scientific')
     export PKG_TYPE=rpm
     ;;
 "debian" | "ubuntu")

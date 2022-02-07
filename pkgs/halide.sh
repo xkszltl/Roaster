@@ -26,25 +26,25 @@
 
     (
         case "$DISTRO_ID-$DISTRO_VERSION_ID" in
-        centos-* | fedora-* | rhel-*)
+        'centos-'* | 'fedora-'* | 'rhel-'* | 'scientific-'*)
             # set +xe
             # . scl_source enable llvm-toolset-7 || exit 1
             # set -xe
             export CC="clang" CXX="clang++"
             ;;
-        debian-10 | ubuntu-18.* | ubuntu-19.*)
+        'debian-10' | 'ubuntu-18.'* | 'ubuntu-19.'*)
             export CC="clang-7" CXX="clang++-7"
             ;;
-        debian-11)
+        'debian-11')
             export CC="clang-11" CXX="clang++-11"
             ;;
-        ubuntu-20.*)
+        'ubuntu-20.'*)
             export CC="clang-10" CXX="clang++-10"
             ;;
-        ubuntu-21.04)
+        'ubuntu-21.04')
             export CC="clang-11" CXX="clang++-11"
             ;;
-        ubuntu-21.10)
+        'ubuntu-21.10')
             export CC="clang-13" CXX="clang++-13"
             ;;
         *)

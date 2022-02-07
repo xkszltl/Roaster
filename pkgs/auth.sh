@@ -21,7 +21,7 @@
 
     if [ "_$GIT_MIRROR" = "_$GIT_MIRROR_CODINGCAFE" ]; then
         case "$DISTRO_ID" in
-        'centos' | 'fedora' | 'rhel')
+        'centos' | 'fedora' | 'rhel' | 'scientific')
             pushd '/etc/openldap'
             for i in 'BASE' 'URI' 'TLS_CACERT' 'TLS_REQCERT'; do :
                 if [ "$(grep "^[[:space:]#]*$i[[:space:]]" 'ldap.conf' | wc -l)" -ne 1 ]; then

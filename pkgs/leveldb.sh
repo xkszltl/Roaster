@@ -66,7 +66,7 @@
         pushd "$INSTALL_ROOT"
         for i in benchmark gtest; do
             case "$DISTRO_ID" in
-            'centos' | 'fedora' | 'rhel')
+            'centos' | 'fedora' | 'rhel' | 'scientific')
                 [ "$(rpm -qa "roaster-$i")" ] || continue
                 rpm -ql "roaster-$i" | sed -n 's/^\//\.\//p' | xargs rm -rf
                 ;;

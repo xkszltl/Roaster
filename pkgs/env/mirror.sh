@@ -8,7 +8,7 @@ export GIT_MIRROR_CODINGCAFE="500,https://git.codingcafe.org/Mirrors"
 # ----------------------------------------------------------------
 
 case "$DISTRO_ID" in
-'centos' | 'fedora' | 'rhel')
+'centos' | 'fedora' | 'rhel' | 'scientific')
     which bc     > /dev/null 2> /dev/null || sudo "$(which dnf >/dev/null 2>&1 && echo 'dnf' || echo 'yum')" install -y bc
     which column > /dev/null 2> /dev/null || sudo "$(which dnf >/dev/null 2>&1 && echo 'dnf' || echo 'yum')" install -y util-linux
     which dig    > /dev/null 2> /dev/null || sudo "$(which dnf >/dev/null 2>&1 && echo 'dnf' || echo 'yum')" install -y bind-utils

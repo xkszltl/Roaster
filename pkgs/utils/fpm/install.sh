@@ -19,14 +19,14 @@ rm -rf "$INSTALL_ABS"
 [ "$PKG_NAME" ] || export PKG_NAME="roaster-$(basename $(pwd) | tr '[:upper:]' '[:lower:]')"
 
 case "$DISTRO_ID" in
-"centos" | "fedora" | "rhel")
-    export PKG_TYPE=rpm
+"centos" | "fedora" | "rhel" | 'scientific')
+    export PKG_TYPE='rpm'
     ;;
 "debian" | "ubuntu")
-    export PKG_TYPE=deb
+    export PKG_TYPE='deb'
     ;;
 *)
-    export PKG_TYPE=sh
+    export PKG_TYPE='sh'
     ;;
 esac
 

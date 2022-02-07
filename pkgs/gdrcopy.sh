@@ -27,7 +27,7 @@
         make CUDA="$CUDA" PREFIX="$INSTALL_ABS" install -j
 
         case "$DISTRO_ID" in
-        'centos' | 'fedora' | 'rhel')
+        'centos' | 'fedora' | 'rhel' | 'scientific')
             packages/build-rpm-packages.sh
             ;;
         'debian' | 'linuxmint' | 'ubuntu')

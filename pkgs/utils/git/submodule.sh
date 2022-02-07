@@ -16,7 +16,7 @@ set +x
     [ "$GIT_MIRROR" ] || . "$ROOT_DIR/pkgs/env/mirror.sh"
 
     case "$DISTRO_ID" in
-    'centos' | 'fedora' | 'rhel')
+    'centos' | 'fedora' | 'rhel' | 'scientific')
         set +e
         . scl_source enable rh-git218 || exit 1
         set -e

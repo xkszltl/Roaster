@@ -7,7 +7,7 @@
     curl_connref="$(! which curl >/dev/null 2>/dev/null || curl --help -v | sed -n 's/.*\(\-\-retry\-connrefused\).*/\1/p' | head -n1)"
 
     case "$DISTRO_ID" in
-    "centos" | "rhel")
+    "centos" | "rhel" | 'scientific')
         until sudo yum makecache -y; do echo 'Retrying'; done
         until sudo yum install -y sed yum-{plugin-{fastestmirror,priorities},utils}; do echo 'Retrying'; done
 

@@ -186,7 +186,7 @@
 
         # Dirty hack to fix torchvision build issues.
         case "$DISTRO_ID" in
-        'centos' | 'fedora' | 'rhel')
+        'centos' | 'fedora' | 'rhel' | 'scientific')
             # for site in {"/usr/local/lib64/python3.6","/opt/rh/rh-python38/root/usr/lib64/python3.8"}"/site-packages/torch"; do
             for site in "/usr/local/lib64/python3.6/site-packages/torch"; do
                 for target in bin/torch_shm_manager include/torch lib; do
@@ -211,7 +211,7 @@
         pushd "$INSTALL_ROOT"
         for i in caffe gtest mkl-dnn onnx openblas pybind11; do
             case "$DISTRO_ID" in
-            'centos' | 'fedora' | 'rhel')
+            'centos' | 'fedora' | 'rhel' | 'scientific')
                 [ "$(rpm -qa "roaster-$i")" ] || continue
                 rpm -ql "roaster-$i" | sed -n 's/^\//\.\//p' | xargs rm -rf
                 ;;

@@ -16,7 +16,7 @@
     export CUDA_VER_MAJOR="11"
     export CUDA_VER_MINOR="5"
     case "$DISTRO_ID" in
-    'centos' | 'fedora' | 'rhel')
+    'centos' | 'fedora' | 'rhel' | 'scientific')
         sudo dnf makecache
         for i in 'compat' 'toolkit'; do
             for attempt in $(seq "$RPM_MAX_ATTEMPT" -1 0); do
@@ -81,7 +81,7 @@
             (
                 set -e
                 case "$DISTRO_ID" in
-                'centos' | 'fedora' | 'rhel')
+                'centos' | 'fedora' | 'rhel' | 'scientific')
                     $RPM_INSTALL "cuda-$CUDA_VER_MAJOR.$CUDA_VER_MINOR.*" 'nvidia-driver-latest-dkms'
                     $RPM_INSTALL 'cuda-drivers'
                     ;;
@@ -110,7 +110,7 @@
         (
             set -e
             case "$DISTRO_ID" in
-            'centos' | 'fedora' | 'rhel')
+            'centos' | 'fedora' | 'rhel' | 'scientific')
                 $RPM_INSTALL                                                                                            \
                     libcudnn8{,-devel}"-*-*cuda$CUDA_VER_MAJOR.$CUDA_VER_MINOR"                                         \
                     libnccl{,-devel,-static}"-*-*cuda$(sed 's/11\.[1-3]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.[6-9]/11\.4/')"  \

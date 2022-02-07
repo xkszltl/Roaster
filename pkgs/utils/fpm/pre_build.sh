@@ -28,7 +28,7 @@ mkdir -p "$INSTALL_ROOT/../fpm"
 
 touch "$INSTALL_ROOT/../fpm/exclude.conf"
 case "$DISTRO_ID" in
-"centos" | "fedora" | "rhel")
+"centos" | "fedora" | "rhel" | 'scientific')
     (
         set -e
         for i in filesystem; do
@@ -57,7 +57,7 @@ ls -A -I"$(basename "$(dirname "$INSTALL_ROOT")")" \
 (
     set +xe
     case "$DISTRO_ID" in
-    "centos" | "fedora" | "rhel")
+    "centos" | "fedora" | "rhel" | 'scientific')
         . scl_source enable rh-git218 || exit 1
         ;;
     esac

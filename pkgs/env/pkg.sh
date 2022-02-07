@@ -41,7 +41,7 @@ export RPM_REINSTALL="sudo dnf reinstall -y $RPM_CACHE_ARGS --nogpgcheck $RPM_BL
 
 # Note: Do not leak $DISTRO_* because this script is only for package management environment.
 case "$(. <(sed 's/^\(..*\)/export DISTRO_\1/' '/etc/os-release') && bash -c 'printf "$DISTRO_ID"')" in
-'centos' | 'fedora' | 'rhel')
+'centos' | 'fedora' | 'rhel' | 'scientific')
     export PKG_MAX_ATTEMPT="$RPM_MAX_ATTEMPT"
     export PKG_REFRESH="$RPM_REFRESH"
     export PKG_UPDATE="$RPM_UPDATE"

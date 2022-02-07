@@ -6,7 +6,7 @@
     $PKG_REFRESH
     # Group packages separately to allow easy cherry-picking.
     case "$DISTRO_ID" in
-    'centos' | 'debian' | 'fedora' | 'linuxmint' | 'rhel' | 'ubuntu')
+    'centos' | 'debian' | 'fedora' | 'linuxmint' | 'rhel' | 'scientific' | 'ubuntu')
         for attempt in $(seq "$PKG_MAX_ATTEMPT" -1 0); do
             if [ "$attempt" -le 0 ]; then
                 printf '\033[31m[ERROR] Out of retries.\033[0m\n'
