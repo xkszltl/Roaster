@@ -174,6 +174,7 @@ for subset in pkg-{stable,skip,all}; do
                 [!] libselinux{,-*}
                 [!] se{troubleshoot,tools}{,-*}
                 [!] {selinux-policy,policycoreutils}{,-*}
+                [!] netlabel_tools
 
                 mod_authnz_*
 
