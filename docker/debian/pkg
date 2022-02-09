@@ -102,6 +102,7 @@ RUN set -e; \
             moreutils \
             mtr \
             net-tools \
+            netlabel-tools \
             ninja-build \
             openssh-{client,server} \
             pandoc \
