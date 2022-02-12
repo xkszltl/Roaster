@@ -1,0 +1,12 @@
+[Unit]
+Description=Debian repo mirroring daemon
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=exec
+ExecStartPre=[ -e '/etc/ftpsync/debian.conf' ]
+ExecStartPre=mkdir -p '/var/run/ftpsync/alias'
+ExecStartPre=/bin/sh -c 'set -e; [ -e "/var/run/ftpsync/alias/debian" ] || ln -s "$(which ftpsync)" "/var/run/ftpsync/alias/debian"'
+ExecStart=/var/run/ftpsync/alias/debian
+User=root

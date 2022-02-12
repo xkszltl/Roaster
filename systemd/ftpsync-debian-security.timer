@@ -7,7 +7,7 @@ Wants=network-online.target
 OnCalendar=*-*-* 02:00:00
 # OnCalendar=hourly
 # OnCalendar=weekly
-Unit=ftpsync.service
+Unit=ftpsync-debian-security.service
 
 [Install]
 WantedBy=multi-user.target
