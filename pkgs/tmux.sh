@@ -46,7 +46,7 @@ set -g @plugin '$GIT_MIRROR/tmux-plugins/tmux-sensible.git'
 set -g @plugin '$GIT_MIRROR/tmux-plugins/tmux-resurrect.git'
 set -g @plugin '$GIT_MIRROR/tmux-plugins/tmux-continuum.git'
 
-set -g @resurrect-processes 'watch glances "/usr/bin/python3 /usr/bin/glances" "/usr/bin/python3 /usr/local/bin/glances"'
+set -g @resurrect-processes 'watch glances "/bin/python3 /usr/bin/glances" "/bin/python3 /usr/local/bin/glances" "/usr/bin/python3 /usr/bin/glances" "/usr/bin/python3 /usr/local/bin/glances"'
 set -g @continuum-restore 'on'
 
 set -g mouse on
