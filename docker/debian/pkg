@@ -135,6 +135,7 @@ RUN set -e; \
             sysfsutils \
             sysstat \
             tar \
+            telnet{,-ssl} tftp \
             time \
             tmux{,-plugin-manager} \
             tree \
@@ -161,5 +162,10 @@ RUN set -e; \
     if which parallel 2>/dev/null; then \
         sudo parallel --citation <<< 'will cite' || sudo parallel --will-cite < /dev/null; \
     fi; \
+    sudo setsebool -P allow_rsync_anon_write 1 || :; \
+    sudo setsebool -P rsync_client           1 || :; \
+    sudo setsebool -P rsync_export_all_ro    1 || :; \
+    sudo setsebool -P samba_export_all_rw    1 || :; \
+    sudo setsebool -P xserver_gnome_xdm      1 || :; \
     truncate -s0 ~/.bash_history;
 RUN /etc/roaster/scripts/setup.sh fpm firewall

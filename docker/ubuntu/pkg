@@ -136,6 +136,7 @@ RUN set -e; \
             sysfsutils \
             sysstat \
             tar \
+            telnet{,-ssl} tftp \
             time \
             tmux{,-plugin-manager} \
             tree \
