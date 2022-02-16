@@ -111,7 +111,7 @@ export RPM_PUB_DIR='/var/www/repos/codingcafe'
 
 if [ -d "$RPM_PUB_DIR" ]; then
     pushd "$RPM_PUB_DIR"
-    sudo mkdir -p "rhel$DISTRO_VERSION_ID/$(uname -i)"
+    sudo mkdir -p "rhel$DISTRO_VERSION_ID/$(uname -m)"
     pushd "$_"
     find . -maxdepth 1 -name "$PKG_NAME-*" -type f | xargs sudo rm -f
     sudo install -m664 -t . "$PKG_PATH"
