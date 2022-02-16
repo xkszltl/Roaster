@@ -135,7 +135,7 @@ fi
 # ----------------------------------------------------------------
 
 for i in base updates extras centosplus cr dotnet; do
-for j in =$(uname -i) $([ "_$i" = '_cr' ] || [ "_$i" = '_dotnet' ] || echo '-source=Source') $([ "_$i" = '_base' ] && echo "-debuginfo=debug/$(uname -i)"); do
+for j in =$(uname -m) $([ "_$i" = '_cr' ] || [ "_$i" = '_dotnet' ] || echo '-source=Source') $([ "_$i" = '_base' ] && echo "-debuginfo=debug/$(uname -m)"); do
     export lhs=$(sed 's/=.*//' <<< $j)
     export rhs=$(sed 's/.*=//' <<< $j)
     export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
@@ -150,7 +150,7 @@ done
 
 # ----------------------------------------------------------------
 
-for i in {=,-debuginfo=debug/}$(uname -i) -source=SRPMS; do
+for i in {=,-debuginfo=debug/}$(uname -m) -source=SRPMS; do
     export lhs=$(sed 's/=.*//' <<< $i)
     export rhs=$(sed 's/.*=//' <<< $i)
     export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
@@ -167,7 +167,7 @@ done
 # ----------------------------------------------------------------
 
 for i in sclo rh; do
-for j in =$(uname -i)/$i -testing=$(uname -i)/$i/testing -source=Source/$i -debuginfo=$(uname -i)/$i/debuginfo; do
+for j in =$(uname -m)/$i -testing=$(uname -m)/$i/testing -source=Source/$i -debuginfo=$(uname -m)/$i/debuginfo; do
     export lhs=$(sed 's/=.*//' <<< $j)
     export rhs=$(sed 's/.*=//' <<< $j)
     export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
@@ -210,13 +210,13 @@ export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= .
 
 for dist in rhel7; do
     name="$(cut -d',' -f1 <<< "$sub_repo,")"
-    mkdir -p "nvidia/cuda/$dist/$(uname -i)"
+    mkdir -p "nvidia/cuda/$dist/$(uname -m)"
     pushd "$_"
     for attempt in $($DRY || seq 100 -1 0); do
         [ "$attempt" -gt 0 ]
         (
             set -e
-            wget $DRY_WGET -ct 1000 "https://developer.download.nvidia.com/compute/cuda/repos/$dist/$(uname -i)/7fa2af80.pub"
+            wget $DRY_WGET -ct 1000 "https://developer.download.nvidia.com/compute/cuda/repos/$dist/$(uname -m)/7fa2af80.pub"
             if ! rpm --import "7fa2af80.pub"; then
                 echo 'Bad pubkey file:'
                 sed 's/^\(.\)/    \1/' '7fa2af80.pub'
@@ -230,8 +230,8 @@ for dist in rhel7; do
 
     export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
     {
-        "repo":         "'"cuda-$dist-$(uname -i)"'",
-        "path":         "'"nvidia/cuda/$dist/$(uname -i)"'",
+        "repo":         "'"cuda-$dist-$(uname -m)"'",
+        "path":         "'"nvidia/cuda/$dist/$(uname -m)"'",
         "retries":      30,
         "use_proxy":    "'"false"'",
     }')
@@ -241,13 +241,13 @@ for sub_repo in nvidia-machine-learning,machine-learning; do
 for dist in rhel7; do
     name="$(cut -d',' -f1 <<< "$sub_repo,")"
     dir="$(cut -d',' -f2 <<< "$sub_repo,")"
-    mkdir -p "nvidia/$dir/$dist/$(uname -i)"
+    mkdir -p "nvidia/$dir/$dist/$(uname -m)"
     pushd "$_"
     for attempt in $($DRY || seq 100 -1 0); do
         [ "$attempt" -gt 0 ]
         (
             set -e
-            wget $DRY_WGET -ct 1000 "https://developer.download.nvidia.com/compute/$dir/repos/$dist/$(uname -i)/7fa2af80.pub"
+            wget $DRY_WGET -ct 1000 "https://developer.download.nvidia.com/compute/$dir/repos/$dist/$(uname -m)/7fa2af80.pub"
             if ! rpm --import "7fa2af80.pub"; then
                 echo 'Bad pubkey file:'
                 sed 's/^\(.\)/    \1/' '7fa2af80.pub'
@@ -262,7 +262,7 @@ for dist in rhel7; do
     export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
     {
         "repo":         "'"$name"'",
-        "path":         "'"nvidia/$dir/$dist/$(uname -i)"'",
+        "path":         "'"nvidia/$dir/$dist/$(uname -m)"'",
         "retries":      30,
         "use_proxy":    "'"false"'",
     }')
@@ -270,7 +270,7 @@ done
 done
 
 for i in libnvidia-container{,-experimental} nvidia-{container-runtime{,-experimental},docker}; do
-    mkdir -p "nvidia/$i/centos7/$(uname -i)"
+    mkdir -p "nvidia/$i/centos7/$(uname -m)"
     pushd "$_"
     for attempt in $($DRY || seq 100 -1 0); do
         [ "$attempt" -gt 0 ]
@@ -291,7 +291,7 @@ for i in libnvidia-container{,-experimental} nvidia-{container-runtime{,-experim
     export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
     {
         "repo":         "'"$i"'",
-        "path":         "'"nvidia/$i/centos7/$(uname -i)"'",
+        "path":         "'"nvidia/$i/centos7/$(uname -m)"'",
         "retries":      10,
         "use_proxy":    "'"false"'",
         "sync_args":    "--delete"
@@ -324,7 +324,7 @@ done
 )
 
 for i in stable edge test; do :
-for j in {=,-debuginfo=debug-}$(uname -i) -source=source; do
+for j in {=,-debuginfo=debug-}$(uname -m) -source=source; do
     export lhs=$(sed 's/=.*//' <<< $j)
     export rhs=$(sed 's/.*=//' <<< $j)
     export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
@@ -340,7 +340,7 @@ done
 # GitLab-CE Repository Mirroring Task
 # ----------------------------------------------------------------
 
-for i in =$(uname -i) -source=SRPMS; do
+for i in =$(uname -m) -source=SRPMS; do
     export lhs=$(sed 's/=.*//' <<< $i)
     export rhs=$(sed 's/.*=//' <<< $i)
     export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
@@ -356,7 +356,7 @@ done
 # GitLab CI Runner Repository Mirroring Task
 # ----------------------------------------------------------------
 
-for i in =$(uname -i) -source=SRPMS; do
+for i in =$(uname -m) -source=SRPMS; do
     export lhs=$(sed 's/=.*//' <<< $i)
     export rhs=$(sed 's/.*=//' <<< $i)
     export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
