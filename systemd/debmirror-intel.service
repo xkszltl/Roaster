@@ -1,5 +1,5 @@
 [Unit]
-Description=Apt repo mirroring [debmirror] daemon
+Description=Intel oneAPI apt repo mirroring [debmirror] daemon
 After=network-online.target
 Wants=network-online.target
 

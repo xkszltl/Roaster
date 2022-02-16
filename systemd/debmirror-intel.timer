@@ -1,5 +1,5 @@
 [Unit]
-Description=Apt repo mirroring [debmirror] timer
+Description=Intel oneAPI apt repo mirroring [debmirror] timer
 After=network-online.target
 Wants=network-online.target
 
@@ -7,7 +7,7 @@ Wants=network-online.target
 OnCalendar=*-*-* 01:30:00
 # OnCalendar=hourly
 # OnCalendar=weekly
-Unit=debmirror.service
+Unit=debmirror-intel.service
 
 [Install]
 WantedBy=multi-user.target

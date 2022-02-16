@@ -1,0 +1,10 @@
+[Unit]
+Description=Apt repo mirroring [apt-mirror] daemon
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=exec
+ExecStartPre=sh -c 'curl -sSL "https://developer.download.nvidia.com/compute/cuda/repos/GPGKEY" | gpg --no-default-keyring --keyring debmirror.kbx --import'
+ExecStart=apt-mirror
+User=root

@@ -1,0 +1,13 @@
+[Unit]
+Description=Apt repo mirroring [apt-mirror] timer
+After=network-online.target
+Wants=network-online.target
+
+[Timer]
+OnCalendar=*-*-* 01:00:00
+# OnCalendar=hourly
+# OnCalendar=weekly
+Unit=apt-mirror.service
+
+[Install]
+WantedBy=multi-user.target
