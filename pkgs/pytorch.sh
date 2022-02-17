@@ -29,7 +29,7 @@
         ;;
     *)
         "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  \
-            numpy/numpy                                 \
+            numpy/numpy,v                               \
             networkx/networkx,networkx-
         ;;
     esac
