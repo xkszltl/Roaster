@@ -1,0 +1,13 @@
+[Unit]
+Description=Docker Ubuntu apt repo mirroring [debmirror] timer
+After=network-online.target
+Wants=network-online.target
+
+[Timer]
+OnCalendar=*-*-* 03:10:00
+# OnCalendar=hourly
+# OnCalendar=weekly
+Unit=debmirror-docker-ubuntu.service
+
+[Install]
+WantedBy=multi-user.target
