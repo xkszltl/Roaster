@@ -1,0 +1,7 @@
+# CodingCafe mirrors.
+
+deb     https://repo.codingcafe.org/debian/          bullseye          main contrib non-free
+deb     https://repo.codingcafe.org/debian-security/ bullseye-security main contrib non-free
+deb-src https://repo.codingcafe.org/debian-security/ bullseye-security main contrib non-free
+deb     https://repo.codingcafe.org/debian/          bullseye-updates  main contrib non-free
+deb-src https://repo.codingcafe.org/debian/          bullseye-updates  main contrib non-free

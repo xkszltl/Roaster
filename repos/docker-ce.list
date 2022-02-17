@@ -1,0 +1,3 @@
+# Docker-CE.
+
+deb [arch=amd64] https://download.docker.com/linux/$(. /etc/os-release >/dev/null; echo "$ID $VERSION_CODENAME") stable

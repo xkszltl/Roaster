@@ -1,0 +1,3 @@
+# Intel oneAPI
+
+deb https://apt.repos.intel.com/oneapi all main

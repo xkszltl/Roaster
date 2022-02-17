@@ -60,7 +60,7 @@
             sleep 5
         done
         sudo sed -i 's/http:\/\//https:\/\//' "/etc/yum.repos.d/cuda-rhel$DISTRO_VERSION_ID.repo"
-        RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" "cuda-rhel$DISTRO_VERSION_ID-$(uname -i)"
+        RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" "cuda-rhel$DISTRO_VERSION_ID-$(uname -m)"
 
         (
             set -xe
@@ -119,11 +119,23 @@
             ca-certificates \
             coreutils \
             curl \
+            findutils \
             gnupg-agent \
             software-properties-common
         if [ "_$DISTRO_ID" = '_debian' ]; then
             until sudo add-apt-repository 'contrib'; do echo "Retrying"; sleep 5; done
             until sudo add-apt-repository 'non-free'; do echo "Retrying"; sleep 5; done
+            if [ "_$GIT_MIRROR" = "_$GIT_MIRROR_CODINGCAFE" ]; then
+                sudo mkdir -p '/etc/apt/sources.list.d'
+                sudo cp -f "$ROOT_DIR/repos/codingcafe-mirror.list" '/etc/apt/sources.list.d/'
+                sudo cp -f '/etc/apt/sources.list'{,.bak}
+                printf '%s\0' "$DISTRO_VERSION_CODENAME"{,-{backports,security,updates}}                                                                                \
+                | sed 's/\([\\\/\.\-]\)/\\\1/g'                                                                                                                         \
+                | xargs -0rI{} printf '%s%s%s\n' 's/^\([[:space:]]*deb\)\(\-src\)*\([[:space:]][[:space:]]*[^[:space:]#][^#]*[[:space:]]' {} '[[:space:]]\)/# \1\2\3/'  \
+                | paste -sd';' -                                                                                                                                        \
+                | xargs -0rI{} sed {} '/etc/apt/sources.list.bak'                                                                                                        \
+                | sudo tee '/etc/apt/sources.list'
+            fi
         else
             until sudo add-apt-repository 'multiverse'; do echo "Retrying"; sleep 5; done
         fi
@@ -154,12 +166,15 @@
                 #   - "apt-key adv --fetch-keys" does not exit with non-zero code on network error.
                 # sudo APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key adv --fetch-keys "$cuda_repo_pubkey"
                 curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$cuda_repo_pubkey" | sudo apt-key add -
-                until sudo add-apt-repository "deb $cuda_repo/ /"; do echo "Retrying"; sleep 5; done
+                sudo mkdir -p '/etc/apt/sources.list.d'
+                echo "deb $cuda_repo/ /" | sudo tee '/etc/apt/sources.list.d/cuda.list'
                 sudo apt-get update -y
             ) && break
             echo "Retry. $(expr "$retry" - 1) time(s) left."
             sleep 5
         done
+        [ "_$GIT_MIRROR" != "_$GIT_MIRROR_CODINGCAFE" ] || "$ROOT_DIR/apply_cache.sh" cuda
+        sudo apt-get update -y
 
         for retry in $(seq 20 -1 0); do
             [ "_$DISTRO_ID" != '_debian' ] || break
@@ -187,11 +202,20 @@
 
         # Intel oneAPI.
         curl -sSL --retry 10000 $curl_connref --retry-delay 1 "https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB" | sudo APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key add -
-        until sudo add-apt-repository "deb https://apt.repos.intel.com/oneapi all main"; do echo "Retrying"; done
+        sudo mkdir -p '/etc/apt/sources.list.d'
+        sudo cp -f "$ROOT_DIR/repos/intel-oneapi.list" '/etc/apt/sources.list.d/'
+        [ "_$GIT_MIRROR" != "_$GIT_MIRROR_CODINGCAFE" ] || "$ROOT_DIR/apply_cache.sh" intel-oneapi
+        sudo apt-get update -y
 
         # Docker-CE.
         curl -sSL --retry 10000 $curl_connref --retry-delay 1 "https://download.docker.com/linux/$DISTRO_ID/gpg" | sudo APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key add -
-        until sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/$DISTRO_ID $(lsb_release -cs) stable"; do echo "Retrying"; done
+        sudo mkdir -p '/etc/apt/sources.list.d'
+        cat "$ROOT_DIR/repos/docker-ce.list"    \
+        | sed 's/^\(.*\)/printf "%s\\n" "\1"/'  \
+        | bash                                  \
+        | sudo tee "/etc/apt/sources.list.d/docker-ce.list"
+        [ "_$GIT_MIRROR" != "_$GIT_MIRROR_CODINGCAFE" ] || "$ROOT_DIR/apply_cache.sh" docker-ce
+        sudo apt-get update -y
 
         # Nvidia docker.
         curl -sSL --retry 1000 $curl_connref --retry-delay 1 "https://nvidia.github.io/nvidia-docker/gpgkey" | sudo APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key add -

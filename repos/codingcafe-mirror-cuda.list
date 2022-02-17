@@ -1,0 +1,3 @@
+# CodingCafe mirrors.
+
+deb https://repo.codingcafe.org/nvidia/cuda/$(. /etc/os-release >/dev/null; echo "$ID$VERSION_ID")/$(uname -m) /
