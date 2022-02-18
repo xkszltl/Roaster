@@ -45,13 +45,13 @@ export LINK_QUALITY="$(
         | sed "s/\([0-9\.][0-9\.]*\).*[[:space:]]\([0-9\.][0-9\.]*\).*/\2\*\(\1\*10+1\)\*$price/"   \
         | sed 's/^$/10\^20/'                                                                        \
         | bc
-        printf '%s %s\n' "$url" "$(dig '+noall' '+short' -t A "$fqdn" | grep '[^\.]$' | paste -sd' ' -)"
+        printf '%s %s\n' "$url" "$(! which dig >/dev/null 2>&1 || dig '+noall' '+short' -t A "$fqdn" | grep '[^\.]$' | paste -sd' ' -)"
     done | paste - - | sort -n | column -t
 )"
 
 sed 's/^/| /' <<< "$LINK_QUALITY"
 
-[ "$GIT_MIRROR" ] || GIT_MIRROR="$(head -n1 <<< "$LINK_QUALITY" | xargs -n1 | tail -n2 | head -n1)"
+[ "$GIT_MIRROR" ] || GIT_MIRROR="$(head -n1 <<< "$LINK_QUALITY" | tail -n1 | xargs -n1 | head -n2 | tail -n1)"
 echo '----------------------------------------------------------------'
 echo "| GIT_MIRROR | $GIT_MIRROR"
 echo '----------------------------------------------------------------'
