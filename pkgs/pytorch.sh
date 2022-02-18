@@ -47,7 +47,10 @@
     #   https://discuss.pytorch.org/t/compiling-1-10-1-from-source-with-gcc-11-and-cuda-11-5/140971
     #   While it is fixed in master, that requires Python 3.7 not available everywhere.
     #   https://github.com/pytorch/pytorch/pull/66219
+    # - Always pin to 025cd69 for now due to a recent build issue:
+    #   https://github.com/pytorch/pytorch/issues/73074
     python3 --version | cut -d' ' -f2 | grep '^3\.[0-6]\.' >/dev/null && git checkout 025cd69 || :
+    git checkout 025cd69
 
     git remote add patch "$GIT_MIRROR/xkszltl/pytorch.git"
 
