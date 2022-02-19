@@ -1,5 +1,5 @@
 [Unit]
-Description=Docker apt repo mirroring [debmirror] daemon
+Description=Docker Ubuntu apt repo mirroring [debmirror] daemon
 After=network-online.target
 Wants=network-online.target
 
