@@ -1,0 +1,10 @@
+# CodingCafe mirrors.
+
+deb     https://repo.codingcafe.org/$(. /etc/os-release >/dev/null; echo "$ID $VERSION_CODENAME")           main restricted universe multiverse
+deb-src https://repo.codingcafe.org/$(. /etc/os-release >/dev/null; echo "$ID $VERSION_CODENAME")           main restricted universe multiverse
+deb     https://repo.codingcafe.org/$(. /etc/os-release >/dev/null; echo "$ID $VERSION_CODENAME")-backports main restricted universe multiverse
+deb-src https://repo.codingcafe.org/$(. /etc/os-release >/dev/null; echo "$ID $VERSION_CODENAME")-backports main restricted universe multiverse
+deb     https://repo.codingcafe.org/$(. /etc/os-release >/dev/null; echo "$ID $VERSION_CODENAME")-security  main restricted universe multiverse
+deb-src https://repo.codingcafe.org/$(. /etc/os-release >/dev/null; echo "$ID $VERSION_CODENAME")-security  main restricted universe multiverse
+deb     https://repo.codingcafe.org/$(. /etc/os-release >/dev/null; echo "$ID $VERSION_CODENAME")-updates   main restricted universe multiverse
+deb-src https://repo.codingcafe.org/$(. /etc/os-release >/dev/null; echo "$ID $VERSION_CODENAME")-updates   main restricted universe multiverse

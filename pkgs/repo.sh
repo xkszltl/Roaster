@@ -125,19 +125,22 @@
         if [ "_$DISTRO_ID" = '_debian' ]; then
             until sudo add-apt-repository 'contrib'; do echo "Retrying"; sleep 5; done
             until sudo add-apt-repository 'non-free'; do echo "Retrying"; sleep 5; done
-            if [ "_$GIT_MIRROR" = "_$GIT_MIRROR_CODINGCAFE" ]; then
-                sudo mkdir -p '/etc/apt/sources.list.d'
-                sudo cp -f "$ROOT_DIR/repos/codingcafe-mirror.list" '/etc/apt/sources.list.d/'
-                sudo cp -f '/etc/apt/sources.list'{,.bak}
-                printf '%s\0' "$DISTRO_VERSION_CODENAME"{,-{backports,security,updates}}                                                                                \
-                | sed 's/\([\\\/\.\-]\)/\\\1/g'                                                                                                                         \
-                | xargs -0rI{} printf '%s%s%s\n' 's/^\([[:space:]]*deb\)\(\-src\)*\([[:space:]][[:space:]]*[^[:space:]#][^#]*[[:space:]]' {} '[[:space:]]\)/# \1\2\3/'  \
-                | paste -sd';' -                                                                                                                                        \
-                | xargs -0rI{} sed {} '/etc/apt/sources.list.bak'                                                                                                        \
-                | sudo tee '/etc/apt/sources.list'
-            fi
         else
             until sudo add-apt-repository 'multiverse'; do echo "Retrying"; sleep 5; done
+        fi
+        if [ "_$GIT_MIRROR" = "_$GIT_MIRROR_CODINGCAFE" ] && [ -e "$ROOT_DIR/repos/codingcafe-mirror-$DISTRO_ID.list" ]; then
+            sudo mkdir -p '/etc/apt/sources.list.d'
+            cat "$ROOT_DIR/repos/codingcafe-mirror-$DISTRO_ID.list"    \
+            | sed 's/^\(.*\)/printf "%s\\n" "\1"/'  \
+            | bash                                  \
+            | sudo tee "/etc/apt/sources.list.d/codingcafe-mirror-$DISTRO_ID.list"
+            sudo cp -f '/etc/apt/sources.list'{,.bak}
+            printf '%s\0' "$DISTRO_VERSION_CODENAME"{,-{backports,security,updates}}                                                                                \
+            | sed 's/\([\\\/\.\-]\)/\\\1/g'                                                                                                                         \
+            | xargs -0rI{} printf '%s%s%s\n' 's/^\([[:space:]]*deb\)\(\-src\)*\([[:space:]][[:space:]]*[^[:space:]#][^#]*[[:space:]]' {} '[[:space:]]\)/# \1\2\3/'  \
+            | paste -sd';' -                                                                                                                                        \
+            | xargs -0rI{} sed {} '/etc/apt/sources.list.bak'                                                                                                        \
+            | sudo tee '/etc/apt/sources.list'
         fi
         sudo apt-get update -y
         sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
