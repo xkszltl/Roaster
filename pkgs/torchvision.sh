@@ -7,18 +7,9 @@
 
     "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  \
         benjaminp/six                               \
-        python-pillow/Pillow
-    case "$(python3 --version | cut -d' ' -f2 | cut -d. -f-2)" in
-    '3.6')
-        "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  numpy/numpy,v1.19.
-        ;;
-    '3.7')
-        "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  numpy/numpy,v1.21.
-        ;;
-    *)
-        "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  numpy/numpy,v
-        ;;
-    esac
+        'pytest-dev/pytest,[3.6=7.0.]'              \
+        python-pillow/Pillow                        \
+        'numpy/numpy,v[3.6=v1.19.,3.7=v1.21.]'
 
     # ------------------------------------------------------------
 

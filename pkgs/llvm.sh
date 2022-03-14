@@ -6,7 +6,7 @@ for i in llvm-{gcc,clang}; do
     [ -e $STAGE/$i ] && ( set -xe
         cd $SCRATCH
 
-        . "$ROOT_DIR/pkgs/utils/git/version.sh" llvm/llvm-project,llvmorg-12.
+        . "$ROOT_DIR/pkgs/utils/git/version.sh" llvm/llvm-project,llvmorg-13.
         until git clone --depth 1 -b "$GIT_TAG" "$GIT_REPO" llvm; do sleep 1; echo "Retrying"; done
         cd llvm
 

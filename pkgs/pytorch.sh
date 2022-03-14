@@ -5,37 +5,21 @@
 [ -e $STAGE/pytorch ] && ( set -xe
     cd $SCRATCH
 
-    # NetworkX 2.6 does not support Python 3.7.
-    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  \
-        pypa/packaging                              \
-        cython/cython                               \
-        benjaminp/six                               \
-        yaml/pyyaml
+    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"          \
+        pypa/packaging                                      \
+        cython/cython                                       \
+        benjaminp/six                                       \
+        yaml/pyyaml                                         \
+        'pytest-dev/pytest,[3.6=7.0.]'                      \
+        Frozenball/pytest-sugar,master                      \
+        'numpy/numpy,v[3.6=v1.19.,3.7=v1.21.]'              \
+        'networkx/networkx,networkx-[3.6=networkx-2.5.]'    \
+        micheles/decorator
     case "$(python3 --version | cut -d' ' -f2 | cut -d. -f-2)" in
     '3.6')
-        "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  \
-            pytest-dev/pytest,7.0.                      \
-            numpy/numpy,v1.19.                          \
-            networkx/networkx,networkx-2.5.
-        # dataclasses is not part Python 3.6.
         "$ROOT_DIR/pkgs/utils/pip_install_from_wheel.sh" dataclasses
         ;;
-    '3.7')
-        "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  \
-            pytest-dev/pytest                           \
-            numpy/numpy,v1.21.                          \
-            networkx/networkx,networkx-
-        ;;
-    *)
-        "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  \
-            pytest-dev/pytest                           \
-            numpy/numpy,v                               \
-            networkx/networkx,networkx-
-        ;;
     esac
-    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  \
-        Frozenball/pytest-sugar,master              \
-        micheles/decorator
 
     # ------------------------------------------------------------
 
