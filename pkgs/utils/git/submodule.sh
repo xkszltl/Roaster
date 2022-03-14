@@ -18,7 +18,7 @@ set +x
     case "$DISTRO_ID" in
     'centos' | 'fedora' | 'rhel' | 'scientific')
         set +e
-        . scl_source enable rh-git218 || exit 1
+        . scl_source enable rh-git227 || . scl_source enable rh-git218 || exit 1
         set -e
         ;;
     esac

@@ -58,7 +58,7 @@ ls -A -I"$(basename "$(dirname "$INSTALL_ROOT")")" \
     set +xe
     case "$DISTRO_ID" in
     "centos" | "fedora" | "rhel" | 'scientific')
-        . scl_source enable rh-git218 || exit 1
+        . scl_source enable rh-git227 || . scl_source enable rh-git218 || exit 1
         ;;
     esac
     set -xe
