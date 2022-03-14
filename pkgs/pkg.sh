@@ -40,7 +40,7 @@ for subset in pkg-{stable,skip,all}; do
                 ninja-build
                 cmake{{,-{fedora,gui}},3{,-{data,doc,gui}}}
                 {ant,maven}{,-*}
-                {git,rh-git{218,227},subversion,mercurial}{,-*}
+                {git,rh-git227,subversion,mercurial}{,-*}
                 doxygen{,-*}
                 pandoc{,-*}
                 swig{,-*}
