@@ -30,9 +30,12 @@ for i in pypa/setuptools,v "pypa/pip,$(python3 --version | cut -d' ' -f2 | grep 
     fi
 
     PKG="$(basename "$PKG_PATH")"
-    if [ "_$PKG" = "_python-future" ]; then
-        PKG="future"
-    fi
+    for rename in python-future=future; do
+        if ! grep '^[^=][^=]*=[^=][^=]*$' <<< "$rename" >/dev/null; then
+            printf '\033[31m[ERROR] Invalid pip renaming rule "%s".\033[0m\n' "$rename"
+        fi
+        PKG="$(sed "s/^$(cut -d'=' -f1 <<< "$rename" | sed 's/\([\\\/\.\-]\)/\\\1/g')"'$/'"$(cut -d'=' -f2 <<< "$rename" | sed 's/\([\\\/\.\-]\)/\\\1/g')/" <<< "$PKG")"
+    done
 
     for wheel_only in pillow protobuf setuptools; do
         if grep -i "/$wheel_only" <<< "/$i" > /dev/null; then
