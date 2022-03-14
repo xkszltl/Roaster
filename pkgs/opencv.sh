@@ -54,7 +54,7 @@
                 case "$DISTRO_ID-$DISTRO_VERSION_ID" in
                 'centos-'* | 'fedora-'* | 'rhel-'* | 'scientific-'*)
                     set +xe
-                    . scl_source enable rh-git218
+                    . scl_source enable rh-git227 || . scl_source enable rh-git218
                     set -xe
                     ;;
                 esac
