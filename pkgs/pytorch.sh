@@ -12,7 +12,7 @@
         yaml/pyyaml                                         \
         'pytest-dev/pytest,[3.6=7.0.]'                      \
         Frozenball/pytest-sugar,master                      \
-        'numpy/numpy,v[3.6=v1.19.,3.7=v1.21.]'              \
+        'numpy/numpy,v[3.6=v1.19.|3.7=v1.21.]'              \
         'networkx/networkx,networkx-[3.6=networkx-2.5.]'    \
         micheles/decorator
     case "$(python3 --version | cut -d' ' -f2 | cut -d. -f-2)" in

@@ -9,7 +9,7 @@
         cython/cython                               \
         benjaminp/six                               \
         'pytest-dev/pytest,[3.6=7.0.]'              \
-        'numpy/numpy,v[3.6=v1.19.,3.7=v1.21.]'
+        'numpy/numpy,v[3.6=v1.19.|3.7=v1.21.]'
 
     # ------------------------------------------------------------
 

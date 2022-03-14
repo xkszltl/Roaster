@@ -7,7 +7,7 @@
 
     "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  \
         cython/cython                               \
-        'numpy/numpy,v[3.6=v1.19.,3.7=v1.21.]'
+        'numpy/numpy,v[3.6=v1.19.|3.7=v1.21.]'
 
     . "$ROOT_DIR/pkgs/utils/git/version.sh" BVLC/caffe,master
     until git clone --depth 1 --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
