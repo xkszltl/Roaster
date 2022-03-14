@@ -40,7 +40,7 @@ if [ ! "'"$PATTERN"'" ] || grep "'"$PATTERN"'" <<< "$SRC_DIR"; then
     mkdir -p "$(dirname "$LOCAL")"
     cd "$(dirname "$LOCAL")"
     set +e
-    ! which scl 2>&1 > /dev/null || . scl_source enable rh-git218
+    ! which scl 2>&1 > /dev/null || . scl_source enable rh-git227 || . scl_source enable rh-git218
     set -e
     [ -d "$LOCAL" ] || git clone --mirror "$DST" "$LOCAL" 2>&1 || git clone --mirror "$SRC" "$LOCAL" 2>&1
     cd "$LOCAL"
