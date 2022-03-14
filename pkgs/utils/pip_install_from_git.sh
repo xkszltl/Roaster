@@ -3,12 +3,12 @@
 set -e
 
 if [ ! "$ROOT_DIR" ]; then
-    echo '$ROOT_DIR is not defined.'
-    echo 'Running in standalone mode.'
+    printf '\033[33m[WARNING] $ROOT_DIR is not defined.\033[0m\n' >&2
+    printf '\033[36m[INFO] Running in standalone mode.\033[0m\n' >&2
     export ROOT_DIR="$(realpath -e "$(dirname "$0")")"
     until [ -x "$ROOT_DIR/setup.sh" ] && [ -d "$ROOT_DIR/pkgs" ]; do export ROOT_DIR=$(realpath -e "$ROOT_DIR/.."); done
     [ "_$ROOT_DIR" != "_$(readlink -f "$ROOT_DIR/..")" ]
-    echo 'Set $ROOT_DIR to "'"$ROOT_DIR"'".'
+    printf '\033[36m[INFO] Set $ROOT_DIR to "%s".\033[0m\n' "$ROOT_DIR" >&2
     . <(sed 's/^\(..*\)/export DISTRO_\1/' '/etc/os-release')
 fi
 
@@ -19,8 +19,9 @@ CACHE_VALID=false
 # Pip 22 requires Python 3.7.
 for i in pypa/setuptools,v "pypa/pip,$(python3 --version | cut -d' ' -f2 | grep '^3\.[0-6]\.' >/dev/null && echo '21.' || :)" pypa/wheel PythonCharmers/python-future,v $@; do
     PKG_PATH="$(cut -d, -f1 <<< "$i,")"
+    ALT_PREFIX="$(cut -d, -f2 <<< "$i," | sed -n 's/.*\[\([^]\[]*\)\].*/\1/p' | tr '|' '\n')"
     if grep '^[[:alnum:]]' <<< "$PKG_PATH" > /dev/null; then
-        . "$ROOT_DIR/pkgs/utils/git/version.sh" "$i"
+        . "$ROOT_DIR/pkgs/utils/git/version.sh" "$(cut -d, -f-2 <<< "$i," | sed 's/\[[^]\[]*\]//g')"
         URL="git+$GIT_REPO@$GIT_TAG"
     else
         URL="$(realpath -e $PKG_PATH)"
@@ -35,7 +36,7 @@ for i in pypa/setuptools,v "pypa/pip,$(python3 --version | cut -d' ' -f2 | grep 
 
     for wheel_only in pillow protobuf setuptools; do
         if grep -i "/$wheel_only" <<< "/$i" > /dev/null; then
-            echo "Cannot build $PKG from source. Install it from wheel instead."
+            printf '\033[33m[WARNING] Cannot build "%s" from source. Install it from wheel instead.\033[0m\n' "$PKG" >&2
             URL="$PKG"
             break
         fi
@@ -58,12 +59,13 @@ for i in pypa/setuptools,v "pypa/pip,$(python3 --version | cut -d' ' -f2 | grep 
             [ "$(cut -d',' -f1 <<< "$py")" ] && exit 0
             ;;
         *)
-            echo "Unknown DISTRO_ID \"$DISTRO_ID\"."
+            printf '\033[31m[ERROR] Unknown DISTRO_ID "%s".\033[0m\n' "$DISTRO_ID" >&2
             exit 1
             ;;
         esac
 
         py="$(which "$(cut -d',' -f2 <<< "$py")")"
+        pyver="$("$py" --version | sed 's/[[:space:]][[:space:]]*/ /g' | cut -d' ' -f2 | grep '^[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*' | cut -d'.' -f-3)"
         # Not exactly correct since the actual package name is defined by "setup.py".
         until $CACHE_VALID; do
             CACHED_LIST="$("$py" -m pip freeze --all | tr '[:upper:]' '[:lower:]')"
@@ -76,8 +78,18 @@ for i in pypa/setuptools,v "pypa/pip,$(python3 --version | cut -d' ' -f2 | grep 
                 continue
             fi
         done
+
+        grep "$(cut -d'.' -f-2 <<< "$pyver" | sed 's/\(.*\)/\^\1=/')" <<< "$ALT_PREFIX" | head -n1 | cut -d'=' -f2
+        alt="$(grep "$(cut -d'.' -f-2 <<< "$pyver" | sed 's/\(.*\)/\^\1=/')" <<< "$ALT_PREFIX" | head -n1 | cut -d'=' -f2)"
+        if [ "$alt" ]; then
+            printf '\033[36m[INFO] %s %s may not be available for Python %s. Search for "%s" instead.\033[0m\n' "$PKG" "$GIT_TAG_VER" "$pyver" "$alt" >&2
+            . "$ROOT_DIR/pkgs/utils/git/version.sh" "$(cut -d, -f1 <<< "$i"),$alt"
+            printf '\033[36m[INFO] Found tag "%s" instead.\033[0m\n' "$GIT_TAG" >&2
+            URL="git+$GIT_REPO@$GIT_TAG"
+        fi
+
         if [ ! "$USE_LOCAL_GIT" ] && [ "$GIT_TAG_VER" ] && [ "_$(sed -n "s/^$(tr '[:upper:]' '[:lower:]' <<< "$PKG")==//p" <<< "$CACHED_LIST")" = "_$GIT_TAG_VER" ]; then
-            echo "Package \"$PKG\" for \"$py\" is already up-to-date ($GIT_TAG_VER). Skip."
+            printf '\033[36m[INFO] Package "%s" for "%s" is already up-to-date (%s). Skip.\033[0m\n' "$PKG" "$py" "$GIT_TAG_VER" >&2
             continue
         fi
 
