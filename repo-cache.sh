@@ -26,9 +26,6 @@ export USE_PROXY=false
 export DRY_RSYNC=$($DRY && echo --dry-run)
 export DRY_WGET=$($DRY && echo --spider)
 
-export CLEAN_CACHE='dnf clean dbcache expire-cache metadata --repo'
-export MAKE_CACHE='dnf makecache --repo'
-
 # Known issue:
 #   - Nvidia CDN in China has terrible availability.
 #     It is very likely to get "Failed to connect to origin, please retry" in HTTP 200.
@@ -373,26 +370,30 @@ done
 # Task Execution
 # ----------------------------------------------------------------
 
+jq -er '.repo_tasks[].repo' <<< "$REPO_TASKS"                                                   \
+| grep $([ "$#" -gt 0 ] && printf '-e ^%s$' "$@" | sed 's/\([\\\/\.\-]\)/\\\1/g' || printf '.') \
+| sed 's/\(..*\)/\-\-repo=\1/'                                                                  \
+| xargs -rn1 dnf makecache --refresh
+
 parallel -j0 --line-buffer --bar 'bash -c '"'"'
-    JSON_OBJ=$(jq <<< "$REPO_TASKS" ".repo_tasks | .[{}]")
+    set -e
+    JSON_OBJ="$(jq ".repo_tasks[{}]" <<< "'"$(sed 's/"/\\"/g' <<< "$REPO_TASKS")"'")"
     printf "Execute task\n%s\n" "$JSON_OBJ"
 
-    repo="$(jq -r ".repo" <<< "$JSON_OBJ")"
-    path="$(jq -r ".path" <<< "$JSON_OBJ")"
+    repo="$(jq -er ".repo" <<< "$JSON_OBJ")"
+    path="$(jq -er ".path" <<< "$JSON_OBJ")"
     [ "'"$#"'" -eq 0 ] || grep -i "$repo" <<< "'"$@"'" || exit 0
-    jq -e ".sync_args" <<< "$JSON_OBJ" > /dev/null && sync_args=$(jq -r ".sync_args" <<< "$JSON_OBJ")
+    jq -e ".sync_args" <<< "$JSON_OBJ" > /dev/null && sync_args=$(jq -er ".sync_args" <<< "$JSON_OBJ")
     retries=1
-    jq -e ".retries" <<< "$JSON_OBJ" > /dev/null && retries=$(jq -r ".retries" <<< "$JSON_OBJ")
+    jq -e ".retries" <<< "$JSON_OBJ" > /dev/null && retries=$(jq -er ".retries" <<< "$JSON_OBJ")
     use_proxy="'"$USE_PROXY"'"
-    jq -e ".use_proxy" <<< "$JSON_OBJ" > /dev/null && use_proxy=$(jq -r ".use_proxy" <<< "$JSON_OBJ")
+    jq -e ".use_proxy" <<< "$JSON_OBJ" > /dev/null && use_proxy=$(jq -er ".use_proxy" <<< "$JSON_OBJ")
 
     mkdir -p "$path"
     repo_bn="$(basename "$repo")"
     mkdir -p "repoid"
     pushd "repoid"
     ln -sfT "../$path" "./$repo_bn"
-    '"$DRY"' || '"$CLEAN_CACHE"' "$repo"
-    '"$DRY"' || '"$MAKE_CACHE"' "$repo"
     for rest in $(seq "$retries" -1 -1) _; do
         if [ "_$rest" = "__" ]; then
             echo "Failed to download repo after $(expr "$retries" + 1) time(s) of retry."
@@ -425,9 +426,7 @@ parallel -j0 --line-buffer --bar 'bash -c '"'"'
     '"$DRY"' || '"$CREATEREPO"'
     popd
     popd
-'"'" :::    \
-    $(seq 0 $(expr $(jq <<< "$REPO_TASKS" '.repo_tasks | length') - 1)) \
-&
+'"'" ::: $(seq 0 "$(expr "$(jq -er '.repo_tasks | length' <<< "$REPO_TASKS")" - 1)") &
 
 # ----------------------------------------------------------------
 
