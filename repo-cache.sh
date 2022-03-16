@@ -27,6 +27,7 @@ export DRY_RSYNC=$($DRY && echo --dry-run)
 export DRY_WGET=$($DRY && echo --spider)
 
 export CLEAN_CACHE='dnf clean dbcache expire-cache metadata --repo'
+export MAKE_CACHE='dnf makecache --repo'
 
 # Known issue:
 #   - Nvidia CDN in China has terrible availability.
@@ -390,7 +391,8 @@ parallel -j0 --line-buffer --bar 'bash -c '"'"'
     mkdir -p "repoid"
     pushd "repoid"
     ln -sfT "../$path" "./$repo_bn"
-    "$DRY" || eval $CLEAN_CACHE $repo
+    '"$DRY"' || '"$CLEAN_CACHE"' "$repo"
+    '"$DRY"' || '"$MAKE_CACHE"' "$repo"
     for rest in $(seq "$retries" -1 -1) _; do
         if [ "_$rest" = "__" ]; then
             echo "Failed to download repo after $(expr "$retries" + 1) time(s) of retry."
@@ -405,8 +407,8 @@ parallel -j0 --line-buffer --bar 'bash -c '"'"'
             unset HTTP_PROXY HTTPS_PROXY http_proxy https_proxy
         fi
         unset HTTP_PROXY HTTPS_PROXY http_proxy https_proxy
-        if ! "$DRY"; then
-            eval $REPOSYNC $repo $sync_args && break
+        if ! '"$DRY"'; then
+            '"$REPOSYNC"' "$repo" $sync_args && break
             if [ "$rest" -ge 0 ]; then
                 echo -n "Retry \"$repo\". "
                 if [ "$rest" -gt 0 ]; then
@@ -420,7 +422,7 @@ parallel -j0 --line-buffer --bar 'bash -c '"'"'
         fi
     done
     pushd "$repo_bn"
-    $DRY || eval $CREATEREPO
+    '"$DRY"' || '"$CREATEREPO"'
     popd
     popd
 '"'" :::    \
