@@ -36,18 +36,21 @@
     #   https://github.com/pytorch/pytorch/pull/66219
     # - Always pin to 025cd69 for now due to a recent build issue:
     #   https://github.com/pytorch/pytorch/issues/73074
-    python3 --version | cut -d' ' -f2 | grep '^3\.[0-6]\.' >/dev/null && git checkout 025cd69 || :
-    git checkout 025cd69
+    if : || python3 --version | cut -d' ' -f2 | grep '^3\.[0-6]\.' >/dev/null; then
+        git checkout 025cd69
+        # Patch RNN in memonger.
+        # - https://github.com/pytorch/pytorch/pull/24388
+        # - https://github.com/pytorch/pytorch/pull/74031
+        git cherry-pick adae0d35 198d727d
+    fi
 
     git remote add patch "$GIT_MIRROR/xkszltl/pytorch.git"
 
-    PATCHES="lstm rnn_arg"
-
-    git pull --no-edit patch $PATCHES
-
-    # for i in $PATCHES; do
-    #     git pull --no-edit --rebase patch "$i"
-    # done
+    PATCHES="lstm"
+    for i in $PATCHES; do
+        git fetch patch "$i"
+        git cherry-pick "patch/$i"
+    done
 
     . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
 
