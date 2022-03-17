@@ -406,7 +406,7 @@ parallel -j0 --line-buffer --bar 'bash -c '"'"'
     '"$DRY"' || '"$CREATEREPO"'
     popd
     popd
-'"'" ::: $(seq 0 "$(expr "$(jq -er '.repo_tasks | length' <<< "$REPO_TASKS")" - 1)") &
+'"'" ::: $(seq 0 "$(expr "$(jq -er '.repo_tasks | length' <<< "$REPO_TASKS")" - 1)")
 
 # ----------------------------------------------------------------
 
