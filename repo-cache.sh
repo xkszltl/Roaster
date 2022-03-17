@@ -23,7 +23,6 @@ export USE_PROXY=false
 # Preparation
 # ----------------------------------------------------------------
 
-export DRY_RSYNC=$($DRY && echo --dry-run)
 export DRY_WGET=$($DRY && echo --spider)
 
 # Known issue:
@@ -59,27 +58,6 @@ export REPO_TASKS=$(jq -n '
 
 mkdir -p '/var/www/repos'
 cd "$_"
-
-# ----------------------------------------------------------------
-# CTAN/GNU Repository Mirroring
-# ----------------------------------------------------------------
-
-parallel -j0 --line-buffer --bar 'bash -c '"'"'
-    [ "'"$#"'" -eq 0 ] || grep -i {} <<< "'"$@"'" || exit 0
-    if false; then :
-    elif ping -nfc 10 mirrors.tuna.tsinghua.edu.cn -I 10.0.0.12; then
-        '"$DRY"' || rsync '"$DRY_RSYNC"' -aHSvPz --delete --address 10.0.0.12 "rsync://mirrors.tuna.tsinghua.edu.cn/{}/" "{}"
-    elif ping -nfc 10 rsync.mirrors.ustc.edu.cn -I 10.0.0.12; then
-        '"$DRY"' || rsync '"$DRY_RSYNC"' -aHSvPz --delete --address 10.0.0.12 "rsync://rsync.mirrors.ustc.edu.cn/{}/" "{}"
-    elif ping -nfc 10 mirrors.tuna.tsinghua.edu.cn -I 10.0.0.11; then
-        '"$DRY"' || rsync '"$DRY_RSYNC"' -aHSvPz --delete --address 10.0.0.11 "rsync://mirrors.tuna.tsinghua.edu.cn/{}/" "{}"
-    elif ping -nfc 10 rsync.mirrors.ustc.edu.cn -I 10.0.0.11; then
-        '"$DRY"' || rsync '"$DRY_RSYNC"' -aHSvPz --delete --address 10.0.0.11 "rsync://rsync.mirrors.ustc.edu.cn/{}/" "$u"
-    else
-       echo "No mirror to try for $i"
-       exit 1
-    fi
-'"'" ::: CTAN gnu
 
 # ----------------------------------------------------------------
 # Intel Legacy Repository Mirroring
