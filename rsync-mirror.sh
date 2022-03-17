@@ -51,4 +51,4 @@ parallel --bar --line-buffer -j0 'bash -c '"'"'
     fi
 '"'" ::: $repos
 
-printf '\033[32m[INFO] Repo "%s" mirrored.\033[0m\n' "$@" >&2
+printf '\033[32m[INFO] Repo "%s" mirrored.\033[0m\n' "$repos" >&2
