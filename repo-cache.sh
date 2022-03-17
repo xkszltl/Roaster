@@ -37,20 +37,6 @@ export REPOSYNC="$(paste -s - <<< "
         --repoid
 ")"
 
-export CREATEREPO="$(paste -s - <<< "
-    createrepo_c
-        --cachedir=.cache
-        --checksum=sha512
-        --compress-type=xz
-        --database
-        $([ -f comps.xml ] && echo --groupfile=comps.xml)
-        '"$($REPO_UPDATE && echo --keep-all-metadata)"'
-        --pretty
-        --workers $(nproc)
-        '"$($REPO_UPDATE && echo --update)"'
-        $(pwd)
-")"
-
 export ROUTE='10.0.0.$([ $(expr $RANDOM % "$(expr 20 + 10 - 2)") -lt "$(expr 20 - 1)" ] && echo 11 || echo 12)'
 
 export REPO_TASKS="$(jq -n '
@@ -353,7 +339,7 @@ done
 jq -er '.repo_tasks[].repo' <<< "$REPO_TASKS"                                                       \
 | grep $([ "$#" -gt 0 ] && sed 's/\([\\\/\.\-]\)/\\\1/g' <<< "$*" | sed 's/^/-e /' || printf '.')   \
 | sed 's/\(..*\)/\-\-repo=\1/'                                                                      \
-| xargs -rn1 dnf makecache --refresh
+| xargs -rn1 dnf makecache --refresh -y
 
 parallel -j0 --line-buffer --bar 'bash -c '"'"'
     set -e
@@ -403,7 +389,18 @@ parallel -j0 --line-buffer --bar 'bash -c '"'"'
         fi
     done
     pushd "$repo_bn"
-    '"$DRY"' || '"$CREATEREPO"'
+    '"$DRY"' || createrepo_c                                            \
+        --cachedir=.cache                                               \
+        --checksum=sha512                                               \
+        --compress-type=xz                                              \
+        --database                                                      \
+        $(! [ -f "comps.xml" ] || printf "%s" "--groupfile=comps.xml")  \
+        '"$($REPO_UPDATE && printf '%s' '--keep-all-metadata')"'        \
+        --pretty                                                        \
+        --workers "'"$(nproc)"'"                                        \
+        '"$($REPO_UPDATE && printf '%s' '--update')"'                   \
+        "$(pwd)"
+
     popd
     popd
 '"'" ::: $(seq 0 "$(expr "$(jq -er '.repo_tasks | length' <<< "$REPO_TASKS")" - 1)")
