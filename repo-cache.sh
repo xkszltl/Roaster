@@ -29,32 +29,34 @@ export DRY_WGET=$($DRY && echo --spider)
 #   - Nvidia CDN in China has terrible availability.
 #     It is very likely to get "Failed to connect to origin, please retry" in HTTP 200.
 #     Disable plugin (yum-axelget) and use only one connection may help.
-export REPOSYNC='dnf reposync
-    --download-metadata
-    '"$($REPO_GPG || echo --nogpgcheck)"'
-    '"$(false && --norepopath)"'
-    --repoid
-'
+export REPOSYNC="$(paste -s - <<< "
+    dnf reposync
+        --download-metadata
+        $($REPO_GPG || echo --nogpgcheck)
+        $(false && --norepopath)
+        --repoid
+")"
 
-export CREATEREPO='createrepo_c
-    --cachedir=.cache
-    --checksum=sha512
-    --compress-type=xz
-    --database
-    $([ -f comps.xml ] && echo --groupfile=comps.xml)
-    '"$($REPO_UPDATE && echo --keep-all-metadata)"'
-    --pretty
-    --workers $(nproc)
-    '"$($REPO_UPDATE && echo --update)"'
-    $(pwd)
-'
+export CREATEREPO="$(paste -s - <<< "
+    createrepo_c
+        --cachedir=.cache
+        --checksum=sha512
+        --compress-type=xz
+        --database
+        $([ -f comps.xml ] && echo --groupfile=comps.xml)
+        '"$($REPO_UPDATE && echo --keep-all-metadata)"'
+        --pretty
+        --workers $(nproc)
+        '"$($REPO_UPDATE && echo --update)"'
+        $(pwd)
+")"
 
 export ROUTE='10.0.0.$([ $(expr $RANDOM % "$(expr 20 + 10 - 2)") -lt "$(expr 20 - 1)" ] && echo 11 || echo 12)'
 
-export REPO_TASKS=$(jq -n '
+export REPO_TASKS="$(jq -n '
     {
         "repo_tasks": []
-    }')
+    }')"
 
 mkdir -p '/var/www/repos'
 cd "$_"
