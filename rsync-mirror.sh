@@ -20,7 +20,8 @@ cd "$_"
 # ----------------------------------------------------------------
 
 parallel --bar --line-buffer -j0 'bash -c '"'"'
-    [ "'"$#"'" -eq 0 ] || grep -i {} <<< "'"$@"'" || exit 0
+    repo={}
+    [ "'"$#"'" -eq 0 ] || grep -i "$repo" <<< "'"$@"'" || exit 0
     if false; then :
     elif ping -nfc 10 mirrors.tuna.tsinghua.edu.cn -I 10.0.0.12; then
         '"$DRY"' || rsync '"$DRY_RSYNC"' -aHSvPz --delete --address 10.0.0.12 "rsync://mirrors.tuna.tsinghua.edu.cn/{}/" "{}"
@@ -35,7 +36,7 @@ parallel --bar --line-buffer -j0 'bash -c '"'"'
     elif ping -nfc 10 rsync.mirrors.ustc.edu.cn then
         '"$DRY"' || rsync '"$DRY_RSYNC"' -aHSvPz --delete"rsync://rsync.mirrors.ustc.edu.cn/{}/" "{}"
     else
-       printf "\033[31m[ERROR] No mirror to try for \"%s\".\033[0m\n" "$i" >&2
+       printf "\033[31m[ERROR] No mirror to try for \"%s\".\033[0m\n" "$repo" >&2
        exit 1
     fi
 '"'" ::: CTAN gnu
