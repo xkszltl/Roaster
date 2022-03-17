@@ -348,9 +348,9 @@ done
 # Task Execution
 # ----------------------------------------------------------------
 
-jq -er '.repo_tasks[].repo' <<< "$REPO_TASKS"                                                   \
-| grep $([ "$#" -gt 0 ] && printf '-e ^%s$' "$@" | sed 's/\([\\\/\.\-]\)/\\\1/g' || printf '.') \
-| sed 's/\(..*\)/\-\-repo=\1/'                                                                  \
+jq -er '.repo_tasks[].repo' <<< "$REPO_TASKS"                                                       \
+| grep $([ "$#" -gt 0 ] && sed 's/\([\\\/\.\-]\)/\\\1/g' <<< "$*" | sed 's/^/-e /' || printf '.')   \
+| sed 's/\(..*\)/\-\-repo=\1/'                                                                      \
 | xargs -rn1 dnf makecache --refresh
 
 parallel -j0 --line-buffer --bar 'bash -c '"'"'
