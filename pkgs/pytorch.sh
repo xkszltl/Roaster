@@ -49,7 +49,7 @@
     PATCHES="lstm"
     for i in $PATCHES; do
         git fetch patch "$i"
-        git cherry-pick "patch/$i"
+        git cherry-pick FETCH_HEAD
     done
 
     . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
