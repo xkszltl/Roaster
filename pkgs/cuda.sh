@@ -176,20 +176,46 @@
     (
         set -xe
 
-        . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
-        . "$ROOT_DIR/pkgs/utils/fpm/distro_cc.sh"
+        . "$ROOT_DIR/pkgs/utils/git/version.sh" NVIDIA/cuda-samples,"v$CUDA_VER_MAJOR.$CUDA_VER_MINOR"
+        until git clone --depth 1 -b "$GIT_TAG" "$GIT_REPO" "cuda-samples-$CUDA_VER_MAJOR-$CUDA_VER_MINOR"; do sleep 1; echo "Retrying"; done
+        cd "cuda-samples-$CUDA_VER_MAJOR-$CUDA_VER_MINOR"
 
-        cd /usr/local/cuda/samples
-        export MPI_HOME=/usr/local/openmpi
-        sudo make -j clean
+        # --------------------------------------------------------
+
+        . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
+        rm -rf "$INSTALL_ABS/src"
 
         # CUDA 10.2 does not build due to missing nvscibuf.
         # See discussion in https://devtalk.nvidia.com/default/topic/1067000/where-is-quot-nvscibuf-h-quot-/?offset=13
-        VERBOSE=1 time sudo make -j$(nproc) -k || true
+        MPI_HOME=/usr/local/openmpi VERBOSE=1 time sudo make -j$(nproc) -k all || true
 
         for cuda_util in deviceQuery{,Drv} topologyQuery {bandwidth,p2pBandwidthLatency}Test; do
-            "bin/$(uname -p)/linux/release/$cuda_util" || true
+            "bin/$(uname -m)/linux/release/$cuda_util" || true
         done
+
+        mkdir -p "$INSTALL_ABS/cuda-$CUDA_VER_MAJOR.$CUDA_VER_MINOR/samples"
+        find . -mindepth 1 -maxdepth 1 -not -name "$(basename "$(dirname "$INSTALL_ROOT")")" | xargs -I{} cp -aft "$INSTALL_ROOT/usr/local/cuda-$CUDA_VER_MAJOR.$CUDA_VER_MINOR/samples" {}
+
+        # Exclude NVIDIA files.
+        pushd "$INSTALL_ROOT"
+        for i in "cuda-samples-$CUDA_VER_MAJOR-$CUDA_VER_MINOR"; do
+            case "$DISTRO_ID" in
+            'centos' | 'fedora' | 'rhel' | 'scientific')
+                ! rpm -qa "$i" || rpm -ql "$i" | xargs -I{} find {} -maxdepth 0 -not -type d | sed -n 's/^\//\.\//p' | xargs rm -rf
+                ;;
+            'debian' | 'linuxmint' | 'ubuntu')
+                ! dpkg -l "$i" || dpkg -L "$i" | xargs -I{} find {} -maxdepth 0 -not -type d | sed -n 's/^\//\.\//p' | xargs rm -rf
+                ;;
+            esac
+        done
+        popd
+
+        "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
+
+        # --------------------------------------------------------
+
+        cd
+        rm -rf "$SCRATCH/cuda-samples-$CUDA_VER_MAJOR-$CUDA_VER_MINOR"
     )
 )
 sudo rm -vf $STAGE/cuda
