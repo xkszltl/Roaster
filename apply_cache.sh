@@ -37,7 +37,7 @@ case "$DISTRO_ID-$DISTRO_VERSION_ID" in
 
     sync
 
-    sudo yum repolist
+    sudo yum repolist -y
     ;;
 'debian-'* | 'linuxmint-'* | 'ubuntu-'*)
     if [ $# -le 0 ]; then
