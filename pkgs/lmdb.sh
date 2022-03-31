@@ -20,7 +20,7 @@
         cat Makefile                                                                                \
         | sed "s/^\(CC[[:space:]]*=[[:space:]]*\).*/\1$(sed 's/\//\\\//g' <<< "$TOOLCHAIN/cc")/"    \
         | sed "s/^\(prefix[[:space:]]*=[[:space:]]*\).*/\1$(sed 's/\//\\\//g' <<< "$INSTALL_ABS")/" \
-        | sed 's/\($(SOLIBS)\)/\-Wl,\-soname,$@.$(GIT_TAG_VER) \1/'                                               \
+        | sed 's/\($(SOLIBS)\)/\-Wl,\-soname,$@.$(GIT_TAG_VER) \1/'                                 \
         > .Makefile
         mv -f {.,}Makefile
 
