@@ -29,7 +29,7 @@ ccache/ccache,\
 census-instrumentation/opencensus-{cpp,csharp,erlang,go,java,js-core,node,php,proto,python,ruby,service,specs,web,website},\
 chadaustin/sajson,\
 chromium/{ballista,chromium,gyp,pdfium,vs-chromium},\
-Cisco-Talos/clamav-{bytecode-compiler,devel,faq,safebrowsing},\
+Cisco-Talos/clamav{,-{bytecode-compiler,documentation,mussels-cookbook,safebrowsing}},\
 civetweb/civetweb,\
 cncf/{landscape,sig-{app-delivery,contributor-strategy,network,observability,runtime,security{,-events}},cnf-testsuite,udpa,xds},\
 cocodataset/{cocoapi,panopticapi},\
