@@ -28,5 +28,5 @@ if [ "$1" ]; then
         echo "Cannot find any git version tag in \"$GIT_REPO\" with prefix \"$GIT_PREFIX_ESC\"."
         exit 1
     fi
-    export GIT_TAG_VER="$(sed "s/^$GIT_PREFIX//" <<< "$GIT_TAG")"
+    export GIT_TAG_VER="$(sed 's/^[^0-9]*//' <<< "$GIT_TAG" | sed 's/[[:punct:]][[:punct:]]*/\./g')"
 fi
