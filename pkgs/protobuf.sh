@@ -9,7 +9,11 @@
 
     # ------------------------------------------------------------
 
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" protocolbuffers/protobuf,v
+    # Known issues:
+    #   - Protobuf 3.20 drops Python 3.6 support.
+    #     https://github.com/protocolbuffers/protobuf/pull/9480
+    #     https://github.com/protocolbuffers/protobuf/commit/301d315dc4674d1bc799446644e88eff0af1ac86
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" "protocolbuffers/protobuf,v$(! python3 --version | cut -d' ' -f2 | grep '^3\.[0-6]\.' >/dev/null || echo '3.19.')"
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd protobuf
 
@@ -72,8 +76,7 @@
         popd
     fi
 
-    # for py in ,python3 rh-python38,python; do
-    for py in ,python3; do
+    for py in ,python3 rh-python38,python; do
     (
         py="$py,"
 
