@@ -44,8 +44,7 @@ for i in pypa/setuptools,v[3.6=v59.6.] "pypa/pip,$(python3 --version | cut -d' '
         PKG="$(sed "s/^$(cut -d'=' -f1 <<< "$rename" | sed 's/\([\\\/\.\-]\)/\\\1/g')"'$/'"$(cut -d'=' -f2 <<< "$rename" | sed 's/\([\\\/\.\-]\)/\\\1/g')/" <<< "$PKG")"
     done
 
-    # for py in ,python3 rh-python38,python; do
-    for py in ,python3; do
+    for py in ,python3 rh-python38,python3; do
     (
         py="$py,"
 
