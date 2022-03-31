@@ -9,11 +9,7 @@
 
     # ------------------------------------------------------------
 
-    # Known issues:
-    #   - Protobuf 3.20 drops Python 3.6 support.
-    #     https://github.com/protocolbuffers/protobuf/pull/9480
-    #     https://github.com/protocolbuffers/protobuf/commit/301d315dc4674d1bc799446644e88eff0af1ac86
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" "protocolbuffers/protobuf,v$(! python3 --version | cut -d' ' -f2 | grep '^3\.[0-6]\.' >/dev/null || echo '3.19.')"
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" protocolbuffers/protobuf,v
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd protobuf
 
@@ -37,7 +33,7 @@
         if false; then
             export CC="ccache $CC"
             export CXX="ccache $CXX"
-            export C{,XX}FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -fPIC -O3 -g"
+            export C{,XX}FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -fPIC -O3 -g -DDPYTHON_PROTO2_CPP_IMPL_V2"
 
             ./autogen.sh
             ./configure --prefix="$INSTALL_ABS"
@@ -70,52 +66,14 @@
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
 
     # Fake makefile output for CMake build due to hard-coded path in "setup.py".
-    if [ -d "build" ]; then
-        pushd src
-        ln -sf ../build .libs
-        popd
-    fi
+    [ ! -d 'build' ] || ln -sf '../build' 'src/.libs'
 
-    # for py in ,python3 rh-python38,python; do
-    for py in ,python3; do
-    (
-        py="$py,"
-
-        case "$DISTRO_ID-$DISTRO_VERSION_ID" in
-        'centos-'* | 'fedora-'* | 'rhel-'* | 'scientific-'*)
-            set +xe
-            . scl_source enable devtoolset-9 $(cut -d',' -f1 <<< "$py") || exit 1
-            set -xe
-            export CC="gcc" CXX="g++"
-            ;;
-        'debian-10' | 'ubuntu-18.'* | 'ubuntu-19.'*)
-            # Skip SCL Python.
-            [ "$(cut -d',' -f1 <<< "$py")" ] && continue
-            export CC="gcc-8" CXX="g++-8" FC="gfortran-8"
-            ;;
-        'debian-11' | 'ubuntu-20.'* | 'ubuntu-21.'*)
-            # Skip SCL Python.
-            [ "$(cut -d',' -f1 <<< "$py")" ] && continue
-            export CC="gcc-10" CXX="g++-10" FC="gfortran-10"
-            ;;
-        esac
-
-        py="$(which "$(cut -d',' -f2 <<< "$py")")"
-
-        . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
-        export CC="$TOOLCHAIN/$CC"
-        export CXX="$TOOLCHAIN/$CXX"
-        export LD="$TOOLCHAIN/ld"
-
-        export PROTOC="$(realpath -e ./protoc)"
-
-        pushd python
-        git clean -dfx .
-        "$py" ./setup.py bdist_wheel --cpp_implementation
-        sudo "$py" -m pip install -IU dist/*.whl
-        popd
-    )
-    done
+    # Known issues:
+    #   - Protobuf 3.20 drops Python 3.6 support.
+    #     https://github.com/protocolbuffers/protobuf/pull/9480
+    #     https://github.com/protocolbuffers/protobuf/commit/301d315dc4674d1bc799446644e88eff0af1ac86
+    PROTOC="$(realpath -e 'build/protoc')" "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" \
+        protocolbuffers/protobuf/./python,v[3.6=v3.19.]
 
     # ------------------------------------------------------------
 
