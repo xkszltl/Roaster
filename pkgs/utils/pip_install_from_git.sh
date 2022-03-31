@@ -37,7 +37,7 @@ for i in pypa/setuptools,v "pypa/pip,$(python3 --version | cut -d' ' -f2 | grep 
         PKG="$(sed "s/^$(cut -d'=' -f1 <<< "$rename" | sed 's/\([\\\/\.\-]\)/\\\1/g')"'$/'"$(cut -d'=' -f2 <<< "$rename" | sed 's/\([\\\/\.\-]\)/\\\1/g')/" <<< "$PKG")"
     done
 
-    for wheel_only in pillow protobuf setuptools; do
+    for wheel_only in pillow setuptools; do
         if grep -i "/$wheel_only" <<< "/$i" > /dev/null; then
             printf '\033[33m[WARNING] Cannot build "%s" from source. Install it from wheel instead.\033[0m\n' "$PKG" >&2
             URL="$PKG"
