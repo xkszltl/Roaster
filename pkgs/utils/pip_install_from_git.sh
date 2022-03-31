@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Usage:
+#     $0 <abs_path>,<ref_prefix<[<py_ver>=<rel_prefix>] ...
+#     $0 ./<rel_path>,<ref_prefix<[<py_ver>=<rel_prefix>] ...
+#     $0 <url>/./<dir>,<ref_prefix>[<py_ver>=<rel_prefix>|...] ...
+
 set -e
 
 if [ ! "$ROOT_DIR" ]; then
@@ -16,15 +21,17 @@ fi
 
 CACHE_VALID=false
 
+# Setuptools 59.7 requires Python 3.7
 # Pip 22 requires Python 3.7.
-for i in pypa/setuptools,v "pypa/pip,$(python3 --version | cut -d' ' -f2 | grep '^3\.[0-6]\.' >/dev/null && echo '21.' || :)" pypa/wheel PythonCharmers/python-future,v $@; do
-    PKG_PATH="$(cut -d, -f1 <<< "$i,")"
+for i in pypa/setuptools,v[3.6=v59.6.] "pypa/pip,$(python3 --version | cut -d' ' -f2 | grep '^3\.[0-6]\.' >/dev/null && echo '21.' || :)" pypa/wheel PythonCharmers/python-future,v $@; do
+    PKG_PATH="$(cut -d, -f1 <<< "$i" | sed 's/\/\.\/.*//')"
+    PKG_SUBDIR="$(cut -d, -f1 <<< "$i" | sed -n 's/.*\/\.\/\(.*\)/\1/p')"
     ALT_PREFIX="$(cut -d, -f2 <<< "$i," | sed -n 's/.*\[\([^]\[]*\)\].*/\1/p' | tr '|' '\n')"
     if grep '^[[:alnum:]]' <<< "$PKG_PATH" > /dev/null; then
-        . "$ROOT_DIR/pkgs/utils/git/version.sh" "$(cut -d, -f-2 <<< "$i," | sed 's/\[[^]\[]*\]//g')"
+        . "$ROOT_DIR/pkgs/utils/git/version.sh" "$PKG_PATH,$(cut -d, -f2 <<< "$i," | sed 's/\[[^]\[]*\]//g')"
         URL="git+$GIT_REPO@$GIT_TAG"
     else
-        URL="$(realpath -e $PKG_PATH)"
+        URL="$(realpath -e "$PKG_PATH")"
         [ -d "$URL" ]
         USE_LOCAL_GIT=true
     fi
@@ -37,15 +44,6 @@ for i in pypa/setuptools,v "pypa/pip,$(python3 --version | cut -d' ' -f2 | grep 
         PKG="$(sed "s/^$(cut -d'=' -f1 <<< "$rename" | sed 's/\([\\\/\.\-]\)/\\\1/g')"'$/'"$(cut -d'=' -f2 <<< "$rename" | sed 's/\([\\\/\.\-]\)/\\\1/g')/" <<< "$PKG")"
     done
 
-    for wheel_only in pillow setuptools; do
-        if grep -i "/$wheel_only" <<< "/$i" > /dev/null; then
-            printf '\033[33m[WARNING] Cannot build "%s" from source. Install it from wheel instead.\033[0m\n' "$PKG" >&2
-            URL="$PKG"
-            break
-        fi
-    done
-    # SCL python throws FileNotFound error in PyTorch pip build,
-    # Not sure why but disable for now since stock version is already 3.6.8 (SCL version 3.6.9).
     # for py in ,python3 rh-python38,python; do
     for py in ,python3; do
     (
@@ -71,11 +69,11 @@ for i in pypa/setuptools,v "pypa/pip,$(python3 --version | cut -d' ' -f2 | grep 
         pyver="$("$py" --version | sed 's/[[:space:]][[:space:]]*/ /g' | cut -d' ' -f2 | grep '^[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*' | cut -d'.' -f-3)"
         # Not exactly correct since the actual package name is defined by "setup.py".
         until $CACHE_VALID; do
-            CACHED_LIST="$("$py" -m pip freeze --all | tr '[:upper:]' '[:lower:]')"
+            CACHED_JSON="$("$py" -m pip list --exclude-editable --format json | tr '[:upper:]' '[:lower:]')"
             CACHE_VALID=true
 
             # Always remove enum34.
-            if [ "$(grep '^enum34==' <<< "$CACHED_LIST")" ]; then
+            if jq -er '.[] | select(."name" == "enum34")' <<< "$CACHED_JSON" >/dev/null; then
                 /usr/bin/sudo "$py" -m pip uninstall -y 'enum34'
                 CACHE_VALID=false
                 continue
@@ -85,15 +83,21 @@ for i in pypa/setuptools,v "pypa/pip,$(python3 --version | cut -d' ' -f2 | grep 
         grep "$(cut -d'.' -f-2 <<< "$pyver" | sed 's/\(.*\)/\^\1=/')" <<< "$ALT_PREFIX" | head -n1 | cut -d'=' -f2
         alt="$(grep "$(cut -d'.' -f-2 <<< "$pyver" | sed 's/\(.*\)/\^\1=/')" <<< "$ALT_PREFIX" | head -n1 | cut -d'=' -f2)"
         if [ "$alt" ]; then
-            printf '\033[36m[INFO] %s %s may not be available for Python %s. Search for "%s" instead.\033[0m\n' "$PKG" "$GIT_TAG_VER" "$pyver" "$alt" >&2
-            . "$ROOT_DIR/pkgs/utils/git/version.sh" "$(cut -d, -f1 <<< "$i"),$alt"
+            printf '\033[36m[INFO] %s %s may not be available for Python %s. Search for "%s" instead.\033[0m\n' "$PKG" "$GIT_TAG" "$pyver" "$alt" >&2
+            . "$ROOT_DIR/pkgs/utils/git/version.sh" "$PKG_PATH,$alt"
             printf '\033[36m[INFO] Found tag "%s" instead.\033[0m\n' "$GIT_TAG" >&2
             URL="git+$GIT_REPO@$GIT_TAG"
         fi
 
-        if [ ! "$USE_LOCAL_GIT" ] && [ "$GIT_TAG_VER" ] && [ "_$(sed -n "s/^$(tr '[:upper:]' '[:lower:]' <<< "$PKG")==//p" <<< "$CACHED_LIST")" = "_$GIT_TAG_VER" ]; then
+        if [ ! "$USE_LOCAL_GIT" ] && [ "$GIT_TAG_VER" ] && [ "_$(jq -er '.[] | select(."name" == "'"$(tr '[:upper:]' '[:lower:]' <<< "$PKG")"'").version' <<< "$CACHED_JSON")" = "_$GIT_TAG_VER" ]; then
             printf '\033[36m[INFO] Package "%s" for "%s" is already up-to-date (%s). Skip.\033[0m\n' "$PKG" "$py" "$GIT_TAG_VER" >&2
             continue
+        fi
+
+        # Blacklist for wheels we cannot build yet.
+        if grep -i -e"/"{pillow,setuptools} <<< "/$i" > /dev/null; then
+            printf '\033[33m[WARNING] Cannot build "%s" from source. Install it from wheel instead.\033[0m\n' "$PKG" >&2
+            URL="$PKG==$GIT_TAG_VER"
         fi
 
         # Clone git repo using local mirror.
@@ -108,7 +112,7 @@ for i in pypa/setuptools,v "pypa/pip,$(python3 --version | cut -d' ' -f2 | grep 
                 cd "$(basename "$GIT_REPO" | sed 's/\.git$//')"
                 "$ROOT_DIR/pkgs/utils/git/submodule.sh"
             )
-            URL="$(realpath -e "$PIP_CLONE_TMPDIR/$(basename "$GIT_REPO" | sed 's/\.git$//')")"
+            URL="$(realpath -e "$PIP_CLONE_TMPDIR/$(basename "$GIT_REPO" | sed 's/\.git$//')/$PKG_SUBDIR")"
             [ "$URL" ]
             [ -d "$URL" ]
         fi
