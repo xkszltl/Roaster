@@ -51,7 +51,7 @@ export LINK_QUALITY="$(
 
 sed 's/^/| /' <<< "$LINK_QUALITY"
 
-[ "$GIT_MIRROR" ] || GIT_MIRROR="$(head -n1 <<< "$LINK_QUALITY" | tail -n1 | xargs -n1 | head -n2 | tail -n1)"
+[ "$GIT_MIRROR" ] || GIT_MIRROR="$(head -n1 <<< "$LINK_QUALITY" | tail -n1 | xargs -n1 | tail -n+2 | head -n1)"
 echo '----------------------------------------------------------------'
 echo "| GIT_MIRROR | $GIT_MIRROR"
 echo '----------------------------------------------------------------'
