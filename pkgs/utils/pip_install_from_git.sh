@@ -94,7 +94,7 @@ for i in pypa/setuptools,v[3.6=v59.6.] "pypa/pip,$(python3 --version | cut -d' '
         fi
 
         # Blacklist for wheels we cannot build yet.
-        if grep -i -e"/"{pillow,setuptools} <<< "/$i" > /dev/null; then
+        if grep -i -e"/setuptools" <<< "/$i" > /dev/null; then
             printf '\033[33m[WARNING] Cannot build "%s" from source. Install it from wheel instead.\033[0m\n' "$PKG" >&2
             URL="$PKG==$GIT_TAG_VER"
         fi
