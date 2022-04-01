@@ -37,7 +37,8 @@
         cat 'setup.py.bak' >> 'setup.py'
         rm -rf 'setup.py.bak'
 
-        "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" ./
+        # PyTorch has dropped support for Python 3.6.
+        PY_VER='^3\.[7-9],^3\.[1-6][0-9]' "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" ./
     )
 
     cd

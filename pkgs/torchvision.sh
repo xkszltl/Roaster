@@ -20,7 +20,7 @@
     # Known issues:
     # - Torchvision removed the support of Python 3.6 after 0.11.3
     #   https://github.com/pytorch/vision/pull/5161
-    python3 --version | cut -d' ' -f2 | grep '^3\.6' >/dev/null && git checkout 8c546f6 || :
+    # ! python3 --version | cut -d' ' -f2 | grep '^3\.[0-6]\.' >/dev/null || git checkout 8c546f6
 
     git remote add patch "$GIT_MIRROR/xkszltl/vision.git"
     git fetch patch
@@ -46,27 +46,37 @@
         mkdir -p build
         cd $_
 
-        # Enabling TensorRT causes crash during cmake generation.
-        #     https://github.com/pytorch/pytorch/issues/18524
-        "$TOOLCHAIN/cmake"                                  \
-            -DCMAKE_BUILD_TYPE=Release                      \
-            -DCMAKE_C_COMPILER="$CC"                        \
-            -DCMAKE_CXX_COMPILER="$CXX"                     \
-            -DCMAKE_{C,CXX,CUDA}_COMPILER_LAUNCHER=ccache   \
-            -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
-            -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"           \
-            -DWITH_CUDA="$(which nvcc >/dev/null 2>&1 && echo 'ON' || echo 'OFF')"          \
-            -G"Ninja"                                       \
-            ..
+        (
+            set -e
+            case "$DISTRO_ID-$DISTRO_VERSION_ID" in
+            'centos-'* | 'fedora-'* | 'rhel-'* | 'scientific-'*)
+                set +xe
+                . scl_source enable rh-python38 || exit 1
+                set -xe
+                ;;
+            esac
+            # Enabling TensorRT causes crash during cmake generation.
+            #     https://github.com/pytorch/pytorch/issues/18524
+            "$TOOLCHAIN/cmake"                                  \
+                -DCMAKE_BUILD_TYPE=Release                      \
+                -DCMAKE_C_COMPILER="$CC"                        \
+                -DCMAKE_CXX_COMPILER="$CXX"                     \
+                -DCMAKE_{C,CXX,CUDA}_COMPILER_LAUNCHER=ccache   \
+                -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
+                -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"           \
+                -DWITH_CUDA="$(which nvcc >/dev/null 2>&1 && echo 'ON' || echo 'OFF')"          \
+                -G"Ninja"                                       \
+                ..
 
-        time "$TOOLCHAIN/cmake" --build .
-        time "$TOOLCHAIN/cmake" --build . --target install
+            time "$TOOLCHAIN/cmake" --build .
+            time "$TOOLCHAIN/cmake" --build . --target install
+        )
 
         (
             set -xe
             export FORCE_CUDA="$(! which nvcc >/dev/null 2>&1 || echo '1')"
             export TORCH_CUDA_ARCH_LIST="Pascal;Volta;Turing"
-            "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" ../
+            PY_VER='^3\.[7-9],^3\.[1-6][0-9]' "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" ../
         )
 
         # Exclude GTest/MKL-DNN/ONNX/Caffe files.
