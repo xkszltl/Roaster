@@ -23,7 +23,7 @@ CACHE_VALID=false
 
 # Setuptools 59.7 requires Python 3.7
 # Pip 22 requires Python 3.7.
-for i in pypa/setuptools,v[3.6=v59.6.] "pypa/pip,$(python3 --version | cut -d' ' -f2 | grep '^3\.[0-6]\.' >/dev/null && echo '21.' || :)" pypa/wheel PythonCharmers/python-future,v $@; do
+for i in 'pypa/setuptools,v[3.6=v59.6.]' 'pypa/pip,[3.6=21.]' pypa/wheel PythonCharmers/python-future,v $@; do
     PKG_PATH="$(cut -d, -f1 <<< "$i" | sed 's/\/\.\/.*//')"
     PKG_SUBDIR="$(cut -d, -f1 <<< "$i" | sed -n 's/.*\/\.\/\(.*\)/\1/p')"
     ALT_PREFIX="$(cut -d, -f2 <<< "$i," | sed -n 's/.*\[\([^]\[]*\)\].*/\1/p' | tr '|' '\n')"
@@ -44,7 +44,7 @@ for i in pypa/setuptools,v[3.6=v59.6.] "pypa/pip,$(python3 --version | cut -d' '
         PKG="$(sed "s/^$(cut -d'=' -f1 <<< "$rename" | sed 's/\([\\\/\.\-]\)/\\\1/g')"'$/'"$(cut -d'=' -f2 <<< "$rename" | sed 's/\([\\\/\.\-]\)/\\\1/g')/" <<< "$PKG")"
     done
 
-    for py in ,python3 rh-python38,python3; do
+    for py in {,rh-python38},python3; do
     (
         py="$py,"
 
