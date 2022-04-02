@@ -19,19 +19,6 @@
     until git clone -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd onnxruntime
 
-    # Known issues:
-    #   - Missing .git in URL.
-    #     https://github.com/microsoft/onnxruntime/pull/10132
-    PATCHES="suffix"
-    if [ "$PATCHES" ]; then
-        git remote add patch "$GIT_MIRROR/xkszltl/onnxruntime.git"
-        git fetch patch
-        for i in $PATCHES; do
-            # git pull --no-edit --rebase patch "$i"
-            git cherry-pick "patch/$i"
-        done
-    fi
-
     sed -i 's/FATAL_ERROR\( "Please enable Protobuf_USE_STATIC_LIBS"\)/WARNING\1/' 'cmake/CMakeLists.txt'
     [ ! "$(git diff 'cmake/CMakeLists.txt')" ] || git commit -m 'Suppress Werror for using "libprotobuf.so" in system.' 'cmake/CMakeLists.txt'
 
