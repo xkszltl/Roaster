@@ -74,7 +74,7 @@ for i in 'pypa/setuptools,v[3.6=v59.6.]' 'pypa/pip,[3.6=21.]' pypa/wheel PythonC
         fi
         # Not exactly correct since the actual package name is defined by "setup.py".
         until $CACHE_VALID; do
-            CACHED_JSON="$("$py" -m pip list --exclude-editable --format json | tr '[:upper:]' '[:lower:]')"
+            CACHED_JSON="$("$py" -m pip list $("$py" -m pip list --help | sed -n 's/.*\(\-\-exclude\-editable\).*/\1/p' | head -n1) --format json | tr '[:upper:]' '[:lower:]')"
             CACHE_VALID=true
 
             # Always remove enum34.
