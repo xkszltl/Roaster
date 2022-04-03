@@ -25,7 +25,7 @@ CACHE_VALID=false
 
 # Setuptools 59.7 requires Python 3.7
 # Pip 22 requires Python 3.7.
-for i in 'pypa/setuptools,v[3.6=v59.6.]' 'pypa/pip,[3.6=21.]' pypa/wheel PythonCharmers/python-future,v $@; do
+for i in 'pypa/setuptools,v60.[3.6=v59.6.]' 'pypa/pip,[3.6=21.]' pypa/wheel PythonCharmers/python-future,v $@; do
     PKG_PATH="$(cut -d, -f1 <<< "$i" | sed 's/\/\.\/.*//')"
     PKG_SUBDIR="$(cut -d, -f1 <<< "$i" | sed -n 's/.*\/\.\/\(.*\)/\1/p')"
     ALT_PREFIX="$(cut -d, -f2 <<< "$i," | sed -n 's/.*\[\([^]\[]*\)\].*/\1/p' | tr '|' '\n')"
