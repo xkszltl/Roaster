@@ -10,7 +10,7 @@ https://github.com/\ /\ {\
 abseil/abseil-{cpp,py},\
 afq984/python-cxxfilt,\
 agauniyal/{rang,termdb},\
-apache/{hadoop{,-{common,downstream-tests,mapreduce,site,thirdparty}},hbase{,-{connectors,filesystem,native-client,operator-tools,site,thirdparty}},httpd{,-{docs-build,flood,mod_fcgid,site,tests}},thrift{,-website},tomcat{,-{connectors,maven-plugin,native,training}},tvm{,-{rfcs,site,vta}}},\
+apache/{hadoop{,-{common,mapreduce,site,thirdparty}},hbase{,-{connectors,filesystem,native-client,operator-tools,site,thirdparty}},httpd{,-{docs-build,flood,mod_fcgid,site,tests}},thrift{,-website},tomcat{,-{connectors,maven-plugin,native,training}},tvm{,-{rfcs,site,vta}}},\
 apple/{apple-llvm-infrastructure-tools,coremltools,cups,darwin-{libplatform,libpthread,xnu},foundationdb,indexstore-db,ml-hypersim,openjdk,password-manager-resources,servicetalk,sourcekit-lsp,swift{,-{algorithms,atomics,argument-parser,cluster-membership,collections{,-benchmark},corelibs-{foundation,libdispatch,xctest},crypto,distributed-tracing{,-baggage{,-core}},docker,driver,evolution{,-staging},format,http-structured-headers,integration-tests,internals,llbuild{,2},log,metrics{,-extras},nio{,-{examples,extras,http2,ssh,ssl,transport-services,zlib-support}},numerics,package-{collection-generator,manager},protobuf,service-discovery,source-compat-suite,standard-library-preview,statsd-client,stress-tester,syntax,system,tools-support-{async,core},xcode-playground-support}},turicreate},\
 aquynh/capstone,\
 ARM-software/{arm-trusted-firmware,ComputeLibrary,lisa},\
