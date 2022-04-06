@@ -15,7 +15,7 @@
 
     # ------------------------------------------------------------
 
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" Microsoft/onnxruntime,v
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" Microsoft/onnxruntime,v1.10.
     until git clone -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd onnxruntime
 
