@@ -19,9 +19,6 @@
     until git clone -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd onnxruntime
 
-    sed -i 's/FATAL_ERROR\( "Please enable Protobuf_USE_STATIC_LIBS"\)/WARNING\1/' 'cmake/CMakeLists.txt'
-    [ ! "$(git diff 'cmake/CMakeLists.txt')" ] || git commit -m 'Suppress Werror for using "libprotobuf.so" in system.' 'cmake/CMakeLists.txt'
-
     . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
 
     (
