@@ -36,7 +36,7 @@
     #   https://github.com/pytorch/pytorch/pull/66219
     # - Always pin to 025cd69 for now due to a recent build issue:
     #   https://github.com/pytorch/pytorch/issues/73074
-    if python3 --version | cut -d' ' -f2 | grep '^3\.[0-6]\.' >/dev/null; then
+    if : || python3 --version | cut -d' ' -f2 | grep '^3\.[0-6]\.' >/dev/null; then
         git checkout 025cd69
         # Patch RNN in memonger.
         # - https://github.com/pytorch/pytorch/pull/24388
