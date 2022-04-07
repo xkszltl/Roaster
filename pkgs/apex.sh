@@ -33,8 +33,8 @@
         # Directly inject args since there is no place for "--global-option".
         mv 'setup.py'{,.bak}
         echo 'import sys' >> 'setup.py'
-        echo 'sys.argv.extend(["--cpp_ext", "--xentropy"])' >> 'setup.py'
-        ! which nvcc >/dev/null || echo 'sys.argv.extend(["--bnp", "--cuda_ext"])' >> 'setup.py'
+        echo 'sys.argv.extend(["--cpp_ext"])' >> 'setup.py'
+        ! which nvcc >/dev/null || echo 'sys.argv.extend(["--bnp", "--cuda_ext", "--xentropy"])' >> 'setup.py'
         cat 'setup.py.bak' >> 'setup.py'
         rm -rf 'setup.py.bak'
 
