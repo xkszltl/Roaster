@@ -34,7 +34,7 @@
         mv 'setup.py'{,.bak}
         echo 'import sys' >> 'setup.py'
         echo 'sys.argv.extend(["--cpp_ext"])' >> 'setup.py'
-        ! which nvcc >/dev/null || echo 'sys.argv.extend(["--bnp", "--cuda_ext", "--xentropy"])' >> 'setup.py'
+        ! which nvcc >/dev/null || echo 'sys.argv.extend(["--bnp", "--cuda_ext", "--distributed_adam", "--distributed_lamb", "--focal_loss", "--fused_conv_bias_relu", "--transducer", "--xentropy"])' >> 'setup.py'
         cat 'setup.py.bak' >> 'setup.py'
         rm -rf 'setup.py.bak'
 
