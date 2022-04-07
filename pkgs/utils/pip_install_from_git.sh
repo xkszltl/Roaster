@@ -96,7 +96,7 @@ for i in 'pypa/setuptools,v60.[3.6=v59.6.]' 'pypa/pip,[3.6=21.]' pypa/wheel Pyth
 
         if [ ! "$USE_LOCAL_GIT" ] && [ "$GIT_TAG_VER" ] && [ "_$(jq -er '.[] | select(."name" == "'"$(tr '[:upper:]' '[:lower:]' <<< "$PKG")"'").version' <<< "$CACHED_JSON")" = "_$GIT_TAG_VER" ]; then
             printf '\033[36m[INFO] Package "%s" for "%s" is already up-to-date (%s). Skip.\033[0m\n' "$PKG" "$py" "$GIT_TAG_VER" >&2
-            continue
+            exit 0
         fi
 
         # Blacklist for wheels we cannot build yet.
