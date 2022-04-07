@@ -117,6 +117,7 @@
                     -DATEN_NO_TEST=ON                               \
                     -DBLAS=MKL                                      \
                     -DBUILD_BINARY=ON                               \
+                    -DBUILD_CAFFE2=ON                               \
                     -DBUILD_CUSTOM_PROTOBUF=OFF                     \
                     -DBUILD_PYTHON=ON                               \
                     -DBUILD_SHARED_LIBS=ON                          \
