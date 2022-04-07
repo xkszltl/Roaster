@@ -33,12 +33,13 @@
         # Directly inject args since there is no place for "--global-option".
         mv 'setup.py'{,.bak}
         echo 'import sys' >> 'setup.py'
-        echo 'sys.argv.extend(["--bnp", "--cpp_ext", "--cuda_ext", "--xentropy"])' >> 'setup.py'
+        echo 'sys.argv.extend(["--bnp", "--cpp_ext", "--xentropy"])' >> 'setup.py'
+        ! which nvcc >/dev/null || echo 'sys.argv.extend(["--cuda_ext"])' >> 'setup.py'
         cat 'setup.py.bak' >> 'setup.py'
         rm -rf 'setup.py.bak'
 
         # PyTorch has dropped support for Python 3.6.
-        PY_VER='^3\.[7-9],^3\.[1-6][0-9]' "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" ./
+        PY_VER='^3\.[7-9],^3\.[1-6][0-9]' TORCH_CUDA_ARCH_LIST="Pascal;Volta;Turing" "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" ./
     )
 
     cd
