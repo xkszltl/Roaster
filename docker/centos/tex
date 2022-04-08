@@ -1,8 +1,8 @@
-FROM docker.codingcafe.org/xkszltl/roaster/centos:stage-pkg-all
+FROM docker.codingcafe.org/xkszltl/roaster/centos:stage-auth
 
 ARG LABEL_BUILD_ID=Undefined
 LABEL BUILD_ID=$LABEL_BUILD_ID
 
 COPY [".", "/etc/roaster/scripts"]
 
-RUN /etc/roaster/scripts/setup.sh auth vim tmux tex
+RUN /etc/roaster/scripts/setup.sh tex
