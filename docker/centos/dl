@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM docker.codingcafe.org/sandbox/centos:stage-misc
+FROM docker.codingcafe.org/xkszltl/roaster/centos:stage-misc
 
 ARG LABEL_BUILD_ID=Undefined
 LABEL BUILD_ID=$LABEL_BUILD_ID

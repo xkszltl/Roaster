@@ -1,4 +1,4 @@
-FROM docker.codingcafe.org/sandbox/centos:stage-font
+FROM docker.codingcafe.org/xkszltl/roaster/centos:stage-font
 
 ARG LABEL_BUILD_ID=Undefined
 LABEL BUILD_ID=$LABEL_BUILD_ID

@@ -1,4 +1,4 @@
-FROM docker.codingcafe.org/xkszltl/roaster/ubuntu:stage-repo
+FROM docker.codingcafe.org/xkszltl/roaster/debian:stage-repo
 
 ARG LABEL_BUILD_ID=Undefined
 LABEL BUILD_ID=$LABEL_BUILD_ID

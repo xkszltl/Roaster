@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM docker.codingcafe.org/xkszltl/roaster/ubuntu:stage-intel
+FROM docker.codingcafe.org/xkszltl/roaster/debian:stage-intel
 
 ARG LABEL_BUILD_ID=Undefined
 LABEL BUILD_ID=$LABEL_BUILD_ID
