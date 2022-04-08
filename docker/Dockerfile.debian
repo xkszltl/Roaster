@@ -1,0 +1,359 @@
+# syntax=docker/dockerfile:1
+
+ARG LABEL_BUILD_ID='Undefined'
+ARG IMAGE_REGISTRY='docker.codingcafe.org/xkszltl/roaster'
+ARG IMAGE_REPO="$IMAGE_REGISTRY/debian"
+ARG STAGE_PREFIX=''
+# ARG STAGE_PREFIX="$IMAGE_REPO:"
+
+FROM debian:11 AS stage-init
+
+LABEL BUILD_ID=$LABEL_BUILD_ID
+
+SHELL ["/bin/bash", "-c"]
+
+ENV LANG=C.UTF-8
+
+# systemd
+RUN set -xe; \
+    apt-get update -y; \
+    apt-get upgrade -y; \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y sudo; \
+    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y systemd; \
+    (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ "_$i" = '_systemd-tmpfiles-setup.service' ] || sudo rm -f "$i"; done); \
+    sudo rm -f /lib/systemd/system/multi-user.target.wants/*; \
+    sudo rm -f /etc/systemd/system/*.wants/*; \
+    sudo rm -f /lib/systemd/system/local-fs.target.wants/*; \
+    sudo rm -f /lib/systemd/system/sockets.target.wants/*udev*; \
+    sudo rm -f /lib/systemd/system/sockets.target.wants/*initctl*; \
+    sudo rm -f /lib/systemd/system/basic.target.wants/*; \
+    sudo rm -f /lib/systemd/system/anaconda.target.wants/*; \
+    sudo apt-get autoremove -y; \
+    sudo apt-get clean; \
+    truncate -s0 ~/.bash_history;
+
+# man
+RUN rm -rf /etc/dpkg/dpkg.cfg.d/excludes
+
+VOLUME [ "/sys/fs/cgroup" ]
+CMD ["/sbin/init"]
+
+# nvidia-docker
+ENV PATH=/usr/local/nvidia/bin:/usr/local/cuda/bin:${PATH}
+ENV LD_LIBRARY_PATH=/usr/local/nvidia/lib64:/usr/local/nvidia/lib:${LD_LIBRARY_PATH}
+ENV NVIDIA_DRIVER_CAPABILITIES=compute,graphics,utility,video
+ENV NVIDIA_VISIBLE_DEVICES=all
+
+VOLUME ["/var/log"]
+
+COPY [".", "/etc/roaster/scripts"]
+
+FROM "$STAGE_PREFIX"stage-init AS stage-repo
+
+LABEL BUILD_ID=$LABEL_BUILD_ID
+COPY [".", "/etc/roaster/scripts"]
+RUN /etc/roaster/scripts/setup.sh repo
+
+FROM "$STAGE_PREFIX"stage-repo AS stage-font
+
+LABEL BUILD_ID=$LABEL_BUILD_ID
+COPY [".", "/etc/roaster/scripts"]
+RUN set -e; \
+    export DEB_MAX_ATTEMPT=10; \
+    for attempt in $(seq "$DEB_MAX_ATTEMPT" -1 0); do \
+        [ "$attempt" -gt 0 ]; \
+        ( \
+            set -e; \
+            sudo apt-get update -y; \
+            sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y; \
+        ) && break; \
+        echo "Retrying... $(expr "$attempt" - 1) chance(s) left."; \
+    done; \
+    for attempt in $(seq "$DEB_MAX_ATTEMPT" -1 0); do \
+        [ "$attempt" -gt 0 ]; \
+        ( \
+            set -e; \
+            sudo DEBIAN_FRONTEND=noninteractive apt-get install -y $(apt-cache --names-only search '^fonts-*' | cut -d' ' -f1); \
+        ) && break; \
+        echo "Retrying... $(expr "$attempt" - 1) chance(s) left."; \
+    done; \
+    sudo apt-get autoremove -y; \
+    sudo apt-get clean; \
+    truncate -s0 ~/.bash_history;
+
+FROM "$STAGE_PREFIX"stage-font AS stage-pkg
+
+LABEL BUILD_ID=$LABEL_BUILD_ID
+COPY [".", "/etc/roaster/scripts"]
+RUN set -e; \
+    export DEB_MAX_ATTEMPT=10; \
+    for attempt in $(seq "$DEB_MAX_ATTEMPT" -1 0); do \
+        [ "$attempt" -gt 0 ]; \
+        ( \
+            set -e; \
+            sudo apt-get update -y; \
+            sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y; \
+        ) && break; \
+        echo "Retrying... $(expr "$attempt" - 1) chance(s) left."; \
+    done; \
+    for attempt in $(seq "$DEB_MAX_ATTEMPT" -1 0); do \
+        [ "$attempt" -gt 0 ]; \
+        sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
+            asciidoc \
+            apcupsd \
+            apt-mirror \
+            auditd \
+            autoconf{,-archive} automake autopoint \
+            axel \
+            bash-completion \
+            bc \
+            bind9-dnsutils \
+            binutils \
+            bison \
+            bmon \
+            bsdmainutils \
+            byacc{,-j} \
+            bzip2 pbzip2 \
+            ccache \
+            cmake{,-curses-gui} \
+            coreutils \
+            cpio \
+            curl \
+            debmirror \
+            default-jdk ant maven \
+            diffutils \
+            docker-{ce,compose} \
+            dos2unix \
+            dstat \
+            expect \
+            firewalld \
+            flex \
+            ftpsync \
+            fuse libfuse{,3}-dev \
+            g++{,-{9,10}} \
+            gawk \
+            gcc{,-{9,10}}-multilib \
+            gdb \
+            gettext \
+            gfortran{,-{9,10}} \
+            giflib-tools libgif-dev \
+            git{,-{extras,lfs}} \
+            gnome-keyring{,'-*'} \
+            gnuplot \
+            gperf \
+            gstreamer1.0-tools libgstreamer1.0-dev \
+            gzip \
+            hdf5-{helpers,tools} h5utils libhdf5-{{,{mpi,mpich,openmpi}-}dev,doc} \
+            htop \
+            httping \
+            ibutils infiniband-diags \
+            icu-devtools \
+            ifenslave \
+            ifstat \
+            iftop \
+            iotop \
+            iperf{,3} libiperf-dev \
+            iproute2{,-doc} \
+            'iputils-*' \
+            jq \
+            lcov \
+            ldap-utils slapd \
+            lib{asan{5,6},lsan0,tsan0,ubsan1} \
+            lib{atlas-base,boost-all,bz2,cairo2,c-ares,edit,eigen3,ev,ffi,gflags,gif,google-glog,grpc++,gtest,harfbuzz,hiredis,hwloc,jemalloc,jpeg,jsoncpp,lapack,leveldb,lmdb,lzma,mbedtls,ncurses5,openblas,opencv,pango1.0,png,rados{,pp},rocksdb,snappy,sodium,ssl,tiff,utf8proc,yaml}-dev \
+            libevent-dev \
+            libfreetype{6,-dev} \
+            libjpeg{-turbo-progs,62-turbo-dev} \
+            liblz4-dev liblz4-tool \
+            libnuma-dev numactl numad \
+            libpapi-dev papi-tools \
+            libprotobuf-dev protobuf-compiler \
+            libpugixml-dev pugixml-doc\
+            libteam-{dev,utils} \
+            libtool \
+            libudns-dev udns-utils \
+            {llvm,clang{,-{format,tidy,tools}},lld}{,-9,-11} llvm-{9,11}-tools lldb{,-11} lib{c++{,abi},omp}{,-11}-dev \
+            locales \
+            locate \
+            lshw \
+            lsof \
+            ltrace \
+            m4 \
+            make \
+            moreutils \
+            mtr \
+            net-tools \
+            netlabel-tools \
+            ninja-build \
+            openssh-{client,server} \
+            pandoc \
+            parallel \
+            pass \
+            pax-utils \
+            pciutils \
+            pigz \
+            powertop \
+            procps \
+            pv \
+            pybind11-dev \
+            python3{,-pip} \
+            qtbase5-dev \
+            rapidjson-dev \
+            redis{,-tools} \
+            rdma-core rdmacm-utils librdmacm{1,-dev} \
+            rng-tools5 \
+            rsync \
+            ruby-all-dev \
+            samba{,-dev} smbclient smbldap-tools \
+            sed \
+            {selinux-basics,{selinux-policy,policycoreutils}'-*'} se{manage,module}-utils \
+            snmp \
+            snmp-mibs-downloader \
+            socat \
+            strace \
+            software-properties-common \
+            subversion-tools \
+            sysfsutils \
+            sysstat \
+            tar \
+            telnet{,-ssl} tftp \
+            time \
+            tmux{,-plugin-manager} \
+            tree \
+            tuned{,'-*'} \
+            txt2man \
+            usbutils \
+            util-linux \
+            uuid-{dev,runtime} \
+            valgrind{,-mpi} \
+            vim{,-gtk3} \
+            wget \
+            whois \
+            winbind \
+            xz-utils \
+            zfs-{dkms,initramfs,test} zfsutils-linux \
+            zstd libzstd-dev \
+        && break; \
+        echo "Retrying... $(expr "$attempt" - 1) chance(s) left."; \
+    done; \
+    sudo apt-get autoremove -y; \
+    sudo apt-get clean; \
+    sudo update-alternatives --set libblas.so.3-x86_64-linux-gnu /usr/lib/x86_64-linux-gnu/atlas/libblas.so.3; \
+    sudo update-alternatives --set liblapack.so.3-x86_64-linux-gnu /usr/lib/x86_64-linux-gnu/atlas/liblapack.so.3; \
+    if which parallel 2>/dev/null; then \
+        sudo parallel --citation <<< 'will cite' || sudo parallel --will-cite < /dev/null; \
+    fi; \
+    sudo setsebool -P allow_rsync_anon_write 1 || :; \
+    sudo setsebool -P rsync_client           1 || :; \
+    sudo setsebool -P rsync_export_all_ro    1 || :; \
+    sudo setsebool -P samba_export_all_rw    1 || :; \
+    sudo setsebool -P xserver_gnome_xdm      1 || :; \
+    truncate -s0 ~/.bash_history;
+RUN /etc/roaster/scripts/setup.sh fpm firewall
+
+FROM "$STAGE_PREFIX"stage-pkg AS stage-auth
+
+LABEL BUILD_ID=$LABEL_BUILD_ID
+COPY [".", "/etc/roaster/scripts"]
+RUN /etc/roaster/scripts/setup.sh auth vim tmux
+
+FROM "$STAGE_PREFIX"stage-auth AS stage-ss
+
+LABEL BUILD_ID=$LABEL_BUILD_ID
+COPY [".", "/etc/roaster/scripts"]
+RUN --mount=type=secret,id=env-cred-usr,target=/etc/roaster/scripts/cred/env-cred-usr.sh,mode=500 \
+    /etc/roaster/scripts/setup.sh ss
+
+FROM "$STAGE_PREFIX"stage-ss AS stage-intel
+
+LABEL BUILD_ID=$LABEL_BUILD_ID
+COPY [".", "/etc/roaster/scripts"]
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh intel
+
+FROM "$STAGE_PREFIX"stage-intel AS stage-infra
+
+LABEL BUILD_ID=$LABEL_BUILD_ID
+COPY [".", "/etc/roaster/scripts"]
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh lz4
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh zstd
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh cmake
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh hiredis
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh ccache
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh c-ares
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh axel
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh ipt
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh ucx
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh ompi
+
+FROM "$STAGE_PREFIX"stage-infra AS stage-llvm
+
+LABEL BUILD_ID=$LABEL_BUILD_ID
+COPY [".", "/etc/roaster/scripts"]
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh llvm-gcc llvm-clang
+
+FROM "$STAGE_PREFIX"stage-llvm AS stage-util
+
+LABEL BUILD_ID=$LABEL_BUILD_ID
+COPY [".", "/etc/roaster/scripts"]
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh boost
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh jemalloc
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh eigen
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh openblas
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh gtest
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh benchmark
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh gflags
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh glog
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh snappy
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh protobuf
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh nsync
+
+FROM "$STAGE_PREFIX"stage-util AS stage-misc
+
+LABEL BUILD_ID=$LABEL_BUILD_ID
+COPY [".", "/etc/roaster/scripts"]
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh catch2
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh jsoncpp
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh rapidjson
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh simdjson
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh utf8proc
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh pugixml
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh pybind
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh grpc
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh libpng
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh mkl-dnn
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh opencv
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh leveldb
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh rocksdb
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh lmdb
+
+FROM "$STAGE_PREFIX"stage-misc AS stage-dl
+
+LABEL BUILD_ID=$LABEL_BUILD_ID
+COPY [".", "/etc/roaster/scripts"]
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh onnx
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh pytorch
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh torchvision
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh apex
+
+FROM "$STAGE_PREFIX"stage-dl AS stage-ort
+
+LABEL BUILD_ID=$LABEL_BUILD_ID
+COPY [".", "/etc/roaster/scripts"]
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh ort
+
+FROM "$STAGE_PREFIX"stage-ort AS stage-edit
+
+LABEL BUILD_ID=$LABEL_BUILD_ID
+COPY [".", "/etc/roaster/scripts"]
+
+# Drop mirrors used in build.
+RUN set -e; \
+    rm -rf ~/.m2/settings.xml;
+
+RUN updatedb
+
+FROM "$IMAGE_REPO:breakpoint" AS resume
+
+COPY [".", "/etc/roaster/scripts"]
+RUN --mount=type=cache,id=ccache,target=/root/.ccache /etc/roaster/scripts/setup.sh
+
+FROM stage-edit

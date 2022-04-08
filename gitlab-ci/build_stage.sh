@@ -29,10 +29,8 @@ if [ "_$cmd" = "_resume" ] && [ "_$stage" = "_$CI_JOB_STAGE" ]; then
     cat "docker/$BASE_DISTRO/resume" > "$GENERATED_DOCKERFILE"
 else
     printf '\033[36m[INFO] Build stage "%s".\033[0m\n'  "$CI_JOB_STAGE" >&2
-    cat "docker/$BASE_DISTRO/$CI_JOB_STAGE" > "$GENERATED_DOCKERFILE"
+    cat "docker/Dockerfile.$BASE_DISTRO" > "$GENERATED_DOCKERFILE"
 fi
-
-sed -i "s/^FROM docker\.codingcafe\.org\/.*:/FROM $(sed 's/\([\\\/\.\-]\)/\\\1/g' <<< "$CI_REGISTRY_IMAGE/$BASE_DISTRO"):/" "$GENERATED_DOCKERFILE"
 
 [ "_$stage" = "_$CI_JOB_STAGE" ] || sed -i 's/^[[:space:]]*COPY[[:space:]].*"\/etc\/roaster\/scripts".*//' "$GENERATED_DOCKERFILE"
 
@@ -60,11 +58,11 @@ for retry in $(seq "$retry_all" -1 0); do
     (
         set -xe
         #     --cpu-shares 128
-        sudo                                                            \
-            DOCKER_BUILDKIT=1                                           \
-            docker build                                                \
+        sudo DOCKER_BUILDKIT=1 docker build                             \
             --add-host={docker,git,proxy,repo}.codingcafe.org:10.0.0.10 \
+            --build-arg IMAGE_REPO="$CI_REGISTRY_IMAGE"                 \
             --build-arg LABEL_BUILD_ID="$LABEL_BUILD_ID"                \
+            --build-arg STAGE_PREFIX="$CI_REGISTRY_IMAGE/$BASE_DISTRO:" \
             --file "$GENERATED_DOCKERFILE"                              \
             --label "BUILD_TIME=$(date -u +'%Y-%m-%dT%H:%M:%SZ')"       \
             --no-cache                                                  \
@@ -72,6 +70,7 @@ for retry in $(seq "$retry_all" -1 0); do
             $([ "_$stage" = "_$CI_JOB_STAGE" ] && echo '--pull')        \
             $([ -e 'cred/env-cred-usr.sh' ] &&  echo '--secret id=env-cred-usr,src=cred/env-cred-usr.sh') \
             --tag "$CI_REGISTRY_IMAGE/$BASE_DISTRO:stage-$CI_JOB_STAGE" \
+            --target "stage-$CI_JOB_STAGE"                              \
             .
         printf "\nExited with code %d.\n" "$?"
     ) 2>&1 | tee "$BUILD_LOG"
