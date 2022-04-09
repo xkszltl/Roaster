@@ -37,7 +37,7 @@
     #   https://github.com/pytorch/pytorch/pull/66219
     # - Always pin to 025cd69 for now due to a recent build issue:
     #   https://github.com/pytorch/pytorch/issues/73074
-    if : || python3 --version | cut -d' ' -f2 | grep '^3\.[0-6]\.' >/dev/null; then
+    if python3 --version | cut -d' ' -f2 | grep '^3\.[0-6]\.' >/dev/null; then
         git checkout 025cd69
         # Patch RNN in memonger.
         # - https://github.com/pytorch/pytorch/pull/24388
@@ -47,7 +47,7 @@
 
     git remote add patch "$GIT_MIRROR/xkszltl/pytorch.git"
 
-    PATCHES="lstm"
+    PATCHES="lstm std"
     for i in $PATCHES; do
         git fetch patch "$i"
         git cherry-pick FETCH_HEAD
@@ -128,6 +128,7 @@
                     -DCMAKE_{CUDA_HOST,CXX}_COMPILER="$CXX"         \
                     -DCMAKE_{C,CXX,CUDA}_COMPILER_LAUNCHER=ccache   \
                     -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g1 $($TOOLCHAIN_CPU_NATIVE || echo '-march=haswell -mtune=generic')"  \
+                    -DCMAKE_CXX_STANDARD=17                         \
                     -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"           \
                     $([ -e '/opt/intel/oneapi/compiler/latest/env/vars.sh' ] && echo -DINTEL_COMPILER_DIR="/opt/intel/oneapi/compiler/latest")  \
                     $([ -e '/opt/intel/oneapi/mkl/latest/env/vars.sh'      ] && echo -DINTEL_{MKL,OMP}_DIR="/opt/intel/oneapi/mkl/latest")      \
