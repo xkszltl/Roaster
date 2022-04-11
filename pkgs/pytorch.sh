@@ -111,6 +111,7 @@
             #     Probably because PYTHON_* variables are partially cached.
             #     This may be a cmake bug.
             #     https://github.com/pytorch/pytorch/issues/43030
+            #   - C++ 17 is required for RocksDB 7.
             ONESHOT=false
             for i in $(seq 2); do
                 NCCL_ROOT_DIR='/usr'                                \
