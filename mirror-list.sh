@@ -155,6 +155,7 @@ shadowsocks/{ShadowsocksX-NG,ipset,lib{QtShadowsocks,bloom,cork},shadowsocks{,-g
 shibatch/sleef,\
 simdjson/simdjson,\
 sivel/{go-speedtest,speedtest-cli},\
+Sysinternals/{Proc{Dump,Mon}-for-Linux,sysinternals,SysinternalsEBPF,Sysmon{Common,ForLinux}},\
 Tencent/rapidjson,\
 tensorflow/{agents,datasets,docs,io,models,tensorboard,tensorflow,transform},\
 thrust/thrust,\
