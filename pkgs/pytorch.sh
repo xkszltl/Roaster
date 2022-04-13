@@ -47,7 +47,14 @@
 
     git remote add patch "$GIT_MIRROR/xkszltl/pytorch.git"
 
-    PATCHES="lstm std"
+    # Patches:
+    # - C++ 17 is required for RocksDB 7.
+    #   https://github.com/pytorch/pytorch/pull/75741
+    # - Target-specific compile flags should respect global vars.
+    #   https://github.com/pytorch/pytorch/pull/75729
+    # - Allow configuring C++ std.
+    #   https://github.com/pytorch/pytorch/pull/75519
+    PATCHES="lstm rdb7 cxxopt std"
     for i in $PATCHES; do
         git fetch patch "$i"
         git cherry-pick FETCH_HEAD
@@ -111,7 +118,6 @@
             #     Probably because PYTHON_* variables are partially cached.
             #     This may be a cmake bug.
             #     https://github.com/pytorch/pytorch/issues/43030
-            #   - C++ 17 is required for RocksDB 7.
             ONESHOT=false
             for i in $(seq 2); do
                 NCCL_ROOT_DIR='/usr'                                \
@@ -129,7 +135,6 @@
                     -DCMAKE_{CUDA_HOST,CXX}_COMPILER="$CXX"         \
                     -DCMAKE_{C,CXX,CUDA}_COMPILER_LAUNCHER=ccache   \
                     -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g1 $($TOOLCHAIN_CPU_NATIVE || echo '-march=haswell -mtune=generic')"  \
-                    -DCMAKE_CXX_STANDARD=17                         \
                     -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"           \
                     $([ -e '/opt/intel/oneapi/compiler/latest/env/vars.sh' ] && echo -DINTEL_COMPILER_DIR="/opt/intel/oneapi/compiler/latest")  \
                     $([ -e '/opt/intel/oneapi/mkl/latest/env/vars.sh'      ] && echo -DINTEL_{MKL,OMP}_DIR="/opt/intel/oneapi/mkl/latest")      \
