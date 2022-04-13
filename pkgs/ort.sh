@@ -46,7 +46,7 @@
         case "$DISTRO_ID-$DISTRO_VERSION_ID" in
         'centos-'* | 'fedora-'* | 'rhel-'* | 'scientific-'*)
             set +xe
-            . scl_source enable devtoolset-9 rh-dotnet31 || exit 1
+            . scl_source enable devtoolset-11 rh-dotnet31 || exit 1
             set -xe
             export AR="$(which gcc-ar)" RANLIB="$(which gcc-ranlib)"
             ;;

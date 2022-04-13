@@ -5,7 +5,7 @@ set -e
 case "$DISTRO_ID-$DISTRO_VERSION_ID" in
 'centos-'* | 'fedora-'* | 'rhel-'* | 'scientific-'*)
     set +xe
-    . scl_source enable devtoolset-9 || exit 1
+    . scl_source enable devtoolset-11 || exit 1
     set -xe
     export CC="gcc" CXX="g++" FC="gfortran"
     ;;
