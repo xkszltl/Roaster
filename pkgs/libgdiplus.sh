@@ -23,7 +23,10 @@
 
         export CC="ccache $CC" CXX="ccache $CXX"
 
-        export C{,XX}FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"
+        # Known issue:
+        # - gtest 1.10 failed to compile on gcc-11.
+        #   https://github.com/mono/libgdiplus/issues/737
+        export C{,XX}FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g -Wno-maybe-uninitialized"
 
         # For libpng.
         export PKG_CONFIG_PATH="/usr/local/lib64/pkgconfig:/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
