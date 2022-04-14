@@ -34,7 +34,7 @@
             -DCMAKE_C_COMPILER="$CC"                    \
             -DCMAKE_CXX_COMPILER="$CXX"                 \
             -DCMAKE_C{,XX}_COMPILER_LAUNCHER=''         \
-            -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g -Wno-array-bounds" \
+            -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g -Wno-array-bounds -Wno-stringop-overflow"  \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"       \
             -DRAPIDJSON_BUILD_THIRDPARTY_GTEST=OFF      \
             -DRAPIDJSON_HAS_STDSTRING=ON                \
