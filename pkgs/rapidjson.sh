@@ -27,12 +27,14 @@
         # Known issues:
         #   - CMAKE_C{,XX}_COMPILER_LAUNCHER conflict with RULE_LAUNCH_COMPILE set automatically.
         #     https://github.com/Tencent/rapidjson/issues/1794
+        #   - Unit test is flagged by gcc-11 for overflow.
+        #     https://github.com/Tencent/rapidjson/issues/2022
         "$TOOLCHAIN/cmake"                              \
             -DCMAKE_BUILD_TYPE=Release                  \
             -DCMAKE_C_COMPILER="$CC"                    \
             -DCMAKE_CXX_COMPILER="$CXX"                 \
             -DCMAKE_C{,XX}_COMPILER_LAUNCHER=''         \
-            -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
+            -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g -Wno-array-bounds" \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"       \
             -DRAPIDJSON_BUILD_THIRDPARTY_GTEST=OFF      \
             -DRAPIDJSON_HAS_STDSTRING=ON                \
