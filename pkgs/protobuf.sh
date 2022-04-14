@@ -9,7 +9,10 @@
 
     # ------------------------------------------------------------
 
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" protocolbuffers/protobuf,v
+    # Known issues:
+    # - Ort failed to build with Protobuf 3.20.
+    #   https://github.com/microsoft/onnxruntime/issues/11129
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" protocolbuffers/protobuf,v3.19.
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd protobuf
 
@@ -73,7 +76,7 @@
     #     https://github.com/protocolbuffers/protobuf/pull/9480
     #     https://github.com/protocolbuffers/protobuf/commit/301d315dc4674d1bc799446644e88eff0af1ac86
     PROTOC="$(realpath -e 'build/protoc')" "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" \
-        protocolbuffers/protobuf/./python,v[3.6=v3.19.]
+        protocolbuffers/protobuf/./python,v3.19.[3.6=v3.19.]
 
     # ------------------------------------------------------------
 
