@@ -20,6 +20,15 @@
 
     cd onnx
 
+    # Patches:
+    # - Google benchmark 1.4.1 failed to compile with gcc-11.
+    #   https://github.com/onnx/onnx/issues/4144
+    PATCHES="benchmark"
+    for i in $PATCHES; do
+        git fetch patch "$i"
+        git cherry-pick FETCH_HEAD
+    done
+
     . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
 
     # pushd third_party/pybind11
