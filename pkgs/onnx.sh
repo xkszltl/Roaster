@@ -20,6 +20,8 @@
 
     cd onnx
 
+    git remote add patch "$GIT_MIRROR/xkszltl/onnx.git"
+
     # Patches:
     # - Google benchmark 1.4.1 failed to compile with gcc-11.
     #   https://github.com/onnx/onnx/issues/4144
