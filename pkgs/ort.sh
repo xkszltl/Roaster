@@ -15,16 +15,21 @@
 
     # ------------------------------------------------------------
 
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" Microsoft/onnxruntime,v1.10.
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" Microsoft/onnxruntime,v
     until git clone -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd onnxruntime
 
-    # - Patch git URL suffix for pattern matching.
-    #   https://github.com/microsoft/onnxruntime/pull/10132
-    #   https://github.com/microsoft/onnxruntime/commit/1d3b34cc923a58fd138e32a110acb16aa564cbb9
-    git cherry-pick 1d3b34c
-
     . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
+
+    git remote add patch "$GIT_MIRROR/xkszltl/onnxruntime.git"
+
+    # Patches:
+    # - Downloading archives from GitHub is unreliable.
+    PATCHES="abseil jemalloc"
+    for i in $PATCHES; do
+        git fetch patch "$i"
+        git cherry-pick FETCH_HEAD
+    done
 
     (
         set -xe
