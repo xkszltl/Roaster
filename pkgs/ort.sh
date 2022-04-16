@@ -19,6 +19,11 @@
     until git clone -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd onnxruntime
 
+    # - Patch git URL suffix for pattern matching.
+    #   https://github.com/microsoft/onnxruntime/pull/10132
+    #   https://github.com/microsoft/onnxruntime/commit/1d3b34cc923a58fd138e32a110acb16aa564cbb9
+    git cherry-pick 1d3b34c
+
     . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
 
     (
