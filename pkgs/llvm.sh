@@ -40,7 +40,6 @@ for i in llvm-{gcc,clang}; do
                 -DENABLE_LINKER_BUILD_ID=ON
                 -DLIBCLANG_BUILD_STATIC=ON
                 -DLIBCXX_CONFIGURE_IDE=ON
-                -DLIBCXX_ENABLE_PARALLEL_ALGORITHMS=ON
                 -DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=ON
                 -DLIBIPT_INCLUDE_PATH='/usr/local/include'
                 -DLIBOMP_ENABLE_SHARED=ON
@@ -77,6 +76,8 @@ for i in llvm-{gcc,clang}; do
                 #   - GCC only takes plugin-processed static lib for LTO.
                 #     Need to use ar/ranlib wrapper.
                 #   - GCC LTO is too slow.
+                #   - libcxx in LLVM 14 requires gcc 11 to build.
+                #   - Parallel STL does not have runtime build in LLVM 14.
                 cmake                                       \
                     -DCMAKE_AR="$(which gcc-ar)"            \
                     -DCMAKE_C_COMPILER="$CC"                \
@@ -84,9 +85,10 @@ for i in llvm-{gcc,clang}; do
                     -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src'"              \
                     -DCMAKE_RANLIB="$(which gcc-ranlib)"    \
                     -DGCC_INSTALL_PREFIX="$(realpath -e "$(dirname "$(realpath -e "$(which "$CC")")")/..")" \
+                    -DLIBCXX_ENABLE_PARALLEL_ALGORITHMS=OFF \
                     -DLLVM_ENABLE_LTO=OFF                   \
-                    -DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;compiler-rt;libclc;libcxx;libcxxabi;libunwind;lld;lldb;polly;pstl'      \
-                    -DLLVM_ENABLE_RUNTIMES='openmp'         \
+                    -DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;compiler-rt;libclc;libunwind;lld;lldb;polly;pstl'      \
+                    -DLLVM_ENABLE_RUNTIMES='libcxx;libcxxabi;openmp'    \
                     $LLVM_COMMON_ARGS
             else
                 cmake                                       \
@@ -95,6 +97,7 @@ for i in llvm-{gcc,clang}; do
                     -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src'"  \
                     -DCMAKE_{EXE,SHARED}_LINKER_FLAGS="-fuse-ld=lld"                            \
                     -DENABLE_X86_RELAX_RELOCATIONS=ON       \
+                    -DLIBCXX_ENABLE_PARALLEL_ALGORITHMS=ON  \
                     -DLIBCXX_USE_COMPILER_RT=ON             \
                     -DLIBCXXABI_USE_COMPILER_RT=ON          \
                     -DLIBCXXABI_USE_LLVM_UNWINDER=ON        \
@@ -103,7 +106,7 @@ for i in llvm-{gcc,clang}; do
                     -DLLVM_ENABLE_LIBCXX=ON                 \
                     -DLLVM_ENABLE_LLD=ON                    \
                     -DLLVM_ENABLE_LTO=Thin                  \
-                    -DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;compiler-rt;libc;libclc;libcxx;libcxxabi;libunwind;lld;lldb;polly;pstl' \
+                    -DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;compiler-rt;libc;libclc;libcxx;libcxxabi;libunwind;lld;lldb;mlir;polly;pstl'    \
                     -DLLVM_ENABLE_RUNTIMES='openmp'         \
                     -DLLVM_TOOL_MLIR_BUILD=ON               \
                     $LLVM_COMMON_ARGS
