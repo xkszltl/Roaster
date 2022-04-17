@@ -114,7 +114,7 @@ for i in llvm-{gcc,clang}; do
             # time cmake --build . --target dist
             # time cmake --build . --target dist-check
             # time cmake --build . --target rpm
-            time cmake --build . --target install -- -k0
+            time cmake --build . --target install -- -k0 || cmake --build . --target install -- -j1
 
             # Avoid shadowing gcc stack.
             rm -f "$INSTALL_ABS/bin/"{ar,nm,ranlib}
