@@ -50,7 +50,7 @@ for i in llvm-{gcc,clang}; do
                 -DLIBOMP_STATS=OFF
                 -DLIBOMP_TSAN_SUPPORT=ON
                 -DLIBOMP_USE_HIER_SCHED=ON
-                -DLIBOMP_USE_HWLOC=$([ "_$DISTRO_ID-$DISTRO_VERSION_ID" = '_centos-7' ] && echo 'OFF' || echo 'ON')
+                -DLIBOMP_USE_HWLOC=$([ "$(hwloc-info --version | sed 's/.*[[:space:]]//' | cut -d. -f1)" -ge 2 ] && echo 'ON' || echo 'OFF')
                 -DLIBOMP_USE_STDCPPLIB=ON
                 -DLIBOMPTARGET_NVPTX_COMPUTE_CAPABILITIES='35,37,52,60,61,70,75,80'
                 -DLIBUNWIND_ENABLE_CROSS_UNWINDING=ON
