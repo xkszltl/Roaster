@@ -2,6 +2,8 @@
 
 set -e
 
+trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
+
 cd "$(dirname "$0")"
 
 date
@@ -15,6 +17,10 @@ export ROOT=/var/mirrors
 mkdir -p "$ROOT"
 
 [ $# -ge 1 ] && export PATTERN="$1"
+
+log="$(mktemp -t git-mirror-XXXXXXXX.log)"
+! grep '[[:space:]]' <<< "$log" >/dev/null
+trap "trap - SIGTERM && kill -- -$$ && rm -f $log" SIGINT SIGTERM EXIT
 
 # Concurrency restricted by GitHub.
 ./mirror-list.sh | parallel --bar --group --shuf -d '\n' -j 10 'bash -c '"'"'
@@ -66,6 +72,23 @@ if [ ! "'"$PATTERN"'" ] || grep "'"$PATTERN"'" <<< "$SRC_DIR"; then
     git push -f --prune origin 2>&1
     git config remote.origin.mirror true
 fi
-'"'"
+'"'" 2>&1 | tee "$log"
+
+grep -e 'error: RPC failed; curl 56 GnuTLS recv error (-9)' -e 'gnutls_handshake() failed: The TLS connection was non-properly terminated.' "$log"  \
+| wc -l                                                                                                                                             \
+| grep -v '^0$'                                                                                                                                     \
+| xargs -r printf '\033[31m[ERROR] Found %d potential network failures in log.\033[0m\n'
+
+paste -sd' ' "$log"                                                                                             \
+| sed 's/remote: GitLab: The default branch of a project cannot be deleted\. *To *\([^ ]*\)/\n########\1\n/g'   \
+| sed -n 's/^########//p'                                                                                       \
+| sed 's/^\(git\.codingcafe\.org\):/https:\/\/\1\//'                                                            \
+| sed 's/\.git$/\/\-\/settings\/repository/'                                                                    \
+| xargs -r printf '\033[31m[ERROR] Potential branch renaming at: %s\033[0m\n'
+
+rm -f "$log"
+trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
 date
+
+trap - SIGTERM SIGINT EXIT
