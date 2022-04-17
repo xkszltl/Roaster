@@ -6,7 +6,7 @@ for i in llvm-{gcc,clang}; do
     [ -e $STAGE/$i ] && ( set -xe
         cd $SCRATCH
 
-        . "$ROOT_DIR/pkgs/utils/git/version.sh" llvm/llvm-project,llvmorg-12.
+        . "$ROOT_DIR/pkgs/utils/git/version.sh" llvm/llvm-project,llvmorg-14.
         until git clone --depth 1 -b "$GIT_TAG" "$GIT_REPO" llvm; do sleep 1; echo "Retrying"; done
         cd llvm
 
@@ -25,6 +25,7 @@ for i in llvm-{gcc,clang}; do
             # Known issues:
             #   - Enable LLVM_LIBC_ENABLE_LINTING to bypass libc system header check failures.
             #     https://github.com/llvm/llvm-project/blob/176249bd6732a8044d457092ed932768724a6f06/libc/test/src/CMakeLists.txt#L77
+            #   - OpenMP in LLVM 14 requires hwloc 2, not available on CentOS 7.
             export LLVM_COMMON_ARGS="
                 -DCLANG_DEFAULT_CXX_STDLIB=libc++
                 -DCLANG_DEFAULT_LINKER=lld
@@ -49,7 +50,7 @@ for i in llvm-{gcc,clang}; do
                 -DLIBOMP_STATS=OFF
                 -DLIBOMP_TSAN_SUPPORT=ON
                 -DLIBOMP_USE_HIER_SCHED=ON
-                -DLIBOMP_USE_HWLOC=ON
+                -DLIBOMP_USE_HWLOC=$([ "_$DISTRO_ID-$DISTRO_VERSION_ID" = '_centos-7' ] && echo 'OFF' || echo 'ON')
                 -DLIBOMP_USE_STDCPPLIB=ON
                 -DLIBOMPTARGET_NVPTX_COMPUTE_CAPABILITIES='35,37,52,60,61,70,75,80'
                 -DLIBUNWIND_ENABLE_CROSS_UNWINDING=ON
@@ -60,7 +61,6 @@ for i in llvm-{gcc,clang}; do
                 -DLLVM_ENABLE_ASSERTIONS=ON
                 -DLLVM_ENABLE_EH=ON
                 -DLLVM_ENABLE_FFI=ON
-                -DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;compiler-rt;libclc;libcxx;libcxxabi;libunwind;lld;lldb;openmp;parallel-libs;polly;pstl'
                 -DLLVM_ENABLE_RTTI=ON
                 -DLLVM_INSTALL_BINUTILS_SYMLINKS=ON
                 -DLLVM_INSTALL_UTILS=ON
@@ -72,36 +72,39 @@ for i in llvm-{gcc,clang}; do
                 -G Ninja
                 ../llvm"
 
-            # GCC only takes plugin processed static lib for LTO.
-            # Need to use ar/ranlib wrapper.
-            #
-            # TODO: Enable LTO after fixing "function redeclared as variable" bug in polly.
             if [ $i = llvm-gcc ]; then
+                # Known issues:
+                #   - GCC only takes plugin-processed static lib for LTO.
+                #     Need to use ar/ranlib wrapper.
+                #   - GCC LTO is too slow.
                 cmake                                       \
                     -DCMAKE_AR="$(which gcc-ar)"            \
                     -DCMAKE_C_COMPILER="$CC"                \
                     -DCMAKE_CXX_COMPILER="$CXX"             \
-                    -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src'"   \
+                    -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src'"              \
                     -DCMAKE_RANLIB="$(which gcc-ranlib)"    \
+                    -DGCC_INSTALL_PREFIX="$(realpath -e "$(dirname "$(realpath -e "$(which "$CC")")")/..")" \
+                    -DLLVM_ENABLE_LTO=OFF                   \
+                    -DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;compiler-rt;libclc;libcxx;libcxxabi;libunwind;lld;lldb;polly;pstl'      \
+                    -DLLVM_ENABLE_RUNTIMES='openmp'         \
                     $LLVM_COMMON_ARGS
             else
-                # Known issues:
-                #   - LIBOMPTARGET_NVPTX_ENABLE_BCLIB=ON does not work with LLVM 11 + CUDA 11.1.
-                #     CUDA 11.0 is fine.
                 cmake                                       \
                     -DCMAKE_C_COMPILER=clang                \
                     -DCMAKE_CXX_COMPILER=clang++            \
-                    -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src'"   \
-                    -DCMAKE_{EXE,SHARED}_LINKER_FLAGS="-fuse-ld=lld"                             \
+                    -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src'"  \
+                    -DCMAKE_{EXE,SHARED}_LINKER_FLAGS="-fuse-ld=lld"                            \
                     -DENABLE_X86_RELAX_RELOCATIONS=ON       \
                     -DLIBCXX_USE_COMPILER_RT=ON             \
                     -DLIBCXXABI_USE_COMPILER_RT=ON          \
                     -DLIBCXXABI_USE_LLVM_UNWINDER=ON        \
-                    -DLIBOMPTARGET_NVPTX_ENABLE_BCLIB=OFF   \
+                    -DLIBOMPTARGET_NVPTX_ENABLE_BCLIB=ON    \
                     -DLIBUNWIND_USE_COMPILER_RT=ON          \
                     -DLLVM_ENABLE_LIBCXX=ON                 \
                     -DLLVM_ENABLE_LLD=ON                    \
                     -DLLVM_ENABLE_LTO=Thin                  \
+                    -DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;compiler-rt;libc;libclc;libcxx;libcxxabi;libunwind;lld;lldb;polly;pstl' \
+                    -DLLVM_ENABLE_RUNTIMES='openmp'         \
                     -DLLVM_TOOL_MLIR_BUILD=ON               \
                     $LLVM_COMMON_ARGS
             fi
