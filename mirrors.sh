@@ -8,7 +8,7 @@ cd "$(dirname "$0")"
 
 date
 
-# export HTTP_PROXY=proxy.codingcafe.org:8118
+export HTTP_PROXY=proxy.codingcafe.org:8118
 [ $HTTP_PROXY ] && export HTTPS_PROXY=$HTTP_PROXY
 [ $HTTP_PROXY ] && export http_proxy=$HTTP_PROXY
 [ $HTTPS_PROXY ] && export https_proxy=$HTTPS_PROXY
@@ -20,7 +20,7 @@ mkdir -p "$ROOT"
 
 log="$(mktemp -t git-mirror-XXXXXXXX.log)"
 ! grep '[[:space:]]' <<< "$log" >/dev/null
-trap "trap - SIGTERM && kill -- -$$ && rm -f $log" SIGINT SIGTERM EXIT
+trap "trap - SIGTERM && rm -f $log && kill -- -$$" SIGINT SIGTERM EXIT
 
 # Concurrency restricted by GitHub.
 ./mirror-list.sh | parallel --bar --group --shuf -d '\n' -j 10 'bash -c '"'"'
