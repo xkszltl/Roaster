@@ -87,8 +87,8 @@ for i in llvm-{gcc,clang}; do
                     -DGCC_INSTALL_PREFIX="$(realpath -e "$(dirname "$(realpath -e "$(which "$CC")")")/..")" \
                     -DLIBCXX_ENABLE_PARALLEL_ALGORITHMS=OFF \
                     -DLLVM_ENABLE_LTO=OFF                   \
-                    -DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;compiler-rt;libclc;libunwind;lld;lldb;polly;pstl'      \
-                    -DLLVM_ENABLE_RUNTIMES='libcxx;libcxxabi;openmp'    \
+                    -DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;compiler-rt;libclc;libunwind;lld;lldb;openmp;polly;pstl'    \
+                    -DLLVM_ENABLE_RUNTIMES='libcxx;libcxxabi'   \
                     $LLVM_COMMON_ARGS
             else
                 cmake                                       \
