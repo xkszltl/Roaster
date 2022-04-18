@@ -1,3 +1,6 @@
 # CodingCafe mirrors.
 
 deb https://repo.codingcafe.org/nvidia/cuda/$(. /etc/os-release >/dev/null; echo "$ID$VERSION_ID" | tr -d '.')/$(uname -m) /
+
+# cuDNN/TensorRT/NCCL are not available for Debian 11 yet.
+deb https://repo.codingcafe.org/nvidia/cuda/$(. /etc/os-release >/dev/null; sed 's/^debian11$/ubuntu2004/' <<< "$ID$VERSION_ID")/$(uname -m)/ /

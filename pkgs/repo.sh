@@ -7,7 +7,7 @@
     curl_connref="$(! which curl >/dev/null 2>/dev/null || curl --help -v | sed -n 's/.*\(\-\-retry\-connrefused\).*/\1/p' | head -n1)"
 
     case "$DISTRO_ID" in
-    "centos" | "rhel" | 'scientific')
+    'centos' | 'rhel' | 'scientific')
         until sudo yum makecache -y; do echo 'Retrying'; done
         until sudo yum install -y sed yum-{plugin-{fastestmirror,priorities},utils}; do echo 'Retrying'; done
 
@@ -111,7 +111,7 @@
         until sudo dnf update -y; do echo 'Retrying'; done
         sudo dnf update -y || true
         ;;
-    "debian" | "linuxmint" | "ubuntu")
+    'debian' | 'linuxmint' | 'ubuntu')
         sudo apt-get update -y
         sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
         sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
@@ -158,11 +158,13 @@
                 cuda_repo="https://developer.download.nvidia.com/compute/cuda/repos"
                 until [ "$cuda_repo_file_dist" ]; do cuda_repo_file_dist="$(set -xe && curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$cuda_repo" | sed -n "s/.*href='\($(sed 's/\.//g' <<< "$DISTRO_ID$DISTRO_VERSION_ID")[^']*\)\/.*/\1/p" | sort -V | tail -n1 || sleep 5)"; done
                 cuda_repo="$cuda_repo/$cuda_repo_file_dist/x86_64"
-                if [ "_$DISTRO_ID" != '_debian' ]; then
+                case "$DISTRO_ID-$DISTRO_VERSION_ID" in
+                'ubuntu-'*)
                     until [ "$cuda_repo_file_pin" ]; do cuda_repo_file_pin="$(set -xe && curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$cuda_repo" | sed -n "s/.*href='\(cuda-$DISTRO_ID$(sed 's/\.//g' <<< "$DISTRO_VERSION_ID")[^']*\.pin\).*/\1/p" | sort -V | tail -n1 || sleep 5)"; done
                     cuda_repo_pin="$cuda_repo/$cuda_repo_file_pin"
                     curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$cuda_repo_pin" | sudo tee '/etc/apt/preferences.d/cuda-repository-pin-600'
-                fi
+                    ;;
+                esac
                 until [ "$cuda_repo_file_pubkey" ]; do cuda_repo_file_pubkey="$(set -xe && curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$cuda_repo" | sed -n "s/.*href='\([^']*\.pub\).*/\1/p" | sort -V | tail -n1)"; done
                 cuda_repo_pubkey="$cuda_repo/$cuda_repo_file_pubkey"
                 # Known issues:
@@ -171,6 +173,15 @@
                 curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$cuda_repo_pubkey" | sudo apt-key add -
                 sudo mkdir -p '/etc/apt/sources.list.d'
                 echo "deb $cuda_repo/ /" | sudo tee '/etc/apt/sources.list.d/cuda.list'
+                # Known issues:
+                #   - cuDNN/TensorRT/NCCL is not available for Debian as of early 2022.
+                #     Try to use the Ubuntu build instead.
+                case "$DISTRO_ID-$DISTRO_VERSION_ID" in
+                'debian-11')
+                    echo "deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/$(uname -m)/ /" | sudo tee -a '/etc/apt/sources.list.d/cuda.list'
+                    printf 'Package: *\nPin: origin developer.download.nvidia.com/compute/cuda/repos/ubuntu2004\nPin-Priority: 1\n' | sudo tee '/etc/apt/preferences.d/99-cuda'
+                    ;;
+                esac
                 sudo apt-get update -y
             ) && break
             echo "Retry. $(expr "$retry" - 1) time(s) left."
