@@ -3,4 +3,4 @@
 deb https://repo.codingcafe.org/nvidia/cuda/$(. /etc/os-release >/dev/null; echo "$ID$VERSION_ID" | tr -d '.')/$(uname -m) /
 
 # cuDNN/TensorRT/NCCL are not available for Debian 11 yet.
-deb https://repo.codingcafe.org/nvidia/cuda/$(. /etc/os-release >/dev/null; echo "$ID$VERSION_ID" | tr -d '.' | sed 's/^debian11$/ubuntu2004/')/$(uname -m)/ /
+$(. /etc/os-release >/dev/null; [ "_$ID-$VERSION_ID" != '_debian-11' ] || uname -m | xargs -r printf 'deb https://repo.codingcafe.org/nvidia/cuda/ubuntu2004/%s/ /')
