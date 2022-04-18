@@ -187,7 +187,7 @@
 
         # CUDA 10.2 does not build due to missing nvscibuf.
         # See discussion in https://devtalk.nvidia.com/default/topic/1067000/where-is-quot-nvscibuf-h-quot-/?offset=13
-        MPI_HOME=/usr/local/openmpi VERBOSE=1 time sudo make -j$(nproc) -k all || true
+        MPI_HOME=/usr/local/openmpi VERBOSE=1 time make -j$(nproc) -k all || true
 
         for cuda_util in deviceQuery{,Drv} topologyQuery {bandwidth,p2pBandwidthLatency}Test; do
             "bin/$(uname -m)/linux/release/$cuda_util" || true
