@@ -9,9 +9,11 @@ set -xe
 [ "$CI_JOB_STAGE"       ]
 [ "$CI_REGISTRY_IMAGE"  ]
 
+sudo_docker="$([ -w '/var/run/docker.sock' ] || echo 'sudo --preserve-env=DOCKER_BUILDKIT') docker"
+
 set +x
 if [ "$CI_REGISTRY" ] && [ "$CI_REGISTRY_USER" ] && [ "$CI_REGISTRY_PASSWORD" ]; then
-    sudo docker login                   \
+    $sudo_docker login                  \
         --password-stdin                \
         --username "$CI_REGISTRY_USER"  \
         "$CI_REGISTRY"                  \
@@ -58,7 +60,7 @@ for retry in $(seq "$retry_all" -1 0); do
     (
         set -xe
         #     --cpu-shares 128
-        sudo DOCKER_BUILDKIT=1 docker build                             \
+        DOCKER_BUILDKIT=1 $sudo_docker build                            \
             --add-host={docker,git,proxy,repo}.codingcafe.org:10.0.0.10 \
             --build-arg IMAGE_REPO="$CI_REGISTRY_IMAGE"                 \
             --build-arg LABEL_BUILD_ID="$LABEL_BUILD_ID"                \
@@ -74,11 +76,11 @@ for retry in $(seq "$retry_all" -1 0); do
             .
         printf "\nExited with code %d.\n" "$?"
     ) 2>&1 | tee "$BUILD_LOG"
-    DUMP_ID="$(sudo docker ps -aq --filter="label=BUILD_ID=$LABEL_BUILD_ID" --filter="status=exited" | head -n1)"
+    DUMP_ID="$($sudo_docker ps -aq --filter="label=BUILD_ID=$LABEL_BUILD_ID" --filter="status=exited" | head -n1)"
 
     # Success.
     if [ "_$(tail -n1 "$BUILD_LOG")" = '_Exited with code 0.' ]; then
-        [ "$DUMP_ID" ] && time sudo docker rm "$DUMP_ID"
+        [ "$DUMP_ID" ] && time $sudo_docker rm "$DUMP_ID"
         break
     fi
 
@@ -91,8 +93,8 @@ for retry in $(seq "$retry_all" -1 0); do
     # Save breakpoint.
     printf '\033[31m[ERROR] Docker build failed. Save breakpoint snapshot.\033[0m\n' >&2
     if [ "$DUMP_ID" ]; then
-        time sudo docker commit "$DUMP_ID" "$CI_REGISTRY_IMAGE/$BASE_DISTRO:breakpoint"
-        time sudo docker push "$_"
+        time $sudo_docker commit "$DUMP_ID" "$CI_REGISTRY_IMAGE/$BASE_DISTRO:breakpoint"
+        time $sudo_docker push "$_"
         printf '\033[33m[WARNING] Failed to build. Dump container is saved as breakpoint.\033[0m\n' >&2
     else
         printf '\033[33m[WARNING] Dump container with BUILD_ID="%s" is not found.\033[0m\n' "$LABEL_BUILD_ID" >&2
