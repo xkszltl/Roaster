@@ -10,7 +10,7 @@
     # Knwon issues:
     #   - CMake 3.22.0 + PyTorch 1.10.0 does not work.
     #     https://github.com/pytorch/pytorch/issues/69222
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" Kitware/CMake,v
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" Kitware/CMake,v3.21.
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO" cmake; do echo 'Retrying'; done
     cd cmake
 
