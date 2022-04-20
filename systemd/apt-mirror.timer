@@ -4,7 +4,7 @@ After=network-online.target
 Wants=network-online.target
 
 [Timer]
-OnCalendar=*-*-* 01:00:00
+OnCalendar=*-*-* 01/6:20:00
 # OnCalendar=hourly
 # OnCalendar=weekly
 Unit=apt-mirror.service

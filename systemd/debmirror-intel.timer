@@ -4,7 +4,7 @@ After=network-online.target
 Wants=network-online.target
 
 [Timer]
-OnCalendar=*-*-* 01:30:00
+OnCalendar=*-*-* 01/6:10:00
 # OnCalendar=hourly
 # OnCalendar=weekly
 Unit=debmirror-intel.service

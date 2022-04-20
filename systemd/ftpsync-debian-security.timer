@@ -4,7 +4,7 @@ After=network-online.target
 Wants=network-online.target
 
 [Timer]
-OnCalendar=*-*-* 02:00:00
+OnCalendar=*-*-* 01/6:50:00
 # OnCalendar=hourly
 # OnCalendar=weekly
 Unit=ftpsync-debian-security.service
