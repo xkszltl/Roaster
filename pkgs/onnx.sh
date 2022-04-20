@@ -25,7 +25,7 @@
     # Patches:
     # - Google benchmark 1.4.1 failed to compile with gcc-11.
     #   https://github.com/onnx/onnx/issues/4144
-    PATCHES="benchmark"
+    PATCHES=""
     for i in $PATCHES; do
         git fetch patch "$i"
         git cherry-pick FETCH_HEAD
