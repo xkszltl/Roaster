@@ -37,13 +37,17 @@
     #   https://github.com/pytorch/pytorch/pull/66219
     # - Always pin to 025cd69 for now due to a recent build issue:
     #   https://github.com/pytorch/pytorch/issues/73074
-    if python3 --version | cut -d' ' -f2 | grep '^3\.[0-6]\.' >/dev/null; then
-        git checkout 025cd69
-        # Patch RNN in memonger.
-        # - https://github.com/pytorch/pytorch/pull/24388
-        # - https://github.com/pytorch/pytorch/pull/74031
-        git cherry-pick adae0d35 198d727d
-    fi
+    case "$DISTRO_ID-$DISTRO_VERSION_ID" in
+    'debian-'* | 'linuxmint-'* | 'ubuntu-'*)
+        if python3 --version | cut -d' ' -f2 | grep '^3\.[0-6]\.' >/dev/null; then
+            git checkout 025cd69
+            # Patch RNN in memonger.
+            # - https://github.com/pytorch/pytorch/pull/24388
+            # - https://github.com/pytorch/pytorch/pull/74031
+            git cherry-pick adae0d35 198d727d
+        fi
+        ;;
+    esac
 
     git remote add patch "$GIT_MIRROR/xkszltl/pytorch.git"
 
@@ -195,7 +199,17 @@
         #     This may be fixed if we install libs in-source, but we have not checked.
         mkdir -p '../torch'
         cp -rvf "$INSTALL_ABS"/* "../torch/"
-        LDFLAGS="-L'$(pwd)/lib'" NCCL_ROOT_DIR='/usr/' PY_VER='^3\.[7-9],^3\.[1-6][0-9]' "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" ..
+        (
+            set -e
+            export PY_VER='^3\.[7-9],^3\.[1-6][0-9]'
+            case "$DISTRO_ID-$DISTRO_VERSION_ID" in
+            'debian-'* | 'linuxmint-'* | 'ubuntu-'*)
+                # Already pinned to a Python3.6-compatible version.
+                ! python3 --version | cut -d' ' -f2 | grep '^3\.[0-6]\.' >/dev/null || export PY_VER=''
+                ;;
+            esac
+            LDFLAGS="-L'$(pwd)/lib'" NCCL_ROOT_DIR='/usr/' "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" ..
+        )
 
         # Dirty hack to fix torchvision build issues.
         # for site in {"/usr/local/lib64/python3.6","/opt/rh/rh-python38/root/usr/lib64/python3.8"}/{dist,site}"-packages/torch"; do
