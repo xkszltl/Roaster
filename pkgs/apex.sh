@@ -41,7 +41,18 @@
         rm -rf 'setup.py.bak'
 
         # PyTorch has dropped support for Python 3.6.
-        PY_VER='^3\.[7-9],^3\.[1-6][0-9]' TORCH_CUDA_ARCH_LIST="Pascal;Volta;Turing" "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" ./
+        (
+            set -e
+            export TORCH_CUDA_ARCH_LIST="Pascal;Volta;Turing"
+            export PY_VER='^3\.[7-9],^3\.[1-6][0-9]'
+            case "$DISTRO_ID-$DISTRO_VERSION_ID" in
+            'debian-'* | 'linuxmint-'* | 'ubuntu-'*)
+                # Already pinned PyTorch to a Python3.6-compatible version.
+                ! python3 --version | cut -d' ' -f2 | grep '^3\.[0-6]\.' >/dev/null || export PY_VER=''
+                ;;
+            esac
+            "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" ./
+        )
     )
 
     cd
