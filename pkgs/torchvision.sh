@@ -20,7 +20,13 @@
     # Known issues:
     # - Torchvision removed the support of Python 3.6 after 0.11.3
     #   https://github.com/pytorch/vision/pull/5161
-    # ! python3 --version | cut -d' ' -f2 | grep '^3\.[0-6]\.' >/dev/null || git checkout 8c546f6
+    case "$DISTRO_ID-$DISTRO_VERSION_ID" in
+    'debian-'* | 'linuxmint-'* | 'ubuntu-'*)
+        if python3 --version | cut -d' ' -f2 | grep '^3\.[0-6]\.' >/dev/null; then
+            git checkout 8c546f6
+        fi
+        ;;
+    esac
 
     git remote add patch "$GIT_MIRROR/xkszltl/vision.git"
     git fetch patch
@@ -76,7 +82,14 @@
             set -xe
             export FORCE_CUDA="$(! which nvcc >/dev/null 2>&1 || echo '1')"
             export TORCH_CUDA_ARCH_LIST="Pascal;Volta;Turing"
-            PY_VER='^3\.[7-9],^3\.[1-6][0-9]' "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" ../
+            export PY_VER='^3\.[7-9],^3\.[1-6][0-9]'
+            case "$DISTRO_ID-$DISTRO_VERSION_ID" in
+            'debian-'* | 'linuxmint-'* | 'ubuntu-'*)
+                # Already pinned to a Python3.6-compatible version.
+                ! python3 --version | cut -d' ' -f2 | grep '^3\.[0-6]\.' >/dev/null || export PY_VER=''
+                ;;
+            esac
+            "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" ../
         )
 
         # Exclude GTest/MKL-DNN/ONNX/Caffe files.
