@@ -45,14 +45,18 @@ echo '| Daemon JSON (After)'
 echo '========================================'
 
 sudo cat '/etc/docker/daemon.json.bak'                                                                      \
+| jq -Se '. |= . + {"builder":{}}'                                                                          \
+| jq -Se '."builder" |= ."builder" + {"gc":{}}'                                                             \
+| jq -Se '."builder"."gc" |= . + {"defaultKeepStorage":"256GB"}'                                            \
+| jq -Se '."builder"."gc" |= . + {"enabled":true}'                                                          \
 | jq -Se '. |= . + {"data-root":"/media/Scratch/docker"}'                                                   \
 | jq -Se '. |= . + {"debug":false}'                                                                         \
 | jq -Se '. |= . + {"default-runtime":"nvidia"}'                                                            \
 | jq -Se '. |= . + {"experimental":true}'                                                                   \
 | jq -Se '. |= . + {"features":{}}'                                                                         \
-| jq -Se '."features" |= ."features" + {"buildkit":true}'                                                   \
+| jq -Se '."features" |= . + {"buildkit":true}'                                                             \
 | jq -Se '. |= . + {"max-concurrent-downloads":1024}'                                                       \
-| jq -Se '. |= . + {"max-concurrent-uploads":1024}'                                                         \
+| jq -Se '. |= . + {"max-concurrent-uploads":10}'                                                           \
 | jq -Se '. |= . + {"storage-driver":"devicemapper"}'                                                       \
 | jq -Se '. |= . + {"storage-opts":[]}'                                                                     \
 | jq -Se '."storage-opts"[."storage-opts" | length] |= . + "dm.thinpooldev=/dev/mapper/Mocha-docker--pool"' \
