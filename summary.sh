@@ -15,6 +15,7 @@ echo '- ...'
 echo
 echo 'Size:'
 echo '- CentOS: ...'
+echo '- Debian: ...'
 echo '- Ubuntu: ...'
 echo
 echo 'Roaster packages:'
