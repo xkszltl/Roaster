@@ -2,6 +2,8 @@
 
 set -e
 
+trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
+
 cd "$(dirname "$0")"
 
 for cmd in bc docker grep jq sed xargs; do
@@ -53,3 +55,4 @@ layer_size="$(set -e;
 bc -l <<< "100.0 * $image_size / $layer_size"   \
 | xargs -rI{} printf '\033[36m[INFO] Space efficiency %.1f%% for "%s" in "%s".\033[0m\n' {} "$DIR" "$DOCKER_IMAGE" >&2
 
+trap - SIGTERM SIGINT EXIT
