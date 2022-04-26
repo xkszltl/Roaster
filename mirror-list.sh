@@ -96,6 +96,7 @@ libav/libav,\
 libuv/libuv,\
 llvm/llvm-{archive,project,test-suite,www{,-pubs}},\
 llvm-mirror/{ll{vm,d,db,go},clang{,-tools-extra},polly,compiler-rt,openmp,lib{unwind,cxx{,abi}},test-suite},\
+lm-sensors/lm-sensors,\
 LMDB/lmdb,\
 lutzroeder/netron,\
 lz4/lz4{,-java},\
