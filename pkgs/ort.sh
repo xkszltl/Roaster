@@ -102,7 +102,7 @@
             -DCMAKE_CUDA_FLAGS="-gencode=arch=compute_35,code=sm_35 -gencode=arch=compute_37,code=sm_37"                    \
             -DCMAKE_{CUDA_HOST,CXX}_COMPILER="$CXX"             \
             -DCMAKE_{C,CXX,CUDA}_COMPILER_LAUNCHER=ccache       \
-            -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g $($TOOLCHAIN_CPU_NATIVE || echo '-march=haswell -mtune=generic') $(which nvcc >/dev/null 2>&1 && printf '%s' "-I$(realpath -e "$(dirname "$(which nvcc)")/../include")")"  \
+            -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g $($TOOLCHAIN_CPU_NATIVE || echo '-march=haswell -mtune=generic')"  \
             -DCMAKE_{EXE,SHARED}_LINKER_FLAGS='-Xlinker --allow-shlib-undefined'                                            \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"               \
             -DCMAKE_POLICY_DEFAULT_CMP0060=NEW                  \
