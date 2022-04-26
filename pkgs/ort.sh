@@ -99,7 +99,7 @@
             -DCMAKE_AR="$(which "$AR")"                         \
             -DCMAKE_BUILD_TYPE=Release                          \
             -DCMAKE_C_COMPILER="$CC"                            \
-            -DCMAKE_CUDA_FLAGS="-gencode=arch=compute_35,code=sm_35 -gencode=arch=compute_37,code=sm_37"                    \
+            -DCMAKE_CUDA_ARCHITECTURES='35-virtual;60-real;61-real;70-real;75-real;80-real;80-virtual;86-real'              \
             -DCMAKE_{CUDA_HOST,CXX}_COMPILER="$CXX"             \
             -DCMAKE_{C,CXX,CUDA}_COMPILER_LAUNCHER=ccache       \
             -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g $($TOOLCHAIN_CPU_NATIVE || echo '-march=haswell -mtune=generic')"  \
