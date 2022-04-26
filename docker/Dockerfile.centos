@@ -10,6 +10,9 @@ FROM centos:7 AS stage-init
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 
+# Cache invalidation.
+RUN LABEL_BUILD_ID="$LABEL_BUILD_ID"
+
 SHELL ["/bin/bash", "-c"]
 
 # C.UTF-8 may never be available before CentOS 8 due to glibc bug.
@@ -17,7 +20,8 @@ SHELL ["/bin/bash", "-c"]
 ENV LANG=en_US.UTF-8
 
 # systemd
-RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ "_$i" = '_systemd-tmpfiles-setup.service' ] || rm -f "$i"; done); \
+RUN set -xe; \
+    (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ "_$i" = '_systemd-tmpfiles-setup.service' ] || rm -f "$i"; done); \
     rm -f /lib/systemd/system/multi-user.target.wants/*; \
     rm -f /etc/systemd/system/*.wants/*; \
     rm -f /lib/systemd/system/local-fs.target.wants/*; \

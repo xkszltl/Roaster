@@ -10,6 +10,9 @@ FROM ubuntu:18.04 AS stage-init
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 
+# Cache invalidation.
+RUN LABEL_BUILD_ID="$LABEL_BUILD_ID"
+
 SHELL ["/bin/bash", "-c"]
 
 ENV LANG=C.UTF-8
