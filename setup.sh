@@ -144,7 +144,7 @@ cd "$SCRATCH"
     sudo rm -rvf "$STAGE"
     sudo mkdir -p "$(dirname "$STAGE")/.$(basename "$STAGE")"
     cd $_
-    [ $# -gt 0 ] && sudo touch $@ || sudo touch repo font pkg-stable pkg-skip pkg-all fpm auth vim tmux tex ss intel lz4 zstd cmake hiredis ccache c-ares axel ipt cuda gdrcopy ucx ompi llvm-{gcc,clang} boost jemalloc eigen openblas gtest benchmark gflags glog snappy protobuf nsync grpc catch2 jsoncpp rapidjson simdjson utf8proc pugixml pybind libpng mkl-dnn ispc halide opencv leveldb rocksdb lmdb onnx pytorch torchvision apex ort
+    [ $# -gt 0 ] && sudo touch $@ || sudo touch repo font pkg-stable pkg-skip pkg-all fpm auth vim tmux tex ss intel lm-sensors lz4 zstd cmake hiredis ccache c-ares axel ipt cuda gdrcopy ucx ompi llvm-{gcc,clang} boost jemalloc eigen openblas gtest benchmark gflags glog snappy protobuf nsync grpc catch2 jsoncpp rapidjson simdjson utf8proc pugixml pybind libpng mkl-dnn ispc halide opencv leveldb rocksdb lmdb onnx pytorch torchvision apex ort
     sync || true
     cd "$SCRATCH"
     sudo mv -vf "$(dirname "$STAGE")/.$(basename "$STAGE")" $STAGE
@@ -173,6 +173,7 @@ for i in $(echo "
     shadowsocks
     texlive
     intel
+    lm-sensors
     lz4
     zstd
     cmake
