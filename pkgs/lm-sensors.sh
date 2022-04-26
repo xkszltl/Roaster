@@ -30,6 +30,7 @@
         time ETCDIR="$INSTALL_ROOT/etc" PREFIX="$INSTALL_ABS" make -j install
     )
 
+    # Keep conflicting files for manual review and overwrite.
     cp -f "$INSTALL_ROOT/etc/sensors3"{,-roaster}".conf"
 
     # Exclude distro lm-sensors files.
