@@ -24,7 +24,7 @@ if ! [ "$SUMMARIZING_IN_CONTAINER" ]; then
     for dist in CentOS Debian Ubuntu; do
         img="$(sed 's/\/\/*/\//' <<< "/$DOCKER_IMAGE" | sed 's/\/*$//' | sed 's/\/[^\/]*$//' | sed 's/^\///')/$(tr 'A-Z' 'a-z' <<< "$dist")"
         ! grep "^$(sed 's/\([\\\/\.\-]\)/\\\1/g' <<< "$img"):" <<< "$DOCKER_IMAGE:" >/dev/null || img="$DOCKER_IMAGE"
-        printf '%s %s\n' '-' "$img"
+        printf '%s `%s`\n' '-' "$img"
     done
     printf '\n'
 
