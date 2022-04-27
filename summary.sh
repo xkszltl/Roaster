@@ -28,14 +28,20 @@ if ! [ "$SUMMARIZING_IN_CONTAINER" ]; then
     done
     printf '\n'
 
-    printf '### Size\n\n'
+    printf '### Size (gzipped/decompressed)\n\n'
     for dist in CentOS Debian Ubuntu; do
         img="$(sed 's/\/\/*/\//' <<< "/$DOCKER_IMAGE" | sed 's/\/*$//' | sed 's/\/[^\/]*$//' | sed 's/^\///')/$(tr 'A-Z' 'a-z' <<< "$dist")"
         ! grep "^$(sed 's/\([\\\/\.\-]\)/\\\1/g' <<< "$img"):" <<< "$dist:" || img="$dist"
         sudo docker images -q "$img" | grep '[^[:space:]]' >/dev/null || continue
-        printf '%s %s: %s GiB, %s %% space efficiency\n'                    \
+        printf '%s %s: %s/%s GiB, %s%% space efficiency\n'                  \
             '-'                                                             \
             "$dist"                                                         \
+            "$(sudo docker manifest inspect "$img"                          \
+                | jq -er '.layers[].size'                                   \
+                | paste -sd+ -                                              \
+                | sed 's/\(..*\)/(\1\+2\^29)\/2^30/'                        \
+                | bc                                                        \
+            )"                                                              \
             "$(sudo docker inspect "$img"                                   \
                 | jq -er '.[0].Size'                                        \
                 | grep -v 'null'                                            \
