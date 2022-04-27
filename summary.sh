@@ -116,11 +116,11 @@ else
             'OpenCV,roaster-opencv,'
         do
             cut -d, -f2 <<< "$tuple,"                                   \
-            | xargs rpm -qa                                             \
+            | xargs rpm -qa 2>/dev/null                                 \
             | sed -n 's/.*\-\([0-9][[:alnum:]\.]*\)\-[0-9][^\-]*$/\1/p' \
             | sort -rV                                                  \
             | head -n1                                                  \
-            | xargs printf '%s- %s %s\n' "$(cut -d, -f3 <<< "$tuple,,")" "$(cut -d, -f1 <<< "$tuple")"
+            | xargs -r printf '%s- %s %s\n' "$(cut -d, -f3 <<< "$tuple,,")" "$(cut -d, -f1 <<< "$tuple")"
         done
         ;;
     "debian" | "linuxmint" | "ubuntu")
@@ -160,14 +160,14 @@ else
             'OpenCV,roaster-opencv,'
         do
             cut -d, -f2 <<< "$tuple,"               \
-            | xargs dpkg -l                         \
+            | xargs dpkg -l 2>/dev/null             \
             | grep '^ii[[:space:]]'                 \
             | sed 's/[[:space:]][[:space:]]*/ /g'   \
             | cut -d' ' -f3                         \
             | cut -d- -f1                           \
             | sort -rV                              \
             | head -n1                              \
-            | xargs printf '%s- %s %s\n' "$(cut -d, -f3 <<< "$tuple,,")" "$(cut -d, -f1 <<< "$tuple")"
+            | xargs -r printf '%s- %s %s\n' "$(cut -d, -f3 <<< "$tuple,,")" "$(cut -d, -f1 <<< "$tuple")"
         done
         ;;
     esac
