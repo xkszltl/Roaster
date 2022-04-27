@@ -30,7 +30,6 @@ if ! [ "$SUMMARIZING_IN_CONTAINER" ]; then
 
     printf '### Size\n\n'
     for dist in CentOS Debian Ubuntu; do
-        break
         img="$(sed 's/\/\/*/\//' <<< "/$DOCKER_IMAGE" | sed 's/\/*$//' | sed 's/\/[^\/]*$//' | sed 's/^\///')/$(tr 'A-Z' 'a-z' <<< "$dist")"
         ! grep "^$(sed 's/\([\\\/\.\-]\)/\\\1/g' <<< "$img"):" <<< "$dist:" || img="$dist"
         sudo docker images -q "$img" | grep '[^[:space:]]' >/dev/null || continue
