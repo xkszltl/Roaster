@@ -180,11 +180,11 @@ for dist in rhel7; do
         [ "$attempt" -gt 0 ]
         (
             set -e
-            wget $DRY_WGET -ct 1000 "https://developer.download.nvidia.com/compute/cuda/repos/$dist/$(uname -m)/7fa2af80.pub"
-            if ! rpm --import "7fa2af80.pub"; then
+            wget $DRY_WGET -ct 1000 "https://developer.download.nvidia.com/compute/cuda/repos/$dist/$(uname -m)/D42D0685.pub"
+            if ! rpm --import "D42D0685.pub"; then
                 echo 'Bad pubkey file:'
-                sed 's/^\(.\)/    \1/' '7fa2af80.pub'
-                rm -f '7fa2af80.pub'
+                sed 's/^\(.\)/    \1/' 'D42D0685.pub'
+                rm -f 'D42D0685.pub'
                 exit 1
             fi
         ) && break

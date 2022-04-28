@@ -256,7 +256,7 @@ enabled=0
 name=[Cache] cuda-rhel$releasever-$basearch
 baseurl=https://repo.codingcafe.org/nvidia/cuda/rhel$releasever/$basearch
 gpgcheck=1
-gpgkey=https://repo.codingcafe.org/nvidia/cuda/rhel$releasever/$basearch/7fa2af80.pub
+gpgkey=https://repo.codingcafe.org/nvidia/cuda/rhel$releasever/$basearch/D42D0685.pub
 priority=1
 enabled=0
 
