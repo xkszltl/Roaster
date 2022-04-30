@@ -80,6 +80,9 @@ parallel -j0 --line-buffer --bar 'bash -c '"'"'
 # Makecache
 # ----------------------------------------------------------------
 
+# Clean up huge DNF logs.
+rm -f "/var/tmp/dnf-$(whoami)-"*/dnf{,.{librepo,rpm}}.log
+
 # dnf makecache --enablerepo '*' -y || true
 find . -name .repodata -type d | xargs -r rm -rf
 
@@ -181,7 +184,7 @@ for dist in rhel7; do
         (
             set -e
             wget $DRY_WGET -ct 1000 "https://developer.download.nvidia.com/compute/cuda/repos/$dist/$(uname -m)/D42D0685.pub"
-            if ! sudo rpm --import "D42D0685.pub"; then
+            if ! rpm --import "D42D0685.pub" && ! sudo rpm --import "D42D0685.pub"; then
                 echo 'Bad pubkey file:'
                 sed 's/^\(.\)/    \1/' 'D42D0685.pub'
                 rm -f 'D42D0685.pub'
@@ -212,7 +215,7 @@ for dist in rhel7; do
         (
             set -e
             wget $DRY_WGET -ct 1000 "https://developer.download.nvidia.com/compute/$dir/repos/$dist/$(uname -m)/7fa2af80.pub"
-            if ! sudo rpm --import "7fa2af80.pub"; then
+            if ! rpm --import "7fa2af80.pub" && ! sudo rpm --import "7fa2af80.pub"; then
                 echo 'Bad pubkey file:'
                 sed 's/^\(.\)/    \1/' '7fa2af80.pub'
                 rm -f '7fa2af80.pub'
@@ -241,7 +244,7 @@ for i in libnvidia-container{,-experimental} nvidia-{container-runtime{,-experim
         (
             set -e
             wget $DRY_WGET -cqt 10 "https://nvidia.github.io/$(sed 's/\-experimental//' <<< "$i")/gpgkey"
-            if ! sudo rpm --import "gpgkey"; then
+            if ! rpm --import "gpgkey" && ! sudo rpm --import "gpgkey"; then
                 echo 'Bad pubkey file:'
                 sed 's/^\(.\)/    \1/' 'gpgkey'
                 rm -f 'gpgkey'
@@ -276,7 +279,7 @@ done
         (
             set -e
             wget $DRY_WGET -cqt 10 "https://download.docker.com/linux/centos/gpg"
-            if ! sudo rpm --import "gpg"; then
+            if ! rpm --import "gpg" && ! sudo rpm --import "gpg"; then
                 echo 'Bad pubkey file:'
                 sed 's/^\(.\)/    \1/' 'gpg'
                 rm -f 'gpg'
@@ -408,6 +411,9 @@ parallel -j0 --line-buffer --bar 'bash -c '"'"'
 # ----------------------------------------------------------------
 
 wait
+
+# Clean up huge DNF logs.
+rm -f "/var/tmp/dnf-$(whoami)-"*/dnf{,.{librepo,rpm}}.log
 
 date
 
