@@ -7,13 +7,13 @@
     mkdir -p ".ssh"
     chmod 700 "$_"
     cd "$_"
-    rm -rvf id_{ecdsa,rsa}{,.pub}
+    rm -rvf id_{ecdsa,ed25519,rsa}{,.pub}
     parallel -j0 --line-buffer --bar 'bash -c '"'"'
         set -e
         export ALGO="$(sed '"'"'s/,.*//'"'"' <<< '"'"'{}'"'"')"
         export BITS="$(sed '"'"'s/.*,//'"'"' <<< '"'"'{}'"'"')"
         ssh-keygen -qN "" -f "id_$ALGO" -t "$ALGO" -b "$BITS"
-    '"'" ::: 'ecdsa,521' 'rsa,8192'
+    '"'" ::: 'ecdsa,521' 'ed25519,512' 'rsa,8192'
     echo 'Pre-generated SSH keys should only be used for demo since the private key is well-known.'
     cd "$SCRATCH"
 
