@@ -170,7 +170,7 @@
                     # Known issues:
                     #   - "apt-key adv --fetch-keys" does not exit with non-zero code on network error.
                     # sudo APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key adv --fetch-keys "$cuda_repo/$file_pubkey"
-                    curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$cuda_repo/$file_pubkey" | sudo xargs apt-key add -
+                    curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$cuda_repo/$file_pubkey" | sudo apt-key add -
                 done
                 sudo mkdir -p '/etc/apt/sources.list.d'
                 echo "deb $cuda_repo/ /" | sudo tee '/etc/apt/sources.list.d/cuda.list'
