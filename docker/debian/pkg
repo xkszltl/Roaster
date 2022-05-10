@@ -111,6 +111,7 @@ RUN set -e; \
             pax-utils \
             pciutils \
             pigz \
+            pkg-config \
             powertop \
             procps \
             pv \
