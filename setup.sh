@@ -134,7 +134,7 @@ sudo -llp "
 rm -rvf "$SCRATCH"
 mkdir -p "$SCRATCH"
 # $IS_CONTAINER || mount -t tmpfs -o size=100% tmpfs $SCRATCH
-cd "$SCRATCH"
+pushd "$SCRATCH"
 
 # ================================================================
 # Initialize Setup Stage
@@ -231,9 +231,8 @@ done
 # Cleanup
 # ================================================================
 
-cd
-
-rm -rvf $SCRATCH
+popd
+rm -rvf "$SCRATCH"
 sudo ldconfig
 
 which ccache 2>/dev/null >/dev/null && ccache -s
