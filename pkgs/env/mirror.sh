@@ -7,26 +7,47 @@ export GIT_MIRROR_CODINGCAFE="500,https://git.codingcafe.org/Mirrors"
 
 # ----------------------------------------------------------------
 
-case "$DISTRO_ID" in
-'centos' | 'fedora' | 'rhel' | 'scientific')
-    which bc     > /dev/null 2> /dev/null || sudo "$(which dnf >/dev/null 2>&1 && echo 'dnf' || echo 'yum')" install -y bc
-    which column > /dev/null 2> /dev/null || sudo "$(which dnf >/dev/null 2>&1 && echo 'dnf' || echo 'yum')" install -y util-linux
-    which dig    > /dev/null 2> /dev/null || sudo "$(which dnf >/dev/null 2>&1 && echo 'dnf' || echo 'yum')" install -y bind-utils
-    which paste  > /dev/null 2> /dev/null || sudo "$(which dnf >/dev/null 2>&1 && echo 'dnf' || echo 'yum')" install -y coreutils
-    which ping   > /dev/null 2> /dev/null || sudo "$(which dnf >/dev/null 2>&1 && echo 'dnf' || echo 'yum')" install -y iputils
-    which sed    > /dev/null 2> /dev/null || sudo "$(which dnf >/dev/null 2>&1 && echo 'dnf' || echo 'yum')" install -y sed
-    which xargs  > /dev/null 2> /dev/null || sudo "$(which dnf >/dev/null 2>&1 && echo 'dnf' || echo 'yum')" install -y findutils
-    ;;
-'debian' | 'linuxmint' | "ubuntu")
-    which bc     > /dev/null 2> /dev/null || sudo apt-get install -y bc
-    which column > /dev/null 2> /dev/null || sudo apt-get install -y bsdmainutils
-    which dig    > /dev/null 2> /dev/null || sudo apt-get install -y dnsutils
-    which paste  > /dev/null 2> /dev/null || sudo apt-get install -y coreutils
-    which ping   > /dev/null 2> /dev/null || sudo apt-get install -y iputils-ping
-    which sed    > /dev/null 2> /dev/null || sudo apt-get install -y sed
-    which xargs  > /dev/null 2> /dev/null || sudo apt-get install -y findutils
-    ;;
-esac
+(
+    set -e
+
+    . <(sed 's/^\(..*\)/export DISTRO_\1/' '/etc/os-release')
+
+    missing_pkgs=''
+    case "$DISTRO_ID" in
+    'centos' | 'fedora' | 'rhel' | 'scientific')
+        which bc     >/dev/null 2>&1 || missing_pkgs="$missing_pkgs;bc"
+        which column >/dev/null 2>&1 || missing_pkgs="$missing_pkgs;util-linux"
+        which dig    >/dev/null 2>&1 || missing_pkgs="$missing_pkgs;bind-utils"
+        which paste  >/dev/null 2>&1 || missing_pkgs="$missing_pkgs;coreutils"
+        which ping   >/dev/null 2>&1 || missing_pkgs="$missing_pkgs;iputils"
+        which sed    >/dev/null 2>&1 || missing_pkgs="$missing_pkgs;sed"
+        which xargs  >/dev/null 2>&1 || missing_pkgs="$missing_pkgs;findutils"
+        ;;
+    'debian' | 'linuxmint' | "ubuntu")
+        which bc     >/dev/null 2>&1 || missing_pkgs="$missing_pkgs;bc"
+        which column >/dev/null 2>&1 || missing_pkgs="$missing_pkgs;bsdmainutils"
+        which dig    >/dev/null 2>&1 || missing_pkgs="$missing_pkgs;dnsutils"
+        which paste  >/dev/null 2>&1 || missing_pkgs="$missing_pkgs;coreutils"
+        which ping   >/dev/null 2>&1 || missing_pkgs="$missing_pkgs;iputils-ping"
+        which sed    >/dev/null 2>&1 || missing_pkgs="$missing_pkgs;sed"
+        which xargs  >/dev/null 2>&1 || missing_pkgs="$missing_pkgs;findutils"
+        ;;
+    esac
+    missing_pkgs="$(sed 's/;;*/;/g' <<< "$missing_pkgs" | sed 's/^;*//' | sed 's/;*$//')"
+
+    if [ "$missing_pkgs" ]; then
+        case "$DISTRO_ID" in
+        'centos' | 'fedora' | 'rhel' | 'scientific')
+            sudo "$(which dnf >/dev/null 2>&1 && echo 'dnf' || echo 'yum')" makecache -y
+            tr ';' ' ' <<< "$missing_pkgs" | sudo xargs "$(which dnf >/dev/null 2>&1 && echo 'dnf' || echo 'yum')" install -y
+            ;;
+        'debian' | 'linuxmint' | "ubuntu")
+            sudo DEBIAN_FRONTEND=noninteractive apt-get update
+            tr ';' ' ' <<< "$missing_pkgs" | sudo DEBIAN_FRONTEND=noninteractive xargs apt-get install -y
+            ;;
+        esac
+    fi
+)
 
 echo '----------------------------------------------------------------'
 echo '               Measure link quality to git mirrors              '
