@@ -14,7 +14,7 @@
     esac
 
     export CUDA_VER_MAJOR="11"
-    export CUDA_VER_MINOR="6"
+    export CUDA_VER_MINOR="7"
     case "$DISTRO_ID" in
     'centos' | 'fedora' | 'rhel' | 'scientific')
         sudo dnf makecache
