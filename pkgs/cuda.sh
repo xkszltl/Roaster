@@ -176,7 +176,11 @@
     (
         set -xe
 
-        . "$ROOT_DIR/pkgs/utils/git/version.sh" NVIDIA/cuda-samples,"v$CUDA_VER_MAJOR.$CUDA_VER_MINOR"
+        # Known issues:
+        # - By the end of May 2022, CUDA 11.7 does not have any samples, not even dummy pkgs.
+        #   Use 11.6 version instead.
+        #   https://github.com/NVIDIA/cuda-samples/issues/128
+        . "$ROOT_DIR/pkgs/utils/git/version.sh" NVIDIA/cuda-samples,"v$(sed 's/^11\.[7-9]$/11\.6/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR")"
         until git clone --depth 1 -b "$GIT_TAG" "$GIT_REPO" "cuda-samples-$CUDA_VER_MAJOR-$CUDA_VER_MINOR"; do sleep 1; echo "Retrying"; done
         cd "cuda-samples-$CUDA_VER_MAJOR-$CUDA_VER_MINOR"
 
