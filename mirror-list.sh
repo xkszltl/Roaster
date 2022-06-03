@@ -101,6 +101,7 @@ LMDB/lmdb,\
 lutzroeder/netron,\
 lz4/lz4{,-java},\
 madler/zlib,\
+malfet/PeachPy,\
 martinmoene/{{active,any,atomic,bit,boolean,byte,expected,invoke,jthread,nonstd,optional{,-fun},ring-span,scope,span,status-value,string{,-view},type,{observer,value}-ptr,variant}-lite,clue,hamlest,kalman-estimator{,-ada},lest,nonstd-lite-project,optional-bare,PhysUnits-{CT{,-Cpp11},RT}},\
 matplotlib/{jupyter-matplotlib,matplotlib,mplcairo,pytest-mpl},\
 Maratyszcza/{confu,cpuinfo,FP16,FXdiv,NNPACK,PeachPy,psimd,pthreadpool},\
