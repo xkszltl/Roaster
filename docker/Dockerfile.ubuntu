@@ -154,6 +154,7 @@ RUN set -e; \
             ifenslave \
             ifstat \
             iftop \
+            imagemagick \
             iotop \
             iperf{,3} libiperf-dev \
             iproute2{,-doc} \
