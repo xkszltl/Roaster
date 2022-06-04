@@ -197,6 +197,7 @@ RUN set -e; \
             powertop \
             prelink \
             procps \
+            pstack \
             pv \
             pybind11-dev \
             python3{,-pip} \
