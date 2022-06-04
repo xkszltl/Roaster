@@ -141,6 +141,7 @@ for subset in pkg-{stable,skip,all}; do
                 byacc{,j}{,-*}
                 {gflags,glog,gmock,gtest,protobuf}{,-*}
                 {jsoncpp,rapidjson}{,-*}
+                re2{,-*}
                 {redis,hiredis}{,-*}
                 zeromq{,-*}
                 ImageMagick{,-*}
