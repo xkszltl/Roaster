@@ -24,7 +24,7 @@
         export CUDA="$(realpath -e "$(dirname "$(which nvcc)")/..")"
 
         make CUDA="$CUDA" -j$(nproc)
-        make CUDA="$CUDA" PREFIX="$INSTALL_ABS" install -j
+        make CUDA="$CUDA" PREFIX="$INSTALL_ABS" prefix="$INSTALL_ABS" install -j
 
         case "$DISTRO_ID" in
         'centos' | 'fedora' | 'rhel' | 'scientific')
