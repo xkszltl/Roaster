@@ -17,7 +17,7 @@ trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 . <(sed 's/^\(..*\)/export DISTRO_\1/' '/etc/os-release')
 
 case "$DISTRO_ID" in
-"centos" | "fedora" | "rhel")
+'centos' | 'fedora' | 'rhel' | 'scientific')
     export RPM_CACHE_REPO="/etc/yum.repos.d/codingcafe-cache.repo"
     ;;
 esac
@@ -92,11 +92,11 @@ if ! which sudo; then
     fi
 
     case "$DISTRO_ID" in
-    "centos" | "fedora" | "rhel")
+    'centos' | 'fedora' | 'rhel')
         which dnf >/dev/null 2>&1 && dnf makecache -y || yum makecache -y
         which dnf >/dev/null 2>&1 && dnf install -y sudo || yum install -y sudo
         ;;
-    "debian" | "linuxmint" | "ubuntu")
+    'debian' | 'linuxmint' | 'ubuntu' | 'scientific')
         apt-get update -y
         DEBIAN_FRONTEND=noninteractive apt-get install -y sudo
         ;;
@@ -105,11 +105,11 @@ fi
 
 if ! which ps || ! which xargs; then
     case "$DISTRO_ID" in
-    "centos" | "fedora" | "rhel")
+    'centos' | 'fedora' | 'rhel' | 'scientific')
         sudo which dnf >/dev/null 2>&1 && dnf makecache -y || yum makecache -y
         sudo which dnf >/dev/null 2>&1 && sudo dnf install -y findutils procps-ng || sudo yum install -y findutils procps-ng
         ;;
-    "debian" | "linuxmint" | "ubuntu")
+    'debian' | 'linuxmint' | 'ubuntu')
         sudo apt-get update -y
         sudo DEBIAN_FRONTEND=noninteractive apt-get install -y findutils procps
         ;;
@@ -239,7 +239,7 @@ which ccache 2>/dev/null >/dev/null && ccache -s
 
 if $IS_CONTAINER; then
     case "$DISTRO_ID" in
-    "centos" | "fedora" | "rhel")
+    'centos' | 'fedora' | 'rhel' | 'scientific')
         sudo which dnf >/dev/null 2>&1 && sudo dnf autoremove -y || sudo yum autoremove -y
         ! sudo which dnf >/dev/null 2>&1 || sudo dnf clean all --enablerepo='*'
         sudo yum clean all
@@ -247,7 +247,7 @@ if $IS_CONTAINER; then
         # DNF may log GB of data here.
         sudo rm -rf /var/log/dnf.librepo.log
         ;;
-    "debian" | "linuxmint" | "ubuntu")
+    'debian' | 'linuxmint' | 'ubuntu')
         sudo apt-get autoremove -y
         sudo apt-get clean
         sudo rm -rf /var/lib/apt/lists/*
