@@ -33,7 +33,7 @@ if [ ! "$dst" ]; then
     exit 1
 fi
 
-ctx="$(mktemp -dt "$(basename "$0")-build-ctx")"
+ctx="$(mktemp -dt "$(basename "$0")-build-ctx-XXXXXXXX")"
 trap "trap - SIGTERM; $(sed 's/^\(..*\)$/rm \-rf "\1"/' <<< "$ctx"); kill -- -'$$'" SIGINT SIGTERM EXIT
 
 touch "$ctx/dummy.sh"
