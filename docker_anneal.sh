@@ -14,7 +14,7 @@ sudo_docker="$([ -w '/var/run/docker.sock' ] || ! which sudo >/dev/null || echo 
 
 [ "$n_layers" ] || n_layers=31
 if [ "$n_layers" -le 0 ]; then
-    printf '\033[31m[ERROR] Invalid number of layers %d.\033[0m\n' "$n_layers"
+    printf '\033[31m[ERROR] Invalid number of layers %d.\033[0m\n' "$n_layers" >&2
     exit 1
 fi
 for i in $(seq 1 "$n_layers"); do

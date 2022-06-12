@@ -41,7 +41,7 @@ for i in 'pypa/setuptools,v60.[3.6=v59.6.]' 'pypa/pip,[3.6=21.]' pypa/wheel Pyth
     PKG="$(basename "$PKG_PATH")"
     for rename in python-future=future; do
         if ! grep '^[^=][^=]*=[^=][^=]*$' <<< "$rename" >/dev/null; then
-            printf '\033[31m[ERROR] Invalid pip renaming rule "%s".\033[0m\n' "$rename"
+            printf '\033[31m[ERROR] Invalid pip renaming rule "%s".\033[0m\n' "$rename" >&2
         fi
         PKG="$(sed "s/^$(cut -d'=' -f1 <<< "$rename" | sed 's/\([\\\/\.\-]\)/\\\1/g')"'$/'"$(cut -d'=' -f2 <<< "$rename" | sed 's/\([\\\/\.\-]\)/\\\1/g')/" <<< "$PKG")"
     done
@@ -69,7 +69,7 @@ for i in 'pypa/setuptools,v60.[3.6=v59.6.]' 'pypa/pip,[3.6=21.]' pypa/wheel Pyth
         py="$(which "$(cut -d',' -f2 <<< "$py")")"
         pyver="$("$py" --version | sed 's/[[:space:]][[:space:]]*/ /g' | cut -d' ' -f2 | grep '^[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*' | cut -d'.' -f-3)"
         if ! grep $(sed 's/,/\n/' <<< "$PY_VER" | sed 's/^\(..*\)/\-e \1/') <<< "$pyver" >/dev/null; then
-            printf '\033[36m[INFO] Python version %s filtered by "%s".\033[0m\n' "$pyver" "$PY_VER"
+            printf '\033[36m[INFO] Python version %s filtered by "%s".\033[0m\n' "$pyver" "$PY_VER" >&2
             continue
         fi
         # Not exactly correct since the actual package name is defined by "setup.py".

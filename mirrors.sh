@@ -77,14 +77,14 @@ fi
 grep -e 'error: RPC failed; curl 56 GnuTLS recv error (-9)' -e 'gnutls_handshake() failed: The TLS connection was non-properly terminated.' "$log"  \
 | wc -l                                                                                                                                             \
 | grep -v '^0$'                                                                                                                                     \
-| xargs -r printf '\033[31m[ERROR] Found %d potential network failures in log.\033[0m\n'
+| xargs -r printf '\033[31m[ERROR] Found %d potential network failures in log.\033[0m\n' >&2
 
 paste -sd' ' "$log"                                                                                             \
 | sed 's/remote: GitLab: The default branch of a project cannot be deleted\. *To *\([^ ]*\)/\n########\1\n/g'   \
 | sed -n 's/^########//p'                                                                                       \
 | sed 's/^\(git\.codingcafe\.org\):/https:\/\/\1\//'                                                            \
 | sed 's/\.git$/\/\-\/settings\/repository/'                                                                    \
-| xargs -r printf '\033[31m[ERROR] Potential branch renaming at: %s\033[0m\n'
+| xargs -r printf '\033[31m[ERROR] Potential branch renaming at: %s\033[0m\n' >&2
 
 rm -f "$log"
 trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT

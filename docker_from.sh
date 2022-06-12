@@ -19,7 +19,7 @@ done
 sudo_docker="$([ -w '/var/run/docker.sock' ] || ! which sudo >/dev/null || echo 'sudo --preserve-env=DOCKER_BUILDKIT') docker"
 
 if [ "$#" -ne 1 ]; then
-    printf '\033[31m[ERROR] Specify exactly 1 docker tag instead of "%s".\033[0m\n' "$*"
+    printf '\033[31m[ERROR] Specify exactly 1 docker tag instead of "%s".\033[0m\n' "$*" >&2
     exit 1
 fi
 

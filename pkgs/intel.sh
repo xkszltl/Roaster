@@ -9,52 +9,52 @@
     'centos' | 'debian' | 'fedora' | 'linuxmint' | 'rhel' | 'scientific' | 'ubuntu')
         for attempt in $(seq "$PKG_MAX_ATTEMPT" -1 0); do
             if [ "$attempt" -le 0 ]; then
-                printf '\033[31m[ERROR] Out of retries.\033[0m\n'
+                printf '\033[31m[ERROR] Out of retries.\033[0m\n' >&2
                 exit 1
             fi
             ! $PKG_UPDATE || break
-            expr "$attempt" - 1 | xargs printf '\033[33m[WARNING] %d retries left.\033[0m\n' 
+            expr "$attempt" - 1 | xargs printf '\033[33m[WARNING] %d retries left.\033[0m\n' >&2
         done
         for attempt in $(seq "$PKG_MAX_ATTEMPT" -1 0); do
             if [ "$attempt" -le 0 ]; then
-                printf '\033[31m[ERROR] Out of retries.\033[0m\n'
+                printf '\033[31m[ERROR] Out of retries.\033[0m\n' >&2
                 exit 1
             fi
             ! $PKG_INSTALL intel-oneapi-{ccl,dal,dnnl,ipp{,cp},mkl,mpi,tbb}{,-devel} || break
-            expr "$attempt" - 1 | xargs printf '\033[33m[WARNING] %d retries left.\033[0m\n' 
+            expr "$attempt" - 1 | xargs printf '\033[33m[WARNING] %d retries left.\033[0m\n' >&2
         done
         for attempt in $(seq "$PKG_MAX_ATTEMPT" -1 0); do
             if [ "$attempt" -le 0 ]; then
-                printf '\033[31m[ERROR] Out of retries.\033[0m\n'
+                printf '\033[31m[ERROR] Out of retries.\033[0m\n' >&2
                 exit 1
             fi
             ! $PKG_INSTALL intel-oneapi-{advisor,inspector,vtune} || break
-            expr "$attempt" - 1 | xargs printf '\033[33m[WARNING] %d retries left.\033[0m\n' 
+            expr "$attempt" - 1 | xargs printf '\033[33m[WARNING] %d retries left.\033[0m\n' >&2
         done
         for attempt in $(seq "$PKG_MAX_ATTEMPT" -1 0); do
             if [ "$attempt" -le 0 ]; then
-                printf '\033[31m[ERROR] Out of retries.\033[0m\n'
+                printf '\033[31m[ERROR] Out of retries.\033[0m\n' >&2
                 exit 1
             fi
             ! $PKG_INSTALL intel-oneapi-{compiler-{dpcpp-cpp{,-and-cpp-classic},fortran},dpcpp-{ct,debugger},libdpstd-devel} || break
-            expr "$attempt" - 1 | xargs printf '\033[33m[WARNING] %d retries left.\033[0m\n' 
+            expr "$attempt" - 1 | xargs printf '\033[33m[WARNING] %d retries left.\033[0m\n' >&2
         done
         for attempt in $(seq "$PKG_MAX_ATTEMPT" -1 0); do
             if [ "$attempt" -le 0 ]; then
-                printf '\033[31m[ERROR] Out of retries.\033[0m\n'
+                printf '\033[31m[ERROR] Out of retries.\033[0m\n' >&2
                 exit 1
             fi
             ! $PKG_INSTALL intel-oneapi-dev-utilities intel-oneapi-diagnostics-utility || break
-            expr "$attempt" - 1 | xargs printf '\033[33m[WARNING] %d retries left.\033[0m\n' 
+            expr "$attempt" - 1 | xargs printf '\033[33m[WARNING] %d retries left.\033[0m\n' >&2
         done
         for kit in base hpc iot dlfd ai render; do
             for attempt in $(seq "$PKG_MAX_ATTEMPT" -1 0); do
                 if [ "$attempt" -le 0 ]; then
-                    printf '\033[31m[ERROR] Out of retries.\033[0m\n'
+                    printf '\033[31m[ERROR] Out of retries.\033[0m\n' >&2
                     exit 1
                 fi
                 ! $PKG_INSTALL intel-"$kit"kit || break
-                expr "$attempt" - 1 | xargs printf '\033[33m[WARNING] %d retries left.\033[0m\n' 
+                expr "$attempt" - 1 | xargs printf '\033[33m[WARNING] %d retries left.\033[0m\n' >&2
             done
         done
         ;;
@@ -100,8 +100,8 @@
         '"'" ::: daal ipp mkl mpi tbb _
 
         for i in $(ls -d */ | sed 's/\///'); do
-            tr [a-z] [A-Z] <<< "$i" | xargs printf '\033[36m[INFO] Installing Intel %s.\033[0m\n'
-            sudo $i/install.sh --silent $i/silent_install.cfg
+            tr '[a-z]' '[A-Z]' <<< "$i" | xargs printf '\033[36m[INFO] Installing Intel %s.\033[0m\n' >&2
+            sudo "$i/install.sh" --silent "$i/silent_install.cfg"
         done
 
         sudo ldconfig
