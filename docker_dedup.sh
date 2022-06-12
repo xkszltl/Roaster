@@ -29,13 +29,14 @@ trap "trap - SIGTERM; $(sed 's/^\(..*\)$/rm \-rf "\1"/' <<< "$chksum_dir"); kill
 # Hash metadata+data, permissively, and report inexact matches as suggestions.
 # Record as symlink if never seen, or hard link to target of the symlink.
 cat "$@"                                            \
+| xargs -rI{} find {} -type f                       \
 | xargs -rI{} bash -c "$(printf '%s' '
         set -e;
-        src={};
-        chksum_dir="'"$chksum_dir"'";
-        min_size="'"$min_size"'";
+        src='"'"'{}'"'"';
+        chksum_dir='"'$chksum_dir'"';
+        min_size='"'$min_size'"';
         if [ "$(stat -c "%s" "$src")" -ge "$min_size" ]; then
-            printf "%s/%s\v%s\n"
+            printf '"'"'%s/%s\v%s\n'"'"'
                 "$chksum_dir"
                 "$(stat -c "%D" "$src"
                     | cat - "$src"
@@ -43,7 +44,7 @@ cat "$@"                                            \
                     | cut -d" " -f1
                 )"
                 "$src";
-        fi
+        fi;
     '                                               \
     | sed 's/^[[:space:]]*//'                       \
     | grep '.'                                      \
