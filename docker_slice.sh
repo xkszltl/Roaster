@@ -33,34 +33,34 @@ fi
 # - Flatten and reorder the delta to the end, by tag+sort, to preserve committed hard links.
 # - Change abs path in src dir to rel path.
 # - Filter out docker networking filters.
-sudo find "$src/" -mindepth 1 -maxdepth 1           \
-| grep -v "^$src_grep_esc/\."                       \
-| grep -v -e"^$src_grep_esc/"{dev,proc,sys}'$'      \
-| grep -v -e"^$src_grep_esc/"{media,mnt,run,tmp}'$' \
-| sort                                              \
-| xargs -rI{} find {} -not -type d                  \
-| sort -u                                           \
-| paste -d'\v' $(seq "$n_layers" | sed 's/..*/-/')  \
-| cut -d"$(printf '\v')" -f"-$layer"                \
-| sed 's/\('"$(printf '\v')"'\)/\10 /g'             \
-| sed 's/\(.*'"$(printf '\v')"'\)0 /\11 /'          \
-| sed 's/^/0 /'                                     \
-| tr '\v' '\n'                                      \
-| sort                                              \
-| sed 's/^[0-9] //'                                 \
-| sed -n 's/^'"$src_sed_esc"'\//\//p'               \
-| grep '.'                                          \
-| grep -v -e"^/etc/"{hosts,'resolv\.conf'}'$'       \
-| sudo rsync                                        \
-    --acls                                          \
-    --archive                                       \
-    --files-from -                                  \
-    --hard-links                                    \
-    --info progress2                                \
-    --preallocate                                   \
-    --sparse                                        \
-    --xattrs                                        \
-    "$src/"                                         \
+sudo find "$src/" -mindepth 1 -maxdepth 1                                                   \
+| grep -v "^$src_grep_esc/\."                                                               \
+| grep -v -e"^$src_grep_esc/"{dev,proc,sys}'$'                                              \
+| grep -v -e"^$src_grep_esc/"{media,mnt,run,tmp}'$'                                         \
+| $(which parallel >/dev/null 2>&1 && echo "parallel -j$(nproc) -km" || echo 'xargs -rI{}') \
+    find {} -not -type d                                                                    \
+| sort -u                                                                                   \
+| paste -d'\v' $(seq "$n_layers" | sed 's/..*/-/')                                          \
+| cut -d"$(printf '\v')" -f"-$layer"                                                        \
+| sed 's/\('"$(printf '\v')"'\)/\10 /g'                                                     \
+| sed 's/\(.*'"$(printf '\v')"'\)0 /\11 /'                                                  \
+| sed 's/^/0 /'                                                                             \
+| tr '\v' '\n'                                                                              \
+| sort                                                                                      \
+| sed 's/^[0-9] //'                                                                         \
+| sed -n 's/^'"$src_sed_esc"'\//\//p'                                                       \
+| grep '.'                                                                                  \
+| grep -v -e"^/etc/"{hosts,'resolv\.conf'}'$'                                               \
+| sudo rsync                                                                                \
+    --acls                                                                                  \
+    --archive                                                                               \
+    --files-from -                                                                          \
+    --hard-links                                                                            \
+    --info progress2                                                                        \
+    --preallocate                                                                           \
+    --sparse                                                                                \
+    --xattrs                                                                                \
+    "$src/"                                                                                 \
     "$dst/"
 
 if [ "$layer" -ge "$n_layers" ]; then
