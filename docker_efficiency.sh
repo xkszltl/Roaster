@@ -13,6 +13,8 @@ for cmd in bc docker grep jq sed xargs; do
     fi
 done
 
+sudo_docker="$([ -w '/var/run/docker.sock' ] || ! which sudo >/dev/null || echo 'sudo --preserve-env=DOCKER_BUILDKIT') docker"
+
 [ "$DOCKER_IMAGE" ] || DOCKER_IMAGE="$@"
 [ "$DOCKER_IMAGE" ] || DOCKER_IMAGE='roasterproject/centos roasterproject/ubuntu roasterproject/debian'
 DOCKER_IMAGE="$(sed 's/[[:space:]][[:space:]]*/ /g' <<< "$DOCKER_IMAGE" | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//')"
@@ -26,18 +28,18 @@ if grep '[[:space:]]' <<< "$DOCKER_IMAGE" >/dev/null; then
 fi
 
 image_size="$(set -e;
-    sudo docker inspect "$DOCKER_IMAGE" \
+    $sudo_docker inspect "$DOCKER_IMAGE" \
     | jq -er '.[].Size'
 )"
 
 image_size="$(set -e;
-    sudo docker run --rm -i --entrypoint '' "$DOCKER_IMAGE" bash -c "du --exclude=/{dev,proc} -B1 -cs '$DIR'"   \
+    $sudo_docker run --rm -i --entrypoint '' "$DOCKER_IMAGE" bash -c "du --exclude=/{dev,proc} -B1 -cs '$DIR'"   \
     | tail -n1                                                                                                  \
     | cut -f1
 )"
 
 layer_size="$(set -e;
-    sudo docker inspect "$DOCKER_IMAGE"                                             \
+    $sudo_docker inspect "$DOCKER_IMAGE"                                             \
     | jq -er '.[].GraphDriver.Data.LowerDir + ":" + .[].GraphDriver.Data.UpperDir'  \
     | grep -v null                                                                  \
     | xargs -d: -n1                                                                 \
