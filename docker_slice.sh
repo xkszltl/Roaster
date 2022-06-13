@@ -25,6 +25,14 @@ if [ ! -d "$src/" ]; then
     exit 1
 fi
 
+# Generate file list to rsync:
+# - Filter out docker files.
+# - Filter out tmp/system files.
+# - Sort for consistency across calls/layers.
+# - Reshape list to matrix and take a prefix of columns for incremental rsync.
+# - Flatten and reorder the delta to the end, by tag+sort, to preserve committed hard links.
+# - Change abs path in src dir to rel path.
+# - Filter out docker networking filters.
 sudo find "$src/" -mindepth 1 -maxdepth 1           \
 | grep -v "^$src_grep_esc/\."                       \
 | grep -v -e"^$src_grep_esc/"{dev,proc,sys}'$'      \
@@ -34,9 +42,14 @@ sudo find "$src/" -mindepth 1 -maxdepth 1           \
 | sort -u                                           \
 | paste -d'\v' $(seq "$n_layers" | sed 's/..*/-/')  \
 | cut -d"$(printf '\v')" -f"-$layer"                \
+| sed 's/\('"$(printf '\v')"'\)/\10 /g'             \
+| sed 's/\(.*'"$(printf '\v')"'\)0 /\11 /'          \
+| sed 's/^/0 /'                                     \
 | tr '\v' '\n'                                      \
+| sort                                              \
+| sed 's/^[0-9] //'                                 \
 | sed -n 's/^'"$src_sed_esc"'\//\//p'               \
-| grep .                                            \
+| grep '.'                                          \
 | grep -v -e"^/etc/"{hosts,'resolv\.conf'}'$'       \
 | sudo rsync                                        \
     --acls                                          \
