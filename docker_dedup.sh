@@ -28,12 +28,12 @@ trap "trap - SIGTERM; $(sed 's/^\(..*\)$/rm \-rf "\1"/' <<< "$chksum_dir"); kill
 
 # Hash metadata+data, permissively, and report inexact matches as suggestions.
 # Record as symlink if never seen, or hard link to target of the symlink.
-cat "$@"                                                                                    \
-| sort -u                                                                                   \
-| $(which parallel >/dev/null 2>&1 && echo "parallel -j$(nproc) -km" || echo 'xargs -rI{}') \
-    find {} -type f                                                                         \
-| sort -u                                                                                   \
-| $(which parallel >/dev/null 2>&1 && echo "parallel -j$(nproc) -k" || echo 'xargs -rI{}')  \
+cat "$@"                                                                                        \
+| sort -u                                                                                       \
+| $(which parallel >/dev/null 2>&1 && echo "parallel -j$(nproc) -kmq" || echo 'xargs -rI{}')    \
+    find {} -type f                                                                             \
+| sort -u                                                                                       \
+| $(which parallel >/dev/null 2>&1 && echo "parallel -j$(nproc) -kq" || echo 'xargs -rI{}')     \
     bash -c "$(printf '%s' '
             set -e;
             src='"'"'{}'"'"';

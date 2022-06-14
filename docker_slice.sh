@@ -25,29 +25,70 @@ if [ ! -d "$src/" ]; then
     exit 1
 fi
 
+ctx="$(mktemp -d "/tmp/$(basename "$0")-ctx-XXXXXXXX")"
+trap "trap - SIGTERM; $(sed 's/^\(..*\)$/rm \-rf "\1"/' <<< "$ctx"); kill -- -'$$'" SIGINT SIGTERM EXIT
+
 # Generate file list to rsync:
 # - Filter out docker files.
 # - Filter out tmp/system files.
+# - Filter out docker networking files.
 # - Sort for consistency across calls/layers.
-# - Reshape list to matrix and take a prefix of columns for incremental rsync.
-# - Flatten and reorder the delta to the end, by tag+sort, to preserve committed hard links.
-# - Change abs path in src dir to rel path.
-# - Filter out docker networking filters.
-sudo find "$src/" -mindepth 1 -maxdepth 1                                                   \
-| grep -v "^$src_grep_esc/\."                                                               \
-| grep -v -e"^$src_grep_esc/"{dev,proc,sys}'$'                                              \
-| grep -v -e"^$src_grep_esc/"{media,mnt,run,tmp}'$'                                         \
-| $(which parallel >/dev/null 2>&1 && echo "parallel -j$(nproc) -km" || echo 'xargs -rI{}') \
-    find {} -not -type d                                                                    \
-| sort -u                                                                                   \
-| paste -d'\v' $(seq "$n_layers" | sed 's/..*/-/')                                          \
-| cut -d"$(printf '\v')" -f"-$layer"                                                        \
-| sed 's/\('"$(printf '\v')"'\)/\10 /g'                                                     \
-| sed 's/\(.*'"$(printf '\v')"'\)0 /\11 /'                                                  \
-| sed 's/^/0 /'                                                                             \
-| tr '\v' '\n'                                                                              \
-| sort                                                                                      \
-| sed 's/^[0-9] //'                                                                         \
+sudo find "$src/" -mindepth 1 -maxdepth 1                                                       \
+| grep -v "^$src_grep_esc/\."                                                                   \
+| grep -v -e"^$src_grep_esc/"{dev,proc,sys}'$'                                                  \
+| grep -v -e"^$src_grep_esc/"{media,mnt,run,tmp}'$'                                             \
+| grep -v -e"^$src_grep_esc/etc/"{hosts,'resolv\.conf'}'$'                                      \
+| $(which parallel >/dev/null 2>&1 && echo "parallel -j$(nproc) -kmq" || echo 'xargs -rI{}')    \
+    find {} -not -type d                                                                        \
+| sort -u                                                                                       \
+> "$ctx/all_files.txt"
+
+# Reshape list to matrix and take a columns for incremental rsync.
+printf '\033[36m[INFO] Enlist filesystem to rebase.\033[0m\n' >&2
+cat "$ctx/all_files.txt"                            \
+| paste -d'\v' $(seq "$n_layers" | sed 's/..*/-/')  \
+| cut -d"$(printf '\v')" -f"$layer"                 \
+> "$ctx/delta_files.txt"
+
+# List multi-linked inodes to sync.
+mkdir -p "$ctx/inode"
+cat "$ctx/delta_files.txt"  \
+| wc -l                     \
+| xargs printf '\033[36m[INFO] Extract %d inode ID.\033[0m\n' >&2
+
+pushd "$ctx" >/dev/null
+cat "$ctx/delta_files.txt"                                                                  \
+| $(which parallel >/dev/null 2>&1 && echo "parallel -j$(nproc) -mq" || echo 'xargs -rI{}') \
+    stat -c '%h %i' {}                                                                      \
+| grep -v '^[01] '                                                                          \
+| cut -d' ' -f2                                                                             \
+| $(which parallel >/dev/null 2>&1 && echo "parallel -j$(nproc) -mq" || echo 'xargs -rI{}') \
+    touch {}
+popd >/dev/null
+
+# Docker storage driver may not support hard links across layers.
+# Reverse look up for multi-linked paths of inodes in list.
+touch "$ctx/closure_files.txt"
+if [ "$(find "$ctx/inode" -type f | wc -l)" -gt 0 ]; then
+    printf '\033[36m[INFO] Create closure for %d potential inode(s).\033[0m\n' "$(find "$ctx/inode" -type f | wc -l)" >&2
+    cat "$ctx/all_files.txt"                                                                    \
+    | $(which parallel >/dev/null 2>&1 && echo "parallel -j$(nproc) -mq" || echo 'xargs -rI{}') \
+        stat -c "[ '%h' -le 1 ] || [ ! -f '$ctx/inode/%i' ] || printf '%s' '%n'" {}             \
+    | cat <(printf 'set -e\n') -                                                                \
+    | bash                                                                                      \
+    | sort -u                                                                                   \
+    > "$ctx/closure_files.txt"
+fi
+rm -rf "$ctx/inode"
+
+# Change abs path in src dir to rel path.
+wc -l "$ctx/"{delta,closure}"_files.txt"    \
+| head -n2                                  \
+| sed 's/^[[:space:]]*//'                   \
+| sed 's/[[:space:]].*//'                   \
+| paste -s -                                \
+| xargs -L1 printf '\033[36m[INFO] Sync %d file(s) for layer delta with %s extra(s) in inode closure.\033[0m\n'
+cat "$ctx/"{delta,closure}"_files.txt"                                                      \
 | sed -n 's/^'"$src_sed_esc"'\//\//p'                                                       \
 | grep '.'                                                                                  \
 | grep -v -e"^/etc/"{hosts,'resolv\.conf'}'$'                                               \
@@ -62,6 +103,9 @@ sudo find "$src/" -mindepth 1 -maxdepth 1                                       
     --xattrs                                                                                \
     "$src/"                                                                                 \
     "$dst/"
+
+rm -rf "$ctx"
+trap - SIGINT SIGTERM EXIT
 
 if [ "$layer" -ge "$n_layers" ]; then
     printf '\033[32m[INFO] Caping on layer %d.\033[0m\n' "$layer" >&2

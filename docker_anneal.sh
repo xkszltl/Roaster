@@ -69,7 +69,8 @@ RUN --mount=type=bind,from=util-pre,target=/mnt/util-pre \\
 FROM base AS bootstrap
 RUN --mount=type=bind,from=util-install,target=/mnt/util-install \\
     set -e; \\
-    /mnt/util-install/distro_install.sh find,findutils grep rsync sed; \\
+    /mnt/util-install/distro_install.sh find,findutils grep parallel rsync sed; \\
+    echo 'will cite' | sudo parallel --citation || sudo parallel --will-cite < /dev/null; \\
     truncate -s0 ~/.bash_history;
 
 FROM bootstrap AS slice
