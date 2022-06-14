@@ -74,7 +74,7 @@ if [ "$(find "$ctx/inode" -type f | wc -l)" -gt 0 ]; then
     printf '\033[36m[INFO] Create closure for %d potential inode(s).\033[0m\n' "$(find "$ctx/inode" -type f | wc -l)" >&2
     cat "$ctx/all_files.txt"                                                                    \
     | $(which parallel >/dev/null 2>&1 && echo "parallel -j$(nproc) -mq" || echo 'xargs -rI{}') \
-        stat -c "[ '%h' -le 1 ] || [ ! -f '$ctx/inode/%i' ] || printf '%s' '%n'" {}             \
+        stat -c "[ '%h' -le 1 ] || [ ! -f '$ctx/inode/%i' ] || printf '%%s\\n' '%n'" {}         \
     | cat <(printf 'set -e\n') -                                                                \
     | bash                                                                                      \
     | sort -u                                                                                   \
