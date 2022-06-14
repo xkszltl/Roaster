@@ -48,6 +48,7 @@ printf '\033[36m[INFO] Enlist filesystem to rebase.\033[0m\n' >&2
 cat "$ctx/all_files.txt"                            \
 | paste -d'\v' $(seq "$n_layers" | sed 's/..*/-/')  \
 | cut -d"$(printf '\v')" -f"$layer"                 \
+| grep '.'                                          \
 > "$ctx/delta_files.txt"
 
 # List multi-linked inodes to sync.
@@ -56,7 +57,7 @@ cat "$ctx/delta_files.txt"  \
 | wc -l                     \
 | xargs printf '\033[36m[INFO] Extract %d inode ID.\033[0m\n' >&2
 
-pushd "$ctx" >/dev/null
+pushd "$ctx/inode" >/dev/null
 cat "$ctx/delta_files.txt"                                                                  \
 | $(which parallel >/dev/null 2>&1 && echo "parallel -j$(nproc) -mq" || echo 'xargs -rI{}') \
     stat -c '%h %i' {}                                                                      \
