@@ -198,7 +198,6 @@ RUN set -e; \
             pigz \
             powertop \
             procps \
-            pstack \
             pv \
             pybind11-dev \
             python3{,-pip} \
