@@ -62,29 +62,33 @@
         sudo sed -i 's/http:\/\//https:\/\//' "/etc/yum.repos.d/cuda-rhel$DISTRO_VERSION_ID.repo"
         RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" "cuda-rhel$DISTRO_VERSION_ID-$(uname -m)"
 
-        (
-            set -xe
+        case "$DISTRO_ID-$DISTRO_VERSION_ID" in
+        'centos-7' | 'centos-8' | 'rhel-7' | 'rhel-8' | 'scientific-'*)
+            (
+                set -xe
 
-            nvml_repo="https://developer.download.nvidia.com/compute/machine-learning/repos"
-            until [ "$nvml_repo_file_dist" ]; do nvml_repo_file_dist="$(set -xe && curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$nvml_repo" | sed -n "s/.*href='\($(sed 's/\.//g' <<< "rhel$DISTRO_VERSION_ID")[^']*\)\/.*/\1/p" | sort -V | tail -n1 || sleep 5)"; done
-            nvml_repo="$nvml_repo/$nvml_repo_file_dist/x86_64"
-            until [ "$nvml_repo_file_repo" ]; do nvml_repo_file_repo="$(set -xe && curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$nvml_repo" | sed -n "s/.*href='\(nvidia-machine-learning-repo-[^']*\).*/\1/p" | sort -V | tail -n1 || sleep 5)"; done
-            nvml_repo="$nvml_repo/$nvml_repo_file_repo"
-            for retry in $(seq 100 -1 0); do
-                until sudo dnf install -y "$nvml_repo"; do echo "Retrying"; sleep 1; done
-                (
-                    set -e
-                    xargs -n1 <<< 'baseurl name' | xargs -I{} grep "^[[:space:]]*{}[[:space:]]*=" '/etc/yum.repos.d/nvidia-machine-learning.repo'
-                    ! grep '[Ff][Aa][Ii][Ll]' '/etc/yum.repos.d/nvidia-machine-learning.repo'
-                    ! grep 'ssl_handshake' '/etc/yum.repos.d/nvidia-machine-learning.repo'
-                ) && break
-                sudo rm -f '/etc/yum.repos.d/nvidia-machine-learning.repo'
-                echo "Retry. $(expr "$retry" - 1) time(s) left."
-                sleep 5
-            done
-        )
-        sudo sed -i 's/http:\/\//https:\/\//' '/etc/yum.repos.d/nvidia-machine-learning.repo'
-        RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" nvidia-machine-learning
+                nvml_repo="https://developer.download.nvidia.com/compute/machine-learning/repos"
+                until [ "$nvml_repo_file_dist" ]; do nvml_repo_file_dist="$(set -xe && curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$nvml_repo" | sed -n "s/.*href='\($(sed 's/\.//g' <<< "rhel$DISTRO_VERSION_ID")[^']*\)\/.*/\1/p" | sort -V | tail -n1 || sleep 5)"; done
+                nvml_repo="$nvml_repo/$nvml_repo_file_dist/x86_64"
+                until [ "$nvml_repo_file_repo" ]; do nvml_repo_file_repo="$(set -xe && curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$nvml_repo" | sed -n "s/.*href='\(nvidia-machine-learning-repo-[^']*\).*/\1/p" | sort -V | tail -n1 || sleep 5)"; done
+                nvml_repo="$nvml_repo/$nvml_repo_file_repo"
+                for retry in $(seq 100 -1 0); do
+                    until sudo dnf install -y "$nvml_repo"; do echo "Retrying"; sleep 1; done
+                    (
+                        set -e
+                        xargs -n1 <<< 'baseurl name' | xargs -I{} grep "^[[:space:]]*{}[[:space:]]*=" '/etc/yum.repos.d/nvidia-machine-learning.repo'
+                        ! grep '[Ff][Aa][Ii][Ll]' '/etc/yum.repos.d/nvidia-machine-learning.repo'
+                        ! grep 'ssl_handshake' '/etc/yum.repos.d/nvidia-machine-learning.repo'
+                    ) && break
+                    sudo rm -f '/etc/yum.repos.d/nvidia-machine-learning.repo'
+                    echo "Retry. $(expr "$retry" - 1) time(s) left."
+                    sleep 5
+                done
+            )
+            sudo sed -i 's/http:\/\//https:\/\//' '/etc/yum.repos.d/nvidia-machine-learning.repo'
+            RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" nvidia-machine-learning
+            ;;
+        esac
 
         # Intel oneAPI.
         sudo dnf config-manager --add-repo "$ROOT_DIR/repos/oneAPI.repo"
@@ -191,29 +195,32 @@
         [ "_$GIT_MIRROR" != "_$GIT_MIRROR_CODINGCAFE" ] || "$ROOT_DIR/apply_cache.sh" cuda
         sudo apt-get update -y
 
-        for retry in $(seq 20 -1 0); do
-            [ "_$DISTRO_ID" != '_debian' ] || break
-            [ "$retry" -gt 0 ]
-            (
-                set -xe
-                cd "$SCRATCH"
+        case "$DISTRO_ID-$DISTRO_VERSION_ID" in
+        'ubuntu-14.04' | 'ubuntu-16.04' | 'ubuntu-18.04' | 'ubuntu-20.04')
+            for retry in $(seq 20 -1 0); do
+                [ "$retry" -gt 0 ]
+                (
+                    set -xe
+                    cd "$SCRATCH"
 
-                rm -rf 'nvml_repo'
-                mkdir -p 'nvml_repo'
-                cd 'nvml_repo'
-                nvml_repo="https://developer.download.nvidia.com/compute/machine-learning/repos"
-                until [ "$nvml_repo_file_dist" ]; do nvml_repo_file_dist="$(set -xe && curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$nvml_repo" | sed -n "s/.*href='\($(sed 's/\.//g' <<< "$DISTRO_ID$DISTRO_VERSION_ID")[^']*\)\/.*/\1/p" | sort -V | tail -n1 || sleep 5)"; done
-                nvml_repo="$nvml_repo/$nvml_repo_file_dist/x86_64"
-                until [ "$nvml_repo_file_repo" ]; do nvml_repo_file_repo="$(set -xe && curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$nvml_repo" | sed -n "s/.*href='\(nvidia-machine-learning-repo-[^']*\).*/\1/p" | sort -V | tail -n1 || sleep 5)"; done
-                nvml_repo="$nvml_repo/$nvml_repo_file_repo"
-                curl -SLv --retry 100 $curl_connref --retry-delay 5 "$nvml_repo" > "$(basename "$nvml_repo")"
-                sudo DEBIAN_FRONTEND=noninteractive apt-get install -y "./$(basename "$nvml_repo")"
-                rm -rf "$(basename "$nvml_repo")"
-                sudo sed -i 's/http:\/\//https:\/\//' '/etc/apt/sources.list.d/nvidia-machine-learning.list'
-            ) && break
-            echo "Retry. $(expr "$retry" - 1) time(s) left."
-            sleep 5
-        done
+                    rm -rf 'nvml_repo'
+                    mkdir -p 'nvml_repo'
+                    cd 'nvml_repo'
+                    nvml_repo="https://developer.download.nvidia.com/compute/machine-learning/repos"
+                    until [ "$nvml_repo_file_dist" ]; do nvml_repo_file_dist="$(set -xe && curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$nvml_repo" | sed -n "s/.*href='\($(sed 's/\.//g' <<< "$DISTRO_ID$DISTRO_VERSION_ID")[^']*\)\/.*/\1/p" | sort -V | tail -n1 || sleep 5)"; done
+                    nvml_repo="$nvml_repo/$nvml_repo_file_dist/x86_64"
+                    until [ "$nvml_repo_file_repo" ]; do nvml_repo_file_repo="$(set -xe && curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$nvml_repo" | sed -n "s/.*href='\(nvidia-machine-learning-repo-[^']*\).*/\1/p" | sort -V | tail -n1 || sleep 5)"; done
+                    nvml_repo="$nvml_repo/$nvml_repo_file_repo"
+                    curl -SLv --retry 100 $curl_connref --retry-delay 5 "$nvml_repo" > "$(basename "$nvml_repo")"
+                    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y "./$(basename "$nvml_repo")"
+                    rm -rf "$(basename "$nvml_repo")"
+                    sudo sed -i 's/http:\/\//https:\/\//' '/etc/apt/sources.list.d/nvidia-machine-learning.list'
+                ) && break
+                echo "Retry. $(expr "$retry" - 1) time(s) left."
+                sleep 5
+            done
+            ;;
+        esac
 
         # Intel oneAPI.
         curl -sSL --retry 10000 $curl_connref --retry-delay 1 "https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB" | sudo APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key add -
