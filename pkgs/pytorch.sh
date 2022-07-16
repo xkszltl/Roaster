@@ -48,6 +48,9 @@
             # C++ 17 is required for RocksDB 7.
             # - https://github.com/pytorch/pytorch/pull/75741
             git cherry-pick 88e2229a
+            # Allow configuring C++ std.
+            # - https://github.com/pytorch/pytorch/pull/75519
+            git cherry-pick dff70a5e
         fi
         ;;
     esac
@@ -57,9 +60,7 @@
     # Patches:
     # - Target-specific compile flags should respect global vars.
     #   https://github.com/pytorch/pytorch/pull/75729
-    # - Allow configuring C++ std.
-    #   https://github.com/pytorch/pytorch/pull/75519
-    PATCHES="lstm cxxopt std"
+    PATCHES="lstm cxxopt"
     for i in $PATCHES; do
         git fetch patch "$i"
         git cherry-pick FETCH_HEAD
