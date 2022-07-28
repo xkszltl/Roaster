@@ -65,7 +65,7 @@ giampaolo/psutil,\
 github/{git-lfs,gitignore},\
 golang/{appengine,benchmarks,dep,example,freetype,glog,go{,frontend},groupcache,leveldb,mock,oauth2,protobuf,snappy,term,winstrap},\
 goldmann/docker-squash,\
-google/{benchmark,bloaty,boringssl,breakpad,flatbuffers,gemmlowp,glog,googletest,gtest-parallel,jax,leveldb,libnop,libprotobuf-mutator,nsync,python-fire,protobuf,re2,skia,snappy,upb,XNNPACK},\
+google/{benchmark,bloaty,boringssl,breakpad,flatbuffers,gemmlowp,glog,googletest,gtest-parallel,jax,leveldb,libnop,libprotobuf-mutator,nsync,python-fire,protobuf,re2,sentencepiece,skia,snappy,upb,XNNPACK},\
 googleapis/googleapis,\
 GoogleContainerTools/{base-images-docker,container-{debug-support,diff,structure-test},distroless,jib{,-extensions},kaniko,kpt{,-functions-{catalog,sdk}},skaffold},\
 googlefonts/{fontmake,noto-{cjk,emoji,fonts,sans-hebrew,source},nototools,robotoslab},\
