@@ -5,12 +5,16 @@
 [ -e $STAGE/onnx ] && ( set -xe
     cd $SCRATCH
 
+    # Known issues:
+    # - SciPy 1.8.1 does not work with Cython 0.29.31.
+    #   Skip and take 1.9 RC until released.
+    #   https://github.com/scipy/scipy/issues/16718
     "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  \
         cython/cython                               \
         benjaminp/six                               \
         'pytest-dev/pytest,[3.6=7.0.]'              \
         'numpy/numpy,v[3.6=v1.19.|3.7=v1.21.]'      \
-        'scipy/scipy,v[3.6=v1.5.|3.7=v1.7.]'        \
+        'scipy/scipy,v1.9.0rc[3.6=v1.5.|3.7=v1.7.]' \
         'scikit-learn/scikit-learn,[3.6=0.24.|3.7=1.0.]'
 
     # ------------------------------------------------------------
