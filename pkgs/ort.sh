@@ -5,9 +5,12 @@
 [ -e $STAGE/ort ] && ( set -xe
     cd $SCRATCH
 
+    # Known issues:
+    # - SciPy 1.8.1 does not work with Cython 0.29.31.
+    #   https://github.com/scipy/scipy/issues/16718
     "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  \
         pypa/packaging                              \
-        cython/cython                               \
+        cython/cython,0.29.30                       \
         benjaminp/six                               \
         pycqa/flake8                                \
         'pytest-dev/pytest,[3.6=7.0.]'              \
