@@ -326,6 +326,7 @@ RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755
 RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh grpc
 RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh libpng
 RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh mkl-dnn
+RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh sentencepiece
 RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh opencv
 RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh leveldb
 RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh rocksdb

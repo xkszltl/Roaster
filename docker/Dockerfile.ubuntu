@@ -322,6 +322,7 @@ RUN --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0
 RUN --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh libpng
 RUN --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh libgdiplus
 RUN --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh mkl-dnn
+RUN --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh sentencepiece
 RUN --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh opencv
 RUN --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh leveldb
 RUN --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh rocksdb
