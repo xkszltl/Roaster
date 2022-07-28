@@ -33,7 +33,8 @@ for subset in pkg-{stable,skip,all}; do
                 octave{,-{control,devel,doc,GeographicLib,general,image,io,signal,statistics}}
                 [!] {gdb,{l,s}trace}{,-*}
                 [!] {pax-utils,prelink}{,-*}
-                {gperf,gperftools,valgrind,perf}{,-*}
+                {gperf,valgrind,perf}{,-*}
+                gperftools
                 [!] autoconf{,-archive}
                 [!] libtool{,-ltdl{,-devel}}
                 [!] make

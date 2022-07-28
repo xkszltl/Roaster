@@ -144,6 +144,7 @@ RUN set -e; \
             git{,-{extras,lfs}} \
             gnome-keyring{,'-*'} \
             gnuplot \
+            google-perftools libgoogle-perftools-dev \
             gperf \
             gstreamer1.0-tools libgstreamer1.0-dev \
             gzip \
