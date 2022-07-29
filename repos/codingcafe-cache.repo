@@ -431,7 +431,8 @@ enabled=0
 name=[Cache] gitlab_gitlab-ce
 baseurl=https://repo.codingcafe.org/gitlab/gitlab-ce/el/$releasever/$basearch
 gpgcheck=0
-gpgkey=https://packages.gitlab.com/gpg.key
+gpgkey=https://packages.gitlab.com/gitlab/gitlab-ce/gpgkey
+       https://packages.gitlab.com/gitlab/gitlab-ce/gpgkey/gitlab-gitlab-ce-3D645A26AB9FBD22.pub.gpg
 priority=2
 enabled=0
 
@@ -439,6 +440,7 @@ enabled=0
 name=[Cache] gitlab_gitlab-ce-source
 baseurl=https://repo.codingcafe.org/gitlab/gitlab-ce/el/$releasever/SRPMS
 gpgcheck=0
-gpgkey=https://packages.gitlab.com/gpg.key
+gpgkey=https://packages.gitlab.com/gitlab/gitlab-ce/gpgkey
+       https://packages.gitlab.com/gitlab/gitlab-ce/gpgkey/gitlab-gitlab-ce-3D645A26AB9FBD22.pub.gpg
 priority=2
 enabled=0
