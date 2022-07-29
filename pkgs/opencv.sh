@@ -5,7 +5,9 @@
 [ -e $STAGE/opencv ] && ( set -xe
     cd $SCRATCH
 
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" opencv/opencv,
+    # Pin to 4.5 due to undefined OpenGL references on CentOS 7/Ubuntu 18.04.
+    # - https://github.com/opencv/opencv_contrib/issues/3299
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" opencv/opencv,4.5.
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd opencv
 
