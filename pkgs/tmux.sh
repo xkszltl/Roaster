@@ -49,6 +49,7 @@ set -g @plugin '$GIT_MIRROR/tmux-plugins/tmux-continuum.git'
 set -g @resurrect-processes 'watch glances "/bin/python3 /usr/bin/glances" "/bin/python3 /usr/local/bin/glances" "/usr/bin/python3 /usr/bin/glances" "/usr/bin/python3 /usr/local/bin/glances"'
 set -g @continuum-restore 'on'
 
+set -g history-limit 100000
 set -g mouse on
 
 run -b '~/.tmux/plugins/tpm/tpm'
