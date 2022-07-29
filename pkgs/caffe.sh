@@ -5,11 +5,8 @@
 [ -e $STAGE/caffe ] && ( set -xe
     cd $SCRATCH
 
-    # Known issues:
-    # - SciPy 1.8.1 does not work with Cython 0.29.31.
-    #   https://github.com/scipy/scipy/issues/16718
     "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  \
-        cython/cython,0.29.30                       \
+        cython/cython                               \
         'numpy/numpy,v[3.6=v1.19.|3.7=v1.21.]'
 
     . "$ROOT_DIR/pkgs/utils/git/version.sh" BVLC/caffe,master
