@@ -13,7 +13,28 @@
         'pytest-dev/pytest,[3.6=7.0.]'                      \
         Frozenball/pytest-sugar,master                      \
         'numpy/numpy,v[3.6=v1.19.|3.7=v1.21.]'              \
-        'scipy/scipy,v[3.6=v1.5.|3.7=v1.7.]'                \
+
+    # Known issues:
+    # - SciPy meson build uses the wrong casing of OpenBLAS for CMake.
+    #   On Debian, pkg-config also searches in /usr/local and works as a fallback, but not on CentOS 7.
+    #   https://github.com/scipy/scipy/issues/16308
+    (
+        set -xe
+
+        case "$DISTRO_ID" in
+        'centos' | 'fedora' | 'rhel' | 'scientific')
+            export PKG_CONFIG_PATH="$(rpm -ql roaster-openblas | grep -v '/src/' | grep '\.pc' | xargs -rI{} dirname {} | sort -u | paste -sd: -)"
+            ;;
+        'debian' | 'linuxmint' | 'ubuntu')
+            export PKG_CONFIG_PATH="$(dpkg -L roaster-openblas | grep -v '/src/' | grep '\.pc' | xargs -rI{} dirname {} | sort -u | paste -sd: -)"
+            ;;
+        esac
+
+        "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"          \
+            'scipy/scipy,v[3.6=v1.5.|3.7=v1.7.]'                \
+    )
+
+    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"          \
         'networkx/networkx,networkx-[3.6=networkx-2.5.]'    \
         micheles/decorator
     case "$(python3 --version | cut -d' ' -f2 | cut -d. -f-2)" in

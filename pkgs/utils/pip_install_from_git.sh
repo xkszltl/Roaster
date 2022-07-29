@@ -129,7 +129,7 @@ for i in 'pypa/setuptools,v60.[3.6=v59.6.]' 'pypa/pip,[3.6=21.]' pypa/wheel Pyth
             set +x
             for opt in '' '-I' ';'; do
                 [ "_$opt" != '_;' ]
-                ! /usr/bin/sudo -E PATH="$PATH" PIP_INDEX_URL="$PIP_INDEX_URL" "$py" -m pip install --no-clean -Uv $opt "$URL" || break
+                ! /usr/bin/sudo -E PATH="$PATH" PIP_INDEX_URL="$PIP_INDEX_URL" PKG_CONFIG_PATH="$PKG_CONFIG_PATH" "$py" -m pip install --no-clean -Uv $opt "$URL" || break
             done
         )
 
