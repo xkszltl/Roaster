@@ -39,6 +39,7 @@ cplusplus/{draft,papers},\
 cython/cython,\
 DaveGamble/cJSON,\
 dcleblanc/{CAdES,SafeInt},\
+denyhosts/denyhosts,\
 dmlc/{dlpack,dmlc-core,gluon-cv,gluon-nlp,HalideIR,tvm,xgboost},\
 docker/docker-ce,\
 docopt/docopt,\
