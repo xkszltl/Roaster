@@ -12,7 +12,7 @@
     # UCT v1.13.0 failed to build on Ubuntu 18.04:
     # - https://github.com/openucx/ucx/issues/8412
     # - https://github.com/openucx/ucx/pull/8413
-    git merge v1.13.x
+    git pull origin v1.13.x
 
     . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
 
