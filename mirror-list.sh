@@ -152,7 +152,7 @@ ROCm-Developer-Tools/HIP,\
 ryd/chaosvpn,\
 SchedMD/slurm,\
 scikit-learn/{enhancement_proposals,examples-data,scikit-learn{,-benchmarks}},\
-scipy/{boost-headers-only,oldest-supported-numpy,scipy{,-cookbook,-mathjax,-sphinx-theme{,-v2}},weave},\
+scipy/{boost-headers-only,HiGHS,oldest-supported-numpy,PROPACK,scipy{,-cookbook,-mathjax,-sphinx-theme{,-v2}},unuran,weave},\
 shadowsocks/{ShadowsocksX-NG,ipset,lib{QtShadowsocks,bloom,cork},shadowsocks{,-go,-libev,-manager,-windows},v2ray-plugin},\
 shibatch/sleef,\
 simdjson/simdjson,\
