@@ -24,8 +24,11 @@
     git remote add patch "$GIT_MIRROR/xkszltl/onnxruntime.git"
 
     # Patches:
+    # - Ort 1.12.0 is incompatible with json-devel 3.6.1 on CentOS 7.
+    #   https://github.com/microsoft/onnxruntime/issues/12393
+    #   https://github.com/microsoft/onnxruntime/pull/12394
     # - Downloading archives from GitHub is unreliable.
-    PATCHES="abseil jemalloc"
+    PATCHES="json abseil jemalloc"
     for i in $PATCHES; do
         git fetch patch "$i"
         git cherry-pick FETCH_HEAD
