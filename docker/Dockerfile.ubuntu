@@ -189,6 +189,7 @@ RUN set -e; \
             net-tools \
             ninja-build \
             nvidia-container-runtime \
+            nvme-cli \
             openssh-{client,server} \
             pandoc \
             parallel \

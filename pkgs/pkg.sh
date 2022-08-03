@@ -94,6 +94,7 @@ for subset in pkg-{stable,skip,all}; do
                 [!]tuned{,-*}
                 [!] {{e2fs,btrfs-,xfs,ntfs}progs,xfsdump,nfs-utils}{,-*}
                 [!] fuse{,3}{,-devel,-libs}
+                nvme-cli
                 dd{,_}rescue{,-*}
                 [!] {docker-{ce,compose},container-selinux}{,-*}
                 createrepo{,_c}{,-*}

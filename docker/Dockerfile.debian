@@ -190,6 +190,7 @@ RUN set -e; \
             net-tools \
             netlabel-tools \
             ninja-build \
+            nvme-cli \
             openssh-{client,server} \
             pandoc \
             parallel \
