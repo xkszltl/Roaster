@@ -82,7 +82,8 @@ FROM "$STAGE_PREFIX"stage-pkg-skip AS stage-pkg-all
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
 RUN /etc/roaster/scripts/setup.sh pkg-all
-RUN --mount=type=tmpfs,target=/tmp /etc/roaster/scripts/setup.sh fpm firewall
+RUN --mount=type=tmpfs,target=/tmp \
+    /etc/roaster/scripts/setup.sh fpm firewall
 
 FROM "$STAGE_PREFIX"stage-pkg-all AS stage-auth
 
