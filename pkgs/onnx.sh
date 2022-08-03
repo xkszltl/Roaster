@@ -90,6 +90,8 @@
             -DCMAKE_CXX_COMPILER='$(which "$CXX")'
             -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
             -DONNX_GEN_PB_TYPE_STUBS=ON
+            -DONNX_USE_PROTOBUF_SHARED_LIBS=ON
+            -DONNXIFI_ENABLE_EXT=ON
         " ONNX_ML=1 "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" .
 
         mkdir -p build
@@ -109,6 +111,8 @@
             -DONNX_BUILD_TESTS=OFF                  \
             -DONNX_GEN_PB_TYPE_STUBS=ON             \
             -DONNX_ML=ON                            \
+            -DONNX_USE_PROTOBUF_SHARED_LIBS=ON      \
+            -DONNXIFI_ENABLE_EXT=ON                 \
             -G"Ninja"                               \
             ..
 

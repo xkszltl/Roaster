@@ -119,6 +119,8 @@
             -Donnxruntime_BUILD_SHARED_LIB=ON                   \
             -Donnxruntime_CUDA_HOME="$(realpath -e "$(dirname "$(which nvcc)")/..")"                                        \
             -Donnxruntime_CUDNN_HOME='/usr'                     \
+            -Donnxruntime_ENABLE_ATEN=ON                        \
+            -Donnxruntime_ENABLE_EXTERNAL_CUSTOM_OP_SCHEMAS=ON  \
             -Donnxruntime_ENABLE_LANGUAGE_INTEROP_OPS=ON        \
             -Donnxruntime_ENABLE_LTO=ON                         \
             -Donnxruntime_ENABLE_PYTHON=ON                      \
