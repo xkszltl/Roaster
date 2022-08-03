@@ -82,26 +82,28 @@ FROM "$STAGE_PREFIX"stage-pkg-skip AS stage-pkg-all
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
 RUN /etc/roaster/scripts/setup.sh pkg-all
-RUN /etc/roaster/scripts/setup.sh fpm firewall
+RUN --mount=type=tmpfs,--target=/tmp /etc/roaster/scripts/setup.sh fpm firewall
 
 FROM "$STAGE_PREFIX"stage-pkg-all AS stage-auth
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
-RUN --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 \
+RUN --mount=type=tmpfs,--target=/tmp \
+    --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 \
     /etc/roaster/scripts/setup.sh auth vim tmux
 
 FROM "$STAGE_PREFIX"stage-auth AS stage-tex
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
-RUN /etc/roaster/scripts/setup.sh tex
+RUN --mount=type=tmpfs,--target=/tmp /etc/roaster/scripts/setup.sh tex
 
 FROM "$STAGE_PREFIX"stage-tex AS stage-ss
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
-RUN --mount=type=secret,id=env-cred-usr,target=/etc/roaster/scripts/cred/env-cred-usr.sh,mode=500 \
+RUN --mount=type=tmpfs,--target=/tmp \
+    --mount=type=secret,id=env-cred-usr,target=/etc/roaster/scripts/cred/env-cred-usr.sh,mode=500 \
     --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 \
     /etc/roaster/scripts/setup.sh ss
 
@@ -109,43 +111,43 @@ FROM "$STAGE_PREFIX"stage-ss AS stage-intel
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
-RUN --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh intel
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh intel
 
 FROM "$STAGE_PREFIX"stage-intel AS stage-infra
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
-RUN --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh lz4 zstd cmake hiredis ccache c-ares axel ipt cuda ucx ompi
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh lz4 zstd cmake hiredis ccache c-ares axel ipt cuda ucx ompi
 
 FROM "$STAGE_PREFIX"stage-infra AS stage-llvm
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
-RUN --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh llvm-gcc llvm-clang
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh llvm-gcc llvm-clang
 
 FROM "$STAGE_PREFIX"stage-llvm AS stage-util
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
-RUN --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh boost jemalloc eigen openblas gtest benchmark gflags glog snappy protobuf nsync
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh boost jemalloc eigen openblas gtest benchmark gflags glog snappy protobuf nsync
 
 FROM "$STAGE_PREFIX"stage-util AS stage-misc
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
-RUN --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh catch2 jsoncpp rapidjson simdjson utf8proc pugixml pybind grpc libpng libgdiplus mkl-dnn sentencepiece opencv leveldb rocksdb lmdb
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh catch2 jsoncpp rapidjson simdjson utf8proc pugixml pybind grpc libpng libgdiplus mkl-dnn sentencepiece opencv leveldb rocksdb lmdb
 
 FROM "$STAGE_PREFIX"stage-misc AS stage-dl
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
-RUN --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh onnx pytorch torchvision apex
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh onnx pytorch torchvision apex
 
 FROM "$STAGE_PREFIX"stage-dl AS stage-ort
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
-RUN --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh ort
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755i --mount=type=tmpfs,target=/tmp /etc/roaster/scripts/setup.sh ort
 
 FROM "$STAGE_PREFIX"stage-ort AS stage-edit
 
@@ -161,6 +163,6 @@ RUN updatedb
 FROM "$IMAGE_REPO:breakpoint" AS resume
 
 COPY [".", "/etc/roaster/scripts"]
-RUN --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh
 
 FROM stage-edit

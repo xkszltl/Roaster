@@ -255,20 +255,22 @@ RUN set -e; \
     sudo setsebool -P samba_export_all_rw    1 || :; \
     sudo setsebool -P xserver_gnome_xdm      1 || :; \
     truncate -s0 ~/.bash_history;
-RUN /etc/roaster/scripts/setup.sh fpm firewall
+RUN --mount=type=tmpfs,--target=/tmp /etc/roaster/scripts/setup.sh fpm firewall
 
 FROM "$STAGE_PREFIX"stage-pkg AS stage-auth
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
-RUN --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 \
+RUN --mount=type=tmpfs,--target=/tmp \
+    --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 \
     /etc/roaster/scripts/setup.sh auth vim tmux
 
 FROM "$STAGE_PREFIX"stage-auth AS stage-ss
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
-RUN --mount=type=secret,id=env-cred-usr,target=/etc/roaster/scripts/cred/env-cred-usr.sh,mode=500 \
+RUN --mount=type=tmpfs,--target=/tmp \
+    --mount=type=secret,id=env-cred-usr,target=/etc/roaster/scripts/cred/env-cred-usr.sh,mode=500 \
     --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 \
     /etc/roaster/scripts/setup.sh ss
 
@@ -276,80 +278,80 @@ FROM "$STAGE_PREFIX"stage-ss AS stage-intel
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh intel
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh intel
 
 FROM "$STAGE_PREFIX"stage-intel AS stage-infra
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh lz4
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh zstd
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh cmake
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh hiredis
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh ccache
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh c-ares
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh axel
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh ipt
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh cuda
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh ucx
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh ompi
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh lz4
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh zstd
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh cmake
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh hiredis
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh ccache
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh c-ares
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh axel
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh ipt
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh cuda
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh ucx
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh ompi
 
 FROM "$STAGE_PREFIX"stage-infra AS stage-llvm
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh llvm-gcc llvm-clang
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh llvm-gcc llvm-clang
 
 FROM "$STAGE_PREFIX"stage-llvm AS stage-util
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh boost
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh jemalloc
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh eigen
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh openblas
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh gtest
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh benchmark
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh gflags
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh glog
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh snappy
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh protobuf
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh nsync
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh boost
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh jemalloc
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh eigen
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh openblas
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh gtest
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh benchmark
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh gflags
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh glog
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh snappy
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh protobuf
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh nsync
 
 FROM "$STAGE_PREFIX"stage-util AS stage-misc
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh catch2
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh jsoncpp
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh rapidjson
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh simdjson
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh utf8proc
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh pugixml
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh pybind
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh grpc
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh libpng
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh mkl-dnn
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh sentencepiece
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh opencv
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh leveldb
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh rocksdb
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh lmdb
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh catch2
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh jsoncpp
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh rapidjson
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh simdjson
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh utf8proc
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh pugixml
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh pybind
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh grpc
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh libpng
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh mkl-dnn
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh sentencepiece
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh opencv
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh leveldb
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh rocksdb
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh lmdb
 
 FROM "$STAGE_PREFIX"stage-misc AS stage-dl
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh onnx
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh pytorch
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh torchvision
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh apex
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh onnx
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh pytorch
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh torchvision
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh apex
 
 FROM "$STAGE_PREFIX"stage-dl AS stage-ort
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh ort
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh ort
 
 FROM "$STAGE_PREFIX"stage-ort AS stage-edit
 
@@ -365,6 +367,6 @@ RUN updatedb
 FROM "$IMAGE_REPO:breakpoint" AS resume
 
 COPY [".", "/etc/roaster/scripts"]
-RUN --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh
+RUN --mount=type=tmpfs,--target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh
 
 FROM stage-edit
