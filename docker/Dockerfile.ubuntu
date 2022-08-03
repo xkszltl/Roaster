@@ -256,13 +256,15 @@ FROM "$STAGE_PREFIX"stage-pkg AS stage-auth
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
-RUN /etc/roaster/scripts/setup.sh auth vim tmux
+RUN --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 \
+    /etc/roaster/scripts/setup.sh auth vim tmux
 
 FROM "$STAGE_PREFIX"stage-auth AS stage-ss
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
 RUN --mount=type=secret,id=env-cred-usr,target=/etc/roaster/scripts/cred/env-cred-usr.sh,mode=500 \
+    --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 \
     /etc/roaster/scripts/setup.sh ss
 
 FROM "$STAGE_PREFIX"stage-ss AS stage-intel
