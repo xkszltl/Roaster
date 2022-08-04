@@ -69,6 +69,15 @@ RUN --mount=type=bind,from=util-pre,target=/mnt/util-pre \\
 FROM base AS bootstrap
 RUN --mount=type=bind,from=util-install,target=/mnt/util-install \\
     set -e; \\
+    . '/etc/os-release'; \\
+    case "\$ID" in \\
+    'centos' | 'fedora' | 'rhel' | 'scientific') \\
+        /mnt/util-install/distro_install.sh ,epel-release; \\
+        ;; \\
+    esac; \\
+    truncate -s0 ~/.bash_history;
+RUN --mount=type=bind,from=util-install,target=/mnt/util-install \\
+    set -e; \\
     /mnt/util-install/distro_install.sh find,findutils grep parallel rsync sed; \\
     echo 'will cite' | sudo parallel --citation || sudo parallel --will-cite < /dev/null; \\
     truncate -s0 ~/.bash_history;
