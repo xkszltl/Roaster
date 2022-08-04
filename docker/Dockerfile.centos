@@ -148,7 +148,7 @@ FROM "$STAGE_PREFIX"stage-dl AS stage-ort
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755i --mount=type=tmpfs,target=/tmp /etc/roaster/scripts/setup.sh ort
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh ort
 
 FROM "$STAGE_PREFIX"stage-ort AS stage-edit
 
