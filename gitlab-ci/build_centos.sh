@@ -21,7 +21,10 @@ export BASE_DISTRO=centos
 for CI_JOB_STAGE in init repo font pkg-{stable,skip,all} auth tex ss intel infra llvm util misc dl ort edit finish; do
     export CI_JOB_STAGE
 
-    [ "$FIRST_STAGE" ] || [ "_$(sed 's/^[^\-]*\-//' <<< "$CI_COMMIT_REF_NAME")" = "_$CI_JOB_STAGE" ] || continue
+    if [ ! "$FIRST_STAGE" ] && [ "_$(sed 's/^[^\-]*\-//' <<< "$CI_COMMIT_REF_NAME")" != "_$CI_JOB_STAGE" ]; then
+        PREV_CI_JOB_STAGE="$CI_JOB_STAGE"
+        continue
+    fi
     [ "$FIRST_STAGE" ] || FIRST_STAGE="$CI_JOB_STAGE"
 
     case "$CI_JOB_STAGE" in
