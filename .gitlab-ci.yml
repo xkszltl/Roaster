@@ -235,9 +235,28 @@ edit:
   <<: *docker_cpu_build_stage
 
 push-edit:
-  stage: finish
+  stage: anneal
   only:
     - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|ss|tex|infra|llvm|util|misc|dl|ort|edit)$/
+  <<: *docker_push_stage
+
+anneal:
+  stage: anneal
+  retry: 2
+  tags:
+    - docker
+    - cpu
+  only:
+    - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|ss|tex|infra|llvm|util|misc|dl|ort|edit|anneal)$/
+  except:
+    - branches
+  script:
+    - src="$CI_REGISTRY_IMAGE/centos:stage-edit" dst="$CI_REGISTRY_IMAGE/centos:stage-anneal" docker_anneal.sh
+
+push-anneal:
+  stage: finish
+  only:
+    - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|ss|tex|infra|llvm|util|misc|dl|ort|edit|anneal)$/
   <<: *docker_push_stage
 
 finish:
@@ -247,11 +266,11 @@ finish:
     - docker
     - cpu
   only:
-    - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|ss|tex|infra|llvm|util|misc|dl|ort|edit|finish)$/
+    - /^(build|resume)-(init|repo|font|pkg-(stable|skip|all)|ss|tex|infra|llvm|util|misc|dl|ort|edit|anneal|finish)$/
   except:
     - branches
   script:
     - docker login --password-stdin --username $CI_REGISTRY_USER $CI_REGISTRY <<< "$CI_REGISTRY_PASSWORD"
-    - docker tag $CI_REGISTRY_IMAGE/centos:stage-edit $CI_REGISTRY_IMAGE/centos:latest
+    - docker tag $CI_REGISTRY_IMAGE/centos:stage-anneal $CI_REGISTRY_IMAGE/centos:latest
     - time docker push $CI_REGISTRY_IMAGE/centos:latest
 
