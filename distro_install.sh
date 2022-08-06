@@ -36,6 +36,9 @@ done
 # Pull distro repo.
 
 case "$DISTRO_ID" in
+'alpine')
+    $(! which sudo >/dev/null || echo sudo) apk update
+    ;;
 'centos' | 'fedora' | 'rhel' | 'scientific')
     $(! which sudo >/dev/null || echo sudo) which dnf >/dev/null 2>&1 && dnf makecache -y || $(! which sudo >/dev/null || echo sudo) yum makecache -y
     ;;
@@ -48,16 +51,25 @@ esac
 
 if ! which sudo; then
     case "$DISTRO_ID" in
-    'centos' | 'fedora' | 'rhel')
+    'alpine')
+        apk add sudo
+        ;;
+    'centos' | 'fedora' | 'rhel' | 'scientific')
         which dnf >/dev/null 2>&1 && dnf install -y sudo || yum install -y sudo
         ;;
-    'debian' | 'linuxmint' | 'ubuntu' | 'scientific')
+    'debian' | 'linuxmint' | 'ubuntu')
         DEBIAN_FRONTEND=noninteractive apt-get install -y sudo
         ;;
     esac
 fi
 
 case "$DISTRO_ID" in
+'alpine')
+    for pkg in $pkgs; do
+        sudo apk add "$pkg"
+    done
+    sudo rm -rf /var/cache/apk
+    ;;
 'centos' | 'fedora' | 'rhel' | 'scientific')
     for pkg in $pkgs; do
         which dnf >/dev/null 2>&1 && sudo dnf install -y "$pkg" || sudo yum install -y "$pkg"
