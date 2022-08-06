@@ -1,10 +1,12 @@
 #!/bin/bash
 
+# Expecting root permission.
+
 set -e
 
 cd "$(dirname "$0")"
 
-for cmd in find grep rsync sed sudo xargs; do
+for cmd in find grep rsync sed xargs; do
     ! which "$cmd" >/dev/null || continue
     printf '\033[31m[ERROR] Missing command "%s".\033[0m\n' "$cmd" >&2
     exit 1
@@ -33,7 +35,7 @@ trap "trap - SIGTERM; $(sed 's/^\(..*\)$/rm \-rf "\1"/' <<< "$ctx"); kill -- -'$
 # - Filter out tmp/system files.
 # - Filter out docker networking files.
 # - Sort for consistency across calls/layers.
-sudo find "$src/" -mindepth 1 -maxdepth 1                                                       \
+find "$src/" -mindepth 1 -maxdepth 1                                                            \
 | grep -v "^$src_grep_esc/\."                                                                   \
 | grep -v -e"^$src_grep_esc/"{dev,proc,sys}'$'                                                  \
 | grep -v -e"^$src_grep_esc/"{media,mnt,run,tmp}'$'                                             \
@@ -93,7 +95,7 @@ cat "$ctx/"{delta,closure}"_files.txt"                                          
 | sed -n 's/^'"$src_sed_esc"'\//\//p'                                                       \
 | grep '.'                                                                                  \
 | grep -v -e"^/etc/"{hosts,'resolv\.conf'}'$'                                               \
-| sudo rsync                                                                                \
+| rsync                                                                                     \
     --acls                                                                                  \
     --archive                                                                               \
     --files-from -                                                                          \
@@ -110,7 +112,7 @@ trap - SIGINT SIGTERM EXIT
 
 if [ "$layer" -ge "$n_layers" ]; then
     printf '\033[32m[INFO] Caping on layer %d.\033[0m\n' "$layer" >&2
-    sudo rsync                                                  \
+    rsync                                                       \
         --acls                                                  \
         --archive                                               \
         --delete                                                \
@@ -119,14 +121,14 @@ if [ "$layer" -ge "$n_layers" ]; then
         --inplace                                               \
         --preallocate                                           \
         --xattrs                                                \
-        $(sudo find "$src/" -mindepth 1 -maxdepth 1             \
+        $(find "$src/" -mindepth 1 -maxdepth 1                  \
             | grep -v "^$src_grep_esc/\."                       \
             | grep -v -e"^$src_grep_esc/"{dev,proc,sys}'$'      \
             | grep -v -e"^$src_grep_esc/"{media,mnt,run,tmp}'$' \
             | grep -v -e"^$src_grep_esc/"etc'$'                 \
             | sort)                                             \
         "$dst/"
-    sudo rsync                          \
+    rsync                               \
         --acls                          \
         --archive                       \
         --delete                        \
