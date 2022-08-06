@@ -119,6 +119,7 @@ RUN set -e; \
             byacc{,-j} \
             bzip2 pbzip2 \
             ccache \
+            chrpath \
             cmake{,-curses-gui} \
             coreutils \
             cpio \

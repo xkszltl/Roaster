@@ -37,6 +37,7 @@ for subset in pkg-{stable,skip,all}; do
                 gperftools
                 [!] autoconf{,-archive}
                 [!] libtool{,-ltdl{,-devel}}
+                [!] chrpath
                 [!] make
                 ninja-build
                 cmake{{,-{fedora,gui}},3{,-{data,doc,gui}}}
