@@ -61,29 +61,73 @@ FROM scratch AS util-slice
 COPY docker_slice.sh /
 
 FROM src AS pre
-RUN --mount=type=bind,from=util-pre,target=/mnt/util-pre \\
-    set -e; \\
-    '/mnt/util-pre/$(sed 's/\/\.\//'"$(printf '\v')"'/' <<< "$pre" | cut -d"$(printf '\v')" -f2)'; \\
+RUN --mount=type=bind,from=util-pre,target=/mnt/util-pre                                            \\
+    set -e;                                                                                         \\
+    '/mnt/util-pre/$(sed 's/\/\.\//'"$(printf '\v')"'/' <<< "$pre" | cut -d"$(printf '\v')" -f2)';  \\
     truncate -s0 ~/.bash_history;
 
 FROM base AS bootstrap
-RUN --mount=type=bind,from=util-install,target=/mnt/util-install \\
-    set -e; \\
-    . '/etc/os-release'; \\
-    case "\$ID" in \\
-    'centos' | 'fedora' | 'rhel' | 'scientific') \\
-        /mnt/util-install/distro_install.sh ,epel-release; \\
-        ;; \\
-    esac; \\
+RUN --mount=type=bind,from=util-install,target=/mnt/util-install    \\
+    set -e;                                                         \\
+    . '/etc/os-release';                                            \\
+    case "\$ID" in                                                  \\
+    'centos' | 'fedora' | 'rhel' | 'scientific')                    \\
+        /mnt/util-install/distro_install.sh ,epel-release;          \\
+        ;;                                                          \\
+    esac;                                                           \\
     truncate -s0 ~/.bash_history;
-RUN --mount=type=bind,from=util-install,target=/mnt/util-install \\
-    set -e; \\
-    /mnt/util-install/distro_install.sh find,findutils grep parallel rsync sed; \\
-    echo 'will cite' | sudo parallel --citation || sudo parallel --will-cite < /dev/null; \\
+RUN --mount=type=bind,from=util-install,target=/mnt/util-install                                    \\
+    set -e;                                                                                         \\
+    /mnt/util-install/distro_install.sh chrpath ,coreutils find,findutils grep parallel rsync sed;  \\
+    echo 'will cite' | sudo parallel --citation || sudo parallel --will-cite < /dev/null;           \\
+    truncate -s0 ~/.bash_history;
+
+FROM bootstrap AS util-bin
+RUN --mount=type=bind,from=util-install,target=/mnt/util-install    \\
+    set -e;                                                         \\
+    echo '#!/bin/sh' > /env.sh;                                     \\
+    chmod +x /env.sh;                                               \\
+    echo "\$PATH"                                                   \\
+    | tr ':' '\\n'                                                  \\
+    | sed -n 's/^\\//\\/mnt\\/util\\-bin\\//p'                      \\
+    | paste -sd: -                                                  \\
+    | sed 's/\\(..*\\)/'"'"'\\1'"'/"                                \\
+    | sed 's/\$/:\\\$PATH/'                                         \\
+    | xargs -rI{} printf "export %s=%s\\n" 'PATH'            {}     \\
+    >> /env.sh;                                                     \\
+    echo "\$LD_LIBRARY_PATH"                                        \\
+    | tr ':' '\\n'                                                  \\
+    | sed -n 's/^\\//\\/mnt\\/util\\-bin\\//p'                      \\
+    | paste -sd: -                                                  \\
+    | sed 's/\\(..*\\)/'"'"'\\1'"'/"                                \\
+    | sed 's/\$/:\\\$LD_LIBRARY_PATH/'                              \\
+    | xargs -rI{} printf "export %s=%s\\n" 'LD_LIBRARY_PATH' {}     \\
+    >> /env.sh;                                                     \\
+    ldconfig -Nv 2>/dev/null                                        \\
+    | grep '^/'                                                     \\
+    | cut -d: -f1                                                   \\
+    | sed -n 's/^\\//\\/mnt\\/util\\-bin\\//p'                      \\
+    | paste -sd: -                                                  \\
+    | sed 's/\\(..*\\)/'"'"'\\1'"'/"                                \\
+    | sed 's/\$/:\\\$LD_LIBRARY_PATH/'                              \\
+    | xargs -rI{} printf "export %s=%s\\n" 'LD_LIBRARY_PATH' {}     \\
+    >> /env.sh;                                                     \\
+    for bin in perl; do                                             \\
+        which perl                                                  \\
+        | xargs -rI{} chrpath -l {}                                 \\
+        | cut -d: -f2                                               \\
+        | cut -d= -f2                                               \\
+        | sed -n 's/^\\//\\/mnt\\/util\\-bin\//p'                   \\
+        | paste -sd: -                                              \\
+        | sed 's/\\(..*\\)/'"'"'\\1'"'/"                            \\
+        | sed 's/\$/:\\\$LD_LIBRARY_PATH/'                          \\
+        | xargs -rI{} printf "export %s=%s\\n" 'LD_LIBRARY_PATH' {} \\
+        >> /env.sh;                                                 \\
+    done;                                                           \\
     truncate -s0 ~/.bash_history;
 
 FROM bootstrap AS slice
-$(seq "$n_layers" | xargs -rI{} printf 'RUN --mount=type=bind,from=pre,target=/mnt/pre --mount=type=bind,from=util-slice,target=/mnt/util-slice src=/mnt/pre dst=/ layer="%d" n_layers="%d" /mnt/util-slice/docker_slice.sh\n' {} "$n_layers")
+$(seq "$n_layers" | xargs -rI{} printf 'RUN --mount=type=bind,from=pre,target=/mnt/pre --mount=type=bind,from=util-slice,target=/mnt/util-slice --mount=type=bind,from=util-bin,target=/mnt/util-bin set -e; . /mnt/util-bin/env.sh; src=/mnt/pre dst=/ layer="%d" n_layers="%d" /mnt/util-slice/docker_slice.sh\n' {} "$n_layers")
 
 FROM slice AS metadata
 $($sudo_docker inspect "$src" | jq -ce '.[0].Config.Entrypoint'   | grep -v '^null$' | sed -n 's/^\(.\)/ENTRYPOINT \1/p')
