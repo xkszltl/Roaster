@@ -210,13 +210,24 @@
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
 
-    # Test Python API and compatibility with ONNX.
-    cat << EOF | sed 's/^        //' | python3
-        import onnxruntime, onnxruntime.datasets, onnx, numpy
+    (
+        set -e
 
-        sess = onnxruntime.InferenceSession(onnxruntime.datasets.get_example("sigmoid.onnx"), providers=['CPUExecutionProvider'])
-        print(sess.run([sess.get_outputs()[0].name], {sess.get_inputs()[0].name: numpy.ones(sess.get_inputs()[0].shape).astype(numpy.float32)}))
-EOF
+        # Avoid having ort repo in sys.path.
+        test_dir="$(mktemp -dp "$(pwd)" -t 'ort-test-XXXXXXXX.d')"
+        pushd "$test_dir"
+
+        # Test Python API and compatibility with ONNX.
+        cat << ________EOF | sed 's/^            //' | python3 -
+            import onnxruntime, onnxruntime.datasets, onnx, numpy
+
+            sess = onnxruntime.InferenceSession(onnxruntime.datasets.get_example("sigmoid.onnx"), providers=['CPUExecutionProvider'])
+            print(sess.run([sess.get_outputs()[0].name], {sess.get_inputs()[0].name: numpy.ones(sess.get_inputs()[0].shape).astype(numpy.float32)}))
+________EOF
+
+        popd
+        rm -rf "$test_dir"
+    )
 
     # ------------------------------------------------------------
 
