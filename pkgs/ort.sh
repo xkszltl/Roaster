@@ -30,7 +30,7 @@
     # - ONNX/Ort has conflicting registration of proto when linked to shared protobuf.
     #   https://github.com/microsoft/onnxruntime/pull/12440
     # - Downloading archives from GitHub is unreliable.
-    PATCHES="json sysonnx abseil jemalloc"
+    PATCHES="json reg sysonnx abseil jemalloc"
     for i in $PATCHES; do
         git fetch patch "$i"
         git cherry-pick FETCH_HEAD
@@ -209,6 +209,14 @@
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
+
+    # Test Python API and compatibility with ONNX.
+    cat << EOF | sed 's/^        //' | python3
+        import onnxruntime, onnxruntime.datasets, onnx, numpy
+
+        sess = onnxruntime.InferenceSession(onnxruntime.datasets.get_example("sigmoid.onnx"), providers=['CPUExecutionProvider'])
+        print(sess.run([sess.get_outputs()[0].name], {sess.get_inputs()[0].name: numpy.ones(sess.get_inputs()[0].shape).astype(numpy.float32)}))
+EOF
 
     # ------------------------------------------------------------
 
