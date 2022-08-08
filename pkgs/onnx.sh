@@ -89,6 +89,7 @@
             -DCMAKE_C_COMPILER_LAUNCHER=ccache
             -DCMAKE_CXX_COMPILER='$(which "$CXX")'
             -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
+            -DONNX_BUILD_TESTS=ON
             -DONNX_GEN_PB_TYPE_STUBS=ON
             -DONNX_USE_PROTOBUF_SHARED_LIBS=ON
             -DONNXIFI_ENABLE_EXT=ON
@@ -108,7 +109,7 @@
             -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
             -DONNX_BUILD_BENCHMARKS=ON              \
-            -DONNX_BUILD_TESTS=OFF                  \
+            -DONNX_BUILD_TESTS=ON                   \
             -DONNX_GEN_PB_TYPE_STUBS=ON             \
             -DONNX_ML=ON                            \
             -DONNX_USE_PROTOBUF_SHARED_LIBS=ON      \
@@ -117,6 +118,7 @@
             ..
 
         time "$TOOLCHAIN/cmake" --build .
+        time ./onnx_gtests
         time "$TOOLCHAIN/cmake" --build . --target install
     )
 
