@@ -62,6 +62,17 @@
 
     # git commit -am "Update submodule \"pybind11\"."
 
+    (
+        set -xe
+
+        cd cmake/external
+
+        for i in ./*.cmake; do
+            sed -i "s/$(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR_GITHUB")\(\/..*\/.*\.git\)/$(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR")\1/" "$i"
+        done
+        git --no-pager diff
+    )
+
     # ------------------------------------------------------------
 
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
