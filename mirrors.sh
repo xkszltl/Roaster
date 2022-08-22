@@ -26,8 +26,7 @@ trap "trap - SIGTERM && rm -f $log && kill -- -$$" SIGINT SIGTERM EXIT
 ./mirror-list.sh | parallel --bar --group --shuf -d '\n' -j 10 'bash -c '"'"'
 set -e
 export ARGS={}"  "
-xargs -n1 <<< "$ARGS"
-[ $(xargs -n1 <<< {} | wc -l) -ne 3 ] && exit 0
+[ "$(xargs -n1 <<< {} | wc -l)" -ne 3 ] && exit 0
 cd "'"$ROOT"'"
 export SRC_SITE="$(cut -d" " -f1 <<< "$ARGS")"
 export SRC_DIR="$(cut -d" " -f3 <<< "$ARGS")"
@@ -38,9 +37,10 @@ export DST_DIR="$SRC_DIR"
 export DST="$DST_SITE$DST_DIR.git"
 export LOCAL="$(pwd)/$DST_DOMAIN/$DST_DIR.git"
 
-echo "[\"$DST_DIR\"]"
+grep -v "^__" <<< "$SRC_DIR" >/dev/null || exit 0
 
-grep -v "^__" <<< "$SRC_DIR" || exit 0
+xargs printf "\033[33m[INFO] %s\033[0m\n" >&2 <<< "$ARGS"
+printf "\033[36m[INFO] [\"$DST_DIR\"]\033[0m\n" >&2
 
 if [ ! "'"$PATTERN"'" ] || grep "'"$PATTERN"'" <<< "$SRC_DIR"; then
     mkdir -p "$(dirname "$LOCAL")"
