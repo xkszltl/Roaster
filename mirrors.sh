@@ -63,11 +63,10 @@ if [ ! "'"$PATTERN"'" ] || grep "'"$PATTERN"'" >/dev/null <<< "$SRC_DIR"; then
     git gc --auto 2>&1
     if git lfs ls-files | head -n1 | grep . >/dev/null || git lfs ls-files --deleted | head -n1 | grep . >/dev/null || git lfs ls-files -a | head -n1 | grep . >/dev/null; then
         git lfs fetch --all origin 2>&1 || true
-    fi
-    git remote set-url origin "$DST" 2>&1
-    if git lfs ls-files | head -n1 | grep . >/dev/null || git lfs ls-files --deleted | head -n1 | grep . >/dev/null || git lfs ls-files -a | head -n1 | grep . >/dev/null; then
+        git remote set-url origin "$DST" 2>&1
         git lfs push --all origin 2>&1 || true
     fi
+    git remote set-url origin "$DST" 2>&1
     git config --replace-all remote.origin.push "+refs/heads/*"
     git config --add         remote.origin.push "+refs/tags/*"
     git config --add         remote.origin.push "+refs/changes/*"
