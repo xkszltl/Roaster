@@ -39,7 +39,7 @@ export LOCAL="$(pwd)/$DST_DOMAIN/$DST_DIR.git"
 
 grep -v "^__" <<< "$SRC_DIR" >/dev/null || exit 0
 
-xargs printf "\033[33m[INFO] %s\033[0m\n" >&2 <<< "$ARGS"
+xargs printf "\033[36m[INFO] %s\033[0m\n" >&2 <<< "$ARGS"
 printf "\033[36m[INFO] [\"$DST_DIR\"]\033[0m\n" >&2
 
 if [ ! "'"$PATTERN"'" ] || grep "'"$PATTERN"'" <<< "$SRC_DIR"; then
