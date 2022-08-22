@@ -39,10 +39,10 @@ export LOCAL="$(pwd)/$DST_DOMAIN/$DST_DIR.git"
 
 grep -v "^__" <<< "$SRC_DIR" >/dev/null || exit 0
 
-xargs printf "\033[36m[INFO] %s\033[0m\n" >&2 <<< "$ARGS"
-printf "\033[36m[INFO] [\"$DST_DIR\"]\033[0m\n" >&2
+if [ ! "'"$PATTERN"'" ] || grep "'"$PATTERN"'" >/dev/null <<< "$SRC_DIR"; then
+    printf "\033[36m[INFO] Mirror to \"$DST_DIR\"\033[0m\n" >&2
+    xargs printf "\033[36m[INFO]     %s\033[0m\n" >&2 <<< "$ARGS"
 
-if [ ! "'"$PATTERN"'" ] || grep "'"$PATTERN"'" <<< "$SRC_DIR"; then
     mkdir -p "$(dirname "$LOCAL")"
     cd "$(dirname "$LOCAL")"
     set +e
