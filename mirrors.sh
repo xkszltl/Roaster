@@ -54,14 +54,14 @@ if [ ! "'"$PATTERN"'" ] || grep "'"$PATTERN"'" >/dev/null <<< "$SRC_DIR"; then
     git config remote.origin.mirror true
     git fetch origin 2>&1 || true
     git fetch --tags origin 2>&1 || true
-    [ "$(git lfs ls-files -a)" ] && git lfs fetch --all origin 2>&1 || true
+    git lfs ls-files -a | head -n1 | grep . >/dev/null && git lfs fetch --all origin 2>&1 || true
     git remote set-url origin "$SRC" 2>&1
     # git fetch --prune origin 2>&1
     git fetch --prune --tags origin 2>&1
     git gc --auto 2>&1
-    [ "$(git lfs ls-files -a)" ] && git lfs fetch --all origin 2>&1 || true
+    git lfs ls-files -a | heda -n1 | grep . >/dev/null && git lfs fetch --all origin 2>&1 || true
     git remote set-url origin "$DST" 2>&1
-    [ "$(git lfs ls-files -a)" ] && git lfs push --all origin 2>&1 || true
+    git lfs ls-files -a | head -n1 | grep . >/dev/null && git lfs push --all origin 2>&1 || true
     git config --replace-all remote.origin.push "+refs/heads/*"
     git config --add         remote.origin.push "+refs/tags/*"
     git config --add         remote.origin.push "+refs/changes/*"
