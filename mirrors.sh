@@ -67,17 +67,19 @@ if [ ! "'"$PATTERN"'" ] || grep "'"$PATTERN"'" >/dev/null <<< "$SRC_DIR"; then
         git lfs push --all origin 2>&1 || true
     fi
     git remote set-url origin "$DST" 2>&1
+    git config remote.origin.mirror false
     git config --replace-all remote.origin.push "+refs/heads/*"
     git config --add         remote.origin.push "+refs/tags/*"
+    git push -f         origin 2>&1
+    git push -f --prune origin 2>&1
     git config --add         remote.origin.push "+refs/changes/*"
     git config --add         remote.origin.push "+refs/meta/*"
     git config --add         remote.origin.push "+refs/pull/*"
-    git config remote.origin.mirror false
     # git push --mirror origin 2>&1
     # git push -f --all  --prune origin 2>&1
     # git push -f --tags --prune origin 2>&1
-    git push -f         origin 2>&1
-    git push -f --prune origin 2>&1
+    git push -f         origin 2>&1 || true
+    git push -f --prune origin 2>&1 || true
     git config remote.origin.mirror true
 fi
 '"'" 2>&1 | tee "$log"
