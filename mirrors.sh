@@ -75,12 +75,16 @@ if [ ! "'"$PATTERN"'" ] || grep "'"$PATTERN"'" >/dev/null <<< "$SRC_DIR"; then
     git config --add         remote.origin.push "+refs/changes/*"
     git config --add         remote.origin.push "+refs/meta/*"
     git config --add         remote.origin.push "+refs/pull/*"
+    if ! git push -f origin 2>&1 && ! git --no-pager show-ref | cut -d' ' -f2- | grep "^refs/pull/" | sort -V | xargs -rn1 git push -f origin 2>&1; then
+        printf "\033[31m[ERROR] Unable to push all PR refs to \\"%s\\".\033[0m\n" >&2
+    fi
+    if ! git push -f --prune origin 2>&1; then
+        printf "\033[31m[ERROR] Unable to prune PR refs on \\"%s\\".\033[0m\n" >&2
+    fi
+    git config remote.origin.mirror true
     # git push --mirror origin 2>&1
     # git push -f --all  --prune origin 2>&1
     # git push -f --tags --prune origin 2>&1
-    git push -f         origin 2>&1 || true
-    git push -f --prune origin 2>&1 || true
-    git config remote.origin.mirror true
 fi
 '"'" 2>&1 | tee "$log"
 
