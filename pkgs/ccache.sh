@@ -45,8 +45,7 @@
                 -G"Ninja"                               \
                 ..
             time cmake --build .
-            # Disable parallel testing for now due to https://github.com/ccache/ccache/issues/1045
-            CTEST_PARALLEL_LEVEL="1" time cmake --build . --target test
+            time ctest --output-on-failure -j"$(nproc)"
             time cmake --build . --target install
         fi
     )
