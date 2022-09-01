@@ -83,7 +83,6 @@
 
                 config_file_version = 2
                 domains = codingcafe.org
-                services = autofs, nss, pam, ssh, sudo
 
                 [domain/codingcafe.org]
 
