@@ -171,6 +171,7 @@ RUN set -e; \
             libfreetype{6,-dev} \
             libjpeg{-turbo-progs,62-turbo-dev} \
             liblz4-dev liblz4-tool \
+            libnss-ldap \
             libnuma-dev numactl numad \
             libpapi-dev papi-tools \
             libprotobuf-dev protobuf-compiler \
