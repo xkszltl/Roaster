@@ -73,6 +73,8 @@ if [ ! "'"$PATTERN"'" ] || grep "'"$PATTERN"'" >/dev/null <<< "$SRC_DIR"; then
     git push -f         origin 2>&1
     git push -f --prune origin 2>&1
     git config --add         remote.origin.push "+refs/changes/*"
+    git config --add         remote.origin.push "+refs/keep-around/*"
+    git config --add         remote.origin.push "+refs/merge-requests/*"
     git config --add         remote.origin.push "+refs/meta/*"
     git config --add         remote.origin.push "+refs/pull/*"
     if ! git push -f origin 2>&1 && ! git --no-pager show-ref | cut -d' ' -f2- | grep "^refs/pull/" | sort -V | xargs -rn1 git push -f origin 2>&1; then
