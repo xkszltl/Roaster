@@ -4,7 +4,7 @@ set -e
 
 # Comment syntax: Prepend "__" to repo dir.
 printf "%s\n" {\
-https://github.com/\ /\ {\
+git@github.com:\ /\ {\
 01org/{mkl-dnn,processor-trace,tbb},\
 389ds/389-ds-base,\
 abseil/abseil-{cpp,py},\
@@ -20,6 +20,7 @@ aws/aws-{cli,sdk-{cpp,go,java,js,net,php,ruby}},\
 axel-download-accelerator/axel,\
 Azure/{azure-{c-{build-tools,logging,shared-utility,testrunnerswitcher},cli{,-extensions},ctest,devops-{cli-extension,utils},sdk-{for-{android,cpp,go,ios,java,js,net,node,php,python,ruby,rust},tools},storage-cpp,utpm-c},AML-Kubernetes,AzureML-Containers,azureml-{cheatsheets,examples,previews},iotedge,macro-utils-c,umock-c},\
 benjaminp/six,\
+berlin-open-wireless-lab/{DAWN,sdwn-controller},\
 BLAKE3-team/BLAKE3{,-specs},\
 boostorg/{accumulators,algorithm,align,any,array,asio,assert,assign,atomic,auto_index,beast,bimap,bind,boost{,_install,-ci,book,dep},bcp,bpm,build,callable_traits,check_build,chrono,circular_buffer,cmake,compatibility,compute,concept_check,config,container{,_hash},context,contract,conversion,convert,core,coroutine{,2},crc,date_time,describe,detail,disjoint_sets,dll,docca,dynamic_bitset,endian,exception,fiber,filesystem,flyweight,foreach,format,function{,_types},functional,fusion,geometry,gil,graph{,_parallel},hana,headers,heap,histogram,hof,icl,inspect,integer,interprocess,interval,intrusive,io,iostreams,iterator,json,lambda{,2},leaf,lexical_cast,litre,local_function,locale,lockfree,log,logic,math,metaparse,mincmake,more,move,mp11,mpi,mpl,msm,multi_array,multi_index,multiprecision,nowide,numeric_conversion,odeint,optional,outcome,parameter{,_python},pfr,phoenix,poly_collection,polygon,pool,predef,preprocessor,process,program_options,proto,property_{map{,_parallel},tree},ptr_container,python,quickbook,qvm,random,range,ratio,rational,regex,regression,release-tools,safe_numerics,scope_exit,serialization,signals{,2},smart_ptr,sort,spirit,stacktrace,statechart,static_assert,static_string,stl_interfaces,sync,system,test,thread,throw_exception,timer,tokenizer,tti,tr1,tuple,type_{erasure,index,traits},typeof,ublas,units,unordered,utility,uuid,variant{,2},vmd,wave,website,winapi,xpressive,yap},\
 BVLC/caffe,\
@@ -39,6 +40,7 @@ cplusplus/{draft,papers},\
 cython/cython,\
 DaveGamble/cJSON,\
 dcleblanc/{CAdES,SafeInt},\
+Delgan/loguru,\
 denyhosts/denyhosts,\
 dmlc/{dlpack,dmlc-core,gluon-cv,gluon-nlp,HalideIR,tvm,xgboost},\
 docker/docker-ce,\
