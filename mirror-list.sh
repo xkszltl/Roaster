@@ -55,7 +55,7 @@ emscripten-core/{emscripten{,-ci,-fastcomp{,-clang}},emsdk,posixtestsuite},\
 envoyproxy/{data-plane-api,envoy,{go,java}-control-plane,nighthawk,protoc-gen-validate},\
 esnme/ujson4c,\
 facebook/{rocksdb,zstd},\
-facebookincubator/{fbjni,gloo},\
+facebookincubator/{dcrpm,fbjni,gloo},\
 facebookresearch/{ClassyVision,CrypTen,Detectron,detectron2,dlrm,DrQA,faiss,fastMRI,fastText,flashlight,fvcore,habitat-sim,ImageNet-Adversarial-Training,iopath,maskrcnn-benchmark,ParlAI,pycls,pytext,pythia,PyTorch-BigGraph,pytorch-dp,pytorch3d,SentEval,ResNeXt,wav2letter,XLM},\
 fatedier/{fft,frp,golib},\
 FFmpeg/FFmpeg,\
