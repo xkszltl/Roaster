@@ -112,14 +112,14 @@
             case "$DISTRO_ID" in
             'centos' | 'fedora' | 'rhel' | 'scientific')
                 $RPM_INSTALL                                                                                            \
-                    libcudnn8{,-devel}"-*-*cuda$(sed 's/11\.[7-9]/11\.6/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR")"       \
-                    libnccl{,-devel,-static}"-*-*cuda$(sed 's/11\.[1-3]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.[7-9]/11\.6/')"  \
+                    libcudnn8{,-devel}"-*-*cuda$(sed 's/11\.[8-9]/11\.7/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR")"       \
+                    libnccl{,-devel,-static}"-*-*cuda$(sed 's/11\.[1-3]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.[8-9]/11\.7/')"  \
                     libnv{infer{,-plugin},{,onnx}parsers}{8,-devel}"-8.*-*cuda$(sed 's/11\.[12]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.[5-9]/11\.4/')"
                 ;;
             'debian' | 'linuxmint' | 'ubuntu')
                 sudo DEBIAN_FRONTEND=noninteractive apt-get install --allow-downgrades -y                               \
-                    libcudnn8{,-dev}"=*+cuda$(sed 's/11\.[7-9]/11\.6/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR")"          \
-                    libnccl{2,-dev}"=*+cuda$(sed 's/11\.[1-3]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.[7-9]/11\.6/')"            \
+                    libcudnn8{,-dev}"=*+cuda$(sed 's/11\.[8-9]/11\.7/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR")"          \
+                    libnccl{2,-dev}"=*+cuda$(sed 's/11\.[1-3]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.[8-9]/11\.7/')"            \
                     libnv{infer{,-plugin},{,onnx}parsers}{8,-dev}"=8.*+cuda$(sed 's/11\.[12]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.[5-9]/11\.4/')"
                 ;;
             esac
