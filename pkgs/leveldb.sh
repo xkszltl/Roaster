@@ -7,14 +7,9 @@
 
     # ------------------------------------------------------------
 
-    until git clone --depth 1 --no-checkout --no-single-branch $GIT_MIRROR/google/leveldb.git; do echo 'Retrying'; done
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" google/leveldb,
+    until git clone --depth 1 --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd leveldb
-    # No new release for years.
-    git checkout main
-
-    . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
-
-    git tag "$(git tag | sed -n '/^v[0-9\.]*$/p' | sort -V | tail -n1).1"
 
     # ------------------------------------------------------------
 
