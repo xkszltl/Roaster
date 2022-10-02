@@ -13,12 +13,19 @@
 
     # ------------------------------------------------------------
 
+    # Dependency public_suffix requires ruby 2.6 since 5.0.0.
+    [ "_$(ruby --version | cut -d' ' -f2 | sed 's/^/2\.6 /' | tr ' ' '\n' | sort -V | head -n1)" == "_2.6" ] || sudo gem install 'public_suffix:<5'
+
     (
+        set -e
+
         case "$DISTRO_ID-$DISTRO_VERSION_ID" in
         'centos-7' | 'rhel-7' | 'scientific-7.'*)
+            set +e
             scl enable rh-ruby26 'gem build fpm.gemspec'
             # Document of childprocess failed to build with rh-ruby26.
             sudo scl enable rh-ruby26 'gem install --no-document ./fpm-*.gem'
+            set -e
             # Dependency ffi-1.13 requires ruby 2.3 while stock version is 2.0.
             sudo gem install 'ffi:<1.13'
             # fpm 1.12.0 has git dependency requiring ruby>=2.3.
