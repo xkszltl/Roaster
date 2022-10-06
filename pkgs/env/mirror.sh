@@ -42,8 +42,8 @@ export GIT_MIRROR_CODINGCAFE="500,https://git.codingcafe.org/Mirrors"
             tr ';' ' ' <<< "$missing_pkgs" | sudo xargs "$(which dnf >/dev/null 2>&1 && echo 'dnf' || echo 'yum')" install -y
             ;;
         'debian' | 'linuxmint' | "ubuntu")
-            sudo DEBIAN_FRONTEND=noninteractive apt-get update
-            tr ';' ' ' <<< "$missing_pkgs" | sudo DEBIAN_FRONTEND=noninteractive xargs apt-get install -y
+            sudo DEBIAN_FRONTEND=noninteractive apt-get update -o 'DPkg::Lock::Timeout=3600'
+            tr ';' ' ' <<< "$missing_pkgs" | sudo DEBIAN_FRONTEND=noninteractive xargs apt-get install -o 'DPkg::Lock::Timeout=3600' -y
             ;;
         esac
     fi

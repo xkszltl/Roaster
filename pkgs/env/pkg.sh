@@ -5,10 +5,10 @@
 export DEB_MAX_ATTEMPT=10
 export RPM_MAX_ATTEMPT=10
 
-export DEB_REFRESH="sudo DEBIAN_FRONTEND=noninteractive apt-get update -y"
-export DEB_UPDATE="sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y"
-export DEB_INSTALL="sudo DEBIAN_FRONTEND=noninteractive apt-get install -y"
-export DEB_REINSTALL="sudo DEBIAN_FRONTEND=noninteractive apt-get reinstall -y"
+export DEB_REFRESH="sudo DEBIAN_FRONTEND=noninteractive apt-get update -o DPkg::Lock::Timeout=3600 -y"
+export DEB_UPDATE="sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -o DPkg::Lock::Timeout=3600 -y"
+export DEB_INSTALL="sudo DEBIAN_FRONTEND=noninteractive apt-get install -o DPkg::Lock::Timeout=3600 -y"
+export DEB_REINSTALL="sudo DEBIAN_FRONTEND=noninteractive apt-get reinstall -o DPkg::Lock::Timeout=3600 -y"
 
 # TODO: Fix the following issue:
 #   - boost-python3-debuginfo conflicts with boost-debuginfo itself.

@@ -116,9 +116,9 @@
         sudo dnf update -y || true
         ;;
     'debian' | 'linuxmint' | 'ubuntu')
-        sudo apt-get update -y
-        sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
-        sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
+        sudo apt-get update -o 'DPkg::Lock::Timeout=3600' -y
+        sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -o 'DPkg::Lock::Timeout=3600' -y
+        sudo DEBIAN_FRONTEND=noninteractive apt-get install -o 'DPkg::Lock::Timeout=3600' -y    \
             apt-{file,transport-https,utils} \
             ca-certificates \
             coreutils \
@@ -146,8 +146,8 @@
             | xargs -0rI{} sed {} '/etc/apt/sources.list.bak'                                                                                                        \
             | sudo tee '/etc/apt/sources.list'
         fi
-        sudo apt-get update -y
-        sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
+        sudo apt-get update -o 'DPkg::Lock::Timeout=3600' -y
+        sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -o 'DPkg::Lock::Timeout=3600' -y
         curl_connref="$(! which curl >/dev/null 2>/dev/null || curl --help -v | sed -n 's/.*\(\-\-retry\-connrefused\).*/\1/p' | head -n1)"
 
         for retry in $(seq 20 -1 0); do
@@ -187,13 +187,13 @@
                     printf 'Package: *\nPin: origin developer.download.nvidia.com/compute/cuda/repos/ubuntu2004\nPin-Priority: 1\n' | sudo tee '/etc/apt/preferences.d/99-cuda'
                     ;;
                 esac
-                sudo apt-get update -y
+                sudo apt-get update -o 'DPkg::Lock::Timeout=3600' -y
             ) && break
             echo "Retry. $(expr "$retry" - 1) time(s) left."
             sleep 5
         done
         [ "_$GIT_MIRROR" != "_$GIT_MIRROR_CODINGCAFE" ] || "$ROOT_DIR/apply_cache.sh" cuda
-        sudo apt-get update -y
+        sudo apt-get update -o 'DPkg::Lock::Timeout=3600' -y
 
         case "$DISTRO_ID-$DISTRO_VERSION_ID" in
         'ubuntu-14.04' | 'ubuntu-16.04' | 'ubuntu-18.04' | 'ubuntu-20.04')
@@ -212,7 +212,7 @@
                     until [ "$nvml_repo_file_repo" ]; do nvml_repo_file_repo="$(set -xe && curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$nvml_repo" | sed -n "s/.*href='\(nvidia-machine-learning-repo-[^']*\).*/\1/p" | sort -V | tail -n1 || sleep 5)"; done
                     nvml_repo="$nvml_repo/$nvml_repo_file_repo"
                     curl -SLv --retry 100 $curl_connref --retry-delay 5 "$nvml_repo" > "$(basename "$nvml_repo")"
-                    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y "./$(basename "$nvml_repo")"
+                    sudo DEBIAN_FRONTEND=noninteractive apt-get install -o 'DPkg::Lock::Timeout=3600' -y "./$(basename "$nvml_repo")"
                     rm -rf "$(basename "$nvml_repo")"
                     sudo sed -i 's/http:\/\//https:\/\//' '/etc/apt/sources.list.d/nvidia-machine-learning.list'
                 ) && break
@@ -227,7 +227,7 @@
         sudo mkdir -p '/etc/apt/sources.list.d'
         sudo cp -f "$ROOT_DIR/repos/intel-oneapi.list" '/etc/apt/sources.list.d/'
         [ "_$GIT_MIRROR" != "_$GIT_MIRROR_CODINGCAFE" ] || "$ROOT_DIR/apply_cache.sh" intel-oneapi
-        sudo apt-get update -y
+        sudo apt-get update -o 'DPkg::Lock::Timeout=3600' -y
 
         # Docker-CE.
         curl -sSL --retry 10000 $curl_connref --retry-delay 1 "https://download.docker.com/linux/$DISTRO_ID/gpg" | sudo APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key add -
@@ -237,14 +237,14 @@
         | bash                                  \
         | sudo tee "/etc/apt/sources.list.d/docker-ce.list"
         [ "_$GIT_MIRROR" != "_$GIT_MIRROR_CODINGCAFE" ] || "$ROOT_DIR/apply_cache.sh" docker-ce
-        sudo apt-get update -y
+        sudo apt-get update -o 'DPkg::Lock::Timeout=3600' -y
 
         # Nvidia docker.
         curl -sSL --retry 1000 $curl_connref --retry-delay 1 "https://nvidia.github.io/nvidia-docker/gpgkey" | sudo APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key add -
         curl -sSL --retry 1000 $curl_connref --retry-delay 1 "https://nvidia.github.io/nvidia-docker/$DISTRO_ID$DISTRO_VERSION_ID/nvidia-docker.list" | sudo tee "/etc/apt/sources.list.d/nvidia-docker.list"
 
-        sudo apt-get update -y
-        sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
+        sudo apt-get update -o 'DPkg::Lock::Timeout=3600' -y
+        sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -o 'DPkg::Lock::Timeout=3600' -y
 
         echo '-----------------------------------------------------------------'
         echo '| Active repos'

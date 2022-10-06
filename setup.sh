@@ -97,8 +97,8 @@ if ! which sudo; then
         which dnf >/dev/null 2>&1 && dnf install -y sudo || yum install -y sudo
         ;;
     'debian' | 'linuxmint' | 'ubuntu' | 'scientific')
-        apt-get update -y
-        DEBIAN_FRONTEND=noninteractive apt-get install -y sudo
+        apt-get update -o 'DPkg::Lock::Timeout=3600' -y
+        DEBIAN_FRONTEND=noninteractive apt-get install -o 'DPkg::Lock::Timeout=3600' -y sudo
         ;;
     esac
 fi
@@ -110,8 +110,8 @@ if ! which ps || ! which xargs; then
         sudo which dnf >/dev/null 2>&1 && sudo dnf install -y findutils procps-ng || sudo yum install -y findutils procps-ng
         ;;
     'debian' | 'linuxmint' | 'ubuntu')
-        sudo apt-get update -y
-        sudo DEBIAN_FRONTEND=noninteractive apt-get install -y findutils procps
+        sudo apt-get update -o 'DPkg::Lock::Timeout=3600' -y
+        sudo DEBIAN_FRONTEND=noninteractive apt-get install -o 'DPkg::Lock::Timeout=3600' -y findutils procps
         ;;
     esac
 fi
@@ -249,8 +249,8 @@ if $IS_CONTAINER; then
         sudo rm -rf /var/log/dnf.librepo.log
         ;;
     'debian' | 'linuxmint' | 'ubuntu')
-        sudo apt-get autoremove -y
-        sudo apt-get clean
+        sudo apt-get autoremove -o 'DPkg::Lock::Timeout=3600' -y
+        sudo apt-get clean -o 'DPkg::Lock::Timeout=3600'
         sudo rm -rf /var/lib/apt/lists/*
         ;;
     esac

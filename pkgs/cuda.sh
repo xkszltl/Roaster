@@ -32,15 +32,15 @@
         done
         ;;
     'debian' | 'linuxmint' | 'ubuntu')
-        sudo apt-get update -y
+        sudo apt-get update -o 'DPkg::Lock::Timeout=3600' -y
         for i in 'compat' 'toolkit'; do
             for attempt in $(seq "$DEB_MAX_ATTEMPT" -1 0); do
                 [ "$attempt" -gt 0 ]
-                apt-cache show "cuda-$i-$CUDA_VER_MAJOR-$CUDA_VER_MINOR"            \
-                | sed -n 's/^Package:[[:space:]]*\(cuda-\)/\1/p'                    \
-                | sort -Vu                                                          \
-                | tail -n1                                                          \
-                | sudo DEBIAN_FRONTEND=noninteractive xargs -r apt-get install -y   \
+                apt-cache show "cuda-$i-$CUDA_VER_MAJOR-$CUDA_VER_MINOR"                                        \
+                | sed -n 's/^Package:[[:space:]]*\(cuda-\)/\1/p'                                                \
+                | sort -Vu                                                                                      \
+                | tail -n1                                                                                      \
+                | sudo DEBIAN_FRONTEND=noninteractive xargs -r apt-get install -o 'DPkg::Lock::Timeout=3600' -y \
                 && break
                 echo "Retrying... $(expr "$attempt" - 1) chance(s) left."
             done
@@ -49,16 +49,16 @@
         if false; then
             for attempt in $(seq "$DEB_MAX_ATTEMPT" -1 0); do
                 [ "$attempt" -gt 0 ]
-                apt-cache show 'cuda'                                           \
-                | sed -n 's/^Package:[[:space:]]*cuda-//p'                      \
-                | sort -Vu                                                      \
-                | tail -n1                                                      \
-                | xargs -I{} apt-cache show 'cuda-*-{}'                         \
-                | sed -n 's/^Package:[[:space:]]*//p'                           \
-                | grep -v '^cuda-demo-suite-'                                   \
-                | grep -v '^cuda-runtime-'                                      \
-                | paste -s -                                                    \
-                | sudo DEBIAN_FRONTEND=noninteractive xargs apt-get install -y  \
+                apt-cache show 'cuda'                                                                           \
+                | sed -n 's/^Package:[[:space:]]*cuda-//p'                                                      \
+                | sort -Vu                                                                                      \
+                | tail -n1                                                                                      \
+                | xargs -I{} apt-cache show 'cuda-*-{}'                                                         \
+                | sed -n 's/^Package:[[:space:]]*//p'                                                           \
+                | grep -v '^cuda-demo-suite-'                                                                   \
+                | grep -v '^cuda-runtime-'                                                                      \
+                | paste -s -                                                                                    \
+                | sudo DEBIAN_FRONTEND=noninteractive xargs apt-get install -o 'DPkg::Lock::Timeout=3600' -y    \
                 && break
                 echo "Retrying... $(expr "$attempt" - 1) chance(s) left."
             done
@@ -90,7 +90,7 @@
                     | sed -n 's/^Version:[[:space:]]*//p'                           \
                     | sort -Vu                                                      \
                     | tail -n1                                                      \
-                    | xargs -I{} sudo DEBIAN_FRONTEND=noninteractive apt-get install --allow-downgrades -y "cuda={}"
+                    | xargs -I{} sudo DEBIAN_FRONTEND=noninteractive apt-get install --allow-downgrades -o 'DPkg::Lock::Timeout=3600' -y "cuda={}"
                     ;;
                 esac
             ) && break
@@ -117,7 +117,7 @@
                     libnv{infer{,-plugin},{,onnx}parsers}{8,-devel}"-8.*-*cuda$(sed 's/11\.[12]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.[5-9]/11\.4/')"
                 ;;
             'debian' | 'linuxmint' | 'ubuntu')
-                sudo DEBIAN_FRONTEND=noninteractive apt-get install --allow-downgrades -y                               \
+                sudo DEBIAN_FRONTEND=noninteractive apt-get install --allow-downgrades -o 'DPkg::Lock::Timeout=3600' -y \
                     libcudnn8{,-dev}"=*+cuda$(sed 's/11\.[8-9]/11\.7/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR")"          \
                     libnccl{2,-dev}"=*+cuda$(sed 's/11\.[1-3]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.[8-9]/11\.7/')"            \
                     libnv{infer{,-plugin},{,onnx}parsers}{8,-dev}"=8.*+cuda$(sed 's/11\.[12]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.[5-9]/11\.4/')"
