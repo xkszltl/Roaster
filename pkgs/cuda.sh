@@ -32,7 +32,7 @@
         done
         ;;
     'debian' | 'linuxmint' | 'ubuntu')
-        sudo apt-get update -o 'DPkg::Lock::Timeout=3600' -y
+        $DEB_REFRESH
         for i in 'compat' 'toolkit'; do
             for attempt in $(seq "$DEB_MAX_ATTEMPT" -1 0); do
                 [ "$attempt" -gt 0 ]
@@ -40,7 +40,7 @@
                 | sed -n 's/^Package:[[:space:]]*\(cuda-\)/\1/p'                                                \
                 | sort -Vu                                                                                      \
                 | tail -n1                                                                                      \
-                | sudo DEBIAN_FRONTEND=noninteractive xargs -r apt-get install -o 'DPkg::Lock::Timeout=3600' -y \
+                | sudo DEBIAN_FRONTEND=noninteractive xargs -r apt-get -o 'DPkg::Lock::Timeout=3600' install -y \
                 && break
                 echo "Retrying... $(expr "$attempt" - 1) chance(s) left."
             done
@@ -58,7 +58,7 @@
                 | grep -v '^cuda-demo-suite-'                                                                   \
                 | grep -v '^cuda-runtime-'                                                                      \
                 | paste -s -                                                                                    \
-                | sudo DEBIAN_FRONTEND=noninteractive xargs apt-get install -o 'DPkg::Lock::Timeout=3600' -y    \
+                | sudo DEBIAN_FRONTEND=noninteractive xargs apt-get -o 'DPkg::Lock::Timeout=3600' install -y    \
                 && break
                 echo "Retrying... $(expr "$attempt" - 1) chance(s) left."
             done
@@ -90,7 +90,7 @@
                     | sed -n 's/^Version:[[:space:]]*//p'                           \
                     | sort -Vu                                                      \
                     | tail -n1                                                      \
-                    | xargs -I{} sudo DEBIAN_FRONTEND=noninteractive apt-get install --allow-downgrades -o 'DPkg::Lock::Timeout=3600' -y "cuda={}"
+                    | xargs -I{} sudo DEBIAN_FRONTEND=noninteractive apt-get -o 'DPkg::Lock::Timeout=3600' install --allow-downgrades -y "cuda={}"
                     ;;
                 esac
             ) && break
@@ -117,7 +117,7 @@
                     libnv{infer{,-plugin},{,onnx}parsers}{8,-devel}"-8.*-*cuda$(sed 's/11\.[12]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.[5-9]/11\.4/')"
                 ;;
             'debian' | 'linuxmint' | 'ubuntu')
-                sudo DEBIAN_FRONTEND=noninteractive apt-get install --allow-downgrades -o 'DPkg::Lock::Timeout=3600' -y \
+                sudo DEBIAN_FRONTEND=noninteractive apt-get -o 'DPkg::Lock::Timeout=3600' install --allow-downgrades -y \
                     libcudnn8{,-dev}"=*+cuda$(sed 's/11\.[8-9]/11\.7/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR")"          \
                     libnccl{2,-dev}"=*+cuda$(sed 's/11\.[1-3]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.[8-9]/11\.7/')"            \
                     libnv{infer{,-plugin},{,onnx}parsers}{8,-dev}"=8.*+cuda$(sed 's/11\.[12]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.[5-9]/11\.4/')"

@@ -88,19 +88,19 @@ case "$PKG_TYPE" in
     PKG_APT_SEQ="install reinstall upgrade"
 
     # Remove legacy.
-    sudo DEBIAN_FRONTEND=noninteractive apt-get remove -o 'DPkg::Lock::Timeout=3600' -y "$(sed 's/^[^\-]\-/codingcafe\-/' <<< "$PKG_NAME")" || true
+    sudo DEBIAN_FRONTEND=noninteractive apt-get -o 'DPkg::Lock::Timeout=3600' remove -y "$(sed 's/^[^\-]\-/codingcafe\-/' <<< "$PKG_NAME")" || true
 
     for i in $PKG_APT_SEQ _; do
         [ "$i" != '_' ]
         echo "[INFO] Trying with \"apt-get $i\"."
         if [ "$i" = "reinstall" ]; then
-            sudo DEBIAN_FRONTEND=noninteractive apt-get remove -o 'DPkg::Lock::Timeout=3600' -y "$PKG_NAME" && sudo apt-get install -o 'DPkg::Lock::Timeout=3600' -y "$PKG_PATH" && break
+            sudo DEBIAN_FRONTEND=noninteractive apt-get -o 'DPkg::Lock::Timeout=3600' remove -y "$PKG_NAME" && sudo apt-get -o 'DPkg::Lock::Timeout=3600' install -y "$PKG_PATH" && break
         else
-            sudo DEBIAN_FRONTEND=noninteractive apt-get "$i" -o 'DPkg::Lock::Timeout=3600' -y "$PKG_PATH" && break
+            sudo DEBIAN_FRONTEND=noninteractive apt-get -o 'DPkg::Lock::Timeout=3600' "$i" -y "$PKG_PATH" && break
         fi
         echo "[INFO] Does not succeed with \"apt-get $i\"."
     done
-    sudo DEBIAN_FRONTEND=noninteractive apt-get install -o 'DPkg::Lock::Timeout=3600' -fy
+    sudo DEBIAN_FRONTEND=noninteractive apt-get -o 'DPkg::Lock::Timeout=3600' install -fy
     ;;
 esac
 # ----------------------------------------------------------------

@@ -43,7 +43,7 @@ case "$DISTRO_ID" in
     $(! which sudo >/dev/null || echo sudo) which dnf >/dev/null 2>&1 && dnf makecache -y || $(! which sudo >/dev/null || echo sudo) yum makecache -y
     ;;
 'debian' | 'linuxmint' | 'ubuntu')
-    $(! which sudo >/dev/null || echo sudo) apt-get update -o 'DPkg::Lock::Timeout=3600' -y
+    $(! which sudo >/dev/null || echo sudo) apt-get -o 'DPkg::Lock::Timeout=3600' update -y
     ;;
 esac
 
@@ -58,7 +58,7 @@ if ! which sudo; then
         which dnf >/dev/null 2>&1 && dnf install -y sudo || yum install -y sudo
         ;;
     'debian' | 'linuxmint' | 'ubuntu')
-        DEBIAN_FRONTEND=noninteractive apt-get install -o 'DPkg::Lock::Timeout=3600' -y sudo
+        DEBIAN_FRONTEND=noninteractive apt-get -o 'DPkg::Lock::Timeout=3600' install -y sudo
         ;;
     esac
 fi
@@ -82,10 +82,10 @@ case "$DISTRO_ID" in
     ;;
 'debian' | 'linuxmint' | 'ubuntu')
     for pkg in $pkgs; do
-        sudo DEBIAN_FRONTEND=noninteractive apt-get install -o 'DPkg::Lock::Timeout=3600' -y "$pkg"
+        sudo DEBIAN_FRONTEND=noninteractive apt-get -o 'DPkg::Lock::Timeout=3600' install -y "$pkg"
     done
-    sudo apt-get autoremove -o 'DPkg::Lock::Timeout=3600' -y
-    sudo apt-get clean -o 'DPkg::Lock::Timeout=3600'
+    sudo apt-get -o 'DPkg::Lock::Timeout=3600' autoremove -y
+    sudo apt-get -o 'DPkg::Lock::Timeout=3600' clean
     sudo rm -rf /var/lib/apt/lists/*
     ;;
 esac
