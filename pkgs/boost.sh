@@ -43,7 +43,8 @@
 
     mkdir -p boost
     cd $_
-    curl -sSL "$BOOST_URL" | tar -jxvf - --strip-components=1
+    # Only keep a prefix of path to reduce verbosity.
+    curl -sSL "$BOOST_URL" | tar -jxvf - --strip-components=1 | cut -d/ -f-3 | uniq
 
     # ------------------------------------------------------------
     # Create local git repo for installation script
