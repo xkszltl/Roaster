@@ -14,7 +14,7 @@
     esac
 
     export CUDA_VER_MAJOR="11"
-    export CUDA_VER_MINOR="7"
+    export CUDA_VER_MINOR="8"
     case "$DISTRO_ID" in
     'centos' | 'fedora' | 'rhel' | 'scientific')
         sudo dnf makecache
@@ -112,15 +112,15 @@
             case "$DISTRO_ID" in
             'centos' | 'fedora' | 'rhel' | 'scientific')
                 $RPM_INSTALL                                                                                            \
-                    libcudnn8{,-devel}"-*-*cuda$(sed 's/11\.[8-9]/11\.7/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR")"       \
-                    libnccl{,-devel,-static}"-*-*cuda$(sed 's/11\.[1-3]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.[8-9]/11\.7/')"  \
-                    libnv{infer{,-plugin},{,onnx}parsers}{8,-devel}"-8.*-*cuda$(sed 's/11\.[12]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.[5-9]/11\.4/')"
+                    libcudnn8{,-devel}"-*-*cuda$(sed 's/11\.[9]/11\.8/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR")"         \
+                    libnccl{,-devel,-static}"-*-*cuda$(sed 's/11\.[1-3]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.[9]/11\.8/')"    \
+                    libnv{infer{,-plugin},{,onnx}parsers}{8,-devel}"-8.*-*cuda$(sed 's/11\.[12]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.[5]/11\.4/' | sed 's/11\.[7-9]/11\.6/')"
                 ;;
             'debian' | 'linuxmint' | 'ubuntu')
                 sudo DEBIAN_FRONTEND=noninteractive apt-get -o 'DPkg::Lock::Timeout=3600' install --allow-downgrades -y \
-                    libcudnn8{,-dev}"=*+cuda$(sed 's/11\.[8-9]/11\.7/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR")"          \
-                    libnccl{2,-dev}"=*+cuda$(sed 's/11\.[1-3]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.[8-9]/11\.7/')"            \
-                    libnv{infer{,-plugin},{,onnx}parsers}{8,-dev}"=8.*+cuda$(sed 's/11\.[12]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.[5-9]/11\.4/')"
+                    libcudnn8{,-dev}"=*+cuda$(sed 's/11\.[9]/11\.8/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR")"            \
+                    libnccl{2,-dev}"=*+cuda$(sed 's/11\.[1-3]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.[9]/11\.8/')"              \
+                    libnv{infer{,-plugin},{,onnx}parsers}{8,-dev}"=8.*+cuda$(sed 's/11\.[12]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.[5-9]/11\.4/' | sed 's/11\.[7-9]/11\.6/')"
                 ;;
             esac
             ldconfig -p | grep libcudnn
