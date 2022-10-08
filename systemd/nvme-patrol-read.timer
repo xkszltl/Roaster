@@ -1,0 +1,13 @@
+[Unit]
+Description=NVMe patrol read timer
+After=basic.target
+Requisite=basic.target
+
+[Timer]
+OnCalendar=*-*-* 04:00:00
+# OnCalendar=hourly
+# OnCalendar=weekly
+Unit=nvme-patrol-read.service
+
+[Install]
+WantedBy=multi-user.target
