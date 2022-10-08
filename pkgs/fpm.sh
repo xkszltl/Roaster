@@ -13,8 +13,16 @@
 
     # ------------------------------------------------------------
 
-    # Dependency public_suffix requires ruby 2.6 since 5.0.0.
-    [ "_$(ruby --version | cut -d' ' -f2 | sed 's/^/2\.6 /' | tr ' ' '\n' | sort -V | head -n1)" == "_2.6" ] || sudo gem install 'public_suffix:<5'
+    # Dependency public_suffix has minimum ruby version requirements.
+    if [ "_$(ruby --version | cut -d' ' -f2 | cut -d. -f-2 | sed 's/^/2\.0 /' | tr ' ' '\n' | sort -V | head -n1)" != "_2.0" ]; then
+        sudo gem install 'public_suffix:<1.5'
+    elif [ "_$(ruby --version | cut -d' ' -f2 | cut -d. -f-2 | sed 's/^/2\.1 /' | tr ' ' '\n' | sort -V | head -n1)" != "_2.1" ]; then
+        sudo gem install 'public_suffix:<3'
+    elif [ "_$(ruby --version | cut -d' ' -f2 | cut -d. -f-2 | sed 's/^/2\.3 /' | tr ' ' '\n' | sort -V | head -n1)" != "_2.3" ]; then
+        sudo gem install 'public_suffix:<4'
+    elif [ "_$(ruby --version | cut -d' ' -f2 | cut -d. -f-2 | sed 's/^/2\.6 /' | tr ' ' '\n' | sort -V | head -n1)" != "_2.6" ]; then
+        sudo gem install 'public_suffix:<5'
+    fi
 
     (
         set -e
