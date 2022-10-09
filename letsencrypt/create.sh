@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 if [ "$#" -le 0 ]; then
     printf "Usage:\n    %s <hostname...>\n" "$0" >&2
     exit 1
@@ -8,14 +10,11 @@ fi
 [ "$Domain" ] || Domain='codingcafe.org'
 
 for Host in "$@"; do
-    if [ "$Host" = '@' ]; then
-        FQDN="$Domain"
-    else
-        FQDN="$Host.$Domain"
-    fi
+    [ "$Host" = '@' ] && FQDN="$Domain" || FQDN="$Host.$Domain"
     certbot delete          \
         --cert-name "$FQDN" \
-        --non-interactive
+        --non-interactive   \
+    || true
     certbot certonly                            \
         --agree-tos                             \
         --preferred-challenges=dns              \
