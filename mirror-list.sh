@@ -171,7 +171,7 @@ tqdm/{py-make,tqdm},\
 uploadcare/pillow-simd,\
 USCiLab/cereal,\
 v2fly/{docker,domain-list-community,fhs-install-v2ray,geoip,gray,v2ray-{core,examples,step-by-step},vmessping},\
-v2ray/{dist,ext,geoip,homebrew-v2ray,v2ray-core,V2RayN},\
+v2ray/{dist,ext,geoip,homebrew-v2ray,manual,v2ray-core,V2RayN},\
 vivkin/gason,\
 wjakob/clang-cindex-python3,\
 xianyi/OpenBLAS,\
