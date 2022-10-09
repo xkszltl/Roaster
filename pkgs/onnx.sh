@@ -15,8 +15,8 @@
     # - SciPy meson build uses the wrong casing of OpenBLAS for CMake.
     #   On Debian, pkg-config also searches in /usr/local and works as a fallback, but not on CentOS 7.
     #   https://github.com/scipy/scipy/issues/16308
-    # - SciPy 1.9 build does not work with scikit-learn.
-    #   Pin to 1.8 for now.
+    # - SciPy 1.9.1 build does not work with scikit-learn.
+    #   Pin to 1.9.0 for now.
     #   https://github.com/scipy/scipy/issues/17185
     (
         set -xe
@@ -31,7 +31,7 @@
         esac
 
         "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  \
-            'scipy/scipy,1.8.v[3.6=v1.5.|3.7=v1.7.]'    \
+            'scipy/scipy,1.9.0v[3.6=v1.5.|3.7=v1.7.]'   \
     )
 
     "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  \
