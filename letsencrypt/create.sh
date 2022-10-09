@@ -1,14 +1,13 @@
 #!/bin/bash
 
-if [ $# -le 0 ]; then
-    echo "Usage:"
-    echo "    $0 <hostname...>"
+if [ "$#" -le 0 ]; then
+    printf "Usage:\n    %s <hostname...>\n" "$0" >&2
     exit 1
 fi
 
-Domain='codingcafe.org'
+[ "$Domain" ] || Domain='codingcafe.org'
 
-for Host in $@; do
+for Host in "$@"; do
     if [ "$Host" = '@' ]; then
         FQDN="$Domain"
     else
@@ -26,7 +25,7 @@ for Host in $@; do
         --manual-public-ip-logging-ok           \
         --non-interactive                       \
         --rsa-key-size 4096                     \
-        -m xkszltl@gmail.com                    \
+        -m 'xkszltl@gmail.com'                  \
         -d "$FQDN"
 done
 
