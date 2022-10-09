@@ -156,7 +156,7 @@ ryd/chaosvpn,\
 SchedMD/slurm,\
 scikit-learn/{enhancement_proposals,examples-data,scikit-learn{,-benchmarks}},\
 scipy/{boost-headers-only,HiGHS,oldest-supported-numpy,PROPACK,scipy{,-cookbook,-mathjax,-sphinx-theme{,-v2}},unuran,weave},\
-shadowsocks/{ShadowsocksX-NG,ipset,lib{QtShadowsocks,bloom,cork},shadowsocks{,-go,-libev,-manager,-windows},simple-obfs,v2ray-plugin},\
+shadowsocks/{badvpn,ChinaDNS{,-Python},crypto2,ipset,kcptun,lib{ancillary,bloom,cork,event,QtShadowsocks},luci-app-shadowsocks,openwrt-shadowsocks,papers,qtun,redsocks,ShadowsocksX-NG,shadowsocks{,-{android,crypto,dotcloud,go,iOS,libev,manager,qt5,rust,windows}},simple-obfs,v2ray-plugin{,-android}},\
 shibatch/sleef,\
 simdjson/simdjson,\
 sivel/{go-speedtest,speedtest-cli},\
@@ -170,6 +170,7 @@ torvalds/linux,\
 tqdm/{py-make,tqdm},\
 uploadcare/pillow-simd,\
 USCiLab/cereal,\
+v2fly/{docker,domain-list-community,fhs-install-v2ray,geoip,gray,v2ray-{core,examples,step-by-step},vmessping},\
 v2ray/{dist,ext,geoip,homebrew-v2ray,v2ray-core,V2RayN},\
 vivkin/gason,\
 wjakob/clang-cindex-python3,\
