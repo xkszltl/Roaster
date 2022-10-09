@@ -190,6 +190,7 @@ RUN set -e; \
             moreutils \
             mtr \
             net-tools \
+            netcat-openbsd \
             netlabel-tools \
             ninja-build \
             nvme-cli \

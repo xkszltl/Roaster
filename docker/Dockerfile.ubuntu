@@ -189,6 +189,7 @@ RUN set -e; \
             moreutils \
             mtr \
             net-tools \
+            netcat-openbsd \
             ninja-build \
             nvidia-container-runtime \
             nvme-cli \

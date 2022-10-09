@@ -72,6 +72,7 @@ for subset in pkg-{stable,skip,all}; do
                 [!] {apcupsd,nut}{,-*}
                 torsocks{,-*}
                 [!] {bind,core,diff,elf,find,ib,ip,pci,sysfs,usb,yum-}utils{,-*}
+                [!] netcat
                 [!] socat
                 nextgen-yum4{,-*}
                 dnf-plugins-core
