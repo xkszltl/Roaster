@@ -31,7 +31,7 @@
         esac
 
         "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  \
-            'scipy/scipy,1.9.0v[3.6=v1.5.|3.7=v1.7.]'   \
+            'scipy/scipy,v1.9.0[3.6=v1.5.|3.7=v1.7.]'   \
     )
 
     "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  \
