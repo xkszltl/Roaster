@@ -16,7 +16,7 @@ case "$DISTRO_ID-$DISTRO_VERSION_ID" in
     export CC="gcc-10" CXX="g++-10" FC="gfortran-10"
     ;;
 'ubuntu-22.'*)
-    export CC="gcc-11" CXX="g++-11" FC="gfortran-11"
+    export CC="gcc-12" CXX="g++-12" FC="gfortran-12"
     ;;
 *)
     export CC="gcc" CXX="g++" GC="gfortran"
