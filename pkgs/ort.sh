@@ -71,6 +71,9 @@
         'debian-11 '| 'ubuntu-20.'* | 'ubuntu-21.'*)
             export AR="$(which gcc-ar-10)" RANLIB="$(which gcc-ranlib-10)"
             ;;
+        'ubuntu-22.'*)
+            export AR="$(which gcc-ar-11)" RANLIB="$(which gcc-ranlib-11)"
+            ;;
         *)
             export AR="$(which ar)" RANLIB="$(which ranlib)"
             ;;
