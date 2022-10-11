@@ -127,10 +127,10 @@
             gnupg-agent \
             software-properties-common
         if [ "_$DISTRO_ID" = '_debian' ]; then
-            until sudo add-apt-repository 'contrib'; do echo "Retrying"; sleep 5; done
-            until sudo add-apt-repository 'non-free'; do echo "Retrying"; sleep 5; done
+            until sudo add-apt-repository -y 'contrib'; do echo "Retrying"; sleep 5; done
+            until sudo add-apt-repository -y 'non-free'; do echo "Retrying"; sleep 5; done
         else
-            until sudo add-apt-repository 'multiverse'; do echo "Retrying"; sleep 5; done
+            until sudo add-apt-repository -y 'multiverse'; do echo "Retrying"; sleep 5; done
         fi
         if [ "_$GIT_MIRROR" = "_$GIT_MIRROR_CODINGCAFE" ] && [ -e "$ROOT_DIR/repos/codingcafe-mirror-$DISTRO_ID.list" ]; then
             sudo mkdir -p '/etc/apt/sources.list.d'
