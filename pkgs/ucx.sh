@@ -9,10 +9,7 @@
     until git clone -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd ucx
 
-    # UCT v1.13.0 failed to build on Ubuntu 18.04:
-    # - https://github.com/openucx/ucx/issues/8412
-    # - https://github.com/openucx/ucx/pull/8413
-    git pull origin v1.13.x
+    # git pull origin v1.13.x
 
     . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
 
