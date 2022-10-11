@@ -19,7 +19,7 @@ if [ "$1" ]; then
     #   1) v1.0
     #   2) master
     #   3) release-10
-    export GIT_TAG="$(git ls-remote --heads --tags "$GIT_REPO" | sed -n 's/.*[[:space:]]refs\/[[:alpha:]]*\/\('"$GIT_PREFIX_ESC"'[0-9]*[\._\-][0-9\._\-]*\)[[:space:]]*$/\1/p' | sort -V | tail -n1)"
+    export GIT_TAG="$(git ls-remote --heads --tags "$GIT_REPO" | sed -n 's/.*[[:space:]]refs\/[[:alpha:]]*\/\('"$GIT_PREFIX_ESC"'[0-9][0-9]*[\._\-][0-9\._\-]*\)[[:space:]]*$/\1/p' | sort -V | tail -n1)"
     [ "$GIT_TAG" ] || export GIT_TAG="$(git ls-remote --heads --tags "$GIT_REPO" | sed -n 's/.*[[:space:]]refs\/[[:alpha:]]*\/\('"$GIT_PREFIX_ESC"'\)[[:space:]]*$/\1/p' | sort -V | tail -n1)"
     [ "$GIT_TAG" ] || export GIT_TAG="$(git ls-remote --heads --tags "$GIT_REPO" | sed -n 's/.*[[:space:]]refs\/[[:alpha:]]*\/\('"$GIT_PREFIX_ESC"'[0-9][0-9\._\-]*\)[[:space:]]*$/\1/p' | sort -V | tail -n1)"
     if [ "$GIT_TAG" ]; then
