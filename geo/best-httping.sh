@@ -1,7 +1,9 @@
 #!/bin/bash
 
 for cmd in bc httping parallel; do
-    which "$cmd" > /dev/null
+    ! which "$cmd" >/dev/null || continue
+    printf '\033[31m[ERROR] Missing command "%s".\033[0m\n' "$cmd" >&2
+    exit 1
 done
 
 LINK_QUALITY="$(set -e

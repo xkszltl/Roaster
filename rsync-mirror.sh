@@ -3,10 +3,9 @@
 set -e
 
 for cmd in date grep parallel ping rsync sed xargs; do
-    if ! which "$cmd" >/dev/null; then
-        printf '\033[31m[ERROR] Command "%s" not found.\033[0m\n' "$cmd" >&2
-        exit 1
-    fi
+    ! which "$cmd" >/dev/null || continue
+    printf '\033[31m[ERROR] Missing command "%s".\033[0m\n' "$cmd" >&2
+    exit 1
 done
 
 date

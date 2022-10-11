@@ -7,10 +7,9 @@ trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 cd "$(dirname "$0")"
 
 for cmd in bc docker grep jq sed xargs; do
-    if ! which "$cmd" >/dev/null; then
-        printf '\033[31m[ERROR] Command "%s" not found.\033[0m\n' "$cmd" >&2
-        exit 1
-    fi
+    ! which "$cmd" >/dev/null || continue
+    printf '\033[31m[ERROR] Missing command "%s".\033[0m\n' "$cmd" >&2
+    exit 1
 done
 
 sudo_docker="$([ -w '/var/run/docker.sock' ] || ! which sudo >/dev/null || echo 'sudo --preserve-env=DOCKER_BUILDKIT') docker"
