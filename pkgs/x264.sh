@@ -11,9 +11,22 @@
 
     # ------------------------------------------------------------
 
+    ./version.sh                                                                                    \
+    | sed -n 's/^[[:space:]]*#define[[:space:]][[:space:]]*X264_POINTVER[[:space:]][[:space:]]*//p' \
+    | tr -d '"'                                                                                     \
+    | tr '[:space:]' '\t'                                                                           \
+    | cut -f1                                                                                       \
+    | grep .                                                                                        \
+    | head -n1                                                                                      \
+    | xargs -I{} git tag {}
+
+    # ------------------------------------------------------------
+
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
     (
+        set -e
+
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
         . "$ROOT_DIR/pkgs/utils/fpm/distro_cc.sh"
 
@@ -21,11 +34,7 @@
         export CC="ccache $CC" CXX="ccache $CXX"
         export C{,XX}FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"
 
-        # Known issues:
-        # - CentOS 7 only has nasm 2.10, while x264 wants 2.13.
-        #   Disable until we have NASM build.
         ./configure                 \
-            --disable-asm           \
             --enable-lto            \
             --enable-shared         \
             --enable-static         \
