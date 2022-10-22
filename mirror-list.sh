@@ -132,6 +132,7 @@ mono/{libgdiplus,linker,mono{,-tools,develop,torrent}},\
 mreineck/{ducc,libsharp,pocketfft},\
 nanopb/nanopb,\
 NervanaSystems/{coach,distiller,neon,ngraph},\
+netwide-assembler/{nasm,www},\
 networkx/networkx,\
 nico/demumble,\
 nicolargo/glances,\
