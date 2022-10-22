@@ -90,9 +90,15 @@ if [ ! "'"$PATTERN"'" ] || grep "'"$PATTERN"'" >/dev/null <<< "$SRC_DIR"; then
 fi
 '"'" 2>&1 | tee "$log"
 
-grep -e 'error: RPC failed; curl 56 GnuTLS recv error (-9)' -e 'gnutls_handshake() failed: The TLS connection was non-properly terminated.' -e 'bytes of body are still expected' -e 'unexpected disconnect while reading sideband packet' "$log"  \
-| wc -l                                                                                                                                             \
-| grep -v '^0$'                                                                                                                                     \
+grep                                                                                            \
+    -e 'bytes of body are still expected'                                                       \
+    -e 'error: RPC failed; curl 56 GnuTLS recv error (-9)'                                      \
+    -e 'gnutls_handshake() failed: The TLS connection was non-properly terminated.'             \
+    -e 'kex_exchange_identification: Connection closed by remote host'                          \
+    -e 'unexpected disconnect while reading sideband packet'                                    \
+    "$log"                                                                                      \
+| wc -l                                                                                         \
+| grep -v '^0$'                                                                                 \
 | xargs -r printf '\033[31m[ERROR] Found %d potential network failures in log.\033[0m\n' >&2
 
 paste -sd' ' "$log"                                                                                             \
