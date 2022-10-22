@@ -114,13 +114,24 @@ for subset in pkg-{stable,skip,all}; do
                 [!] {gmp,mpfr,libmpc}{,-*}
                 [!] lib{asan,lsan,tsan,ubsan}
                 lib{exif,jpeg-turbo,tiff,png,gomp,gphoto2}{,-*}
+                openjpeg2{,-{devel{,-docs},tools}}
                 lcov{,-*}
                 giflib{,-*}
                 OpenEXR{,-*}
+                lcms2{,-{devel,utils}}
+                zimg{,-devel}
+                {aom,libaom{,-devel}}
+                codec2{,-devel}
+                {dav1d,libdav1d{,-devel}}
+                libbluray{,-devel}
+                libplacebo{,-devel}
+                libvpx{,-{devel,utils}}
+                libwebp{,-{devel,java,tools}}
                 {libv4l,v4l-utils}{,-*}
                 libunicap{,gtk}{,-*}
                 [!] libglvnd{,-*}
                 lib{dc,raw}1394{,-*}
+                libcdio{,-paranoia}{,-devel}
                 cairo{,-*}
                 gnuplot{,-debuginfo,-doc}
                 {freetype,harfbuzz,pango}{,-*}
@@ -147,6 +158,7 @@ for subset in pkg-{stable,skip,all}; do
                 {jsoncpp,rapidjson}{,-*}
                 re2{,-*}
                 {redis,hiredis}{,-*}
+                librabbitmq{,-{devel,examples}}
                 zeromq{,-*}
                 ImageMagick{,-*}
                 qt5-*
