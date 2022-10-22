@@ -13,7 +13,7 @@ agauniyal/{rang,termdb},\
 apache/{hadoop{,-{common,mapreduce,site,thirdparty}},hbase{,-{connectors,filesystem,native-client,operator-tools,site,thirdparty}},httpd{,-{docs-build,flood,mod_fcgid,site,tests}},thrift{,-website},tomcat{,-{connectors,maven-plugin,native,training}},tvm{,-{rfcs,site,vta}}},\
 apple/{apple-llvm-infrastructure-tools,coremltools,cups,darwin-{libplatform,libpthread,xnu},foundationdb,indexstore-db,ml-hypersim,openjdk,password-manager-resources,servicetalk,sourcekit-lsp,swift{,-{algorithms,atomics,argument-parser,cluster-membership,collections{,-benchmark},corelibs-{foundation,libdispatch,xctest},crypto,distributed-tracing{,-baggage{,-core}},docker,driver,evolution{,-staging},format,http-structured-headers,integration-tests,internals,llbuild{,2},log,metrics{,-extras},nio{,-{examples,extras,http2,ssh,ssl,transport-services,zlib-support}},numerics,package-{collection-generator,manager},protobuf,service-discovery,source-compat-suite,standard-library-preview,statsd-client,stress-tester,syntax,system,tools-support-{async,core},xcode-playground-support}},turicreate},\
 aquynh/capstone,\
-ARM-software/{arm-trusted-firmware,ComputeLibrary,lisa},\
+ARM-software/{arm-trusted-firmware,ComputeLibrary,HWCPipe,lisa},\
 arminc/{clair-{local-scan,scanner},k8s-platform-lcm,terraform-ecs},\
 asmjit/{asm{db,jit,tk},cult},\
 aws/aws-{cli,sdk-{cpp,go,java,js,net,php,ruby}},\
@@ -38,6 +38,7 @@ cocodataset/{cocoapi,panopticapi},\
 containerd/containerd,\
 cplusplus/{draft,papers},\
 cython/cython,\
+Dav1dde/glad,\
 DaveGamble/cJSON,\
 dcleblanc/{CAdES,SafeInt},\
 Delgan/loguru,\
@@ -66,6 +67,7 @@ gabime/spdlog,\
 gflags/gflags,\
 giampaolo/psutil,\
 github/{git-lfs,gitignore},\
+glfw/{gleq,glfw},\
 golang/{appengine,benchmarks,dep,example,freetype,glog,go{,frontend},groupcache,leveldb,mock,oauth2,protobuf,snappy,term,winstrap},\
 goldmann/docker-squash,\
 google/{benchmark,bloaty,boringssl,breakpad,flatbuffers,gemmlowp,glog,googletest,gtest-parallel,jax,leveldb,libnop,libprotobuf-mutator,nsync,python-fire,protobuf,re2,sentencepiece,skia,snappy,upb,XNNPACK},\
@@ -82,6 +84,7 @@ HowardHinnant/date,\
 huggingface/{knockknock,Mongoku,neuralcoref,pytorch-{openai-transformer-lm,pretrained-BigGAN},swift-coreml-transformers,tflite-android-transformers,tokenizers,torchMoji,transformers},\
 HypothesisWorks/hypothesis,\
 iina/{iina{,-plugin-definition,-website},plugin-ytdl},\
+Immediate-Mode-UI/Nuklear,\
 intel/{ARM_NEON_2_x86_SSE,compute-runtime,ideep,mkl-dnn},\
 intelxed/xed,\
 ispc/ispc{,.github.com},\
@@ -94,7 +97,9 @@ joseph-henry/lwip{,-contrib},\
 JuliaStrings/utf8proc,\
 jupp0r/prometheus-cpp,\
 keras-team/{autokeras,governance,keras{,-applications,-autodoc,-contrib,-cv,-docs-{ja,ko,zh},-io,-nlp,-preprocessing,-tuner}},\
+KhronosGroup/{EGL-Registry,GLSL,glslang,glTF{,-{Blender-IO,Project-Explorer,Registry,Sample-{Environments,Models,Viewer},Tutorials,Validator}},KTX-{Registry,Software,Specification},LLVM-SPIRV-Backend,OpenCL-{CLHPP,CTS,Docs,Guide,Headers,ICD-Loader,Layers,Registry,SDK},SPIRV-{Cross,Guide,Headers,LLVM-Translator,Reflect,Registry,Tools,Visualizer},SYCL-{CTS,Docs,Registry},Vulkan-{Docs,ExtensionLayer,Guide,Headers,Hpp,Loader,MemoryModel,Portability,Profiles,Samples{,-Assets},Tools,ValidationLayers},WebGL{,DeveloperTools}},\
 Kitware/{CMake,VTK},\
+leethomason/tinyxml2,\
 libav/libav,\
 libuv/libuv,\
 llvm/llvm-{archive,project,test-suite,www{,-pubs}},\
@@ -135,6 +140,7 @@ openssl/openssl,\
 open-telemetry/{opentelemetry-{collector,cpp,dotnet,go,java,js,log-collection,operator,proto,python,specification},oteps},\
 openucx/{shmem-opensnapi,sparkucx,torch-ucc,ucc{,_spec},ucx,xccl,xucg},\
 openwrt/{luci,openwrt,packages,targets,telephony,video},\
+pallets/{click,flask,itsdangerous,jinja,markupsafe,pallets-sphinx-themes,quart,website,werkzeug},\
 PeachPy/enum34,\
 phacility/{arcanist,javelin,phabricator,xhprof},\
 protocolbuffers/{protobuf,upb},\
@@ -163,6 +169,7 @@ sivel/{go-speedtest,speedtest-cli},\
 Sysinternals/{Proc{Dump,Mon}-for-Linux,sysinternals,SysinternalsEBPF,Sysmon{Common,ForLinux}},\
 Tencent/rapidjson,\
 tensorflow/{agents,datasets,docs,io,models,tensorboard,tensorflow,transform},\
+ThrowTheSwitch/{Ceedling,CException,CMock,MadScienceLabDocker,Unity},\
 thrust/thrust,\
 tmux/tmux,\
 tmux-plugins/{tmux-{continuum,resurrect,sensible,test},tpm},\
@@ -193,7 +200,13 @@ pycqa/flake8,\
 git@gitlab.alpinelinux.org:\ /\ {\
 alpine/{abuild,alpine-{baselayout,conf},apk-tools,aports,awall,ca-certificates,dmvpn-tools,docs/{{developer,user}-handbook,docs.a.o,governance},infra/{alpine-{mksite,secdb},aports-turbo,build-server-status,compose/{algitbot,alpine-mirror-sync,appstream-generator,cgit,gitlab-{acceptance-tests,inbound-email,runner-alpine-ci},netbox,package-host,webhook},docker/{alpine-gitlab-ci,ansible,apkbuild-lint-tools,aports-{build,turbo},appstream-generator,build-base,darkhttpd,docker-{cli,compose},git-mirror-syncd,gitlab{,-runner{,-helper}},lua-turbo,mariadb,mirror-status,mlmmj,mqtt-exec,netbox,package-builder,rsyncd,secdb,turbo-paste,uacme-nsd-wildcard,unbound,webhook},gitlab-ci-templates,infra-packages,mirror-status,turbo-paste,zabbix-agent2-plugins},lua-aports,mkinitfs},\
 },\
+git@bitbucket.org:\ /\ {\
+multicoreware/x265_git,\
+},\
 https://sourceware.org/git/\ sourceware\ {\
 valgrind,\
+},\
+https://code.videolan.org/\ /\ {\
+videolan/{dav1d,lib{bluray,placebo,udfread},vlc,x264},\
 },\
 }
