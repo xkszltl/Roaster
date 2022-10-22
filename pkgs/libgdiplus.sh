@@ -35,9 +35,9 @@
             --prefix="$INSTALL_ABS" \
             --with-pango
 
-        make -j"$(nproc)"
-        make check -j
-        make install -j
+        time make -j"$(nproc)"
+        time make -j"$(nproc)" check
+        time make -j           install
     )
 
     "$ROOT_DIR/pkgs/utils/fpm/install_from_git.sh"
