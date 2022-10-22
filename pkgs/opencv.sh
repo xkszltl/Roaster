@@ -24,6 +24,8 @@
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
 
     (
+        set -e
+
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
         . "$ROOT_DIR/pkgs/utils/fpm/distro_cc.sh"
         case "$DISTRO_ID-$DISTRO_VERSION_ID" in
