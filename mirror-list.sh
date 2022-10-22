@@ -185,12 +185,12 @@ zeux/{meshoptimizer,pugixml},\
 zfsonlinux/{pkg-{spl,zfs},spl,zfs{,-auto-snapshot,-buildbot,-images}},\
 zserge/jsmn,\
 },\
-https://gitlab.com/\ /\ {\
+git@gitlab.com:\ /\ {\
 libeigen/eigen,\
 NVIDIA/{cloud-native/{cnt-docs,go-nvlib,k8s-driver-manager,mig-parted},container-{images/{caffe,cuda{,-ppc64le,gl},digits,dockerhub-manifests,driver,l4t-base,mps,opencl,opengl,samples,video-codec-sdk,vulkan},infrastructure/{aws-kube-ci,github-app},toolkit/{container-{config,runtime,toolkit},gpu-monitoring-tools,libnvidia-container,nvidia-docker}},dlsyseng/{slurm,spank_fstab},headers/{cuda,cudnn},hpc/slurm-mig-discovery,kubernetes/{device-plugin,gpu-{feature-discovery,operator}},cuda},\
 pycqa/flake8,\
 },\
-https://gitlab.alpinelinux.org/\ /\ {\
+git@gitlab.alpinelinux.org:\ /\ {\
 alpine/{abuild,alpine-{baselayout,conf},apk-tools,aports,awall,ca-certificates,dmvpn-tools,docs/{{developer,user}-handbook,docs.a.o,governance},infra/{alpine-{mksite,secdb},aports-turbo,build-server-status,compose/{algitbot,alpine-mirror-sync,appstream-generator,cgit,gitlab-{acceptance-tests,inbound-email,runner-alpine-ci},netbox,package-host,webhook},docker/{alpine-gitlab-ci,ansible,apkbuild-lint-tools,aports-{build,turbo},appstream-generator,build-base,darkhttpd,docker-{cli,compose},git-mirror-syncd,gitlab{,-runner{,-helper}},lua-turbo,mariadb,mirror-status,mlmmj,mqtt-exec,netbox,package-builder,rsyncd,secdb,turbo-paste,uacme-nsd-wildcard,unbound,webhook},gitlab-ci-templates,infra-packages,mirror-status,turbo-paste,zabbix-agent2-plugins},lua-aports,mkinitfs},\
 },\
 https://sourceware.org/git/\ sourceware\ {\
