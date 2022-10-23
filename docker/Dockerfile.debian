@@ -175,7 +175,7 @@ RUN set -e; \
             libcdio{,-paranoia}-dev \
             libcdio++-dev \
             libevent-dev \
-            libfdk-acc-dev \
+            libfdk-aac-dev \
             libfreetype{6,-dev} \
             libjpeg{-turbo-progs,62-turbo-dev} \
             liblcms2-{dev,utils} \

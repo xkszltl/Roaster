@@ -173,7 +173,7 @@ RUN set -e; \
             libbluray-{bdj,bin,dev,doc} \
             libcdio{,-paranoia}-dev \
             libevent-dev \
-            libfdk-acc-dev \
+            libfdk-aac-dev \
             libfreetype6{,-dev} \
             liblcms2-{dev,utils} \
             liblz4-{dev,tool} \
