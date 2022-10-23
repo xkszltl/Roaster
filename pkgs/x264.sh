@@ -5,11 +5,9 @@
 [ -e $STAGE/x264 ] && ( set -xe
     cd $SCRATCH
 
-    export _GIT_MIRROR="$GIT_MIRROR"
-    [ "_$GIT_MIRROR" = "_$GIT_MIRROR_CODINGCAFE" ] || export GIT_MIRROR="https://code.videolan.org"
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" videolan/x264,stable
-    export GIT_MIRROR="$_GIT_MIRROR"
-    env -u _GIT_MIRROR
+    [ "_$GIT_MIRROR" = "_$GIT_MIRROR_CODINGCAFE" ]                  \
+    && . "$ROOT_DIR/pkgs/utils/git/version.sh" videolan/x264,stable \
+    || GIT_MIRROR="https://code.videolan.org" . "$ROOT_DIR/pkgs/utils/git/version.sh" videolan/x264,stable
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd x264
 
