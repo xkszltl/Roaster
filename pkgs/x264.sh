@@ -34,7 +34,6 @@
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
         . "$ROOT_DIR/pkgs/utils/fpm/distro_cc.sh"
 
-        export PKG_CONFIG_PATH="/usr/local/lib64/pkgconfig:/usr/local/lib/pkgconfig:/usr/local/lib32/pkgconfig:$PKG_CONFIG_PATH"
         export CC="ccache $CC" CXX="ccache $CXX"
         export C{,XX}FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"
 
