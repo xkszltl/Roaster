@@ -144,7 +144,7 @@ pushd "$SCRATCH"
     sudo rm -rvf "$STAGE"
     sudo mkdir -p "$(dirname "$STAGE")/.$(basename "$STAGE")"
     cd $_
-    [ $# -gt 0 ] && sudo touch $@ || sudo touch repo font pkg-stable pkg-skip pkg-all fpm auth vim tmux tex ss intel lm-sensors lz4 zstd cmake hiredis ccache c-ares axel ipt cuda gdrcopy ucx ompi llvm-{gcc,clang} boost jemalloc eigen openblas gtest benchmark gflags glog snappy protobuf nsync grpc catch2 jsoncpp rapidjson simdjson utf8proc pugixml pybind libpng mkl-dnn ispc halide sentencepiece opencv leveldb rocksdb lmdb onnx pytorch torchvision apex ort
+    [ $# -gt 0 ] && sudo touch $@ || sudo touch repo font pkg-stable pkg-skip pkg-all fpm auth vim tmux tex ss intel nasm lm-sensors lz4 zstd cmake hiredis ccache c-ares axel ipt cuda gdrcopy ucx ompi llvm-{gcc,clang} boost jemalloc eigen openblas gtest benchmark gflags glog snappy protobuf nsync grpc catch2 jsoncpp rapidjson simdjson utf8proc pugixml pybind libpng x264 x265 mkl-dnn ispc halide sentencepiece opencv leveldb rocksdb lmdb nvcodec ffmpeg onnx pytorch torchvision apex ort
     sync || true
     cd "$SCRATCH"
     sudo mv -vf "$(dirname "$STAGE")/.$(basename "$STAGE")" $STAGE
@@ -173,6 +173,7 @@ for i in $(echo "
     shadowsocks
     texlive
     intel
+    nasm
     lm-sensors
     lz4
     zstd
@@ -183,6 +184,7 @@ for i in $(echo "
     axel
     ipt
     cuda
+    nvcodec
     gdrcopy
     ucx
     openmpi
@@ -210,6 +212,8 @@ for i in $(echo "
     grpc
     libpng
     libgdiplus
+    x264
+    x265
     mkl-dnn
     ispc
     halide
@@ -218,6 +222,8 @@ for i in $(echo "
     leveldb
     rocksdb
     lmdb
+    nvcodec
+    ffmpeg
     onnx
     caffe
     pytorch
