@@ -5,15 +5,11 @@
 [ -e $STAGE/x265 ] && ( set -xe
     cd $SCRATCH
 
-    if [ "_$GIT_MIRROR" = "_$GIT_MIRROR_CODINGCAFE" ]; then
-        . "$ROOT_DIR/pkgs/utils/git/version.sh" multicoreware/x265_git,
-    else
-        export _GIT_MIRROR="$GIT_MIRROR"
-        export GIT_MIRROR="https://bitbucket.org"
-        . "$ROOT_DIR/pkgs/utils/git/version.sh" multicoreware/x265_git,
-        export GIT_MIRROR="$_GIT_MIRROR"
-        env -u _GIT_MIRROR
-    fi
+    export _GIT_MIRROR="$GIT_MIRROR"
+    [ "_$GIT_MIRROR" = "_$GIT_MIRROR_CODINGCAFE" ] || export GIT_MIRROR="https://bitbucket.org"
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" multicoreware/x265_git,
+    export GIT_MIRROR="$_GIT_MIRROR"
+    env -u _GIT_MIRROR
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO" x265; do echo 'Retrying'; done
     cd x265
 
