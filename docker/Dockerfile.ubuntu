@@ -297,6 +297,7 @@ FROM "$STAGE_PREFIX"stage-intel AS stage-infra
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh nasm
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh lz4
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh zstd
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh cmake
