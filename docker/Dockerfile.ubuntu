@@ -345,6 +345,8 @@ RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-cca
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh pybind
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh grpc
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh libpng
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh x264
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh x265
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh libgdiplus
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh mkl-dnn
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh sentencepiece
@@ -352,6 +354,8 @@ RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-cca
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh leveldb
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh rocksdb
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh lmdb
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh nvcodec
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh ffmpeg
 
 FROM "$STAGE_PREFIX"stage-misc AS stage-dl
 

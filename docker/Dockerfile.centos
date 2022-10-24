@@ -136,7 +136,7 @@ FROM "$STAGE_PREFIX"stage-util AS stage-misc
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh catch2 jsoncpp rapidjson simdjson utf8proc pugixml pybind grpc libpng libgdiplus mkl-dnn sentencepiece opencv leveldb rocksdb lmdb
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh catch2 jsoncpp rapidjson simdjson utf8proc pugixml pybind grpc libpng x264 x265 libgdiplus mkl-dnn sentencepiece opencv leveldb rocksdb lmdb nvcodec ffmpeg
 
 FROM "$STAGE_PREFIX"stage-misc AS stage-dl
 
