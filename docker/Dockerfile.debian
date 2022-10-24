@@ -122,7 +122,7 @@ RUN set -e; \
             ccache \
             chrpath \
             cmake{,-curses-gui} \
-            codec2{,-examples} libcodec2{,-dev} \
+            codec2{,-examples} libcodec2-dev \
             coreutils \
             cpio \
             curl \
@@ -180,7 +180,7 @@ RUN set -e; \
             libjpeg{-turbo-progs,62-turbo-dev} \
             liblcms2-{dev,utils} \
             liblz4-{dev,tool} \
-            libmp3lame{,-dev} \
+            libmp3lame-dev \
             libnuma-dev numactl numad \
             libpam-ldap \
             libpapi-dev papi-tools \
