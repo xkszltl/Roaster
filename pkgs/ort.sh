@@ -58,26 +58,6 @@
     (
         . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
         . "$ROOT_DIR/pkgs/utils/fpm/distro_cc.sh"
-        case "$DISTRO_ID-$DISTRO_VERSION_ID" in
-        'centos-'* | 'fedora-'* | 'rhel-'* | 'scientific-'*)
-            set +xe
-            . scl_source enable devtoolset-11 rh-dotnet31 || exit 1
-            set -xe
-            export AR="$(which gcc-ar)" RANLIB="$(which gcc-ranlib)"
-            ;;
-        'debian-10' | 'ubuntu-18.'* | 'ubuntu-19.'*)
-            export AR="$(which gcc-ar-8)" RANLIB="$(which gcc-ranlib-8)"
-            ;;
-        'debian-11 '| 'ubuntu-20.'* | 'ubuntu-21.'*)
-            export AR="$(which gcc-ar-10)" RANLIB="$(which gcc-ranlib-10)"
-            ;;
-        'ubuntu-22.'*)
-            export AR="$(which gcc-ar-12)" RANLIB="$(which gcc-ranlib-12)"
-            ;;
-        *)
-            export AR="$(which ar)" RANLIB="$(which ranlib)"
-            ;;
-        esac
 
         set +xe
         . "/opt/intel/$([ -e '/opt/intel/oneapi/mkl/latest/env/vars.sh' ] && echo 'oneapi/mkl/latest/env/vars.sh' || echo 'mkl/bin/mklvars.sh')" intel64
