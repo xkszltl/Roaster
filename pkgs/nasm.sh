@@ -20,6 +20,7 @@
         . "$ROOT_DIR/pkgs/utils/fpm/distro_cc.sh"
 
         export CFLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"
+        export CC_AR="$AR" CC_RANLIB="$RANLIB"
 
         ./autogen.sh
         ./configure                 \
