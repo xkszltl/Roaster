@@ -67,14 +67,14 @@
             -DBUILD_opencv_world=OFF                        \
             -DBUILD_opencv_dnn=OFF                          \
             -DCMAKE_BUILD_TYPE=Release                      \
-            -DCMAKE_AR="$AR"                                \
+            -DCMAKE_AR="$(which "$AR")"                     \
             -DCMAKE_C_COMPILER="$CC"                        \
             -DCMAKE_CXX_COMPILER="$CXX"                     \
             -DCMAKE_{C,CXX,CUDA}_COMPILER_LAUNCHER=ccache   \
             -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"           \
             -DCMAKE_LIBRARY_PATH='/usr/local/lib64;/usr/local/lib;/usr/local/lib32'         \
-            -DCMAKE_RANLIB="$RANLIB"                        \
+            -DCMAKE_RANLIB="$(which "$RANLIB")"             \
             -DCMAKE_VERBOSE_MAKEFILE=ON                     \
             -DCPACK_BINARY_DEB=OFF                          \
             -DCPACK_BINARY_RPM=ON                           \

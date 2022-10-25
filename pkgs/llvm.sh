@@ -79,11 +79,11 @@ for i in llvm-{gcc,clang}; do
                 #   - libcxx in LLVM 14 requires gcc 11 to build.
                 #   - Parallel STL does not have runtime build in LLVM 14.
                 cmake                                       \
-                    -DCMAKE_AR="$(which gcc-ar)"            \
+                    -DCMAKE_AR="$(which "$AR")"             \
                     -DCMAKE_C_COMPILER="$CC"                \
                     -DCMAKE_CXX_COMPILER="$CXX"             \
                     -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src'"              \
-                    -DCMAKE_RANLIB="$(which gcc-ranlib)"    \
+                    -DCMAKE_RANLIB="$(which "$RANLIB")"     \
                     -DGCC_INSTALL_PREFIX="$(realpath -e "$(dirname "$(realpath -e "$(which "$CC")")")/..")" \
                     -DLIBCXX_ENABLE_PARALLEL_ALGORITHMS=OFF \
                     -DLLVM_ENABLE_LTO=OFF                   \
