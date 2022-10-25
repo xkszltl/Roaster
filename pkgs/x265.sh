@@ -53,8 +53,11 @@
                 -DENABLE_TESTS="$(  [ "$depth" -le  8 ] && echo ON || echo OFF)"    \
                 -DEXPORT_C_API="$(  [ "$depth" -le  8 ] && echo ON || echo OFF)"    \
                 -DEXTRA_LIB="$(set -e
+                        # Appended extra libs may have unresolved symbols on Debian.
+                        # Need to manually link dl again.
                         find .. -maxdepth 2 -name 'libx265.a' -type f               \
                         | xargs -rI{} realpath -e {}                                \
+                        | sed 's/$/;dl/'                                            \
                         | paste -sd';' -
                     )"                                          \
                 -DLINKED_10BIT="$(  [ "$depth" -lt 10 ] && echo ON || echo OFF)"    \
