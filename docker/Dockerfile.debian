@@ -217,6 +217,7 @@ RUN set -e; \
             pigz \
             powertop \
             procps \
+            pulseaudio{,-utils} libpulse-dev \
             pv \
             pybind11-dev \
             python3{,-pip} \

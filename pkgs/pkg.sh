@@ -132,6 +132,7 @@ for subset in pkg-{stable,skip,all}; do
                 libunicap{,gtk}{,-*}
                 [!] libglvnd{,-*}
                 lib{dc,raw}1394{,-*}
+                pulseaudio{,-{libs{,-devel},utils}}
                 libcdio{,-paranoia}{,-devel}
                 cairo{,-*}
                 gnuplot{,-debuginfo,-doc}

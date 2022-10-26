@@ -215,6 +215,7 @@ RUN set -e; \
             prelink \
             procps \
             pstack \
+            pulseaudio{,-utils} libpulse-dev \
             pv \
             pybind11-dev \
             python3{,-pip} \
