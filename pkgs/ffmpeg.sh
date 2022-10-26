@@ -46,7 +46,7 @@
             --enable-libfontconfig  \
             --enable-libfreetype    \
             --enable-libjack        \
-            --enable-libopencv      \
+            $(true || echo --enable-libopencv)  \
             --enable-libpulse       \
             --enable-librabbitmq    \
             $(true || echo --enable-librav1e)   \
