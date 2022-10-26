@@ -93,9 +93,10 @@ for subset in pkg-{stable,skip,all}; do
                 {d,if,sys}stat{,-*}
                 [!]kernel-tools{,-*}
                 {lm_sensors,hddtemp,smartmontools,lsscsi,bmon}{,-*}
-                [!]tuned{,-*}
+                [!] tuned{,-*}
                 [!] {{e2fs,btrfs-,xfs,ntfs}progs,xfsdump,nfs-utils}{,-*}
                 [!] fuse{,3}{,-devel,-libs}
+                samba{,-{{,winbind-}client,devel}} libsmbclient{,-devel}
                 nvme-cli
                 dd{,_}rescue{,-*}
                 [!] {docker-{ce,compose},container-selinux}{,-*}
@@ -106,7 +107,7 @@ for subset in pkg-{stable,skip,all}; do
 
                 [!] scl-utils{,-*}
 
-                ncurses{,-*}
+                [!] ncurses{,-*}
                 [!] hwloc{,-*}
                 [!] numa{ctl,d}{,-*}
                 icu{,-*}
@@ -147,7 +148,7 @@ for subset in pkg-{stable,skip,all}; do
                 lapack{,64}{,-*}
                 {libsodium,mbedtls,udns}{,-*}
                 libev{,-devel,-source,-debuginfo}
-                libevent{,-*}
+                [!] libevent{,-*}
                 utf8proc{,-*}
                 {asciidoc,gettext,xmlto,c-ares,pcre{,2}}{,-*}
                 librados2{,-*}
