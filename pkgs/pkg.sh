@@ -96,7 +96,7 @@ for subset in pkg-{stable,skip,all}; do
                 [!] tuned{,-*}
                 [!] {{e2fs,btrfs-,xfs,ntfs}progs,xfsdump,nfs-utils}{,-*}
                 [!] fuse{,3}{,-devel,-libs}
-                samba{,-{{,winbind-}client,devel}} libsmbclient{,-devel}
+                samba{,-{client,devel,winbind{,-clients}}} libsmbclient{,-devel}
                 nvme-cli
                 dd{,_}rescue{,-*}
                 [!] {docker-{ce,compose},container-selinux}{,-*}
