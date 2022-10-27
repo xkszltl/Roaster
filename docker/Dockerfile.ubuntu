@@ -226,7 +226,7 @@ RUN set -e; \
             rng-tools5 \
             rsync \
             ruby-all-dev \
-            samba{,-dev} smbclient smbldap-tools \
+            samba{,-dev} smbclient smbldap-tools libsmbclient-dev \
             sed \
             {selinux-basics,{selinux-policy,policycoreutils}'-*'} se{manage,module}-utils \
             snmp \
