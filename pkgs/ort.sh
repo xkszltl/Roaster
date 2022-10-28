@@ -117,7 +117,6 @@
             -Donnxruntime_USE_EIGEN_FOR_BLAS=ON                 \
             -Donnxruntime_USE_FULL_PROTOBUF=ON                  \
             -Donnxruntime_USE_LLVM=ON                           \
-            -Donnxruntime_USE_NGRAPH=OFF                        \
             -Donnxruntime_USE_NUPHAR=OFF                        \
             -Donnxruntime_USE_OPENMP=OFF                        \
             -Donnxruntime_USE_PREINSTALLED_EIGEN=OFF            \
