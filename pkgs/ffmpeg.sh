@@ -57,7 +57,7 @@
             --enable-libx264        \
             --enable-libx265        \
             --enable-libxml2        \
-            --enable-libzimg        \
+            $(true || echo --enable-libzimg)    \
             $(true || echo --enable-libzmq)     \
             $(true || echo --enable-lto)        \
             --enable-nonfree        \
