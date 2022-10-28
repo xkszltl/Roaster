@@ -226,6 +226,14 @@ https://sourceware.org/git/\ sourceware\ {\
 valgrind,\
 },\
 https://code.videolan.org/\ /\ {\
-videolan/{dav1d,lib{bluray,placebo,udfread},vlc,x264},\
+videolan/{aribb25,bitstream,dav1d,dvblast,lib{aacs,dvbpsi,dvd{css,nav,read},bluray,placebo,udfread,vlcpp},npapi-vlc,vlc{,-{android,winrt}},vlma,vlmc,x264},\
+},\
+https://git.videolan.org/git/\ videolan\ {\
+ffmpeg,\
+libpostproc,\
+x262,\
+},\
+https://git.videolan.org/git/ffmpeg/\ videolan\ {\
+nv-codec-headers,\
 },\
 }
