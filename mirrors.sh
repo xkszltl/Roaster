@@ -8,7 +8,7 @@ cd "$(dirname "$0")"
 
 date
 
-export HTTP_PROXY=proxy.codingcafe.org:8118
+# export HTTP_PROXY=proxy.codingcafe.org:8118
 [ $HTTP_PROXY ] && export HTTPS_PROXY=$HTTP_PROXY
 [ $HTTP_PROXY ] && export http_proxy=$HTTP_PROXY
 [ $HTTPS_PROXY ] && export https_proxy=$HTTPS_PROXY
@@ -91,11 +91,13 @@ fi
 '"'" 2>&1 | tee "$log"
 
 grep                                                                                            \
+    -e 'Connection reset by'                                                                    \
     -e 'bytes of body are still expected'                                                       \
     -e 'error: RPC failed; curl 56 GnuTLS recv error (-9)'                                      \
     -e 'gnutls_handshake() failed: The TLS connection was non-properly terminated.'             \
     -e 'kex_exchange_identification: Connection closed by remote host'                          \
     -e 'unexpected disconnect while reading sideband packet'                                    \
+    -i                                                                                          \
     "$log"                                                                                      \
 | wc -l                                                                                         \
 | grep -v '^0$'                                                                                 \
