@@ -45,7 +45,7 @@
             --enable-libdc1394      \
             --enable-libfontconfig  \
             --enable-libfreetype    \
-            $(true || echo --enable-libjack)    \
+            --enable-libjack        \
             $(true || echo --enable-libopencv)  \
             --enable-libpulse       \
             --enable-librabbitmq    \
