@@ -93,7 +93,9 @@ fi
 grep                                                                                            \
     -e 'Connection reset by'                                                                    \
     -e 'bytes of body are still expected'                                                       \
+    -e 'client_loop: send disconnect'                                                           \
     -e 'error: RPC failed; curl 56 GnuTLS recv error (-9)'                                      \
+    -e 'fatal: expected flush after ref listing'                                                \
     -e 'gnutls_handshake() failed: The TLS connection was non-properly terminated.'             \
     -e 'kex_exchange_identification: Connection closed by remote host'                          \
     -e 'unexpected disconnect while reading sideband packet'                                    \
