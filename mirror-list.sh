@@ -181,6 +181,7 @@ shadowsocks/{badvpn,ChinaDNS{,-Python},crypto2,ipset,kcptun,lib{ancillary,bloom,
 shibatch/sleef,\
 simdjson/simdjson,\
 sivel/{go-speedtest,speedtest-cli},\
+Stellarium/stellarium{,-{addons,data,dynamic-plugin,ppa,skycultures,unity,web-engine}},\
 syoyo/tiny{dng,exr,gltf,objloader-c,usdz,vdbio},\
 Sysinternals/{Proc{Dump,Mon}-for-Linux,sysinternals,SysinternalsEBPF,Sysmon{Common,ForLinux}},\
 Tencent/rapidjson,\
