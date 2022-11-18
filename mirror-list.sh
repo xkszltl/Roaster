@@ -61,6 +61,7 @@ emil-e/rapidcheck,\
 emscripten-core/{emscripten{,-ci,-fastcomp{,-clang}},emsdk,posixtestsuite},\
 envoyproxy/{data-plane-api,envoy,{go,java}-control-plane,nighthawk,protoc-gen-validate},\
 esnme/ujson4c,\
+Exiv2/exiv2,\
 facebook/{rocksdb,zstd},\
 facebookincubator/{dcrpm,fbjni,gloo},\
 facebookresearch/{ClassyVision,CrypTen,Detectron,detectron2,dlrm,DrQA,faiss,fastMRI,fastText,flashlight,fvcore,habitat-sim,ImageNet-Adversarial-Training,iopath,maskrcnn-benchmark,ParlAI,pycls,pytext,pythia,PyTorch-BigGraph,pytorch-dp,pytorch3d,SentEval,ResNeXt,wav2letter,XLM},\
@@ -109,6 +110,7 @@ keras-team/{autokeras,governance,keras{,-applications,-autodoc,-contrib,-cv,-doc
 KhronosGroup/{EGL-Registry,GLSL,glslang,glTF{,-{Blender-IO,Project-Explorer,Registry,Sample-{Environments,Models,Viewer},Tutorials,Validator}},KTX-{Registry,Software,Specification},LLVM-SPIRV-Backend,OpenCL-{CLHPP,CTS,Docs,Guide,Headers,ICD-Loader,Layers,Registry,SDK},SPIRV-{Cross,Guide,Headers,LLVM-Translator,Reflect,Registry,Tools,Visualizer},SYCL-{CTS,Docs,Registry},Vulkan-{Docs,ExtensionLayer,Guide,Headers,Hpp,Loader,MemoryModel,Portability,Profiles,Samples{,-Assets},Tools,ValidationLayers},WebGL{,DeveloperTools}},\
 Kitware/{CMake,VTK},\
 leethomason/tinyxml2,\
+LeoHsiao1/pyexiv2,\
 libav/libav,\
 LibRaw/{DOFCalc,LibRaw{,-{cmake,contrib,demosaic-pack-GPL{2,3}}}},\
 libsdl-org/{SDL,sdl12-compat},\
