@@ -110,6 +110,7 @@ KhronosGroup/{EGL-Registry,GLSL,glslang,glTF{,-{Blender-IO,Project-Explorer,Regi
 Kitware/{CMake,VTK},\
 leethomason/tinyxml2,\
 libav/libav,\
+LibRaw/{DOFCalc,LibRaw{,-{cmake,contrib,demosaic-pack-GPL{2,3}}}},\
 libsdl-org/{SDL,sdl12-compat},\
 libuv/libuv,\
 llvm/llvm-{archive,project,test-suite,www{,-pubs}},\
