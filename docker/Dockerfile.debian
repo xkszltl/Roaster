@@ -138,12 +138,10 @@ RUN set -e; \
             flex \
             ftpsync \
             fuse libfuse{,3}-dev \
-            g++{,-{9,10}} \
+            g{++,cc,fortran}{,-multilib}-{,9,10} \
             gawk \
-            gcc{,-{9,10}}-multilib \
             gdb \
             gettext \
-            gfortran{,-{9,10}} \
             giflib-tools libgif-dev \
             git{,-{extras,lfs}} \
             gnome-keyring{,'-*'} \
