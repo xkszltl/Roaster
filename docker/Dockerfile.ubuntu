@@ -258,6 +258,7 @@ RUN set -e; \
             x264 libx264-dev \
             x265 libx265-{dev,doc} \
             xz-utils pxz \
+            zfs-{dkms,initramfs,test} zfsutils-linux \
             zstd libzstd-dev \
         && break; \
         echo "Retrying... $(expr "$attempt" - 1) chance(s) left."; \
