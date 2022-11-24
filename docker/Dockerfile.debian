@@ -170,14 +170,14 @@ RUN set -e; \
             lcov \
             ldap-utils slapd \
             lib{asan{5,6},lsan0,tsan0,ubsan1} \
-            lib{atlas-base,boost-all,bz2,cairo2,c-ares,edit,eigen3,ev,ffi,gflags,gif,google-glog,grpc++,gtest,harfbuzz,hiredis,hwloc,jemalloc,jpeg,jsoncpp,lapack,leveldb,lmdb,lzma,mbedtls,ncurses5,openblas,opencv,pango1.0,pcre{2,3},placebo,png,rados{,pp},re2,rocksdb,snappy,sodium,ssl,tiff,utf8proc,yaml}-dev \
+            lib{atlas-base,boost-all,bz2,cairo2,c-ares,edit,eigen3,ev,ffi,gflags,gif,google-glog,grpc++,gtest,harfbuzz,hiredis,hwloc,jemalloc,jsoncpp,lapack,leveldb,lmdb,lzma,mbedtls,ncurses5,openblas,opencv,pango1.0,pcre{2,3},placebo,png,rados{,pp},re2,rocksdb,snappy,sodium,ssl,tiff,utf8proc,yaml}-dev \
             libbluray-{bdj,bin,dev,doc} \
             libcdio{,-paranoia}-dev \
             libcdio++-dev \
             libevent-dev \
             libfdk-aac-dev \
             libfreetype{6,-dev} \
-            libjpeg{-turbo-progs,62-turbo-dev} \
+            libjpeg{62-turbo-dev,-{dev,tools,turbo-progs})
             liblcms2-{dev,utils} \
             liblz4-{dev,tool} \
             libmp3lame-dev \
@@ -193,7 +193,7 @@ RUN set -e; \
             libvpx-{dev,doc} vpx-tools \
             libxvidcore-dev \
             libzmq3-dev \
-            {llvm,clang{,-{format,tidy,tools}},lld}{,-9,-11} llvm-{9,11}-tools lldb{,-11} lib{c++{,abi},omp}{,-11}-dev \
+            {llvm,clang{,-{format,tidy,tools}},lld}{,-{9,11,13}} llvm-{9,11,13}-tools lldb{,-11} lib{c++{,abi},omp}{,-11}-dev \
             locales \
             locate \
             lshw \
