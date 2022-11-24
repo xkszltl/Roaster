@@ -182,7 +182,8 @@ for subset in pkg-{stable,skip,all}; do
                 {fio,{file,sys}bench}{,-*}
 
                 [!] {krb5-*,pam_krb5}
-                [!] {sudo,nss,sssd,authconfig}{,-*}
+                [!] {sudo,nss,authconfig}{,-*}
+                [!] sssd{,-{client,tools}}
                 gnome-keyring{,-*}
 
                 gitlab-runner
