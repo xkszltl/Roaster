@@ -6,7 +6,7 @@ ARG IMAGE_REPO="$IMAGE_REGISTRY/ubuntu"
 ARG STAGE_PREFIX=''
 # ARG STAGE_PREFIX="$IMAGE_REPO:"
 
-FROM ubuntu:18.04 AS stage-init
+FROM ubuntu:22.04 AS stage-init
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 
@@ -103,6 +103,7 @@ RUN set -e; \
     for attempt in $(seq "$DEB_MAX_ATTEMPT" -1 0); do \
         [ "$attempt" -gt 0 ]; \
         sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
+            aom-tools libaom-{dev,doc} \
             apcupsd \
             apt-mirror \
             asciidoc \
@@ -111,6 +112,7 @@ RUN set -e; \
             axel \
             bash-completion \
             bc \
+            bind9-dnsutils \
             binutils \
             bison \
             bmon \
@@ -124,10 +126,10 @@ RUN set -e; \
             coreutils \
             cpio \
             curl \
+            $(echo "$DISTRO_ID-$DISTRO_VERSION_ID" | grep -e'^ubuntu\-20\.04$' >/dev/null || echo dav1d libdav1d-dev) \
             debmirror \
             default-jdk ant maven \
             diffutils \
-            dnsutils \
             docker-{ce,compose} \
             dos2unix \
             dstat \
@@ -135,13 +137,12 @@ RUN set -e; \
             firewalld \
             flex \
             ftpsync \
-            fuse libfuse-dev \
-            g++{,-{4,5,6,7,8}} \
+            fuse libfuse{,3}-dev \
+            $(! echo "$DISTRO_ID-$DISTRO_VERSION_ID" | grep -e'^ubuntu\-20\.04$' >/dev/null || echo g{++,cc,fortran}{,-multilib}-{,7,8,9,10}) \
+            $(! echo "$DISTRO_ID-$DISTRO_VERSION_ID" | grep -e'^ubuntu\-22\.04$' >/dev/null || echo g{++,cc,fortran}{,-multilib}-{,9,10,11,12}) \
             gawk \
-            gcc{,-{5,6,7,8}}-multilib \
             gdb \
             gettext \
-            gfortran{,-{5,6,7,8}} \
             giflib-tools libgif-dev \
             git{,-{extras,lfs}} \
             glances \
@@ -169,13 +170,16 @@ RUN set -e; \
             language-pack-{ar,de,en,es,fr,it,ja,ko,pt,ru,zh-han{s,t}} \
             lcov \
             ldap-utils slapd \
-            lib{asan{0,2,3,4,5},lsan0,tsan0,ubsan{0,1}} \
-            lib{atlas-base,boost-all,bz2,cairo2,c-ares,edit,eigen3,ev,ffi,gflags,gif,google-glog,grpc++,gtest,harfbuzz,hiredis,hwloc,jemalloc,jpeg{,-turbo8},jsoncpp,lapack,leveldb,lmdb,lzma,mbedtls,ncurses5,openblas,opencv,pango1.0,pcre{2,3},placebo,png,rados,re2,rocksdb,snappy,sodium,ssl,tiff,utf8proc,yaml}-dev \
+            $(! echo "$DISTRO_ID-$DISTRO_VERSION_ID" | grep -e'^ubuntu\-20\.04$' >/dev/null || echo lib{asan{5,6},lsan0,tsan0,ubsan{0,1}}) \
+            $(! echo "$DISTRO_ID-$DISTRO_VERSION_ID" | grep -e'^ubuntu\-22\.04$' >/dev/null || echo lib{asan{5,6,8},lsan0,tsan{0,2},ubsan1}) \
+            lib{atlas-base,boost-all,bz2,cairo2,c-ares,edit,eigen3,ev,ffi,gflags,gif,google-glog,grpc++,gtest,harfbuzz,hiredis,hwloc,jemalloc,jsoncpp,lapack,leveldb,lmdb,lzma,mbedtls,ncurses5,openblas,opencv,pango1.0,pcre{2,3},placebo,png,rados{,pp},re2,rocksdb,snappy,sodium,ssl,tiff,utf8proc,yaml}-dev \
             libbluray-{bdj,bin,dev,doc} \
             libcdio{,-paranoia}-dev \
+            $(echo "$DISTRO_ID-$DISTRO_VERSION_ID" | grep -e'^ubuntu\-20\.04$' >/dev/null || echo libcdio++-dev) \
             libevent-dev \
             libfdk-aac-dev \
-            libfreetype6{,-dev} \
+            libfreetype{6,-dev} \
+            libjpeg{{62,8,9}-dev,-{progs,tools,turbo{8-dev,-{progs,test}}}) \
             liblcms2-{dev,utils} \
             liblz4-{dev,tool} \
             libmp3lame-dev \
@@ -191,7 +195,8 @@ RUN set -e; \
             libvpx-{dev,doc} vpx-tools \
             libxvidcore-dev \
             libzmq3-dev \
-            llvm-10{,-tools} {clang{,-{format,tidy,tools}},lld,lldb}-10 lib{c++{,abi},omp}-10-dev \
+            $(! echo "$DISTRO_ID-$DISTRO_VERSION_ID" | grep -e'^ubuntu\-20\.04$' >/dev/null || echo {llvm,clang{,-{format,tidy,tools}},lld}{,-{10,11,12,13}} llvm-{10,11,12,13}-tools lldb{,-10} lib{c++{,abi},omp}{,-10}-dev) \
+            $(! echo "$DISTRO_ID-$DISTRO_VERSION_ID" | grep -e'^ubuntu\-22\.04$' >/dev/null || echo {llvm,clang{,-{format,tidy,tools}},lld}{,-{11,12,13,14}} llvm-{11,12,13,14}-tools lldb{,-14} lib{c++{,abi},omp}{,-14}-dev) \
             locales \
             locate \
             lshw \
@@ -203,6 +208,7 @@ RUN set -e; \
             mtr \
             net-tools \
             netcat-openbsd \
+            netlabel-tools \
             ninja-build \
             nvidia-container-runtime \
             nvme-cli \
@@ -221,7 +227,7 @@ RUN set -e; \
             pv \
             pybind11-dev \
             python3{,-pip} \
-            qt5-default qtbase5-dev \
+            qtbase5-dev \
             rapidjson-dev \
             redis{,-tools} \
             rdma-core rdmacm-utils librdmacm{1,-dev} \
@@ -257,7 +263,7 @@ RUN set -e; \
             winbind \
             x264 libx264-dev \
             x265 libx265-{dev,doc} \
-            xz-utils pxz \
+            xz-utils \
             zfs-{dkms,initramfs,test} zfsutils-linux \
             zstd libzstd-dev \
         && break; \
@@ -295,85 +301,86 @@ FROM "$STAGE_PREFIX"stage-ss AS stage-intel
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh intel
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh intel
 
 FROM "$STAGE_PREFIX"stage-intel AS stage-infra
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh nasm
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh lz4
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh zstd
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh cmake
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh hiredis
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh ccache
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh c-ares
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh axel
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh ipt
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh cuda
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh ucx
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh ompi
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh nasm
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh lz4
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh zstd
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh cmake
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh hiredis
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh ccache
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh c-ares
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh axel
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh ipt
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh cuda
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh ucx
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh ompi
 
 FROM "$STAGE_PREFIX"stage-infra AS stage-llvm
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh llvm-gcc llvm-clang
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh llvm-gcc llvm-clang
 
 FROM "$STAGE_PREFIX"stage-llvm AS stage-util
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh boost
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh jemalloc
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh eigen
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh openblas
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh gtest
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh benchmark
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh gflags
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh glog
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh snappy
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh protobuf
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh nsync
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh boost
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh jemalloc
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh eigen
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh openblas
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh gtest
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh benchmark
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh gflags
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh glog
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh snappy
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh protobuf
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh nsync
 
 FROM "$STAGE_PREFIX"stage-util AS stage-misc
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh catch2
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh jsoncpp
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh rapidjson
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh simdjson
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh utf8proc
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh pugixml
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh pybind
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh grpc
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh libpng
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh x264
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh x265
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh libgdiplus
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh mkl-dnn
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh sentencepiece
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh opencv
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh leveldb
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh rocksdb
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh lmdb
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh nvcodec
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh catch2
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh jsoncpp
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh rapidjson
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh simdjson
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh utf8proc
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh pugixml
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh pybind
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh grpc
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh libpng
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh x264
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh x265
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh libgdiplus
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh mkl-dnn
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh sentencepiece
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh opencv
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh leveldb
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh rocksdb
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh lmdb
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh nvcodec
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh ffmpeg
 
 FROM "$STAGE_PREFIX"stage-misc AS stage-dl
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh onnx
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh pytorch
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh torchvision
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh apex
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh onnx
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh pytorch
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh torchvision
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh apex
 
 FROM "$STAGE_PREFIX"stage-dl AS stage-ort
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh ort
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh ort
 
 FROM "$STAGE_PREFIX"stage-ort AS stage-edit
 
@@ -389,6 +396,6 @@ RUN updatedb
 FROM "$IMAGE_REPO:breakpoint" AS resume
 
 COPY [".", "/etc/roaster/scripts"]
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu18.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh
 
 FROM stage-edit
