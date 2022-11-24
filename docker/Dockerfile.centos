@@ -21,6 +21,7 @@ ENV LANG=en_US.UTF-8
 
 # systemd
 RUN set -xe; \
+    (LABEL_BUILD_ID="$LABEL_BUILD_ID"); \
     (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ "_$i" = '_systemd-tmpfiles-setup.service' ] || rm -f "$i"; done); \
     rm -f /lib/systemd/system/multi-user.target.wants/*; \
     rm -f /etc/systemd/system/*.wants/*; \

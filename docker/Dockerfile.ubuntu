@@ -19,6 +19,7 @@ ENV LANG=C.UTF-8
 
 # systemd
 RUN set -xe; \
+    (LABEL_BUILD_ID="$LABEL_BUILD_ID"); \
     apt-get update -y; \
     apt-get upgrade -y; \
     DEBIAN_FRONTEND=noninteractive apt-get install -y sudo; \
