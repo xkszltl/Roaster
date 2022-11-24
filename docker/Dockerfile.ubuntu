@@ -179,7 +179,7 @@ RUN set -e; \
             libevent-dev \
             libfdk-aac-dev \
             libfreetype{6,-dev} \
-            libjpeg{{62,8,9}-dev,-{progs,tools,turbo{8-dev,-{progs,test}}}) \
+            libjpeg{{62,8,9}-dev,-{progs,tools,turbo{8-dev,-{progs,test}}}} \
             liblcms2-{dev,utils} \
             liblz4-{dev,tool} \
             libmp3lame-dev \
