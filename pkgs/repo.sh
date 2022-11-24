@@ -99,6 +99,10 @@
         RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" docker-ce-stable{,-source,-debuginfo}
 
         # Nvidia docker.
+        # Note:
+        #     Repo for Ubuntu 20.04/22.04 may reuse 18.04 URL according to official doc.
+        #     This is not a bug.
+        #     - https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker
         sudo dnf config-manager --add-repo "https://nvidia.github.io/nvidia-docker/$DISTRO_ID$DISTRO_VERSION_ID/nvidia-docker.repo"
         RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" libnvidia-container nvidia-{container-runtime,docker}
 
