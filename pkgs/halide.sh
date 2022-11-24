@@ -47,6 +47,9 @@
         'ubuntu-21.10')
             export CC="clang-13" CXX="clang++-13"
             ;;
+        'ubuntu-22.04')
+            export CC="clang-14" CXX="clang++-14"
+            ;;
         *)
             export CC="clang" CXX="clang++"
             ;;
