@@ -138,8 +138,8 @@ RUN set -e; \
             flex \
             ftpsync \
             fuse libfuse{,3}-dev \
-            $(set -e; . '/etc/os-release'; ! echo "$ID-VERSION_ID" | grep -e'^ubuntu\-20\.04$' >/dev/null || echo g{++,cc,fortran}{,-multilib}-{,7,8,9,10}) \
-            $(set -e; . '/etc/os-release'; ! echo "$ID-VERSION_ID" | grep -e'^ubuntu\-22\.04$' >/dev/null || echo g{++,cc,fortran}{,-multilib}-{,9,10,11,12}) \
+            $(set -e; . '/etc/os-release'; ! echo "$ID-$VERSION_ID" | grep -e'^ubuntu\-20\.04$' >/dev/null || echo g{++,cc,fortran}{,-multilib}-{,7,8,9,10}) \
+            $(set -e; . '/etc/os-release'; ! echo "$ID-$VERSION_ID" | grep -e'^ubuntu\-22\.04$' >/dev/null || echo g{++,cc,fortran}{,-multilib}-{,9,10,11,12}) \
             gawk \
             gdb \
             gettext \
