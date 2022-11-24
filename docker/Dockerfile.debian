@@ -232,8 +232,9 @@ RUN set -e; \
             snmp \
             snmp-mibs-downloader \
             socat \
-            strace \
             software-properties-common \
+            sssd{,-tools} \
+            strace \
             subversion-tools \
             sysfsutils \
             sysstat \
