@@ -108,7 +108,7 @@ for subset in pkg-{stable,skip,all}; do
                 [!] scl-utils{,-*}
 
                 [!] ncurses{,-*}
-                [!] hwloc{,-*}
+                [!] hwloc{,-{devel,gui,plugins}}
                 [!] numa{ctl,d}{,-*}
                 icu{,-*}
                 [!] {glibc{,-devel},libgcc}
