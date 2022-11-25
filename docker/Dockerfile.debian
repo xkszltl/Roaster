@@ -153,6 +153,7 @@ RUN set -e; \
             hdf5-{helpers,tools} h5utils libhdf5-{{,{mpi,mpich,openmpi}-}dev,doc} \
             htop \
             httping \
+            hwloc libhwloc-{dev,doc,plugins} \
             ibutils infiniband-diags \
             icu-devtools \
             ifenslave \
@@ -168,7 +169,7 @@ RUN set -e; \
             lcov \
             ldap-utils slapd \
             lib{asan{5,6},lsan0,tsan0,ubsan1} \
-            lib{atlas-base,boost-all,bz2,cairo2,c-ares,edit,eigen3,ev,ffi,gflags,gif,google-glog,grpc++,gtest,harfbuzz,hiredis,hwloc,jemalloc,jsoncpp,lapack,leveldb,lmdb,lzma,mbedtls,ncurses5,openblas,opencv,pango1.0,pcre{2,3},placebo,png,rados{,pp},re2,rocksdb,snappy,sodium,ssl,tiff,utf8proc,yaml}-dev \
+            lib{atlas-base,boost-all,bz2,cairo2,c-ares,edit,eigen3,ev,ffi,gflags,gif,google-glog,grpc++,gtest,harfbuzz,hiredis,jemalloc,jsoncpp,lapack,leveldb,lmdb,lzma,mbedtls,ncurses5,openblas,opencv,pango1.0,pcre{2,3},placebo,png,rados{,pp},re2,rocksdb,snappy,sodium,ssl,tiff,utf8proc,yaml}-dev \
             libbluray-{bdj,bin,dev,doc} \
             libcdio{,-paranoia}-dev \
             libcdio++-dev \
