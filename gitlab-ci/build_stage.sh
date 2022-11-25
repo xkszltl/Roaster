@@ -68,8 +68,8 @@ for retry in $(seq "$retry_all" -1 0); do
             --file "$GENERATED_DOCKERFILE"                              \
             --label "BUILD_TIME=$(date -u +'%Y-%m-%dT%H:%M:%SZ')"       \
             --progress plain                                            \
-            $([ "_$stage" = "_$CI_JOB_STAGE" ] && echo '--pull')        \
-            $([ -e 'cred/env-cred-usr.sh' ] &&  echo '--secret id=env-cred-usr,src=cred/env-cred-usr.sh') \
+            $([ "_$stage" != "_$CI_JOB_STAGE" ] || echo '--pull')       \
+            $([ ! -e 'cred/env-cred-usr.sh' ] || echo '--secret id=env-cred-usr,src=cred/env-cred-usr.sh')  \
             --tag "$CI_REGISTRY_IMAGE/$BASE_DISTRO:stage-$CI_JOB_STAGE" \
             --target "stage-$CI_JOB_STAGE"                              \
             .
