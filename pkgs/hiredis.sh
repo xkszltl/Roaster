@@ -11,7 +11,7 @@
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd hiredis
 
-    PATCHES='cfg'
+    PATCHES=''
     git remote add patch "$GIT_MIRROR/xkszltl/hiredis.git"
     for i in $PATCHES; do
         git fetch patch
