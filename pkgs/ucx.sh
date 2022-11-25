@@ -9,7 +9,12 @@
     until git clone -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd ucx
 
-    # git pull origin v1.13.x
+    # Known issue:
+    # - Failed to build UCX on GCC 12 due to new warnings.
+    #   https://github.com/openucx/ucx/pull/8187
+    #   https://github.com/openucx/ucx/commit/5b8522f94f98c50d6c9ae8b6b7f9be12dc170b38
+    #   https://github.com/openucx/ucx/commit/452ce18bad7d88d73ff71fe91b27df3d5d0e8770
+    git cherry-pick 452ce18b
 
     . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
 
