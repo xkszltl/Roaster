@@ -6,7 +6,7 @@ for i in llvm-{gcc,clang}; do
     [ -e $STAGE/$i ] && ( set -xe
         cd $SCRATCH
 
-        . "$ROOT_DIR/pkgs/utils/git/version.sh" llvm/llvm-project,llvmorg-14.
+        . "$ROOT_DIR/pkgs/utils/git/version.sh" llvm/llvm-project,llvmorg-15.
         until git clone --depth 1 -b "$GIT_TAG" "$GIT_REPO" llvm; do sleep 1; echo "Retrying"; done
         cd llvm
 
@@ -44,6 +44,7 @@ for i in llvm-{gcc,clang}; do
                 -DLIBIPT_INCLUDE_PATH='/usr/local/include'
                 -DLIBOMP_ENABLE_SHARED=ON
                 -DLIBOMP_FORTRAN_MODULES=OFF
+                -DLIBOMP_HWLOC_INSTALL_DIR='$(which hwloc-info 2>/dev/null | xargs -rI{} dirname {} | xargs -rI{} dirname {})'
                 -DLIBOMP_INSTALL_ALIASES=OFF
                 -DLIBOMP_OMPT_SUPPORT=ON
                 -DLIBOMP_STATS=OFF
@@ -51,8 +52,9 @@ for i in llvm-{gcc,clang}; do
                 -DLIBOMP_USE_HIER_SCHED=ON
                 -DLIBOMP_USE_HWLOC=$([ "$(hwloc-info --version | sed 's/.*[[:space:]]//' | cut -d. -f1)" -ge 2 ] && echo 'ON' || echo 'OFF')
                 -DLIBOMP_USE_STDCPPLIB=ON
-                -DLIBOMPTARGET_NVPTX_COMPUTE_CAPABILITIES='35,37,52,60,61,70,75,80'
+                -DLIBOMPTARGET_NVPTX_COMPUTE_CAPABILITIES='35,60,61,70,75,80,86'
                 -DLIBUNWIND_ENABLE_CROSS_UNWINDING=ON
+                -DLIBUNWIND_INSTALL_HEADERS=ON
                 -DLLDB_BUILD_INTEL_PT=ON
                 -DLLDB_ENABLE_PYTHON=OFF
                 -DLLVM_BUILD_LLVM_DYLIB=ON
@@ -91,13 +93,16 @@ for i in llvm-{gcc,clang}; do
                     -DLLVM_ENABLE_RUNTIMES='libcxx;libcxxabi'   \
                     $LLVM_COMMON_ARGS
             else
+                # Known issues:
+                #   - OpenMP runtime build in LLVM 15 does not work well with hwloc.
+                #   - MLIR failed to find CUDA by default in LLVM 15.
                 cmake                                       \
                     -DCMAKE_C_COMPILER=clang                \
                     -DCMAKE_CXX_COMPILER=clang++            \
                     -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src'"  \
                     -DCMAKE_{EXE,SHARED}_LINKER_FLAGS="-fuse-ld=lld"                            \
                     -DENABLE_X86_RELAX_RELOCATIONS=ON       \
-                    -DLIBCXX_ENABLE_PARALLEL_ALGORITHMS=ON  \
+                    -DLIBCXX_ENABLE_PARALLEL_ALGORITHMS=OFF \
                     -DLIBCXX_USE_COMPILER_RT=ON             \
                     -DLIBCXXABI_USE_COMPILER_RT=ON          \
                     -DLIBCXXABI_USE_LLVM_UNWINDER=ON        \
@@ -106,9 +111,10 @@ for i in llvm-{gcc,clang}; do
                     -DLLVM_ENABLE_LIBCXX=ON                 \
                     -DLLVM_ENABLE_LLD=ON                    \
                     -DLLVM_ENABLE_LTO=Thin                  \
-                    -DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;compiler-rt;libc;libclc;libcxx;libcxxabi;libunwind;lld;lldb;mlir;polly;pstl'    \
-                    -DLLVM_ENABLE_RUNTIMES='openmp'         \
-                    -DLLVM_TOOL_MLIR_BUILD=ON               \
+                    -DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;libc;libclc;lld;lldb;mlir;openmp;polly;pstl'    \
+                    -DLLVM_ENABLE_RUNTIMES='compiler-rt;libcxx;libcxxabi;libunwind' \
+                    -DLLVM_TOOL_MLIR_BUILD=OFF              \
+                    -DMLIR_ENABLE_CUDA_RUNNER=OFF           \
                     $LLVM_COMMON_ARGS
             fi
 
