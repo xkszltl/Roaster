@@ -86,11 +86,16 @@ for i in 'pypa/setuptools,v60.[3.6=v59.6.]' 'pypa/pip,[3.6=21.]' pypa/wheel,[3.6
             fi
         done
 
-        grep "$(cut -d'.' -f-2 <<< "$pyver" | sed 's/\(.*\)/\^\1=/')" <<< "$ALT_PREFIX" | head -n1 | cut -d'=' -f2
-        alt="$(grep "$(cut -d'.' -f-2 <<< "$pyver" | sed 's/\(.*\)/\^\1=/')" <<< "$ALT_PREFIX" | head -n1 | cut -d'=' -f2)"
-        if [ "$alt" ]; then
-            printf '\033[36m[INFO] %s %s may not be available for Python %s. Search for "%s" instead.\033[0m\n' "$PKG" "$GIT_TAG" "$pyver" "$alt" >&2
-            . "$ROOT_DIR/pkgs/utils/git/version.sh" "$PKG_PATH,$alt"
+        alt_rule="$(grep "$(cut -d'.' -f-2 <<< "$pyver" | sed 's/\(.*\)/\^\1=/')" <<< "$ALT_PREFIX" | head -n1)"
+        alt_target="$(printf '%s' "$alt_rule" | cut -d'=' -f2)"
+        if [ "$alt_rule" ]; then
+            # Assume it must be more specific than an empty string when pinning version.
+            if [ ! "$alt_target" ]; then
+                printf '\033[36m[INFO] %s %s may not be available for Python %s. Skip.\033[0m\n' "$PKG" "$GIT_TAG" "$pyver" >&2
+                exit 0
+            fi
+            printf '\033[36m[INFO] %s %s may not be available for Python %s. Search for "%s" instead.\033[0m\n' "$PKG" "$GIT_TAG" "$pyver" "$alt_target" >&2
+            . "$ROOT_DIR/pkgs/utils/git/version.sh" "$PKG_PATH,$alt_target"
             printf '\033[36m[INFO] Found tag "%s" instead.\033[0m\n' "$GIT_TAG" >&2
             URL="git+$GIT_REPO@$GIT_TAG"
         fi

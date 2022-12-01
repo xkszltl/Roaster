@@ -13,6 +13,7 @@
         'pytest-dev/pytest,[3.6=7.0.]'                      \
         Frozenball/pytest-sugar,master                      \
         'numpy/numpy,v[3.6=v1.19.|3.7=v1.21.]'              \
+        'mesonbuild/meson,[3.6=]'
 
     # Known issues:
     # - SciPy meson build uses the wrong casing of OpenBLAS for CMake.
@@ -31,7 +32,7 @@
         esac
 
         "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"      \
-            'scipy/scipy,v[3.6=v1.5.|3.7=v1.7.]'            \
+            'scipy/scipy,v[3.6=v1.5.|3.7=v1.7.]'
     )
 
     "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"          \
