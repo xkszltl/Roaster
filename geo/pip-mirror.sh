@@ -21,7 +21,7 @@ TOPK=2 . "$ROOT_DIR/geo/best-httping.sh"            \
     https://mirrors.cqu.edu.cn/pypi/web/simple      \
     https://mirrors.ustc.edu.cn/pypi/web/simple     \
     https://mirrors.zju.edu.cn/pypi/web/simple      \
-    https://pypi.tuna.tsinghua.edu.cn/simple        \
+    https://pypi.tuna.tsinghua.edu.cn/simple
 [ "$LINK_QUALITY" ]
 
 column -t <<< "$LINK_QUALITY" | sed 's/^/| /'
