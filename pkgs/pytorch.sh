@@ -286,15 +286,20 @@
                 set -xe
                 ;;
             esac
-            PY_SITE_PKGS_SRC_DIR="lib/python$(python3 --version 2>&1 | sed -n 's/^[^0-9]*\([0-9][0-9]*\.[0-9][0-9]*\).*/\1/p' | head -n1)/site-packages"
+            py_ver="$(python3 --version 2>&1 | sed -n 's/^[^0-9]*\([0-9][0-9]*\.[0-9][0-9]*\).*/\1/p' | head -n1)"
+            PY_SITE_PKGS_SRC_DIR="lib/python$py_ver/site-packages"
             PY_SITE_PKGS_DST_DIR="$PY_SITE_PKGS_SRC_DIR"
             case "$DISTRO_ID" in
             'debian' | 'linuxmint' | 'ubuntu')
+                [ ! -d "$INSTALL_ABS/lib/python$py_ver/dist-packages" ] || exit 0
                 # PyTorch is moving away from distutils.
                 # - https://github.com/pytorch/pytorch/pull/57040
                 # Version before that install to dist-packages.
                 # Version afterward should be relocated to dist-packages for visibility of Debian Python.
                 [ -d "$INSTALL_ABS/$PY_SITE_PKGS_SRC_DIR/caffe2" ] && PY_SITE_PKGS_DST_DIR="$(realpath -m "$PY_SITE_PKGS_SRC_DIR/../dist-packages")" || PY_SITE_PKGS_SRC_DIR='lib/python3/dist-packages'
+                ;;
+            *)
+                [ ! -d "$INSTALL_ABS/lib/python$py_ver/site-packages" ] || exit 0
                 ;;
             esac
             mkdir -p "$(realpath -m "$INSTALL_ROOT/$(dirname "$(which python3)")/../$PY_SITE_PKGS_DST_DIR")"
