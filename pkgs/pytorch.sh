@@ -5,13 +5,18 @@
 [ -e $STAGE/pytorch ] && ( set -xe
     cd $SCRATCH
 
+    # Known issues:
+    # - pytest-sugar no longer tag commit after release for years.
+    # - pytest-sugar may breaks Python 3.6 support after upgrading to termcolor 2.
+    #   https://github.com/Teemu/pytest-sugar/issues/262
     "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"          \
         pypa/packaging                                      \
         cython/cython                                       \
         benjaminp/six                                       \
         yaml/pyyaml                                         \
         'pytest-dev/pytest,[3.6=7.0.]'                      \
-        Frozenball/pytest-sugar,master                      \
+        'termcolor/termcolor,[3.6=1.]'                      \
+        'Teemu/pytest-sugar,master[3.6=]'                   \
         'numpy/numpy,v[3.6=v1.19.|3.7=v1.21.]'              \
         'mesonbuild/meson,[3.6=]'
 
