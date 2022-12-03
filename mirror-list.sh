@@ -188,8 +188,10 @@ sivel/{go-speedtest,speedtest-cli},\
 Stellarium/stellarium{,-{addons,data,dynamic-plugin,ppa,skycultures,unity,web-engine}},\
 syoyo/tiny{dng,exr,gltf,objloader-c,usdz,vdbio},\
 Sysinternals/{Proc{Dump,Mon}-for-Linux,sysinternals,SysinternalsEBPF,Sysmon{Common,ForLinux}},\
+Teemu/pytest-sugar,\
 Tencent/rapidjson,\
 tensorflow/{agents,datasets,docs,io,models,tensorboard,tensorflow,transform},\
+termcolor/termcolor,\
 thisistherk/fast_obj,\
 ThrowTheSwitch/{Ceedling,CException,CMock,MadScienceLabDocker,Unity},\
 thrust/thrust,\
