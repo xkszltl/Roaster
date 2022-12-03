@@ -176,7 +176,7 @@ RUN set -e; \
             libevent-dev \
             libfdk-aac-dev \
             libfreetype{6,-dev} \
-            libjpeg{62-turbo-dev,-{dev,tools,turbo-progs}) \
+            libjpeg{62-turbo-dev,-{dev,tools,turbo-progs}} \
             liblcms2-{dev,utils} \
             liblz4-{dev,tool} \
             libmp3lame-dev \
