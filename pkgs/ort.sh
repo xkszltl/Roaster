@@ -5,11 +5,13 @@
 [ -e $STAGE/ort ] && ( set -xe
     cd $SCRATCH
 
+    # Known issues:
+    # - Flake8 6.0.0 requires Python 3.8.1.
     "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  \
         pypa/packaging                              \
         cython/cython                               \
         benjaminp/six                               \
-        pycqa/flake8                                \
+        'pycqa/flake8,[3.6=5.,3.7=5.]'              \
         'pytest-dev/pytest,[3.6=7.0.]'              \
         'numpy/numpy,v[3.6=v1.19.|3.7=v1.21.]'
 
