@@ -326,7 +326,7 @@ FROM "$STAGE_PREFIX"stage-infra AS stage-llvm
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh llvm-clang
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh llvm-gcc llvm-clang
 
 FROM "$STAGE_PREFIX"stage-llvm AS stage-util
 

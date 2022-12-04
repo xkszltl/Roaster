@@ -89,12 +89,11 @@ for i in llvm-{gcc,clang}; do
                     -DGCC_INSTALL_PREFIX="$(realpath -e "$(dirname "$(realpath -e "$(which "$CC")")")/..")" \
                     -DLIBCXX_ENABLE_PARALLEL_ALGORITHMS=OFF \
                     -DLLVM_ENABLE_LTO=OFF                   \
-                    -DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;compiler-rt;libclc;libunwind;lld;lldb;openmp;polly;pstl'    \
-                    -DLLVM_ENABLE_RUNTIMES='libcxx;libcxxabi'   \
+                    -DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;compiler-rt;libclc;libunwind;lld;lldb;polly;pstl'   \
+                    -DLLVM_ENABLE_RUNTIMES='libcxx;libcxxabi;openmp'    \
                     $LLVM_COMMON_ARGS
             else
                 # Known issues:
-                #   - OpenMP runtime build in LLVM 15 does not work well with hwloc.
                 #   - MLIR failed to find CUDA by default in LLVM 15.
                 cmake                                       \
                     -DCMAKE_C_COMPILER=clang                \
@@ -102,7 +101,7 @@ for i in llvm-{gcc,clang}; do
                     -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src'"  \
                     -DCMAKE_{EXE,SHARED}_LINKER_FLAGS="-fuse-ld=lld"                            \
                     -DENABLE_X86_RELAX_RELOCATIONS=ON       \
-                    -DLIBCXX_ENABLE_PARALLEL_ALGORITHMS=OFF \
+                    -DLIBCXX_ENABLE_PARALLEL_ALGORITHMS=ON  \
                     -DLIBCXX_USE_COMPILER_RT=ON             \
                     -DLIBCXXABI_USE_COMPILER_RT=ON          \
                     -DLIBCXXABI_USE_LLVM_UNWINDER=ON        \
@@ -111,8 +110,8 @@ for i in llvm-{gcc,clang}; do
                     -DLLVM_ENABLE_LIBCXX=ON                 \
                     -DLLVM_ENABLE_LLD=ON                    \
                     -DLLVM_ENABLE_LTO=Thin                  \
-                    -DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;libc;libclc;lld;lldb;mlir;openmp;polly;pstl'    \
-                    -DLLVM_ENABLE_RUNTIMES='compiler-rt;libcxx;libcxxabi;libunwind' \
+                    -DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;libc;libclc;lld;lldb;mlir;polly;pstl'   \
+                    -DLLVM_ENABLE_RUNTIMES='compiler-rt;libcxx;libcxxabi;libunwind;openmp'  \
                     -DLLVM_TOOL_MLIR_BUILD=OFF              \
                     -DMLIR_ENABLE_CUDA_RUNNER=OFF           \
                     $LLVM_COMMON_ARGS
