@@ -9,8 +9,13 @@
 
     # Knwon issues:
     #   - CMake 3.22.0 + PyTorch 1.10.0 does not work.
+    #     Still persist in 3.24.
     #     https://github.com/pytorch/pytorch/issues/69222
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" Kitware/CMake,v3.21.
+    #     https://github.com/pytorch/pytorch/issues/76105
+    #     https://gitlab.kitware.com/cmake/cmake/-/issues/23805
+    #   - CMake 3.21 has weird issue in find_library() breaking openmp build of LLVM 15.
+    #     https://gitlab.kitware.com/cmake/cmake/-/issues/24221
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" Kitware/CMake,v
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO" cmake; do echo 'Retrying'; done
     cd cmake
 
