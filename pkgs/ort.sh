@@ -11,7 +11,7 @@
         pypa/packaging                              \
         cython/cython                               \
         benjaminp/six                               \
-        'pycqa/flake8,[3.6=5.,3.7=5.]'              \
+        'pycqa/flake8,[3.6=5.|3.7=5.]'              \
         'pytest-dev/pytest,[3.6=7.0.]'              \
         'numpy/numpy,v[3.6=v1.19.|3.7=v1.21.]'
 
