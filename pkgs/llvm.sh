@@ -89,8 +89,8 @@ for i in llvm-{gcc,clang}; do
                     -DGCC_INSTALL_PREFIX="$(realpath -e "$(dirname "$(realpath -e "$(which "$CC")")")/..")" \
                     -DLIBCXX_ENABLE_PARALLEL_ALGORITHMS=OFF \
                     -DLLVM_ENABLE_LTO=OFF                   \
-                    -DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;compiler-rt;libclc;libunwind;lld;lldb;polly;pstl'   \
-                    -DLLVM_ENABLE_RUNTIMES='libcxx;libcxxabi;openmp'    \
+                    -DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;compiler-rt;libclc;libunwind;lld;lldb;openmp;polly;pstl'    \
+                    -DLLVM_ENABLE_RUNTIMES='libcxx;libcxxabi'   \
                     $LLVM_COMMON_ARGS
             else
                 # Known issues:
@@ -101,7 +101,7 @@ for i in llvm-{gcc,clang}; do
                     -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src'"  \
                     -DCMAKE_{EXE,SHARED}_LINKER_FLAGS="-fuse-ld=lld"                            \
                     -DENABLE_X86_RELAX_RELOCATIONS=ON       \
-                    -DLIBCXX_ENABLE_PARALLEL_ALGORITHMS=ON  \
+                    -DLIBCXX_ENABLE_PARALLEL_ALGORITHMS=OFF \
                     -DLIBCXX_USE_COMPILER_RT=ON             \
                     -DLIBCXXABI_USE_COMPILER_RT=ON          \
                     -DLIBCXXABI_USE_LLVM_UNWINDER=ON        \
