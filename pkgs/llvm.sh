@@ -95,6 +95,7 @@ for i in llvm-{gcc,clang}; do
             else
                 # Known issues:
                 #   - MLIR failed to find CUDA by default in LLVM 15.
+                #   - OpenMP runtime build in LLVM 15 failed on CentOS 7 and Ubuntu 22.04.
                 cmake                                       \
                     -DCMAKE_C_COMPILER=clang                \
                     -DCMAKE_CXX_COMPILER=clang++            \
@@ -110,8 +111,8 @@ for i in llvm-{gcc,clang}; do
                     -DLLVM_ENABLE_LIBCXX=ON                 \
                     -DLLVM_ENABLE_LLD=ON                    \
                     -DLLVM_ENABLE_LTO=Thin                  \
-                    -DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;libc;libclc;lld;lldb;mlir;polly;pstl'   \
-                    -DLLVM_ENABLE_RUNTIMES='compiler-rt;libcxx;libcxxabi;libunwind;openmp'  \
+                    -DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;libc;libclc;lld;lldb;mlir;openmp;polly;pstl'    \
+                    -DLLVM_ENABLE_RUNTIMES='compiler-rt;libcxx;libcxxabi;libunwind' \
                     -DLLVM_TOOL_MLIR_BUILD=OFF              \
                     -DMLIR_ENABLE_CUDA_RUNNER=OFF           \
                     $LLVM_COMMON_ARGS
