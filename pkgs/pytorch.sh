@@ -87,7 +87,9 @@
     # Patches:
     # - Target-specific compile flags should respect global vars.
     #   https://github.com/pytorch/pytorch/pull/75729
-    PATCHES="lstm cxxopt"
+    #   This patch is optional and incompatible across history with std changes.
+    PATCHES="lstm"
+    # PATCHES="$PATCHES cxxopt"
     for i in $PATCHES; do
         git fetch patch "$i"
         git cherry-pick FETCH_HEAD
