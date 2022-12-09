@@ -7,7 +7,7 @@
 
     "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  \
         python-attrs/attrs                          \
-        pypa/packaging                              \
+        pypa/packaging,[3.6=21.]                    \
         cython/cython                               \
         pytest-dev/pluggy                           \
         'pytest-dev/pytest,[3.6=7.0.]'              \

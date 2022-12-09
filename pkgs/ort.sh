@@ -8,7 +8,7 @@
     # Known issues:
     # - Flake8 6.0.0 requires Python 3.8.1.
     "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  \
-        pypa/packaging                              \
+        pypa/packaging,[3.6=21.]                    \
         cython/cython                               \
         benjaminp/six                               \
         'pycqa/flake8,[3.6=5.|3.7=5.]'              \

@@ -10,7 +10,7 @@
     # - pytest-sugar may breaks Python 3.6 support after upgrading to termcolor 2.
     #   https://github.com/Teemu/pytest-sugar/issues/262
     "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"          \
-        pypa/packaging                                      \
+        pypa/packaging,[3.6=21.]                            \
         cython/cython                                       \
         benjaminp/six                                       \
         yaml/pyyaml                                         \

@@ -6,7 +6,7 @@
     cd $SCRATCH
 
     "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh"  \
-        pypa/packaging                              \
+        pypa/packaging,[3.6=21.]                    \
         cython/cython                               \
         yaml/pyyaml                                 \
         'pytest-dev/pytest,[3.6=7.0.]'              \
