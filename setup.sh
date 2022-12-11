@@ -2,8 +2,8 @@
 
 set -e
 
-if [ $PPID -le 1 ]; then
-    echo "Started from process $PPID. Re-entry for protection."
+if [ "$PPID" -le 1 ]; then
+    printf '\033[36m[INFO] Started from process %d. Re-entry for protection.\033[0m\n' "$PPID" >&2
     $0 $@
     exit $!
 fi
@@ -30,7 +30,7 @@ esac
 [ "$IS_CONTAINER" ] || export IS_CONTAINER=false
 
 if ! "$IS_CONTAINER" && [ "$(whoami)" = 'root' ]; then
-    echo "Please use a non-root user with sudo permission."
+    printf '\033[31m[ERROR] Please use a non-root user with sudo permission.\033[0m\n' >&2
     exit 1
 fi
 
@@ -87,7 +87,7 @@ echo
 
 if ! which sudo; then
     if [ "_$(whoami)" != '_root' ]; then
-        echo 'Insufficient permission to bootstrap. Please install sudo manually or provide root access.'
+        printf '\033[31m[ERROR] Insufficient permission to bootstrap. Please install sudo manually or provide root access.\033[0m\n' >&2
         exit 1
     fi
 
