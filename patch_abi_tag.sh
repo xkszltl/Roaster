@@ -46,24 +46,36 @@ ldconfig -p                                 \
 | sort -Vu                                  \
 | xargs -rI{} bash -c ':
         set -e
+
         lib={}
         patch="$(mktemp -t alter-os-abi-XXXXXXXX.so)"
+
         objcopy                                                 \
             --update-section .note.ABI-tag=<(set -e
                     readelf --hex-dump .note.ABI-tag "$lib"     \
                     | sed -n "s/^0x[^[:space:]]*[[:space:]]//p" \
                     | sed "s/[[:space:]][^[:space:]]*$//"       \
                     | xargs -n1                                 \
+                    | head -n-3                                 \
+                    | cat - <(set -e
+                            uname -r                            \
+                            | cut -d- -f1                       \
+                            | cut -d. -f-3                      \
+                            | tr . " "                          \
+                            | xargs printf "%02x000000\n"
+                        )                                       \
+                    | grep .                                    \
                     | paste -sd" " -                            \
-                    | sed "s/ \([^ ][^ ]*\) \([^ ][^ ]*\) \([^ ][^ ]*\)$/ '"$(uname -r | cut -d. -f-2 | tr '.' ' ' | xargs -L1 printf '%02x000000 %02x000000')"' \3/"   \
                     | xxd -p -r                                 \
                 )                                               \
             "$lib"                                              \
             "$patch"
+
         cat "$patch"        \
         | sudo tee "$lib"   \
         > /dev/null
         rm -f "$patch"
+
         sudo ldconfig
     '
 
