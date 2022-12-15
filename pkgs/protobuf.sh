@@ -10,9 +10,8 @@
     # ------------------------------------------------------------
 
     # Known issues:
-    # - Ort failed to build with Protobuf 3.20.
-    #   https://github.com/microsoft/onnxruntime/issues/11129
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" protocolbuffers/protobuf,v3.19.
+    # - Protobuf 3.21 is re-versioned as 4.21 in Python with breaking changes.
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" protocolbuffers/protobuf,v3.20.
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd protobuf
 
