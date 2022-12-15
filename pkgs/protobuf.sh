@@ -71,11 +71,12 @@
     [ ! -d 'build' ] || ln -sf '../build' 'src/.libs'
 
     # Known issues:
-    #   - Protobuf 3.20 drops Python 3.6 support.
-    #     https://github.com/protocolbuffers/protobuf/pull/9480
-    #     https://github.com/protocolbuffers/protobuf/commit/301d315dc4674d1bc799446644e88eff0af1ac86
+    # - Protobuf 3.20 drops Python 3.6 support.
+    #   https://github.com/protocolbuffers/protobuf/pull/9480
+    #   https://github.com/protocolbuffers/protobuf/commit/301d315dc4674d1bc799446644e88eff0af1ac86
+    # - Protobuf 3.21 is re-versioned as 4.21 in Python with breaking changes.
     PROTOC="$(realpath -e 'build/protoc')" "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" \
-        protocolbuffers/protobuf/./python,v3.19.[3.6=v3.19.]
+        protocolbuffers/protobuf/./python,v3.20.[3.6=v3.19.]
 
     # ------------------------------------------------------------
 
