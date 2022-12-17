@@ -23,12 +23,10 @@
         export CFLAGS="$CFLAGS -O3 -fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"
         export CXXFLAGS="$CXXFLAGS -O3 -fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"
 
-        # Explicitly inject $CFLAGS due to https://github.com/lz4/lz4/issues/958
-        make all CFLAGS="$CFLAGS" -j$(nproc)
-        # Parallel test does not work: https://github.com/lz4/lz4/issues/957
-        make check
+        make all -j"$(nproc)"
+        make check -j"$(nproc)"
         # Only run quick tests (check) by default.
-        # make test
+        # make test -j"$(nproc)"
         make PREFIX="$INSTALL_ABS" install -j
     )
 
