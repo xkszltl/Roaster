@@ -24,9 +24,9 @@
         export CXXFLAGS="$CXXFLAGS -O3 -fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"
 
         make all -j"$(nproc)"
+        # Run quick tests (check) first as full tests can be very slow and sequential until v1.9.4.
         make check -j"$(nproc)"
-        # Only run quick tests (check) by default.
-        # make test -j"$(nproc)"
+        make test -j"$(nproc)"
         make PREFIX="$INSTALL_ABS" install -j
     )
 
