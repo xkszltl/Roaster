@@ -164,13 +164,13 @@ phacility/{arcanist,javelin,phabricator,xhprof},\
 PixarAnimationStudios/{OpenSubdiv,USD},\
 protocolbuffers/{protobuf,upb},\
 pybind/pybind11,\
-PythonCharmers/python-future,\
-python-pillow/{Pillow,pillow-perf,Sane},\
 pypa/{packaging,pip,pipenv,setuptools{,_scm},virtualenv,warehouse,wheel},\
 pyparsing/pyparsing,\
 pytest-dev/{pluggy,py,pytest},\
 python/typing,\
 python-attrs/attrs,\
+python-pillow/{Pillow,pillow-perf,Sane},\
+PythonCharmers/python-future,\
 pytorch/{audio,botorch,captum,cppdocs,cpuinfo,elastic,examples,fairseq,FBGEMM,functorch,glow,ignite,kineto,pytorch,QNNPACK,serve,tensorpipe,text,translate,tutorials,vision,xla},\
 RadeonOpenCompute/{hcc,ROCm-Device-Libs,ROCR-Runtime},\
 reactos/{rapps-db,reactos{,dbg},RosBE,wine},\
