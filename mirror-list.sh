@@ -167,7 +167,7 @@ pybind/pybind11,\
 pypa/{packaging,pip,pipenv,setuptools{,_scm},virtualenv,warehouse,wheel},\
 pyparsing/pyparsing,\
 pytest-dev/{pluggy,py,pytest},\
-python/typing,\
+python/{cpython{,-{bin,source}-deps},devguide,importlib_{metadata,resources},mypy{,_extensions},peps,pyperformance,python-docs-{es,fr,hu,id,it,ja,ko,tr,pl,pt-br,theme,uk,zh-{cn,tw}},pythoncapi-compat,pythondotorg,release-tools,typeshed,typing{,_extensions},tzdata},\
 python-attrs/attrs,\
 python-pillow/{Pillow,pillow-perf,Sane},\
 PythonCharmers/python-future,\
