@@ -119,7 +119,18 @@ FROM "$STAGE_PREFIX"stage-intel AS stage-infra
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh nasm lz4 zstd cmake hiredis ccache c-ares axel ipt cuda ucx ompi
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh nasm
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh lz4
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh zstd
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh cmake
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh hiredis
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh ccache
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh c-ares
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh axel
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh ipt
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh cuda
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh ucx
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh ompi
 
 FROM "$STAGE_PREFIX"stage-infra AS stage-llvm
 
@@ -131,19 +142,51 @@ FROM "$STAGE_PREFIX"stage-llvm AS stage-util
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh boost jemalloc eigen openblas gtest benchmark gflags glog snappy protobuf nsync
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh boost
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh jemalloc
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh eigen
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh openblas
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh gtest
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh benchmark
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh gflags
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh glog
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh snappy
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh protobuf
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh nsync
 
 FROM "$STAGE_PREFIX"stage-util AS stage-misc
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh catch2 jsoncpp rapidjson simdjson utf8proc pugixml pybind grpc libpng x264 x265 libgdiplus mkl-dnn sentencepiece opencv leveldb rocksdb lmdb nvcodec ffmpeg
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh catch2
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh jsoncpp
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh rapidjson
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh simdjson
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh utf8proc
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh pugixml
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh pybind
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh grpc
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh libpng
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh x264
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh x265
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh libgdiplus
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh mkl-dnn
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh sentencepiece
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh opencv
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh leveldb
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh rocksdb
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh lmdb
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh nvcodec
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh ffmpeg
 
 FROM "$STAGE_PREFIX"stage-misc AS stage-dl
 
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh onnx pytorch torchvision apex
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh onnx
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh pytorch
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh torchvision
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh apex
 
 FROM "$STAGE_PREFIX"stage-dl AS stage-ort
 
