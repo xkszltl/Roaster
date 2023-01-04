@@ -6,6 +6,8 @@
     # Multiple detection logic:
     # - Option added in curl 7.52 and not supported by CentOS 7 stock curl 7.29.
     # - Help menu was folded somewhere between curl 7.68 and 7.74.
+    #
+    # Note it may be reset below after installing curl.
     curl_connref="$(! which curl >/dev/null 2>/dev/null || curl --help -v | sed -n 's/.*\(\-\-retry\-connrefused\).*/\1/p' | head -n1 | grep . || curl --help curl | sed -n 's/.*\(\-\-retry\-connrefused\).*/\1/p' | head -n1)"
 
     case "$DISTRO_ID" in
@@ -29,7 +31,7 @@
 
         until sudo dnf makecache -y; do echo 'Retrying'; done
         until sudo dnf install -y bc {core,find,ip}utils curl kernel-headers; do echo 'Retrying'; done
-        curl_connref="$(! which curl >/dev/null 2>/dev/null || curl --help -v | sed -n 's/.*\(\-\-retry\-connrefused\).*/\1/p' | head -n1)"
+        curl_connref="$(! which curl >/dev/null 2>/dev/null || curl --help -v | sed -n 's/.*\(\-\-retry\-connrefused\).*/\1/p' | head -n1 | grep . || curl --help curl | sed -n 's/.*\(\-\-retry\-connrefused\).*/\1/p' | head -n1)"
 
         until sudo dnf install -y centos-release-dotnet; do echo 'Retrying'; done
         RPM_PRIORITY=1 "$ROOT_DIR/apply_cache.sh" dotnet
@@ -154,7 +156,7 @@
         fi
         sudo apt-get -o 'DPkg::Lock::Timeout=3600' update -y
         sudo DEBIAN_FRONTEND=noninteractive apt-get -o 'DPkg::Lock::Timeout=3600' upgrade -y
-        curl_connref="$(! which curl >/dev/null 2>/dev/null || curl --help -v | sed -n 's/.*\(\-\-retry\-connrefused\).*/\1/p' | head -n1)"
+        curl_connref="$(! which curl >/dev/null 2>/dev/null || curl --help -v | sed -n 's/.*\(\-\-retry\-connrefused\).*/\1/p' | head -n1 | grep . || curl --help curl | sed -n 's/.*\(\-\-retry\-connrefused\).*/\1/p' | head -n1)"
 
         for retry in $(seq 20 -1 0); do
             [ "$retry" -gt 0 ]
