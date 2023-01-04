@@ -3,8 +3,10 @@
 # ================================================================
 
 [ -e $STAGE/repo ] && ( set -xe
-    # Option added in curl 7.52 and not supported by CentOS 7 stock curl 7.29.
-    curl_connref="$(! which curl >/dev/null 2>/dev/null || curl --help -v | sed -n 's/.*\(\-\-retry\-connrefused\).*/\1/p' | head -n1)"
+    # Multiple detection logic:
+    # - Option added in curl 7.52 and not supported by CentOS 7 stock curl 7.29.
+    # - Help menu was folded somewhere between curl 7.68 and 7.74.
+    curl_connref="$(! which curl >/dev/null 2>/dev/null || curl --help -v | sed -n 's/.*\(\-\-retry\-connrefused\).*/\1/p' | head -n1 | grep . || curl --help curl | sed -n 's/.*\(\-\-retry\-connrefused\).*/\1/p' | head -n1)"
 
     case "$DISTRO_ID" in
     'centos' | 'rhel' | 'scientific')
