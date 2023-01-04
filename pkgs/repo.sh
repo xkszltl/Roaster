@@ -248,8 +248,36 @@
         sudo apt-get -o 'DPkg::Lock::Timeout=3600' update -y
 
         # Nvidia docker.
-        curl -sSL --retry 1000 $curl_connref --retry-delay 1 "https://nvidia.github.io/nvidia-docker/gpgkey" | sudo APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key add -
-        curl -sSL --retry 1000 $curl_connref --retry-delay 1 "https://nvidia.github.io/nvidia-docker/$DISTRO_ID$DISTRO_VERSION_ID/nvidia-docker.list" | sudo tee "/etc/apt/sources.list.d/nvidia-docker.list"
+        # Known issue:
+        # - Hide SNI with manual resolution if necessary, at the cost of unverified cert.
+        (
+            set -e
+            ! curl -sSL --retry 1000 $curl_connref --retry-delay 1 "https://nvidia.github.io/nvidia-docker/gpgkey" || exit 0
+            printf '\033[33m[WARNING] Fallback to hidden SNI when fetching nvidia-docker GPG key. Beware of security risk from unverified cert.\033[0m\n' >&2
+            ! curl -sSL --retry 1000 $curl_connref --retry-delay 1 -kH "Host: nvidia.github.io" "https://$(set -e
+                    curl -svX HEAD "https://nvidia.github.io" 2>&1 >/dev/null                               \
+                    | sed -n 's/.*Trying \([1-9][0-9]*\.[1-9][0-9]*\.[1-9][0-9]*\.[1-9][0-9]*\):443.*/\1/p' \
+                    | head -n1                                                                              \
+                    | grep .
+                )/nvidia-docker/gpgkey" \
+            || exit 0
+            printf '\033[31m[ERROR] Failed to get nvidia-docker GPG key.\033[0m\n' >&2
+            exit 1
+        ) | sudo APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key add -
+        (
+            set -e
+            ! curl -sSL --retry 1000 $curl_connref --retry-delay 1 "https://nvidia.github.io/nvidia-docker/$DISTRO_ID$DISTRO_VERSION_ID/nvidia-docker.list" || exit 0
+            printf '\033[33m[WARNING] Fallback to hidden SNI when fetching nvidia-docker repo config. Beware of security risk from unverified cert.\033[0m\n' >&2
+            ! curl -sSL --retry 1000 $curl_connref --retry-delay 1 -kH "Host: nvidia.github.io" "https://$(set -e
+                    curl -svX HEAD "https://nvidia.github.io" 2>&1 >/dev/null                               \
+                    | sed -n 's/.*Trying \([1-9][0-9]*\.[1-9][0-9]*\.[1-9][0-9]*\.[1-9][0-9]*\):443.*/\1/p' \
+                    | head -n1                                                                              \
+                    | grep .
+                )/nvidia-docker/$DISTRO_ID$DISTRO_VERSION_ID/nvidia-docker.list"    \
+            || exit 0
+            printf '\033[31m[ERROR] Failed to get nvidia-docker repo config.\033[0m\n' >&2
+            exit 1
+        ) | sudo tee "/etc/apt/sources.list.d/nvidia-docker.list"
 
         sudo apt-get -o 'DPkg::Lock::Timeout=3600' update -y
         sudo DEBIAN_FRONTEND=noninteractive apt-get -o 'DPkg::Lock::Timeout=3600' upgrade -y
