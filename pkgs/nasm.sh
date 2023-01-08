@@ -6,7 +6,8 @@
     cd $SCRATCH
 
     # Known issues:
-    # - NASM 2.16 requires autoconf 2.17 in build.
+    # - NASM 2.16 requires autoconf 2.71 in build.
+    #   https://github.com/netwide-assembler/nasm/commit/b6151260a1d09a2e98f4d9074080e89fb6b3aa98
     . "$ROOT_DIR/pkgs/utils/git/version.sh" netwide-assembler/nasm,nasm-2.15.
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd nasm
