@@ -5,7 +5,9 @@
 [ -e $STAGE/nasm ] && ( set -xe
     cd $SCRATCH
 
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" netwide-assembler/nasm,nasm-
+    # Known issues:
+    # - NASM 2.16 requires autoconf 2.17 in build.
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" netwide-assembler/nasm,nasm-2.15.
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd nasm
 
