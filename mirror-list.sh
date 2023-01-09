@@ -95,7 +95,7 @@ huggingface/{knockknock,Mongoku,neuralcoref,pytorch-{openai-transformer-lm,pretr
 HypothesisWorks/hypothesis,\
 iina/{iina{,-plugin-definition,-website},plugin-ytdl},\
 Immediate-Mode-UI/Nuklear,\
-intel/{ARM_NEON_2_x86_SSE,compute-runtime,ideep,mkl-dnn},\
+intel/{ARM_NEON_2_x86_SSE,compute-runtime,ideep,ittapi,mkl-dnn},\
 intelxed/xed,\
 ispc/ispc{,.github.com},\
 IvanKobzarev/fbjni,\
