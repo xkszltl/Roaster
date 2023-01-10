@@ -177,7 +177,7 @@ reactos/{rapps-db,reactos{,dbg},RosBE,wine},\
 redis/{redis{,-{benchmarks-specification,doc,debian,hashes,io,rb,rcp,snap,specifications}},hiredis{,-node,-py,-rb},jedis},\
 RMerl/{am-toolchains,asuswrt-merlin.ng},\
 ROCm-Developer-Tools/HIP,\
-ROCmSoftwarePlatform/{AMDMIGraphX,composable_kernel,cub-hip,gpufort,hip{-rdma-perftest,BLAS{,Lt},Caffe,CUB,DNN,FFT,fort,OMB,RAND,SOLVER,SPARSE},MI{Fin,Open{,Examples,GEMM,Tensile},SA,Tuna},rccl,roc{ALUTION,BLAS{,-Examples},FFT,GemmDriver,HPCG,HPL,MLIR,PRIM,RAND,SOLVER,SPARSE,Thrust,WMMA},rocm-papi-component,Tensile,Thrust},\
+ROCmSoftwarePlatform/{AMDMIGraphX,composable_kernel,cub-hip,gpufort,hip{-rdma-perftest,BLAS{,Lt},Caffe,CUB,DNN,FFT,fort,OMB,RAND,SOLVER,SPARSE},hipify_torch,MI{Fin,Open{,Examples,GEMM,Tensile},SA,Tuna},rccl,roc{ALUTION,BLAS{,-Examples},FFT,GemmDriver,HPCG,HPL,MLIR,PRIM,RAND,SOLVER,SPARSE,Thrust,WMMA},rocm-papi-component,Tensile,Thrust},\
 ryd/chaosvpn,\
 SchedMD/slurm,\
 scikit-learn/{enhancement_proposals,examples-data,scikit-learn{,-benchmarks}},\
