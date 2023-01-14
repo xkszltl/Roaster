@@ -131,6 +131,8 @@
             -Donnxruntime_PREFER_SYSTEM_LIB=ON                  \
             -Donnxruntime_RUN_ONNX_TESTS=ON                     \
             -Donnxruntime_TENSORRT_HOME='/usr'                  \
+            -Donnxruntime_USE_AVX=ON                            \
+            -Donnxruntime_USE_AVX2=ON                           \
             -Donnxruntime_USE_CUDA="$(which nvcc >/dev/null 2>&1 && echo 'ON' || echo 'OFF')"                               \
             -Donnxruntime_USE_DNNL=ON                           \
             -Donnxruntime_USE_EIGEN_FOR_BLAS=ON                 \
