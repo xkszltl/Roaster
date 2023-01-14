@@ -109,6 +109,7 @@ jupp0r/prometheus-cpp,\
 keras-team/{autokeras,governance,keras{,-applications,-autodoc,-contrib,-cv,-docs-{ja,ko,zh},-io,-nlp,-preprocessing,-tuner}},\
 KhronosGroup/{EGL-Registry,GLSL,glslang,glTF{,-{Blender-IO,Project-Explorer,Registry,Sample-{Environments,Models,Viewer},Tutorials,Validator}},KTX-{Registry,Software,Specification},LLVM-SPIRV-Backend,OpenCL-{CLHPP,CTS,Docs,Guide,Headers,ICD-Loader,Layers,Registry,SDK},SPIRV-{Cross,Guide,Headers,LLVM-Translator,Reflect,Registry,Tools,Visualizer},SYCL-{CTS,Docs,Registry},Vulkan-{Docs,ExtensionLayer,Guide,Headers,Hpp,Loader,MemoryModel,Portability,Profiles,Samples{,-Assets},Tools,ValidationLayers},WebGL{,DeveloperTools}},\
 Kitware/{CMake,VTK},\
+Kkevsterrr/{backdoorme,geneva,koth},\
 leethomason/tinyxml2,\
 LeoHsiao1/pyexiv2,\
 libav/libav,\
