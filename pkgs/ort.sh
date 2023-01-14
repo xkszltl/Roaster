@@ -115,6 +115,8 @@
             -DCMAKE_VERBOSE_MAKEFILE=ON                         \
             -DONNX_CUSTOM_PROTOC_EXECUTABLE="$(which protoc)"   \
             -DPython_ADDITIONAL_VERSIONS="$(python3 --version | sed -n 's/^Python[[:space:]]*\([0-9]*\.[0-9]*\)\..*/\1/p')" \
+            -DPython_EXECUTABLE="$(which python3)"              \
+            -DPython_FIND_UNVERSIONED_NAMES=FIRST               \
             -Deigen_SOURCE_PATH="/usr/local/include/eigen3"     \
             -Donnxruntime_BUILD_CSHARP=OFF                      \
             -Donnxruntime_BUILD_FOR_NATIVE_MACHINE="$($TOOLCHAIN_CPU_NATIVE && echo 'ON' || echo 'OFF')"                    \
