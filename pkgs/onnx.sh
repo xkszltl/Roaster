@@ -91,9 +91,9 @@
             # - ONNX 1.13.0 requires Protobuf 3.20.2 incompatible with Python 3.6.
             case "$DISTRO_ID-$DISTRO_VERSION_ID" in
             'centos-'* | 'fedora-'* | 'rhel-'* | 'scientific-'*)
-                set +xe
+                set +e
                 . scl_source enable rh-python38 || exit 1
-                set -xe
+                set -e
                 ;;
             esac
 
