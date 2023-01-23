@@ -67,7 +67,7 @@ else
         if ! git diff --exit-code --name-only >/dev/null; then
             printf '### Build-time changes\n\n'
             printf '```\n'
-            git diff
+            git --no-pager diff
             printf '```\n\n'
         fi
     )
