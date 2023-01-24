@@ -32,7 +32,7 @@ image_size="$(set -e;
 )"
 
 image_size="$(set -e;
-    $sudo_docker run --rm -i --entrypoint '' "$DOCKER_IMAGE" bash -c "du --exclude=/{dev,proc} -B1 -cs '$DIR'"   \
+    $sudo_docker run --rm -i --entrypoint '' "$DOCKER_IMAGE" bash -c "du --exclude=/{dev,proc} -B1 -cs '$DIR'"  \
     | tail -n1                                                                                                  \
     | cut -f1
 )"
