@@ -15,7 +15,7 @@ done
 sudo_docker="$([ -w '/var/run/docker.sock' ] || ! which sudo >/dev/null || echo 'sudo --preserve-env=DOCKER_BUILDKIT') docker"
 
 [ "$DOCKER_IMAGE" ] || DOCKER_IMAGE="$@"
-[ "$DOCKER_IMAGE" ] || DOCKER_IMAGE='roasterproject/centos roasterproject/ubuntu roasterproject/debian'
+[ "$DOCKER_IMAGE" ] || DOCKER_IMAGE='roasterproject/centos roasterproject/debian roasterproject/ubuntu'
 DOCKER_IMAGE="$(sed 's/[[:space:]][[:space:]]*/ /g' <<< "$DOCKER_IMAGE" | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//')"
 [ "$DOCKER_IMAGE" ]
 
