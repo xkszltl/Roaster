@@ -243,6 +243,7 @@ RUN set -e; \
             telnet{,-ssl} tftp \
             time \
             tmux{,-plugin-manager} \
+            traceroute \
             tree \
             tuned{,'-*'} \
             txt2man \
@@ -255,6 +256,7 @@ RUN set -e; \
             wget \
             whois \
             winbind \
+            wondershaper \
             x264 libx264-dev \
             x265 libx265-{dev,doc} \
             xz-utils \
