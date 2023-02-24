@@ -11,6 +11,14 @@
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd zstd
 
+    # Known issue:
+    # - Zstd 1.5.4 implicitly requires CMake 3.18.
+    #   https://github.com/facebook/zstd/pull/3510
+    #   https://github.com/facebook/zstd/commit/8420502ef9d5980d2297c88f80d19ae18f84f6df
+
+    git fetch origin dev
+    git cherry-pick 8420502e
+
     # ------------------------------------------------------------
 
     . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
