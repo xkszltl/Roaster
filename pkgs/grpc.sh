@@ -5,7 +5,11 @@
 [ -e $STAGE/grpc ] && ( set -xe
     cd $SCRATCH
 
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" grpc/grpc,v
+    # Known issue:
+    # - gRPC 1.52.1 failed to build on CentOS 7.
+    #   Pin to 1.51 for now.
+    #   https://github.com/grpc/grpc/issues/32477
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" grpc/grpc,v1.51.
     until git clone --depth 1 --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd grpc
 
