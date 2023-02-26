@@ -13,6 +13,8 @@
         ;;
     esac
 
+    # PyTorch does not fully support CUDA 12.0 as of Feb 2023.
+    # - https://github.com/pytorch/pytorch/issues/91122
     export CUDA_VER_MAJOR="11"
     export CUDA_VER_MINOR="8"
     case "$DISTRO_ID" in
