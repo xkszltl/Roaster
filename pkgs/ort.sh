@@ -17,7 +17,11 @@
 
     # ------------------------------------------------------------
 
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" Microsoft/onnxruntime,v
+    # Known issues:
+    # - Ort 1.14 refactored the deps fetching logic to solely depends on GitHub tarball.
+    #   This does not work in China and there is no trivial way to patch.
+    #   Pin to 1.13 for now.
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" Microsoft/onnxruntime,v1.13.
     until git clone -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd onnxruntime
 
@@ -25,11 +29,30 @@
 
     git remote add patch "$GIT_MIRROR/xkszltl/onnxruntime.git"
 
+    # Known issues:
+    # - Ort until 1.13.1 does not build with protobuf 3.20.
+    #   https://github.com/microsoft/onnxruntime/issues/11129
+    #   https://github.com/microsoft/onnxruntime/pull/13731
+    #   https://github.com/microsoft/onnxruntime/commit/b4a4fa5aac9e1fafe348f2c9d7d121ed28a35433
+    #   Fixed in 1.14.0.
+    # - The patching commit uses onnxruntime::narrow newly introduced.
+    #   https://github.com/microsoft/onnxruntime/pull/13416
+    #   https://github.com/microsoft/onnxruntime/commit/2ecd1d662203d3fb5d77bf2aa97f6b8bcd7d1759
+    #   It is not released until 1.14.0 and there is no release tag in-between.
+    #   It is also too huge to cherry-pick without verifying.
+    #   Manually patch instead.
+    git cherry-pick b4a4fa5a
+    sed -i 's/onnxruntime\(::narrow<\)/gsl\1/g' 'onnxruntime/test/onnx/tensorprotoutils.cc'
+    git commit 'onnxruntime/test/onnx/tensorprotoutils.cc' -m 'Backport patch for Protobuf 3.20 build.'
+
     # Patches:
+    # - Ort 1.12.0 is incompatible with json-devel 3.6.1 on CentOS 7.
+    #   https://github.com/microsoft/onnxruntime/issues/12393
+    #   https://github.com/microsoft/onnxruntime/pull/12394
     # - ONNX/Ort has conflicting registration of proto when linked to shared protobuf.
     #   https://github.com/microsoft/onnxruntime/pull/12440
     # - Downloading archives from GitHub is unreliable.
-    PATCHES="reg sysonnx abseil jemalloc"
+    PATCHES="json-1.13.1 reg-1.13.1 sysonnx-1.13.1 abseil-1.13.1 jemalloc-1.13.1"
     for i in $PATCHES; do
         git fetch patch "$i"
         git cherry-pick FETCH_HEAD
