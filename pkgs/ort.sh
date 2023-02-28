@@ -58,20 +58,11 @@
         git cherry-pick FETCH_HEAD
     done
 
-    (
-        set -xe
-
-        cd cmake/external
-
-        # rm -rf googletest protobuf
-        # cp -rf /usr/local/src/{gtest,protobuf} ./
-        # mv gtest googletest
-
-        for i in ./*.cmake; do
-            sed -i "s/$(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR_GITHUB")\(\/..*\/.*\.git\)/$(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR")\1/" "$i"
-        done
-        git --no-pager diff
-    )
+    for i in cmake/deps.txt cmake/external/*.cmake; do
+        [ -e "$i" ] || continue
+        sed -i "s/$(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR_GITHUB")\(\/..*\/.*\.git\)/$(sed 's/\([\/\.]\)/\\\1/g' <<< "$GIT_MIRROR")\1/" "$i"
+    done
+    git --no-pager diff
 
     # ------------------------------------------------------------
 
