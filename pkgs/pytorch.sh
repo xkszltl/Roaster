@@ -220,7 +220,10 @@
             time "$TOOLCHAIN/cmake" --build . --target install
             grep '^BUILD_PYTHON:BOOL=ON' CMakeCache.txt
 
-            time "$TOOLCHAIN/ctest" --output-on-failure -j"$(nproc)" || ! nvidia-smi
+            time "$TOOLCHAIN/ctest" --output-on-failure -j"$(nproc)"                                        \
+            || NCCL_DEBUG=TRACE NCCL_DEBUG_SUBSYS=ALL "$TOOLCHAIN/ctest" --output-on-failure -j"$(nproc)"   \
+            || NCCL_DEBUG=TRACE NCCL_DEBUG_SUBSYS=ALL "$TOOLCHAIN/ctest" --output-on-failure                \
+            || ! nvidia-smi
         )
 
         # Known issues:
