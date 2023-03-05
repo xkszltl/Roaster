@@ -5,9 +5,12 @@
 [ -e $STAGE/ffmpeg ] && ( set -xe
     cd $SCRATCH
 
+    # Known issues:
+    # - FFmpeg 6 is incompatible with torchvision as of Mar 2023.
+    #   https://github.com/pytorch/vision/pull/7378
     [ "_$GIT_MIRROR" = "_$GIT_MIRROR_CODINGCAFE" ]                  \
-    && . "$ROOT_DIR/pkgs/utils/git/version.sh" videolan/ffmpeg,n    \
-    || GIT_MIRROR="https://git.videolan.org/git" . "$ROOT_DIR/pkgs/utils/git/version.sh" ffmpeg,n
+    && . "$ROOT_DIR/pkgs/utils/git/version.sh" videolan/ffmpeg,n5.  \
+    || GIT_MIRROR="https://git.videolan.org/git" . "$ROOT_DIR/pkgs/utils/git/version.sh" ffmpeg,n5.
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd ffmpeg
 
