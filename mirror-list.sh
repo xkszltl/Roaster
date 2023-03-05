@@ -166,7 +166,7 @@ PeachPy/enum34,\
 phacility/{arcanist,javelin,phabricator,xhprof},\
 PixarAnimationStudios/{OpenSubdiv,USD},\
 protocolbuffers/{protobuf,upb},\
-pybind/pybind11,\
+pybind/pybind11{,_bazel},\
 pypa/{packaging,pip,pipenv,setuptools{,_scm},virtualenv,warehouse,wheel},\
 pyparsing/pyparsing,\
 pytest-dev/{pluggy,py,pytest},\
