@@ -14,7 +14,7 @@
         afq984/python-cxxfilt,master                \
         docopt/docopt                               \
         tqdm/py-make,v                              \
-        tqdm/tqdm,v[3.6=4.64.]
+        tqdm/tqdm,v[3.6=v4.64.]
 
     # ------------------------------------------------------------
 
