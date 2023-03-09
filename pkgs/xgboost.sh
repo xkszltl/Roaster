@@ -9,7 +9,7 @@
 
     . "$ROOT_DIR/pkgs/utils/git/version.sh" dmlc/xgboost,v
     until git clone --depth 1 --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
-    cd gflags
+    cd xgboost
 
     # ------------------------------------------------------------
 
