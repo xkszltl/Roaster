@@ -176,6 +176,7 @@ python-pillow/{Pillow,pillow-perf,Sane},\
 PythonCharmers/python-future,\
 pytorch/{audio,botorch,captum,cppdocs,cpuinfo,elastic,examples,fairseq,FBGEMM,functorch,glow,ignite,kineto,pytorch,QNNPACK,serve,tensorpipe,text,translate,tutorials,vision,xla},\
 RadeonOpenCompute/{hcc,ROCm-Device-Libs,ROCR-Runtime},\
+rapidsai/{benchmark,cloud-ml-examples,clx,cu{cim,df,graph,hornet,ml,signal,spatial,xfilter},dask-{build-environment,cuda{,-benchmarks}},deployment,docs,frigate,gputreeshap,node,ptxcompiler,raft,rapids{.ai,-{cmake,examples,triton}},rmm,scikit-learn-nv,wholegraph,xgboost-conda},\
 reactos/{rapps-db,reactos{,dbg},RosBE,wine},\
 redis/{redis{,-{benchmarks-specification,doc,debian,hashes,io,rb,rcp,snap,specifications}},hiredis{,-node,-py,-rb},jedis},\
 RMerl/{am-toolchains,asuswrt-merlin.ng},\
