@@ -112,4 +112,4 @@
     esac
 )
 sudo rm -vf $STAGE/intel
-sync || true
+sync "$STAGE" || true

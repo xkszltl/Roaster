@@ -58,4 +58,4 @@
     rm -rf $SCRATCH/ccache
 )
 sudo rm -vf $STAGE/ccache
-sync || true
+sync "$STAGE" || true

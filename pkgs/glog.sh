@@ -57,4 +57,4 @@
     rm -rf $SCRATCH/glog
 )
 sudo rm -vf $STAGE/glog
-sync || true
+sync "$STAGE" || true

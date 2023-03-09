@@ -231,4 +231,4 @@
     )
 )
 sudo rm -vf $STAGE/cuda
-sync || true
+sync "$STAGE" || true

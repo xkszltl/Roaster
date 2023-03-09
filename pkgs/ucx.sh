@@ -71,4 +71,4 @@
     rm -rf $SCRATCHA/ucx
 )
 sudo rm -vf $STAGE/ucx
-sync || true
+sync "$STAGE" || true

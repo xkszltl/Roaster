@@ -53,4 +53,4 @@
     rm -rf $SCRATCH/ispc
 )
 sudo rm -vf $STAGE/ispc
-sync || true
+sync "$STAGE" || true

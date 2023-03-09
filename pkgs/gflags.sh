@@ -48,4 +48,4 @@
     rm -rf $SCRATCH/gflags
 )
 sudo rm -vf $STAGE/gflags
-sync || true
+sync "$STAGE" || true

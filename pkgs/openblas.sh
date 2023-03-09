@@ -53,4 +53,4 @@
     rm -rf $SCRATCH/OpenBLAS
 )
 sudo rm -vf $STAGE/openblas
-sync || true
+sync "$STAGE" || true

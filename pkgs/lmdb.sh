@@ -37,4 +37,4 @@
     rm -rf $SCRATCH/lmdb
 )
 sudo rm -vf $STAGE/lmdb
-sync || true
+sync "$STAGE" || true

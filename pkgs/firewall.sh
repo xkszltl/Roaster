@@ -33,4 +33,4 @@
     sudo firewall-cmd --list-all || $IS_CONTAINER
 )
 sudo rm -vf $STAGE/firewall
-sync || true
+sync "$STAGE" || true

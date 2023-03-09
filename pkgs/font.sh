@@ -47,4 +47,4 @@
     sudo "$(which dnf >/dev/null 2>&1 && echo 'dnf' || echo 'yum')" autoremove -y
 )
 sudo rm -vf $STAGE/font
-sync || true
+sync "$STAGE" || true

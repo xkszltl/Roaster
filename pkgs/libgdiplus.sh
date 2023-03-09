@@ -48,4 +48,4 @@
     rm -rf $SCRATCH/libgdiplus
 )
 sudo rm -vf $STAGE/libgdiplus
-sync || true
+sync "$STAGE" || true

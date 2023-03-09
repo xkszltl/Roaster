@@ -56,4 +56,4 @@
     rm -rf $SCRATCH/simdjson
 )
 sudo rm -vf $STAGE/simdjson
-sync || true
+sync "$STAGE" || true

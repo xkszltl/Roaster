@@ -121,4 +121,4 @@ ____________EOF
     git config --global user.name           'Roaster Project'
 )
 sudo rm -vf $STAGE/auth
-sync || true
+sync "$STAGE" || true

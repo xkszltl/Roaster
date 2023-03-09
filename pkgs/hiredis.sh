@@ -58,4 +58,4 @@
     rm -rf $SCRATCH/hiredis
 )
 sudo rm -vf $STAGE/hiredis
-sync || true
+sync "$STAGE" || true

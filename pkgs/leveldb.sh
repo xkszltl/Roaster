@@ -86,4 +86,4 @@
     rm -rf $SCRATCH/leveldb
 )
 sudo rm -vf $STAGE/leveldb
-sync || true
+sync "$STAGE" || true

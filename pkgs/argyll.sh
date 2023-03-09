@@ -38,4 +38,4 @@
     rm -rf $SCRATCH/argyll
 )
 sudo rm -vf $STAGE/argyll
-sync || true
+sync "$STAGE" || true

@@ -73,4 +73,4 @@
     rm -rf $SCRATCH/rapidjson
 )
 sudo rm -vf $STAGE/rapidjson
-sync || true
+sync "$STAGE" || true

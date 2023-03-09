@@ -46,4 +46,4 @@
     rm -rf $SCRATCH/gdrcopy
 )
 sudo rm -vf $STAGE/gdrcopy
-sync || true
+sync "$STAGE" || true

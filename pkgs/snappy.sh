@@ -58,4 +58,4 @@
     rm -rf $SCRATCH/snappy
 )
 sudo rm -vf $STAGE/snappy
-sync || true
+sync "$STAGE" || true

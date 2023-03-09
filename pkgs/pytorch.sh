@@ -325,4 +325,4 @@
     rm -rf $SCRATCH/pytorch
 )
 sudo rm -vf $STAGE/pytorch
-sync || true
+sync "$STAGE" || true

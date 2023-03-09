@@ -68,4 +68,4 @@
     rm -rf $SCRATCH/grpc
 )
 sudo rm -vf $STAGE/grpc
-sync || true
+sync "$STAGE" || true

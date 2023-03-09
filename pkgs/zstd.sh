@@ -79,4 +79,4 @@
     rm -rf $SCRATCH/zstd
 )
 sudo rm -vf $STAGE/zstd
-sync || true
+sync "$STAGE" || true

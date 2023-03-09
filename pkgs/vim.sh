@@ -30,4 +30,4 @@ autocmd FileType make set noexpandtab
 EOF
 )
 sudo rm -vf $STAGE/vim
-sync || true
+sync "$STAGE" || true

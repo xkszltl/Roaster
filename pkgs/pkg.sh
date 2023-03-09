@@ -253,5 +253,5 @@ for subset in pkg-{stable,skip,all}; do
         fi
     )
     sudo rm -vf $STAGE/$subset
-    sync || true
+    sync "$STAGE" || true
 done

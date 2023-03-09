@@ -67,4 +67,4 @@
     rm -rf $SCRATCH/caffe
 )
 sudo rm -vf $STAGE/caffe
-sync || true
+sync "$STAGE" || true

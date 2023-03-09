@@ -252,4 +252,4 @@ ________EOF
     rm -rf $SCRATCH/onnxruntime
 )
 sudo rm -vf $STAGE/ort
-sync || true
+sync "$STAGE" || true

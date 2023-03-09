@@ -34,4 +34,4 @@ EOF
     rm -rvf $SCRATCH/nagios-selinux
 )
 sudo rm -vf $STAGE/nagios
-sync || true
+sync "$STAGE" || true

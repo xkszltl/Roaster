@@ -49,4 +49,4 @@
     rm -rf $SCRATCH/gtest
 )
 sudo rm -vf $STAGE/gtest
-sync || true
+sync "$STAGE" || true

@@ -45,4 +45,4 @@
     rm -rf $SCRATCH/texlive
 )
 sudo rm -vf $STAGE/tex
-sync || true
+sync "$STAGE" || true

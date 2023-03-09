@@ -54,4 +54,4 @@
     rm -rf $SCRATCH/ipt
 )
 sudo rm -vf $STAGE/ipt
-sync || true
+sync "$STAGE" || true

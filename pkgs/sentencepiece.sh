@@ -47,4 +47,4 @@
     rm -rf $SCRATCH/sentencepiece
 )
 sudo rm -vf $STAGE/sentencepiece
-sync || true
+sync "$STAGE" || true

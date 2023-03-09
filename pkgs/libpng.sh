@@ -56,4 +56,4 @@
     rm -rf $SCRATCH/libpng
 )
 sudo rm -vf $STAGE/libpng
-sync || true
+sync "$STAGE" || true

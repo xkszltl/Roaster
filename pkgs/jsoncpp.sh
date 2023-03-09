@@ -52,4 +52,4 @@
     rm -rf $SCRATCH/jsoncpp
 )
 sudo rm -vf $STAGE/jsoncpp
-sync || true
+sync "$STAGE" || true

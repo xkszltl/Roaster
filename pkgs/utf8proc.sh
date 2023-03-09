@@ -45,4 +45,4 @@
     rm -rf $SCRATCH/utf8proc
 )
 sudo rm -vf $STAGE/utf8proc
-sync || true
+sync "$STAGE" || true

@@ -38,5 +38,5 @@
     rm -rf "$HOME/rpmbuild"
 )
 sudo rm -vf $STAGE/slurm
-sync || true
+sync "$STAGE" || true
 

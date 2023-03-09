@@ -48,4 +48,4 @@
     rm -rf $SCRATCH/c-ares
 )
 sudo rm -vf $STAGE/c-ares
-sync || true
+sync "$STAGE" || true

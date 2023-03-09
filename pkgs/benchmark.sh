@@ -51,4 +51,4 @@
     rm -rf $SCRATCH/benchmark
 )
 sudo rm -vf $STAGE/benchmark
-sync || true
+sync "$STAGE" || true

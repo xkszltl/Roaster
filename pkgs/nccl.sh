@@ -56,4 +56,4 @@
     rm -rf $SCRATCH/nccl
 )
 sudo rm -vf $STAGE/nccl
-sync || true
+sync "$STAGE" || true

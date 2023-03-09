@@ -295,4 +295,4 @@
     esac
 )
 sudo rm -rvf $STAGE/repo
-sync || true
+sync "$STAGE" || true

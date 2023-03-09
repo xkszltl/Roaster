@@ -33,4 +33,4 @@
     rm -rf $SCRATCH/axel
 )
 sudo rm -vf $STAGE/axel
-sync || true
+sync "$STAGE" || true

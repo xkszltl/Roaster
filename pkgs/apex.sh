@@ -59,4 +59,4 @@
     rm -rf $SCRATCH/apex
 )
 sudo rm -vf $STAGE/apex
-sync || true
+sync "$STAGE" || true

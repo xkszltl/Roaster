@@ -116,4 +116,4 @@
     rm -rf $SCRATCH/vision
 )
 sudo rm -vf $STAGE/torchvision
-sync || true
+sync "$STAGE" || true

@@ -51,4 +51,4 @@
     rm -rf $SCRATCH/x264
 )
 sudo rm -vf $STAGE/x264
-sync || true
+sync "$STAGE" || true

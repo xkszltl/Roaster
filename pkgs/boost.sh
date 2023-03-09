@@ -89,4 +89,4 @@
     rm -rf $SCRATCH/boost
 )
 sudo rm -vf $STAGE/boost
-sync || true
+sync "$STAGE" || true

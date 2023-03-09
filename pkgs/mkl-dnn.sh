@@ -61,4 +61,4 @@
     rm -rf $SCRATCH/mkl-dnn
 )
 sudo rm -vf $STAGE/mkl-dnn
-sync || true
+sync "$STAGE" || true

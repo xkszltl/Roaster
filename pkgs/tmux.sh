@@ -70,4 +70,4 @@ EOF
     sed -i "s/$(sed 's/\([\\\/\.\-]\)/\\\1/g' <<< "$GIT_MIRROR")/$(sed 's/\([\\\/\.\-]\)/\\\1/g' <<< "$GIT_MIRROR_GITHUB")/" ~/.tmux.conf
 )
 sudo rm -vf $STAGE/tmux
-sync || true
+sync "$STAGE" || true

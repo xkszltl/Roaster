@@ -44,4 +44,4 @@
     rm -rf $SCRATCH/pugixml
 )
 sudo rm -vf $STAGE/pugixml
-sync || true
+sync "$STAGE" || true

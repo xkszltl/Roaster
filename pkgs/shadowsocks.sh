@@ -216,4 +216,4 @@ done
     rm -rf $SCRATCH/shadowsocks
 )
 sudo rm -vf $STAGE/ss
-sync || true
+sync "$STAGE" || true

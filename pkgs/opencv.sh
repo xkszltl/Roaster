@@ -128,4 +128,4 @@
     rm -rf $SCRATCH/opencv
 )
 sudo rm -vf $STAGE/opencv
-sync || true
+sync "$STAGE" || true

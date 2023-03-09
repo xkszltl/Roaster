@@ -47,4 +47,4 @@
     rm -rf $SCRATCH/Catch2
 )
 sudo rm -vf $STAGE/catch2
-sync || true
+sync "$STAGE" || true

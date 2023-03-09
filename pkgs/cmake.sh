@@ -39,4 +39,4 @@
     rm -rf $SCRATCH/cmake
 )
 sudo rm -vf $STAGE/cmake
-sync || true
+sync "$STAGE" || true

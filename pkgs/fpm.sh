@@ -64,4 +64,4 @@ EOF
     rm -rf $SCRATCH/fpm
 )
 sudo rm -vf $STAGE/fpm
-sync || true
+sync "$STAGE" || true

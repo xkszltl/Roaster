@@ -90,4 +90,4 @@
     rm -rf $SCRATCH/ffmpeg
 )
 sudo rm -vf $STAGE/ffmpeg
-sync || true
+sync "$STAGE" || true

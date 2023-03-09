@@ -56,4 +56,4 @@
     rm -rf $SCRATCH/lm-sensors
 )
 sudo rm -vf $STAGE/lm-sensors
-sync || true
+sync "$STAGE" || true

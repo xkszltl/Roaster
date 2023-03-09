@@ -88,4 +88,4 @@
     rm -rf $SCRATCH/Halide
 )
 sudo rm -vf $STAGE/halide
-sync || true
+sync "$STAGE" || true

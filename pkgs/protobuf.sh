@@ -84,4 +84,4 @@
     rm -rf $SCRATCH/protobuf
 )
 sudo rm -vf $STAGE/protobuf
-sync || true
+sync "$STAGE" || true

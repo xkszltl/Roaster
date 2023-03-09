@@ -37,4 +37,4 @@
     rm -rf $SCRATCH/jemalloc
 )
 sudo rm -vf $STAGE/jemalloc
-sync || true
+sync "$STAGE" || true

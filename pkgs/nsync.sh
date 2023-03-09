@@ -47,4 +47,4 @@
     rm -rf $SCRATCH/nsync
 )
 sudo rm -vf $STAGE/nsync
-sync || true
+sync "$STAGE" || true

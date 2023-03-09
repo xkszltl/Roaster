@@ -47,4 +47,4 @@
     rm -rf $SCRATCH/eigen
 )
 sudo rm -vf $STAGE/eigen
-sync || true
+sync "$STAGE" || true

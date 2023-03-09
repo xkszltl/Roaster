@@ -71,4 +71,4 @@
     rm -rf $SCRATCH/pybind11
 )
 sudo rm -vf $STAGE/pybind
-sync || true
+sync "$STAGE" || true

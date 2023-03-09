@@ -135,5 +135,5 @@ for i in llvm-{gcc,clang}; do
         rm -rf $SCRATCH/llvm
     )
     sudo rm -vf $STAGE/$i
-    sync || true
+    sync "$STAGE" || true
 done

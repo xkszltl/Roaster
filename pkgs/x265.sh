@@ -82,4 +82,4 @@
     rm -rf $SCRATCH/x265
 )
 sudo rm -vf $STAGE/x265
-sync || true
+sync "$STAGE" || true

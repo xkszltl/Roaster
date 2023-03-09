@@ -55,4 +55,4 @@
     rm -rf $SCRATCH/xgboost
 )
 sudo rm -vf $STAGE/xgboost
-sync || true
+sync "$STAGE" || true

@@ -38,4 +38,4 @@
     rm -rf $SCRATCH/lz4
 )
 sudo rm -vf $STAGE/lz4
-sync || true
+sync "$STAGE" || true

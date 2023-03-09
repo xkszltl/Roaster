@@ -42,4 +42,4 @@
     rm -rf $SCRATCH/nasm
 )
 sudo rm -vf $STAGE/nasm
-sync || true
+sync "$STAGE" || true

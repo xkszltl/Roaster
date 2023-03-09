@@ -80,4 +80,4 @@
     rm -rf $SCRATCH/rocksdb
 )
 sudo rm -vf $STAGE/rocksdb
-sync || true
+sync "$STAGE" || true

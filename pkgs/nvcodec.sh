@@ -24,4 +24,4 @@
     rm -rf $SCRATCH/nvcodec
 )
 sudo rm -vf $STAGE/nvcodec
-sync || true
+sync "$STAGE" || true

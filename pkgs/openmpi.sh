@@ -48,4 +48,4 @@
     rm -rf $SCRATCH/ompi
 )
 sudo rm -vf $STAGE/ompi
-sync || true
+sync "$STAGE" || true
