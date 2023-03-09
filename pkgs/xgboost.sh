@@ -36,7 +36,7 @@
             -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
             -DFORCE_COLORED_OUTPUT=ON               \
             -DGOOGLE_TEST=ON                        \
-            -DGPU_COMPUTE_VER='61,70,75,80,89'      \
+            -DGPU_COMPUTE_VER='61;70;75;80;89'      \
             -DUSE_CXX14_IF_AVAILABLE=ON             \
             -DUSE_OPENMP=ON                         \
             -DUSE_CUDA=ON                           \
