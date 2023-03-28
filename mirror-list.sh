@@ -23,6 +23,7 @@ axel-download-accelerator/axel,\
 Azure/{azure-{c-{build-tools,logging,shared-utility,testrunnerswitcher},cli{,-extensions},ctest,devops-{cli-extension,utils},sdk-{for-{android,cpp,go,ios,java,js,net,node,php,python,ruby,rust},tools},storage-cpp,utpm-c},AML-Kubernetes,AzureML-Containers,azureml-{cheatsheets,examples,previews},iotedge,macro-utils-c,umock-c},\
 Bash-it/bash-it{,-docker},\
 bats-core/bats-{assert,backports,core,detik,docs,file,support},\
+bazelbuild/{apple_support,bazel{,-{bench,blog,buildfarm,central-registry,gazelle,skylib,toolchains,website}},buildtools,emacs-bazel-mode,examples,intellij,platforms,proposals,remote-apis,rules_{android{,_ndk},appengine,apple,cc,closure,d,docker,dotnet,foreign_cc,fuzzing,go,groovy,gwt,java,jvm_external,k8s,kotlin,node_js,license,perl,pkg,postcss,proto,python,rust,sass,scala,swift,testing,webtesting},sandboxfs,setup-bazelisk,stardoc,starlark,tools_{android,java,remote},vim-bazel,vscode-bazel},\
 benjaminp/six,\
 berlin-open-wireless-lab/{DAWN,sdwn-controller},\
 BLAKE3-team/BLAKE3{,-specs},\
@@ -61,6 +62,7 @@ elnormous/{HTTPRequest,ouzel,OuzelShadingLanguage,SoftwareRenderer},\
 emil-e/rapidcheck,\
 emscripten-core/{emscripten{,-ci,-fastcomp{,-clang}},emsdk,posixtestsuite},\
 envoyproxy/{data-plane-api,envoy,{go,java}-control-plane,nighthawk,protoc-gen-validate},\
+erenon/{bazel_clang_tidy,binlog,cueue},\
 esnme/ujson4c,\
 Exiv2/exiv2,\
 facebook/{rocksdb,zstd},\
@@ -94,6 +96,7 @@ houseroad/foxi,\
 HowardHinnant/date,\
 huggingface/{knockknock,Mongoku,neuralcoref,pytorch-{openai-transformer-lm,pretrained-BigGAN},swift-coreml-transformers,tflite-android-transformers,tokenizers,torchMoji,transformers},\
 HypothesisWorks/hypothesis,\
+ianlancetaylor/{aestest,cgosymbolizer,demangle,libbacktrace},\
 iina/{iina{,-plugin-definition,-website},plugin-ytdl},\
 Immediate-Mode-UI/Nuklear,\
 intel/{ARM_NEON_2_x86_SSE,compute-runtime,ideep,ittapi,mkl-dnn},\
