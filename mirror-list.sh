@@ -43,6 +43,7 @@ cncf/{landscape,sig-{app-delivery,contributor-strategy,network,observability,run
 cocodataset/{cocoapi,panopticapi},\
 containerd/containerd,\
 cplusplus/{draft,papers},\
+cr-marcstevens/{dblpbibtex,hashclash,m4gb,sha1_gpu_nearcollisionattacks,sha1collisiondetection{,-tools},snippets},\
 cython/cython,\
 Dav1dde/glad,\
 DaveGamble/cJSON,\
@@ -77,6 +78,7 @@ g-truc/{gli,glm},\
 gabime/spdlog,\
 gflags/gflags,\
 giampaolo/psutil,\
+git/{git{,-{reference,scm.com}},htmldocs},\
 github/{git-lfs,gitignore},\
 glfw/{gleq,glfw},\
 golang/{appengine,benchmarks,dep,example,freetype,glog,go{,frontend},groupcache,leveldb,mock,oauth2,protobuf,snappy,term,winstrap},\
