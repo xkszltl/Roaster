@@ -68,7 +68,7 @@ esnme/ujson4c,\
 Exiv2/exiv2,\
 facebook/{rocksdb,zstd},\
 facebookincubator/{dcrpm,fbjni,gloo},\
-facebookresearch/{ClassyVision,CrypTen,Detectron,detectron2,dlrm,DrQA,faiss,fastMRI,fastText,flashlight,fvcore,habitat-sim,ImageNet-Adversarial-Training,iopath,maskrcnn-benchmark,ParlAI,pycls,pytext,pythia,PyTorch-BigGraph,pytorch-dp,pytorch3d,SentEval,ResNeXt,wav2letter,XLM},\
+facebookresearch/{aepsych,AnimatedDrawings,balance,ClassyVision,CrypTen,d2go,demucs,Detectron,detectron2,Detic,dlrm,DrQA,eai-vc,Ego4d,encodec,esm,faiss,fastMRI,fastText,fbpcs,flashlight,fvcore,habitat-{lab,sim},HolisticTraceAnalysis,home-robot,ImageNet-Adversarial-Training,iopath,labgraph,luckmatters,maskrcnn-benchmark,metaseq,omni3d,optimizers,ParlAI,pycls,pytext,pythia,PyTorch-BigGraph,pytorch-dp,pytorch3d,pyvrs,SentEval,rcpm,ReAgent,ResNeXt,svg,symbolicregression,theseus,ToMe,vrs,wav2letter,xformers,XLM},\
 fatedier/{fft,frp,golib},\
 FFmpeg/FFmpeg,\
 fmtlib/{fmt,format-benchmark},\
@@ -167,6 +167,7 @@ open-telemetry/{opentelemetry-{collector,cpp,dotnet,go,java,js,log-collection,op
 openucx/{shmem-opensnapi,sparkucx,torch-ucc,ucc{,_spec},ucx,xccl,xucg},\
 openwrt/{luci,openwrt,packages,targets,telephony,video},\
 pallets/{click,flask,itsdangerous,jinja,markupsafe,pallets-sphinx-themes,quart,website,werkzeug},\
+patrick-kidger/{Deep-Signature-Transforms,diffrax,equinox,exvoker,FasterNeuralDiffEq,generalised_shapelets,mkposters,NeuralCDE,signatory,sympytorch,torchcde,torchcubicspline,torchtyping},\
 PeachPy/enum34,\
 phacility/{arcanist,javelin,phabricator,xhprof},\
 PixarAnimationStudios/{OpenSubdiv,USD},\
