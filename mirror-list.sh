@@ -8,6 +8,7 @@ git@github.com:\ /\ {\
 01org/{mkl-dnn,processor-trace,tbb},\
 389ds/389-ds-base,\
 aappleby/{MetroBoy,Metron,smhasher},\
+ablattmann/pose_estimation_hrnet,\
 abseil/abseil-{cpp,py},\
 AcademySoftwareFoundation/{Imath,MaterialX,OpenColorIO,openexr,OpenShadingLanguage,OpenTimelineIO,openvdb},\
 afq984/python-cxxfilt,\
@@ -15,6 +16,7 @@ agauniyal/{rang,termdb},\
 apache/{hadoop{,-{common,mapreduce,site,thirdparty}},hbase{,-{connectors,filesystem,native-client,operator-tools,site,thirdparty}},httpd{,-{docs-build,flood,mod_fcgid,site,tests}},thrift{,-website},tomcat{,-{connectors,maven-plugin,native,training}},tvm{,-{rfcs,site,vta}}},\
 apple/{apple-llvm-infrastructure-tools,coremltools,cups,darwin-{libplatform,libpthread,xnu},foundationdb,indexstore-db,ml-hypersim,openjdk,password-manager-resources,servicetalk,sourcekit-lsp,swift{,-{algorithms,atomics,argument-parser,cluster-membership,collections{,-benchmark},corelibs-{foundation,libdispatch,xctest},crypto,distributed-tracing{,-baggage{,-core}},docker,driver,evolution{,-staging},format,http-structured-headers,integration-tests,internals,llbuild{,2},log,metrics{,-extras},nio{,-{examples,extras,http2,ssh,ssl,transport-services,zlib-support}},numerics,package-{collection-generator,manager},protobuf,service-discovery,source-compat-suite,standard-library-preview,statsd-client,stress-tester,syntax,system,tools-support-{async,core},xcode-playground-support}},turicreate},\
 aquynh/capstone,\
+aravindr93/{dmc2gym,mjrl,mujoco-py,trajopt},\
 ARM-software/{arm-trusted-firmware,astc-encoder,ComputeLibrary,HWCPipe,lisa},\
 arminc/{clair-{local-scan,scanner},k8s-platform-lcm,terraform-ecs},\
 asmjit/{asm{db,jit,tk},cult},\
@@ -41,6 +43,7 @@ civetweb/civetweb,\
 CLIUtils/{CLI11,cmake,modern_cmake},\
 cncf/{landscape,sig-{app-delivery,contributor-strategy,network,observability,runtime,security{,-events}},cnf-testsuite,udpa,xds},\
 cocodataset/{cocoapi,panopticapi},\
+CompVis/{adaptive-style-transfer,AutomaticBehaviorAnalysis_NatureComm,behavior-driven-video-synthesis,brushstroke-parameterized-style-transfer,Characterizing_Generalization_in_DML,content-style-disentangled-ST,cuneiform-sign-detection-{code,dataset,webapp},geometry-free-view-synthesis,iin,image2video-synthesis-using-cINNs,imagebart,interactive-image2video-synthesis,invariances,ipoke,latent-diffusion,metric-learning-divide-and-conquer{,-improved},net2net,stable-diffusion,taming-transformers,unsupervised-{disentangling,part-segmentation},vunet},\
 containerd/containerd,\
 cplusplus/{draft,papers},\
 cr-marcstevens/{dblpbibtex,hashclash,m4gb,sha1_gpu_nearcollisionattacks,sha1collisiondetection{,-tools},snippets},\
@@ -94,6 +97,7 @@ gsliepen/tinc,\
 gulrak/filesystem,\
 halide/Halide,\
 harfbuzz/harfbuzz,\
+HazyResearch/{ama_prompting,anchor-stability,babble,bootleg,butterfly,correct-n-contrast,data-centric-ai,deepdive,domino,EmptyHeaded,epoxy,fairseq-fork,flash-attention,fly,fm_data_tasks,fonduer,H3,hgcn,hippo-code,HoroPCA,hyperbolics,KGEmb,legalbench,liger,manifest,meerkat{,-website},metal,observational,pdftotree,safari,spacetime,state-spaces,structured-nets,tabi,tanda,thanos-code},\
 horovod/{artwork,horovod,tutorials},\
 houseroad/foxi,\
 HowardHinnant/date,\
@@ -161,10 +165,11 @@ oneapi-src/{one{API-{spec,tab},CCL,DAL,DNN,MKL,TBB},level-zero{,-tests}},\
 onnx/{keras-onnx,models,onnx{,-tensorrt,mltools},optimizer,sklearn-onnx,tutorials},\
 open-mpi/ompi,\
 open-source-parsers/jsoncpp,\
+open-telemetry/{opentelemetry-{collector,cpp,dotnet,go,java,js,log-collection,operator,proto,python,specification},oteps},\
+openai/CLIP,\
 opencv/{ade,cvat,dldt,open_model_zoo,opencv{,_{3rdparty,contrib,extra}},openvino_training_extensions},\
 OpenFOAM/{{OpenFOAM,ThirdParty}-{{2.{0,1,2,3,4},3.0,4,5}.x,6,7,dev},OpenFOAM-{Intel,Solidification},OpenQBMM},\
 openssl/openssl,\
-open-telemetry/{opentelemetry-{collector,cpp,dotnet,go,java,js,log-collection,operator,proto,python,specification},oteps},\
 openucx/{shmem-opensnapi,sparkucx,torch-ucc,ucc{,_spec},ucx,xccl,xucg},\
 openwrt/{luci,openwrt,packages,targets,telephony,video},\
 pallets/{click,flask,itsdangerous,jinja,markupsafe,pallets-sphinx-themes,quart,website,werkzeug},\
