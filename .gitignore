@@ -1537,3 +1537,7 @@ MigrationBackup/
 .ionide/
 
 # End of https://www.toptal.com/developers/gitignore/api/c,tex,svn,cvs,vim,osx,java,latex,cmake,linux,maven,macos,python,pycharm,windows,eclipse,intellij,notepadpp,mercurial,jetbrains,sublimetext,visualstudio,microsoftoffice,visualstudiocode,xcode
+
+
+!/pkgs/env
+!/win/pkgs/env
