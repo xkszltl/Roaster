@@ -40,11 +40,16 @@ export CRED_DEF_GODADDY_LE_SECRET='1234567890abcdef0123456789abcdef'
 export CRED_DEF_GODADDY_KEY='1234567890abcdef0123456789abcdef'
 export CRED_DEF_GODADDY_SECRET='1234567890abcdef0123456789abcdef'
 
+export CRED_DEF_GITLAB_MIRROR_KEY='1234567890abcdef1234567890abcdef'
+
 ############################################################
 # Load User-defined Credentials
 ############################################################
 
-[ "$ROOT_DIR" ]
+if [ ! "$ROOT_DIR" ]; then
+    printf '\033[31m[ERROR] Missing $ROOT_DIR.\033[0m\n' >&2
+    exit 1
+fi
 
 cred_usr="$(realpath -m "$ROOT_DIR/cred/env-cred-usr.sh")"
 if [ -x "$cred_usr" ]; then
