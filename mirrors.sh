@@ -72,6 +72,88 @@ if [ ! "'"$PATTERN"'" ] || grep "'"$PATTERN"'" >/dev/null <<< "$SRC_DIR"; then
     # git fetch --prune origin 2>&1
     git fetch --prune --tags origin 2>&1
     git gc --auto 2>&1
+
+    # GitLab-specific:
+    # - Create groups/subgroups if missing.
+    if [ "GitLab DST" ]; then
+        for lvl in $(
+            set -e
+            curl -sSLX GET                                                  \
+                -H "Authorization: Bearer '"$GITLAB_CRED"'"                 \
+                "https://git.codingcafe.org/api/v4/groups/$(
+                        set -e
+                        printf "Mirrors%s/%s" "$DST_DOMAIN" "$DST_DIR"      \
+                        | sed "s/\/[^\/][^\/]*$//"                          \
+                        | sed "s/ /%20/g"                                   \
+                        | sed "s/\//%2F/g"
+                    )"                                                      \
+            | jq -er .id                                                    \
+            | grep "^[0-9][0-9]*$" >/dev/null                               \
+            || printf "Mirrors%s/%s" "$DST_DOMAIN" "$DST_DIR"               \
+            | tr "/" "\n"                                                   \
+            | grep .                                                        \
+            | wc -l                                                         \
+            | xargs -r expr -1 +                                            \
+            | xargs -r seq 2
+        ); do
+            printf "\033[36m[INFO] Create group level %d.\033[0m\n" "$lvl" >&2
+            for retry in $(seq 10 -1 0); do
+                ! curl -sSLX GET                                            \
+                    -H "Authorization: Bearer '"$GITLAB_CRED"'"             \
+                    "https://git.codingcafe.org/api/v4/groups/$(
+                            set -e
+                            printf "Mirrors%s/%s" "$DST_DOMAIN" "$DST_DIR"  \
+                            | cut -d/ -f-"$lvl"                             \
+                            | sed "s/ /%20/g"                               \
+                            | sed "s/\//%2F/g"                              \
+                            | grep -v "[[:space:]]"
+                        )"                                                  \
+                | jq -er .id                                                \
+                | grep "^[0-9][0-9]*$"                                      \
+                || break
+                if [ "$retry" -le 0 ]; then
+                    printf "\033[31m[ERROR] Failed to create group level %d.\033[0m\n" "$lvl" >&2
+                    exit 1
+                fi
+                curl -sSLX POST                                             \
+                    -H "Authorization: Bearer '"$GITLAB_CRED"'"             \
+                    -H "Content-Type: application/json"                     \
+                    -d "{\"name\": \"$(
+                            set -e
+                            printf "Mirrors%s/%s" "$DST_DOMAIN" "$DST_DIR"  \
+                            | cut -d/ -f"$lvl"                              \
+                            | grep -v "[[:space:]]"
+                        )\", \"path\": \"$(
+                            set -e
+                            printf "Mirrors%s/%s" "$DST_DOMAIN" "$DST_DIR"  \
+                            | cut -d/ -f"$lvl"                              \
+                            | grep -v "[[:space:]]"
+                        )\", \"parent_id\": $(
+                            set -e
+                            printf "Mirrors%s/%s" "$DST_DOMAIN" "$DST_DIR"  \
+                            | cut -d/ -f-"$lvl"                             \
+                            | sed "s/\/[^\/][^\/]*$//"                      \
+                            | sed "s/ /%20/g"                               \
+                            | sed "s/\//%2F/g"                              \
+                            | grep -v "[[:space:]]"                         \
+                            | grep .                                        \
+                            | sed "'"s/^/$(
+                                    set -e
+                                    printf '%s' 'https://git.codingcafe.org/api/v4/groups/' \
+                                    | sed 's/\([\\\/\.\-]\)/\\\1/g'
+                                )/"'"                                       \
+                            | xargs -rn1 curl -sSLX GET                     \
+                                -H "Authorization: Bearer '"$GITLAB_CRED"'" \
+                            | jq -er .id                                    \
+                            | grep "^[0-9][0-9]*$"
+                        ), \"visibility\": \"public\"}"                     \
+                    -o "/dev/stderr"                                        \
+                    -w "%{http_code}\n"                                     \
+                    "https://git.codingcafe.org/api/v4/groups/"
+            done
+        done
+    fi
+
     if git lfs ls-files | head -n1 | grep . >/dev/null || git lfs ls-files --deleted | head -n1 | grep . >/dev/null || git lfs ls-files -a | head -n1 | grep . >/dev/null; then
         git lfs fetch --all origin 2>&1 || true
         git remote set-url origin "$DST" 2>&1
@@ -100,36 +182,40 @@ if [ ! "'"$PATTERN"'" ] || grep "'"$PATTERN"'" >/dev/null <<< "$SRC_DIR"; then
     # git push -f --all  --prune origin 2>&1
     # git push -f --tags --prune origin 2>&1
 
-    false                                                                   \
-    || ! printf "Mirrors%s/%s" "$DST_DOMAIN" "$DST_DIR"                     \
-    | sed "s/ /%20/g"                                                       \
-    | sed "s/\//%2F/g"                                                      \
-    | grep -v "[[:space:]]"                                                 \
-    | grep .                                                                \
-    | sed "s/^/'"$(
-            set -e
-            printf '%s' 'https://git.codingcafe.org/api/v4/projects/'       \
-            | sed 's/\([\\\/\.\-]\)/\\\1/g'
-        )"'/"                                                               \
-    | xargs -rn1 curl -sSLX GET -H "Authorization: Bearer '"$GITLAB_CRED"'" \
-    | jq -er ".visibility"                                                  \
-    | grep -e "^internal$" -e "^private$"                                   \
-    || printf "Mirrors%s/%s" "$DST_DOMAIN" "$DST_DIR"                       \
-    | sed "s/ /%20/g"                                                       \
-    | sed "s/\//%2F/g"                                                      \
-    | grep -v "[[:space:]]"                                                 \
-    | grep .                                                                \
-    | sed "s/^/'"$(
-            set -e
-            printf '%s' 'https://git.codingcafe.org/api/v4/projects/'       \
-            | sed 's/\([\\\/\.\-]\)/\\\1/g'
-        )"'/"                                                               \
-    | xargs -rn1 curl -sSLX PUT                                             \
-        -H "Authorization: Bearer '"$GITLAB_CRED"'"                         \
-        -d "visibility=public"                                              \
-        -o "/dev/null"                                                      \
-        -w "%{http_code}"                                                   \
-    | grep "^200$"
+    # GitLab-specific:
+    # - Set visibility after checking.
+    #   Credential with restrictive role(s) can be used for read-only checking.
+    if [ "GitLab DST" ]; then
+        ! printf "Mirrors%s/%s" "$DST_DOMAIN" "$DST_DIR"                        \
+        | sed "s/ /%20/g"                                                       \
+        | sed "s/\//%2F/g"                                                      \
+        | grep -v "[[:space:]]"                                                 \
+        | grep .                                                                \
+        | sed "'"s/^/$(
+                set -e
+                printf '%s' 'https://git.codingcafe.org/api/v4/projects/'       \
+                | sed 's/\([\\\/\.\-]\)/\\\1/g'
+            )/"'"                                                               \
+        | xargs -rn1 curl -sSLX GET -H "Authorization: Bearer '"$GITLAB_CRED"'" \
+        | jq -er ".visibility"                                                  \
+        | grep -e "^internal$" -e "^private$"                                   \
+        || printf "Mirrors%s/%s" "$DST_DOMAIN" "$DST_DIR"                       \
+        | sed "s/ /%20/g"                                                       \
+        | sed "s/\//%2F/g"                                                      \
+        | grep -v "[[:space:]]"                                                 \
+        | grep .                                                                \
+        | sed "'"s/^/$(
+                set -e
+                printf '%s' 'https://git.codingcafe.org/api/v4/projects/'       \
+                | sed 's/\([\\\/\.\-]\)/\\\1/g'
+            )/"'"                                                               \
+        | xargs -rn1 curl -sSLX PUT                                             \
+            -H "Authorization: Bearer '"$GITLAB_CRED"'"                         \
+            -d "visibility=public"                                              \
+            -o "/dev/null"                                                      \
+            -w "%{http_code}"                                                   \
+        | grep "^200$"
+    fi
 fi
 '"'" 2>&1 | tee "$log"
 
