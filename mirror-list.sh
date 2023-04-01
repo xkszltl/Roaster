@@ -16,6 +16,7 @@ agauniyal/{rang,termdb},\
 apache/{hadoop{,-{common,mapreduce,site,thirdparty}},hbase{,-{connectors,filesystem,native-client,operator-tools,site,thirdparty}},httpd{,-{docs-build,flood,mod_fcgid,site,tests}},thrift{,-website},tomcat{,-{connectors,maven-plugin,native,training}},tvm{,-{rfcs,site,vta}}},\
 apple/{apple-llvm-infrastructure-tools,coremltools,cups,darwin-{libplatform,libpthread,xnu},foundationdb,indexstore-db,ml-hypersim,openjdk,password-manager-resources,servicetalk,sourcekit-lsp,swift{,-{algorithms,atomics,argument-parser,cluster-membership,collections{,-benchmark},corelibs-{foundation,libdispatch,xctest},crypto,distributed-tracing{,-baggage{,-core}},docker,driver,evolution{,-staging},format,http-structured-headers,integration-tests,internals,llbuild{,2},log,metrics{,-extras},nio{,-{examples,extras,http2,ssh,ssl,transport-services,zlib-support}},numerics,package-{collection-generator,manager},protobuf,service-discovery,source-compat-suite,standard-library-preview,statsd-client,stress-tester,syntax,system,tools-support-{async,core},xcode-playground-support}},turicreate},\
 aquynh/capstone,\
+ArashPartow/{bitmap,bloom,exprtk{,-{custom-types,extras,fuzzer,perftest}},fastgeo,filter,galois,hash,lexertk,math-parser-benchmark-project,nanocalc,proxy,registry,schifra,strtk,sumtk,tcpproxy-variations,wykobi},\
 aravindr93/{dmc2gym,mjrl,mujoco-py,trajopt},\
 ARM-software/{arm-trusted-firmware,astc-encoder,ComputeLibrary,HWCPipe,lisa},\
 arminc/{clair-{local-scan,scanner},k8s-platform-lcm,terraform-ecs},\
@@ -46,6 +47,7 @@ cocodataset/{cocoapi,panopticapi},\
 CompVis/{adaptive-style-transfer,AutomaticBehaviorAnalysis_NatureComm,behavior-driven-video-synthesis,brushstroke-parameterized-style-transfer,Characterizing_Generalization_in_DML,content-style-disentangled-ST,cuneiform-sign-detection-{code,dataset,webapp},geometry-free-view-synthesis,iin,image2video-synthesis-using-cINNs,imagebart,interactive-image2video-synthesis,invariances,ipoke,latent-diffusion,metric-learning-divide-and-conquer{,-improved},net2net,stable-diffusion,taming-transformers,unsupervised-{disentangling,part-segmentation},vunet},\
 containerd/containerd,\
 cplusplus/{draft,papers},\
+cpp-taskflow/cpp-taskflow,\
 cr-marcstevens/{dblpbibtex,hashclash,m4gb,sha1_gpu_nearcollisionattacks,sha1collisiondetection{,-tools},snippets},\
 cython/cython,\
 Dav1dde/glad,\
@@ -53,6 +55,7 @@ DaveGamble/cJSON,\
 dcleblanc/{CAdES,SafeInt},\
 Delgan/loguru,\
 denyhosts/denyhosts,\
+dlfcn-win32/dlfcn-win32,\
 dmlc/{dlpack,dmlc-core,gluon-cv,gluon-nlp,HalideIR,tvm,xgboost},\
 docker/docker-ce,\
 docopt/docopt,\
@@ -166,7 +169,7 @@ onnx/{keras-onnx,models,onnx{,-tensorrt,mltools},optimizer,sklearn-onnx,tutorial
 open-mpi/ompi,\
 open-source-parsers/jsoncpp,\
 open-telemetry/{opentelemetry-{collector,cpp,dotnet,go,java,js,log-collection,operator,proto,python,specification},oteps},\
-openai/CLIP,\
+openai/{chatgpt-retrieval-plugin,CLIP,evals,gpt-2-output-dataset,gpt-discord-bot,guided-diffusion,gym,human-eval,lm-human-preferences,maddpg,mujoco-py,multi-agent-emergence-environments,multiagent-particle-envs,neural-mmo,openai-{cookbook,{,quickstart-}{node,python},openapi},orrb,pixel,point-e,safety-gym,spinningup,tiktoken,triton,whisper},\
 opencv/{ade,cvat,dldt,open_model_zoo,opencv{,_{3rdparty,contrib,extra}},openvino_training_extensions},\
 OpenFOAM/{{OpenFOAM,ThirdParty}-{{2.{0,1,2,3,4},3.0,4,5}.x,6,7,dev},OpenFOAM-{Intel,Solidification},OpenQBMM},\
 openssl/openssl,\
@@ -205,6 +208,7 @@ sivel/{go-speedtest,speedtest-cli},\
 Stellarium/stellarium{,-{addons,data,dynamic-plugin,ppa,skycultures,unity,web-engine}},\
 syoyo/tiny{dng,exr,gltf,objloader-c,usdz,vdbio},\
 Sysinternals/{Proc{Dump,Mon}-for-Linux,sysinternals,SysinternalsEBPF,Sysmon{Common,ForLinux}},\
+taskflow/{awesome-parallel-computing,taskflow,taskflow.github.io,tfprof,work-stealing-queue},\
 Teemu/pytest-sugar,\
 Tencent/rapidjson,\
 tensorflow/{agents,datasets,docs,io,models,tensorboard,tensorflow,transform},\
