@@ -75,7 +75,7 @@ if [ ! "'"$PATTERN"'" ] || grep "'"$PATTERN"'" >/dev/null <<< "$SRC_DIR"; then
 
     # GitLab-specific:
     # - Create groups/subgroups if missing.
-    if [ "GitLab DST" ]; then
+    if '"$([ "$GITLAB_CRED" ] && printf 'true' || printf 'false')"'; then
         for lvl in $(
             set -e
             curl -sSLX GET                                                  \
@@ -185,7 +185,7 @@ if [ ! "'"$PATTERN"'" ] || grep "'"$PATTERN"'" >/dev/null <<< "$SRC_DIR"; then
     # GitLab-specific:
     # - Set visibility after checking.
     #   Credential with restrictive role(s) can be used for read-only checking.
-    if [ "GitLab DST" ]; then
+    if '"$([ "$GITLAB_CRED" ] && printf 'true' || printf 'false')"'; then
         ! printf "Mirrors%s/%s" "$DST_DOMAIN" "$DST_DIR"                        \
         | sed "s/ /%20/g"                                                       \
         | sed "s/\//%2F/g"                                                      \
