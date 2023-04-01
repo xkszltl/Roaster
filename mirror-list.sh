@@ -74,6 +74,7 @@ FFmpeg/FFmpeg,\
 fmtlib/{fmt,format-benchmark},\
 frerich/clcache,\
 Frozenball/pytest-sugar,\
+fundamentalvision/{Auto-Seg-Loss,BEVFormer,Deformable-DETR,Parameterized-AP-Loss,Siamese-Image-Modeling,Uni-Perceiver,UniGrad},\
 g-truc/{gli,glm},\
 gabime/spdlog,\
 gflags/gflags,\
