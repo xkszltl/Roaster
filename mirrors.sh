@@ -9,14 +9,25 @@ cd "$(dirname "$0")"
 date
 
 # export HTTP_PROXY=proxy.codingcafe.org:8118
-[ $HTTP_PROXY ] && export HTTPS_PROXY=$HTTP_PROXY
-[ $HTTP_PROXY ] && export http_proxy=$HTTP_PROXY
-[ $HTTPS_PROXY ] && export https_proxy=$HTTPS_PROXY
+[ ! "$HTTP_PROXY"  ] || export HTTPS_PROXY="$HTTP_PROXY"
+[ ! "$HTTP_PROXY"  ] || export http_proxy="$HTTP_PROXY"
+[ ! "$HTTPS_PROXY" ] || export https_proxy="$HTTPS_PROXY"
+
+# Recommend to use group access token with "owner" role and "api" scope.
+if [ "$GITLAB_CRED" ]; then
+    printf '\033[33m[WARNING] $GITLAB_CRED should not be provided as env var for security reasons.\033[0m\n' >&2
+else
+    GITLAB_CRED="$(
+        set -e +x
+        ROOT_DIR="$(pwd)" . "pkgs/env/cred.sh" >&2
+        printf '%s' "$CRED_USR_GITLAB_MIRROR_KEY"
+    )"
+fi
 
 export ROOT=/var/mirrors
 mkdir -p "$ROOT"
 
-[ $# -ge 1 ] && export PATTERN="$1"
+[ "$#" -ge 1 ] && export PATTERN="$1"
 
 log="$(mktemp -t git-mirror-XXXXXXXX.log)"
 ! grep '[[:space:]]' <<< "$log" >/dev/null
@@ -88,6 +99,37 @@ if [ ! "'"$PATTERN"'" ] || grep "'"$PATTERN"'" >/dev/null <<< "$SRC_DIR"; then
     # git push --mirror origin 2>&1
     # git push -f --all  --prune origin 2>&1
     # git push -f --tags --prune origin 2>&1
+
+    false                                                                   \
+    || ! printf "Mirrors%s/%s" "$DST_DOMAIN" "$DST_DIR"                     \
+    | sed "s/ /%20/g"                                                       \
+    | sed "s/\//%2F/g"                                                      \
+    | grep -v "[[:space:]]"                                                 \
+    | grep .                                                                \
+    | sed "s/^/'"$(
+            set -e
+            printf '%s' 'https://git.codingcafe.org/api/v4/projects/'       \
+            | sed 's/\([\\\/\.\-]\)/\\\1/g'
+        )"'/"                                                               \
+    | xargs -rn1 curl -sSLX GET -H "Authorization: Bearer '"$GITLAB_CRED"'" \
+    | jq -er ".visibility"                                                  \
+    | grep -e "^internal$" -e "^private$"                                   \
+    || printf "Mirrors%s/%s" "$DST_DOMAIN" "$DST_DIR"                       \
+    | sed "s/ /%20/g"                                                       \
+    | sed "s/\//%2F/g"                                                      \
+    | grep -v "[[:space:]]"                                                 \
+    | grep .                                                                \
+    | sed "s/^/'"$(
+            set -e
+            printf '%s' 'https://git.codingcafe.org/api/v4/projects/'       \
+            | sed 's/\([\\\/\.\-]\)/\\\1/g'
+        )"'/"                                                               \
+    | xargs -rn1 curl -sSLX PUT                                             \
+        -H "Authorization: Bearer '"$GITLAB_CRED"'"                         \
+        -d "visibility=public"                                              \
+        -o "/dev/null"                                                      \
+        -w "%{http_code}"                                                   \
+    | grep "^200$"
 fi
 '"'" 2>&1 | tee "$log"
 
