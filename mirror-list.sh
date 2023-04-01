@@ -68,7 +68,7 @@ esnme/ujson4c,\
 Exiv2/exiv2,\
 facebook/{rocksdb,zstd},\
 facebookincubator/{dcrpm,fbjni,gloo},\
-facebookresearch/{aepsych,AnimatedDrawings,balance,ClassyVision,CrypTen,d2go,demucs,Detectron,detectron2,Detic,dlrm,DrQA,eai-vc,Ego4d,encodec,esm,faiss,fastMRI,fastText,fbpcs,flashlight,fvcore,habitat-{lab,sim},HolisticTraceAnalysis,home-robot,ImageNet-Adversarial-Training,iopath,labgraph,luckmatters,maskrcnn-benchmark,metaseq,omni3d,optimizers,ParlAI,pycls,pytext,pythia,PyTorch-BigGraph,pytorch-dp,pytorch3d,pyvrs,SentEval,rcpm,ReAgent,ResNeXt,svg,symbolicregression,theseus,ToMe,vrs,wav2letter,xformers,XLM},\
+facebookresearch/{aepsych,AnimatedDrawings,balance,ClassyVision,CrypTen,d2go,demucs,Detectron,detectron2,Detic,dlrm,DrQA,eai-vc,Ego4d,encodec,esm,faiss,fastMRI,fastText,fbpcs,flashlight,fvcore,habitat-{challenge,lab,matterport3d-dataset,sim},HolisticTraceAnalysis,home-robot,ImageNet-Adversarial-Training,image-goal-nav-dataset,iopath,labgraph,luckmatters,maskrcnn-benchmark,metaseq,omni3d,optimizers,ParlAI,pycls,pytext,pythia,PyTorch-BigGraph,pytorch-dp,pytorch3d,pyvrs,SentEval,rcpm,ReAgent,ResNeXt,svg,symbolicregression,theseus,ToMe,vrs,wav2letter,xformers,XLM},\
 fatedier/{fft,frp,golib},\
 FFmpeg/FFmpeg,\
 fmtlib/{fmt,format-benchmark},\
