@@ -171,9 +171,42 @@ if [ ! "'"$PATTERN"'" ] || grep "'"$PATTERN"'" >/dev/null <<< "$SRC_DIR"; then
     git config --add         remote.origin.push "+refs/meta/*"
     # git config --add         remote.origin.push "+refs/pipelines/*"
     git config --add         remote.origin.push "+refs/pull/*"
-    if ! git push -f origin 2>&1 && ! git --no-pager show-ref | cut -d" " -f2- | grep -e"^refs/"{changes,meta,pull}"/" | sort -V | xargs -rn1 git push -f origin 2>&1; then
+
+    if ! git push -f origin 2>&1; then
         printf "\033[31m[ERROR] Unable to push all PR refs to \"%s\".\033[0m\n" "$DST" >&2
+        queue="$(
+                set -e
+                printf "refs/%s/\n" \
+                    "changes"       \
+                    "meta"          \
+                    "pull"          \
+                | grep .
+            )"
+        while [ "$queue" ]; do
+            cur="$(printf "%s" "$queue" | head -n1)"
+            queue="$(printf "%s" "$queue" | tail -n+2)"
+            ! git push -f origin "$cur*" 2>&1 || continue
+            next="$(
+                    set -e
+                    git --no-pager show-ref     \
+                    | cut -d" " -f2-            \
+                    | sed -n "s/^\($(
+                            set -e
+                            printf "%s" "$cur"  \
+                            | sed "s/\([\\\\\\/\\.\\-]\)/\\\\\\1/g"
+                        ).\).*/\1/p"            \
+                    | grep .                    \
+                    | sort -Vu
+                )"
+            if [ "$(printf "%s" "$next" | wc -l | sed "s/^[[:space:]]*//" | sed "s/[[:space:]]$//")" -gt 1 ]; then
+                printf "\033[33m[WARNING] Refine PR refs "%s" after push failure to \"%s\".\033[0m\n" "$cur*" "$DST" >&2
+                queue="$(printf "%s\n" "$queue" "$next" | grep .)"
+            else
+                printf "\033[31m[ERROR] Unable to push PR refs "%s" to \"%s\".\033[0m\n" "$cur*" "$DST" >&2
+            fi
+        done
     fi
+
     if ! git push -f --prune origin 2>&1; then
         printf "\033[31m[ERROR] Unable to prune PR refs on \"%s\".\033[0m\n" "$DST" >&2
     fi
