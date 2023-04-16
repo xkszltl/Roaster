@@ -145,7 +145,7 @@ Maratyszcza/{confu,cpuinfo,FP16,FXdiv,NNPACK,PeachPy,psimd,pthreadpool},\
 meekrosoft/fff,\
 mesonbuild/meson{,-python},\
 micheles/{decorator,plac},\
-Microsoft/{azure-pipelines-yaml,BuildXL,calculator,cascadia-code,CNTK,cppwinrt,dotnet,FeaturizersLibrary,GSL,LightGBM,mimalloc,msbuild,{,Delayed-Compensation-Asynchronous-Stochastic-Gradient-Descent-for-}Multiverso,nni,onnxconverter-common,onnxruntime{,-extensions,-tvm},STL,Terminal,TypeScript,unilm,vcpkg,VFSForGit,vscode,vstest,vswhere,wil},\
+Microsoft/{artifacts-credprovider,azure-pipelines-yaml,BuildXL,calculator,cascadia-code,CNTK,cppwinrt,dotnet,FeaturizersLibrary,GSL,LightGBM,mimalloc,msbuild,{,Delayed-Compensation-Asynchronous-Stochastic-Gradient-Descent-for-}Multiverso,nni,onnxconverter-common,onnxruntime{,-extensions,-tvm},STL,Terminal,TypeScript,unilm,vcpkg,VFSForGit,vscode,vstest,vswhere,wil},\
 mikeando/fastjson,\
 moby/{buildkit,moby},\
 mono/{libgdiplus,linker,mono{,-tools,develop,torrent}},\
