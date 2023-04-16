@@ -27,30 +27,31 @@ fi
 export ROOT=/var/mirrors
 mkdir -p "$ROOT"
 
-[ "$#" -ge 1 ] && export PATTERN="$1"
-
 log="$(mktemp -t git-mirror-XXXXXXXX.log)"
 ! grep '[[:space:]]' <<< "$log" >/dev/null
 trap "trap - SIGTERM && rm -f $log && kill -- -$$" SIGINT SIGTERM EXIT
 
 # Concurrency restricted by GitHub.
-./mirror-list.sh | parallel --bar --group --shuf -d '\n' -j 10 'bash -c '"'"'
-set -e
-export ARGS={}"  "
-[ "$(xargs -n1 <<< {} | wc -l)" -ne 3 ] && exit 0
-cd "'"$ROOT"'"
-export SRC_SITE="$(cut -d" " -f1 <<< "$ARGS")"
-export SRC_DIR="$(cut -d" " -f3 <<< "$ARGS")"
-export SRC="$SRC_SITE$SRC_DIR.git"
-export DST_DOMAIN="$(cut -d" " -f2 <<< "$ARGS" | sed "s/^\/*//" | sed "s/\/*$//" | sed "s/\(..*\)/\1\//")"
-export DST_SITE="git@git.codingcafe.org:Mirrors/$DST_DOMAIN"
-export DST_DIR="$SRC_DIR"
-export DST="$DST_SITE$DST_DIR.git"
-export LOCAL="$(pwd)/$DST_DOMAIN/$DST_DIR.git"
+./mirror-list.sh                                                    \
+| grep $([ "$#" -gt 0 ] && printf ' -e%s' '^$' $@ || printf '.')    \
+| grep .                            \
+| parallel --bar --group --shuf -d '\n' -j 10 'bash -c '"'"'
+    set -e
 
-grep -v "^__" <<< "$SRC_DIR" >/dev/null || exit 0
+    export ARGS={}"  "
+    [ "$(xargs -n1 <<< {} | wc -l)" -ne 3 ] && exit 0
+    cd "'"$ROOT"'"
+    export SRC_SITE="$(cut -d" " -f1 <<< "$ARGS")"
+    export SRC_DIR="$(cut -d" " -f3 <<< "$ARGS")"
+    export SRC="$SRC_SITE$SRC_DIR.git"
+    export DST_DOMAIN="$(cut -d" " -f2 <<< "$ARGS" | sed "s/^\/*//" | sed "s/\/*$//" | sed "s/\(..*\)/\1\//")"
+    export DST_SITE="git@git.codingcafe.org:Mirrors/$DST_DOMAIN"
+    export DST_DIR="$SRC_DIR"
+    export DST="$DST_SITE$DST_DIR.git"
+    export LOCAL="$(pwd)/$DST_DOMAIN/$DST_DIR.git"
 
-if [ ! "'"$PATTERN"'" ] || grep "'"$PATTERN"'" >/dev/null <<< "$SRC_DIR"; then
+    grep -v "^__" <<< "$SRC_DIR" >/dev/null || exit 0
+
     printf "\033[36m[INFO] Mirror to \"$DST_DIR\"\033[0m\n" >&2
     xargs printf "\033[36m[INFO]     %s\033[0m\n" >&2 <<< "$ARGS"
 
@@ -249,7 +250,6 @@ if [ ! "'"$PATTERN"'" ] || grep "'"$PATTERN"'" >/dev/null <<< "$SRC_DIR"; then
             -w "%{http_code}"                                                   \
         | grep "^200$"
     fi
-fi
 '"'" 2>&1 | tee "$log"
 
 grep                                                                                            \
