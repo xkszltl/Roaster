@@ -85,6 +85,7 @@ for subset in pkg-{stable,skip,all}; do
                 [!] papi{,-*}
                 [!] rng-tools{,-debuginfo}
                 iperf{,3{,-devel}}
+                wondershaper
                 rpmdevtools
                 rpm-build
                 cyrus-imapd{,-*}
