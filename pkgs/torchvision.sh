@@ -81,7 +81,7 @@
         (
             set -e
             export FORCE_CUDA="$(! which nvcc >/dev/null 2>&1 || echo '1')"
-            export TORCH_CUDA_ARCH_LIST="Pascal;Volta;Turing"
+            export TORCH_CUDA_ARCH_LIST="Pascal;Volta;Turing;Ampere+PTX"
             export PY_VER='^3\.[7-9],^3\.[1-6][0-9]'
             case "$DISTRO_ID-$DISTRO_VERSION_ID" in
             'debian-'* | 'linuxmint-'* | 'ubuntu-'*)
