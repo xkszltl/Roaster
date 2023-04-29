@@ -21,6 +21,7 @@ aravindr93/{dmc2gym,mjrl,mujoco-py,trajopt},\
 ARM-software/{arm-trusted-firmware,astc-encoder,ComputeLibrary,HWCPipe,lisa},\
 arminc/{clair-{local-scan,scanner},k8s-platform-lcm,terraform-ecs},\
 asmjit/{asm{db,jit,tk},cult},\
+AUTOMATIC1111/{Autocleaner,Autolinks,GradientHair,Rimlaser,stable-diffusion-webui{,-{aesthetic-gradients,extensions,feature-showcase,nsfw-censor,old-localizations,pixelization,promptgen,rembg,tokenizer,wildcards}}},\
 aws/aws-{cli,sdk-{cpp,go,java,js,net,php,ruby}},\
 axel-download-accelerator/axel,\
 Azure/{azure-{c-{build-tools,logging,shared-utility,testrunnerswitcher},cli{,-extensions},ctest,devops-{cli-extension,utils},sdk-{for-{android,cpp,go,ios,java,js,net,node,php,python,ruby,rust},tools},storage-cpp,utpm-c},AML-Kubernetes,AzureML-Containers,azureml-{cheatsheets,examples,previews},iotedge,macro-utils-c,umock-c},\
@@ -55,6 +56,7 @@ DaveGamble/cJSON,\
 dcleblanc/{CAdES,SafeInt},\
 Delgan/loguru,\
 denyhosts/denyhosts,\
+divamgupta/{deep-clustering-kingdra,diffusionbee-stable-diffusion-ui,image-segmentation-keras,keras-vggish,ladder_network_keras,mtl_girnet,mttdsc,pytorch-propane,sbevnet-stereo-layout-estimation,stable-diffusion-tensorflow},\
 dlfcn-win32/dlfcn-win32,\
 dmlc/{dlpack,dmlc-core,gluon-cv,gluon-nlp,HalideIR,tvm,xgboost},\
 docker/docker-ce,\
@@ -116,6 +118,7 @@ IvanKobzarev/fbjni,\
 jarro2783/cxxopts,\
 JDAI-CV/{dabnn{,-example},DCL,DNNLibrary},\
 jemalloc/jemalloc,\
+jina-ai/{agentchain,annlite,api,auto-gpt-web,benchmark,clip-as-service,dalle-flow,discoart,finetuner,glid-3-xl,gptdeploy,inference-client,jcloud,jina,jina-ai.github.io,langchain-serve,now,SwinIR},\
 jordansissel/fpm,\
 joseph-henry/lwip{,-contrib},\
 JuliaStrings/utf8proc,\
@@ -206,6 +209,7 @@ shibatch/sleef,\
 simdjson/simdjson,\
 sivel/{go-speedtest,speedtest-cli},\
 Stellarium/stellarium{,-{addons,data,dynamic-plugin,ppa,skycultures,unity,web-engine}},\
+Sygil-Dev/{abo,dalle-flow,INE-dataset,sygil-webui},\
 syoyo/tiny{dng,exr,gltf,objloader-c,usdz,vdbio},\
 Sysinternals/{Proc{Dump,Mon}-for-Linux,sysinternals,SysinternalsEBPF,Sysmon{Common,ForLinux}},\
 taskflow/{awesome-parallel-computing,taskflow,taskflow.github.io,tfprof,work-stealing-queue},\
@@ -216,6 +220,7 @@ termcolor/termcolor,\
 thisistherk/fast_obj,\
 ThrowTheSwitch/{Ceedling,CException,CMock,MadScienceLabDocker,Unity},\
 thrust/thrust,\
+timojl/{clipseg,drawCNN,tralo},\
 tmux/tmux,\
 tmux-plugins/{tmux-{continuum,resurrect,sensible,test},tpm},\
 torvalds/linux,\
