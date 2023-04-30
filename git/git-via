@@ -1,0 +1,4 @@
+#!/bin/sh
+
+"$(realpath "$0").sh" "$@"
+exit "$?"
