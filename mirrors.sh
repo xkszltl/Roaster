@@ -2,11 +2,17 @@
 
 set -e
 
+for cmd in curl git git-lfs grep jq parallel sed xargs; do
+    ! which "$cmd" >/dev/null || continue
+    printf '\033[31m[ERROR] Missing command "%s".\033[0m\n' "$cmd" >&2
+    exit 1
+done
+
 trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
 cd "$(dirname "$0")"
 
-date
+date || true
 
 # export HTTP_PROXY=proxy.codingcafe.org:8118
 [ ! "$HTTP_PROXY"  ] || export HTTPS_PROXY="$HTTP_PROXY"
@@ -294,6 +300,6 @@ paste -sd' ' "$log"                                                             
 rm -f "$log"
 trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
-date
+date || true
 
 trap - SIGTERM SIGINT EXIT
