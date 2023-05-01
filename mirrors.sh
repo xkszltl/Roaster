@@ -63,7 +63,6 @@ trap "trap - SIGTERM && rm -f $log && kill -- -$$" SIGINT SIGTERM EXIT
     grep -v "^__" <<< "$src_dir" >/dev/null || exit 0
 
     printf "\033[36m[INFO] Mirror to \"$dst_dir\"\033[0m\n" >&2
-    xargs printf "\033[36m[INFO]     %s\033[0m\n" >&2 <<< "$args"
 
     mkdir -p "$(dirname "$local")"
     cd "$(dirname "$local")"
