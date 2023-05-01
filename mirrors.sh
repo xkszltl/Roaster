@@ -24,6 +24,16 @@ else
     )"
 fi
 
+[ "$DST" ] || DST='git@git.codingcafe.org:Mirrors/'
+# Append path separator if missing.
+DST="$(printf '%s' "$DST" | sed 's/^\([^:@\\\/][^:@\\\/]*@[^:@\\\/][^:@\\\/]*\):*$/\1:/' | sed 's/\([^:\/]\)\/*$/\1\//')"
+
+[ "$GITLAB_API" ] || GITLAB_API="https://git.codingcafe.org/api"
+# Drop trailing path separator.
+GITLAB_API="$(printf '%s' "$GITLAB_API" | sed 's/\/*$//')"
+
+https_url="$(printf '%s' "$DST" | sed 's/^[^:@\\\/][^:@\\\/]*@\([^:@\\\/][^:@\\\/]*\):/https:\/\/\1\//' | sed 's/\/*$//')"
+
 [ "$STAGE_DIR" ] || STAGE_DIR='/var/mirrors'
 mkdir -p "$STAGE_DIR"
 
@@ -45,7 +55,7 @@ trap "trap - SIGTERM && rm -f $log && kill -- -$$" SIGINT SIGTERM EXIT
     src_dir="$(cut -d" " -f3 <<< "$args")"
     src="$src_site$src_dir.git"
     dst_domain="$(cut -d" " -f2 <<< "$args" | sed "s/^\/*//" | sed "s/\/*$//" | sed "s/\(..*\)/\1\//")"
-    dst_site="git@git.codingcafe.org:Mirrors/$dst_domain"
+    dst_site="'"$DST"'$dst_domain"
     dst_dir="$src_dir"
     dst="$dst_site$dst_dir.git"
     local="$(pwd)/$dst_domain/$dst_dir.git"
@@ -81,7 +91,7 @@ trap "trap - SIGTERM && rm -f $log && kill -- -$$" SIGINT SIGTERM EXIT
             set -e
             curl -sSLX GET                                                  \
                 -H "Authorization: Bearer '"$GITLAB_CRED"'"                 \
-                "https://git.codingcafe.org/api/v4/groups/$(
+                "'"$GITLAB_API"'/v4/groups/$(
                         set -e
                         printf "Mirrors%s/%s" "$dst_domain" "$dst_dir"      \
                         | sed "s/\/[^\/][^\/]*$//"                          \
@@ -101,7 +111,7 @@ trap "trap - SIGTERM && rm -f $log && kill -- -$$" SIGINT SIGTERM EXIT
             for retry in $(seq 10 -1 0); do
                 ! curl -sSLX GET                                            \
                     -H "Authorization: Bearer '"$GITLAB_CRED"'"             \
-                    "https://git.codingcafe.org/api/v4/groups/$(
+                    "'"$GITLAB_API"'/v4/groups/$(
                             set -e
                             printf "Mirrors%s/%s" "$dst_domain" "$dst_dir"  \
                             | cut -d/ -f-"$lvl"                             \
@@ -140,7 +150,7 @@ trap "trap - SIGTERM && rm -f $log && kill -- -$$" SIGINT SIGTERM EXIT
                             | grep .                                        \
                             | sed "'"s/^/$(
                                     set -e
-                                    printf '%s' 'https://git.codingcafe.org/api/v4/groups/' \
+                                    printf '%s' "$GITLAB_API/v4/groups/"    \
                                     | sed 's/\([\\\/\.\-]\)/\\\1/g'
                                 )/"'"                                       \
                             | xargs -rn1 curl -sSLX GET                     \
@@ -150,7 +160,7 @@ trap "trap - SIGTERM && rm -f $log && kill -- -$$" SIGINT SIGTERM EXIT
                         ), \"visibility\": \"public\"}"                     \
                     -o "/dev/stderr"                                        \
                     -w "%{http_code}\n"                                     \
-                    "https://git.codingcafe.org/api/v4/groups/"
+                    "'"$GITLAB_API"'/v4/groups/"
             done
         done
     fi
@@ -164,8 +174,8 @@ trap "trap - SIGTERM && rm -f $log && kill -- -$$" SIGINT SIGTERM EXIT
     git config remote.origin.mirror false
     git config --replace-all remote.origin.push "+refs/heads/*"
     git config --add         remote.origin.push "+refs/tags/*"
-    git push -f         origin 2>&1
-    git push -f --prune origin 2>&1
+    git push -f         origin 2>&1 | grep -v "^Everything up-to-date$" | cat -
+    git push -f --prune origin 2>&1 | grep -v "^Everything up-to-date$" | cat -
     git config --add         remote.origin.push "+refs/changes/*"
     # git config --add         remote.origin.push "+refs/keep-around/*"
     # git config --add         remote.origin.push "+refs/merge-requests/*"
@@ -173,7 +183,7 @@ trap "trap - SIGTERM && rm -f $log && kill -- -$$" SIGINT SIGTERM EXIT
     # git config --add         remote.origin.push "+refs/pipelines/*"
     git config --add         remote.origin.push "+refs/pull/*"
 
-    if ! git push -f origin 2>&1; then
+    if ! git push -fq origin 2>&1; then
         printf "\033[31m[ERROR] Unable to push all PR refs to \"%s\".\033[0m\n" "$dst" >&2
         queue="$(
                 set -e
@@ -208,7 +218,7 @@ trap "trap - SIGTERM && rm -f $log && kill -- -$$" SIGINT SIGTERM EXIT
         done
     fi
 
-    if ! git push -f --prune origin 2>&1; then
+    if ! git push -fq --prune origin 2>&1; then
         printf "\033[31m[ERROR] Unable to prune PR refs on \"%s\".\033[0m\n" "$dst" >&2
     fi
     git config remote.origin.mirror true
@@ -227,7 +237,7 @@ trap "trap - SIGTERM && rm -f $log && kill -- -$$" SIGINT SIGTERM EXIT
         | grep .                                                                \
         | sed "'"s/^/$(
                 set -e
-                printf '%s' 'https://git.codingcafe.org/api/v4/projects/'       \
+                printf '%s' "$GITLAB_API/v4/projects/"                          \
                 | sed 's/\([\\\/\.\-]\)/\\\1/g'
             )/"'"                                                               \
         | xargs -rn1 curl -sSLX GET -H "Authorization: Bearer '"$GITLAB_CRED"'" \
@@ -240,7 +250,7 @@ trap "trap - SIGTERM && rm -f $log && kill -- -$$" SIGINT SIGTERM EXIT
         | grep .                                                                \
         | sed "'"s/^/$(
                 set -e
-                printf '%s' 'https://git.codingcafe.org/api/v4/projects/'       \
+                printf '%s' "$GITLAB_API/v4/projects/"                          \
                 | sed 's/\([\\\/\.\-]\)/\\\1/g'
             )/"'"                                                               \
         | xargs -rn1 curl -sSLX PUT                                             \
