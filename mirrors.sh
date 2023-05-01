@@ -24,8 +24,8 @@ else
     )"
 fi
 
-export ROOT=/var/mirrors
-mkdir -p "$ROOT"
+[ "$STAGE_DIR" ] || STAGE_DIR='/var/mirrors'
+mkdir -p "$STAGE_DIR"
 
 log="$(mktemp -t git-mirror-XXXXXXXX.log)"
 ! grep '[[:space:]]' <<< "$log" >/dev/null
@@ -38,38 +38,38 @@ trap "trap - SIGTERM && rm -f $log && kill -- -$$" SIGINT SIGTERM EXIT
 | parallel --bar --group --shuf -d '\n' -j 10 'bash -c '"'"'
     set -e
 
-    export ARGS={}"  "
+    args={}"  "
     [ "$(xargs -n1 <<< {} | wc -l)" -ne 3 ] && exit 0
-    cd "'"$ROOT"'"
-    export SRC_SITE="$(cut -d" " -f1 <<< "$ARGS")"
-    export SRC_DIR="$(cut -d" " -f3 <<< "$ARGS")"
-    export SRC="$SRC_SITE$SRC_DIR.git"
-    export DST_DOMAIN="$(cut -d" " -f2 <<< "$ARGS" | sed "s/^\/*//" | sed "s/\/*$//" | sed "s/\(..*\)/\1\//")"
-    export DST_SITE="git@git.codingcafe.org:Mirrors/$DST_DOMAIN"
-    export DST_DIR="$SRC_DIR"
-    export DST="$DST_SITE$DST_DIR.git"
-    export LOCAL="$(pwd)/$DST_DOMAIN/$DST_DIR.git"
+    cd "'"$STAGE_DIR"'"
+    src_site="$(cut -d" " -f1 <<< "$args")"
+    src_dir="$(cut -d" " -f3 <<< "$args")"
+    src="$src_site$src_dir.git"
+    dst_domain="$(cut -d" " -f2 <<< "$args" | sed "s/^\/*//" | sed "s/\/*$//" | sed "s/\(..*\)/\1\//")"
+    dst_site="git@git.codingcafe.org:Mirrors/$dst_domain"
+    dst_dir="$src_dir"
+    dst="$dst_site$dst_dir.git"
+    local="$(pwd)/$dst_domain/$dst_dir.git"
 
-    grep -v "^__" <<< "$SRC_DIR" >/dev/null || exit 0
+    grep -v "^__" <<< "$src_dir" >/dev/null || exit 0
 
-    printf "\033[36m[INFO] Mirror to \"$DST_DIR\"\033[0m\n" >&2
-    xargs printf "\033[36m[INFO]     %s\033[0m\n" >&2 <<< "$ARGS"
+    printf "\033[36m[INFO] Mirror to \"$dst_dir\"\033[0m\n" >&2
+    xargs printf "\033[36m[INFO]     %s\033[0m\n" >&2 <<< "$args"
 
-    mkdir -p "$(dirname "$LOCAL")"
-    cd "$(dirname "$LOCAL")"
+    mkdir -p "$(dirname "$local")"
+    cd "$(dirname "$local")"
     set +e
     ! which scl 2>&1 > /dev/null || . scl_source enable rh-git227 || . scl_source enable rh-git218
     set -e
-    [ -d "$LOCAL" ] || git clone --mirror "$DST" "$LOCAL" 2>&1 || git clone --mirror "$SRC" "$LOCAL" 2>&1
-    cd "$LOCAL"
-    git remote set-url origin "$DST" 2>&1
+    [ -d "$local" ] || git clone --mirror "$dst" "$local" 2>&1 || git clone --mirror "$src" "$local" 2>&1
+    cd "$local"
+    git remote set-url origin "$dst" 2>&1
     git config remote.origin.mirror true
     git fetch origin 2>&1 || true
     git fetch --tags origin 2>&1 || true
     if git lfs ls-files | head -n1 | grep . >/dev/null || git lfs ls-files --deleted | head -n1 | grep . >/dev/null || git lfs ls-files -a | head -n1 | grep . >/dev/null; then
         git lfs fetch --all origin 2>&1 || true
     fi
-    git remote set-url origin "$SRC" 2>&1
+    git remote set-url origin "$src" 2>&1
     # git fetch --prune origin 2>&1
     git fetch --prune --tags origin 2>&1
     git gc --auto 2>&1
@@ -83,14 +83,14 @@ trap "trap - SIGTERM && rm -f $log && kill -- -$$" SIGINT SIGTERM EXIT
                 -H "Authorization: Bearer '"$GITLAB_CRED"'"                 \
                 "https://git.codingcafe.org/api/v4/groups/$(
                         set -e
-                        printf "Mirrors%s/%s" "$DST_DOMAIN" "$DST_DIR"      \
+                        printf "Mirrors%s/%s" "$dst_domain" "$dst_dir"      \
                         | sed "s/\/[^\/][^\/]*$//"                          \
                         | sed "s/ /%20/g"                                   \
                         | sed "s/\//%2F/g"
                     )"                                                      \
             | jq -er .id                                                    \
             | grep "^[0-9][0-9]*$" >/dev/null                               \
-            || printf "Mirrors%s/%s" "$DST_DOMAIN" "$DST_DIR"               \
+            || printf "Mirrors%s/%s" "$dst_domain" "$dst_dir"               \
             | tr "/" "\n"                                                   \
             | grep .                                                        \
             | wc -l                                                         \
@@ -103,7 +103,7 @@ trap "trap - SIGTERM && rm -f $log && kill -- -$$" SIGINT SIGTERM EXIT
                     -H "Authorization: Bearer '"$GITLAB_CRED"'"             \
                     "https://git.codingcafe.org/api/v4/groups/$(
                             set -e
-                            printf "Mirrors%s/%s" "$DST_DOMAIN" "$DST_DIR"  \
+                            printf "Mirrors%s/%s" "$dst_domain" "$dst_dir"  \
                             | cut -d/ -f-"$lvl"                             \
                             | sed "s/ /%20/g"                               \
                             | sed "s/\//%2F/g"                              \
@@ -121,17 +121,17 @@ trap "trap - SIGTERM && rm -f $log && kill -- -$$" SIGINT SIGTERM EXIT
                     -H "Content-Type: application/json"                     \
                     -d "{\"name\": \"$(
                             set -e
-                            printf "Mirrors%s/%s" "$DST_DOMAIN" "$DST_DIR"  \
+                            printf "Mirrors%s/%s" "$dst_domain" "$dst_dir"  \
                             | cut -d/ -f"$lvl"                              \
                             | grep -v "[[:space:]]"
                         )\", \"path\": \"$(
                             set -e
-                            printf "Mirrors%s/%s" "$DST_DOMAIN" "$DST_DIR"  \
+                            printf "Mirrors%s/%s" "$dst_domain" "$dst_dir"  \
                             | cut -d/ -f"$lvl"                              \
                             | grep -v "[[:space:]]"
                         )\", \"parent_id\": $(
                             set -e
-                            printf "Mirrors%s/%s" "$DST_DOMAIN" "$DST_DIR"  \
+                            printf "Mirrors%s/%s" "$dst_domain" "$dst_dir"  \
                             | cut -d/ -f-"$lvl"                             \
                             | sed "s/\/[^\/][^\/]*$//"                      \
                             | sed "s/ /%20/g"                               \
@@ -157,10 +157,10 @@ trap "trap - SIGTERM && rm -f $log && kill -- -$$" SIGINT SIGTERM EXIT
 
     if git lfs ls-files | head -n1 | grep . >/dev/null || git lfs ls-files --deleted | head -n1 | grep . >/dev/null || git lfs ls-files -a | head -n1 | grep . >/dev/null; then
         git lfs fetch --all origin 2>&1 || true
-        git remote set-url origin "$DST" 2>&1
+        git remote set-url origin "$dst" 2>&1
         git lfs push --all origin 2>&1 || true
     fi
-    git remote set-url origin "$DST" 2>&1
+    git remote set-url origin "$dst" 2>&1
     git config remote.origin.mirror false
     git config --replace-all remote.origin.push "+refs/heads/*"
     git config --add         remote.origin.push "+refs/tags/*"
@@ -174,7 +174,7 @@ trap "trap - SIGTERM && rm -f $log && kill -- -$$" SIGINT SIGTERM EXIT
     git config --add         remote.origin.push "+refs/pull/*"
 
     if ! git push -f origin 2>&1; then
-        printf "\033[31m[ERROR] Unable to push all PR refs to \"%s\".\033[0m\n" "$DST" >&2
+        printf "\033[31m[ERROR] Unable to push all PR refs to \"%s\".\033[0m\n" "$dst" >&2
         queue="$(
                 set -e
                 printf "refs/%s/\n" \
@@ -200,16 +200,16 @@ trap "trap - SIGTERM && rm -f $log && kill -- -$$" SIGINT SIGTERM EXIT
                     | sort -Vu
                 )"
             if [ "$(printf "%s" "$next" | wc -l | sed "s/^[[:space:]]*//" | sed "s/[[:space:]]$//")" -gt 1 ]; then
-                printf "\033[33m[WARNING] Refine PR refs "%s" after push failure to \"%s\".\033[0m\n" "$cur*" "$DST" >&2
+                printf "\033[33m[WARNING] Refine PR refs "%s" after push failure to \"%s\".\033[0m\n" "$cur*" "$dst" >&2
                 queue="$(printf "%s\n" "$queue" "$next" | grep .)"
             else
-                printf "\033[31m[ERROR] Unable to push PR refs "%s" to \"%s\".\033[0m\n" "$cur*" "$DST" >&2
+                printf "\033[31m[ERROR] Unable to push PR refs "%s" to \"%s\".\033[0m\n" "$cur*" "$dst" >&2
             fi
         done
     fi
 
     if ! git push -f --prune origin 2>&1; then
-        printf "\033[31m[ERROR] Unable to prune PR refs on \"%s\".\033[0m\n" "$DST" >&2
+        printf "\033[31m[ERROR] Unable to prune PR refs on \"%s\".\033[0m\n" "$dst" >&2
     fi
     git config remote.origin.mirror true
     # git push --mirror origin 2>&1
@@ -220,7 +220,7 @@ trap "trap - SIGTERM && rm -f $log && kill -- -$$" SIGINT SIGTERM EXIT
     # - Set visibility after checking.
     #   Credential with restrictive role(s) can be used for read-only checking.
     if '"$([ "$GITLAB_CRED" ] && printf 'true' || printf 'false')"'; then
-        ! printf "Mirrors%s/%s" "$DST_DOMAIN" "$DST_DIR"                        \
+        ! printf "Mirrors%s/%s" "$dst_domain" "$dst_dir"                        \
         | sed "s/ /%20/g"                                                       \
         | sed "s/\//%2F/g"                                                      \
         | grep -v "[[:space:]]"                                                 \
@@ -233,7 +233,7 @@ trap "trap - SIGTERM && rm -f $log && kill -- -$$" SIGINT SIGTERM EXIT
         | xargs -rn1 curl -sSLX GET -H "Authorization: Bearer '"$GITLAB_CRED"'" \
         | jq -er ".visibility"                                                  \
         | grep -e "^internal$" -e "^private$"                                   \
-        || printf "Mirrors%s/%s" "$DST_DOMAIN" "$DST_DIR"                       \
+        || printf "Mirrors%s/%s" "$dst_domain" "$dst_dir"                       \
         | sed "s/ /%20/g"                                                       \
         | sed "s/\//%2F/g"                                                      \
         | grep -v "[[:space:]]"                                                 \
