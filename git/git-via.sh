@@ -50,6 +50,10 @@ while [ "$#" -gt 0 ]; do
         [ ! "$src_suffix" ] && [ "$2" ] && src_suffix="$2" || src_suffix="$src_suffix:$2" || src_suffix="$2"
         shift 2
         ;;
+    '-'*)
+        printf '\033[31m[ERROR] Unknown command-line flag "%s".\033[0m\n' "$1" >&2
+        exit 1
+        ;;
     *)
         break
         ;;
