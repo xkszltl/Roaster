@@ -117,15 +117,15 @@
             case "$DISTRO_ID" in
             'centos' | 'fedora' | 'rhel' | 'scientific')
                 $RPM_INSTALL                                                                                            \
-                    libcudnn8{,-devel}"-*-*cuda$(sed 's/11\.[9]/11\.8/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/12\.[1-9]/12\.0/')"  \
+                    libcudnn8{,-devel}"-*-*cuda$(sed 's/11\.[9]/11\.8/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/12\.[2-9]/12\.1/')"  \
                     libnccl{,-devel,-static}"-*-*cuda$(sed 's/11\.[1-3]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.[9]/11\.8/' | sed 's/12\.[2-9]/12\.1/')" \
-                    {libnv{infer{,-plugin},{,onnx}parsers}{8,-devel},tensorrt{,-{devel,libs}}}"-8.*-*cuda$(sed 's/11\.[12]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.[5]/11\.4/' | sed 's/11\.[7]/11\.6/' | sed 's/11\.[9]/11\.8/' | sed 's/12\.[0-9]/11\.8/')"
+                    {libnv{infer{,-plugin},{,onnx}parsers}{8,-devel},tensorrt{,-{devel,libs}}}"-8.*-*cuda$(sed 's/11\.[12]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.[5]/11\.4/' | sed 's/11\.[7]/11\.6/' | sed 's/11\.[9]/11\.8/' | sed 's/12\.[1-9]/12\.0/')"
                 ;;
             'debian' | 'linuxmint' | 'ubuntu')
                 sudo DEBIAN_FRONTEND=noninteractive apt-get -o 'DPkg::Lock::Timeout=3600' install --allow-downgrades -y \
-                    libcudnn8{,-dev}"=*+cuda$(sed 's/11\.[9]/11\.8/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/12\.[1-9]/12\.0/')"     \
+                    libcudnn8{,-dev}"=*+cuda$(sed 's/11\.[9]/11\.8/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/12\.[2-9]/12\.1/')"     \
                     libnccl{2,-dev}"=*+cuda$(sed 's/11\.[1-3]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.[9]/11\.8/' | sed 's/12\.[2-9]/12\.1/')"           \
-                    {libnv{infer{,-plugin},{,onnx}parsers}{8,-dev},tensorrt{,-{dev,libs}}}"=8.*+cuda$(sed 's/11\.[12]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.[5]/11\.4/' | sed 's/11\.[7]/11\.6/' | sed 's/11\.[9]/11\.8/' | sed 's/12\.[0-9]/11\.8/')"
+                    {libnv{infer{,-plugin},{,onnx}parsers}{8,-dev},tensorrt{,-{dev,libs}}}"=8.*+cuda$(sed 's/11\.[12]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.[5]/11\.4/' | sed 's/11\.[7]/11\.6/' | sed 's/11\.[9]/11\.8/' | sed 's/12\.[1-9]/12\.0/')"
                 ;;
             esac
             ldconfig -p | grep libcudnn
