@@ -238,6 +238,7 @@ xkszltl/{glog,jsoncpp,hiredis,leveldb,linux-syscall-support,onnx,onnx-tensorrt,o
 yaml/pyyaml,\
 Yangqing/ios-cmake,\
 yixuan/{LBFGSpp,MiniDNN,recosystem,spectra},\
+yuqinie98/PatchTST,\
 zeromq/{cppzmq,libzmq,pyzmq},\
 zerotier/{libzt,ZeroTier{One,NAS}},\
 zeux/{meshoptimizer,microprofile,niagara,pugixml,qgrep,volk},\
