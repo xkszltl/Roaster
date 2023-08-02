@@ -155,6 +155,7 @@ for subset in pkg-{stable,skip,all}; do
                 utf8proc{,-*}
                 {asciidoc,gettext,xmlto,c-ares,pcre{,2}}{,-*}
                 librados2{,-*}
+                libxml2-{devel,static}
                 pugixml{,-*}
                 libyaml{,-*}
                 byacc{,j}{,-*}

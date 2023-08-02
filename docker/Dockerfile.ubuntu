@@ -194,6 +194,7 @@ RUN set -e; \
             libtool \
             libudns-dev udns-utils \
             libvpx-{dev,doc} vpx-tools \
+            libxml2{,-{dev,doc,utils}} \
             libxvidcore-dev \
             libzmq3-dev \
             $(set -e; . '/etc/os-release'; ! echo "$ID-$VERSION_ID" | grep -e'^ubuntu\-20\.04$' >/dev/null || echo {llvm,clang{,-{format,tidy,tools}},lld}{,-{10,11,12,13}} llvm-{10,11,12,13}-tools lldb{,-10} lib{c++{,abi},omp}{,-10}-dev) \
