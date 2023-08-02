@@ -50,6 +50,6 @@ printf '%s' "
     </mirror>
   </mirrors>
 </settings>
-" \
-| xmllint --encode 'utf-8' --format -
+"                                       \
+| xmllint --encode 'utf-8' --format -   \
 | tee ~/.m2/settings.xml
