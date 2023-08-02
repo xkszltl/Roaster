@@ -3,7 +3,7 @@
 set -e
 
 cd "$(dirname "$0")"
-[ "$ROOT_DIR" ] || export ROOT_DIR="$(realpath -e ..)"
+[ "$ROOT_DIR" ] || export ROOT_DIR="$(realpath ..)"
 [ "$ROOT_DIR" ]
 cd "$ROOT_DIR"
 
@@ -26,11 +26,11 @@ echo '----------------------------------------------------------------'
     https://registry.hub.docker.com
 [ "$LINK_QUALITY" ]
 
-column -t <<< "$LINK_QUALITY" | sed 's/^/| /'
+printf '%s\n' "$LINK_QUALITY" | column -t | sed 's/^/| /'
 
 echo '----------------------------------------------------------------'
 
-[ "$DOCKER_MIRROR" ] || DOCKER_MIRROR="$(cut -d' ' -f2 <<< "$LINK_QUALITY")"
+[ "$DOCKER_MIRROR" ] || DOCKER_MIRROR="$(printf '%s\n' "$LINK_QUALITY" | cut -d' ' -f2)"
 [ "$DOCKER_MIRROR" ]
 
 sudo cat '/etc/docker/daemon.json'          \

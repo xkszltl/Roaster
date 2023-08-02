@@ -5,7 +5,7 @@
 set -e
 
 pushd "$(dirname "$0")"
-[ "$ROOT_DIR" ] || export ROOT_DIR="$(realpath -e ..)"
+[ "$ROOT_DIR" ] || export ROOT_DIR="$(realpath ..)"
 [ "$ROOT_DIR" ]
 pushd "$ROOT_DIR"
 
@@ -24,7 +24,7 @@ TOPK=2 . "$ROOT_DIR/geo/best-httping.sh"            \
     https://pypi.tuna.tsinghua.edu.cn/simple
 [ "$LINK_QUALITY" ]
 
-column -t <<< "$LINK_QUALITY" | sed 's/^/| /'
+printf '%s\n' "$LINK_QUALITY" | column -t | sed 's/^/| /'
 
 echo '----------------------------------------------------------------'
 

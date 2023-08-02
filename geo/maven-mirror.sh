@@ -3,7 +3,7 @@
 set -e
 
 cd "$(dirname "$0")"
-[ "$ROOT_DIR" ] || export ROOT_DIR="$(realpath -e ..)"
+[ "$ROOT_DIR" ] || export ROOT_DIR="$(realpath ..)"
 [ "$ROOT_DIR" ]
 cd "$ROOT_DIR"
 
@@ -29,9 +29,9 @@ TOPK=5 . "$ROOT_DIR/geo/best-httping.sh"                                \
     https://repository.jboss.org/nexus/content/repositories/central/
 [ "$LINK_QUALITY" ]
 
-column -t <<< "$LINK_QUALITY" | sed 's/^/| /'
+printf '%s\n' "$LINK_QUALITY" | column -t | sed 's/^/| /'
 
-[ "$MAVEN_MIRROR" ] || MAVEN_MIRROR="$(head -n1 <<< "$LINK_QUALITY" | cut -d' ' -f2)"
+[ "$MAVEN_MIRROR" ] || MAVEN_MIRROR="$(printf '%s\n' "$LINK_QUALITY" | head -n1 | cut -d' ' -f2)"
 [ "$MAVEN_MIRROR" ]
 
 echo '----------------------------------------------------------------'
@@ -39,7 +39,7 @@ echo "| MAVEN_MIRROR | $MAVEN_MIRROR"
 echo '----------------------------------------------------------------'
 
 mkdir -p ~/.m2/
-xmllint --encode 'utf-8' --format - <<< "
+printf '%s' "
 <settings>
   <mirrors>
     <mirror>
@@ -50,4 +50,6 @@ xmllint --encode 'utf-8' --format - <<< "
     </mirror>
   </mirrors>
 </settings>
-" | tee ~/.m2/settings.xml
+" \
+| xmllint --encode 'utf-8' --format -
+| tee ~/.m2/settings.xml
