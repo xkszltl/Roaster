@@ -110,6 +110,7 @@
     # - CUDA version re-mapping should be maintained according to the latest release.
     # - Do not allow further version-coupled fallback below 11.4/2.10 due to a bug around 2.9.
     # - "tensorrt" pkgs are only available since CUDA 11.6.
+    # - TensorRT 8.6.1.6 on Ubuntu route to CUDA 12.0 by default instead of 11.8, this may be a bug in Nvidia packaging.
     for attempt in $(seq "$PKG_MAX_ATTEMPT" -1 0); do
         [ "$attempt" -gt 0 ]
         (
@@ -125,7 +126,7 @@
                 sudo DEBIAN_FRONTEND=noninteractive apt-get -o 'DPkg::Lock::Timeout=3600' install --allow-downgrades -y \
                     libcudnn8{,-dev}"=*+cuda$(sed 's/11\.[9]/11\.8/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/12\.[2-9]/12\.1/')"     \
                     libnccl{2,-dev}"=*+cuda$(sed 's/11\.[1-3]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.[9]/11\.8/' | sed 's/12\.[3-9]/12\.2/')"           \
-                    {libnv{infer{,-plugin},{,onnx}parsers}{8,-dev},tensorrt{,-{dev,libs}}}"=8.*+cuda$(sed 's/11\.[12]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.[5]/11\.4/' | sed 's/11\.[7]/11\.6/' | sed 's/11\.[9]/11\.8/' | sed 's/12\.[1-9]/12\.0/')"
+                    {lib{nvinfer{-{bin,headers{,-plugin}-dev,samples},{,-{dispatch,lean,{vc-,}plugin}}{8,-dev}},nv{,onnx}parsers{8,-dev}},tensorrt{,-{dev,libs}}}"=8.*+cuda$(sed 's/11\.[12]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.[5]/11\.4/' | sed 's/11\.[7]/11\.6/' | sed 's/11\.[9]/11\.8/' | sed 's/12\.[1-9]/12\.0/')"
                 ;;
             esac
             ldconfig -p | grep libcudnn
