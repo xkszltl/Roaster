@@ -182,7 +182,11 @@
                     # Known issues:
                     #   - "apt-key adv --fetch-keys" does not exit with non-zero code on network error.
                     # sudo APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key adv --fetch-keys "$cuda_repo/$file_pubkey"
-                    curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$cuda_repo/$file_pubkey" | sudo apt-key add -
+                    curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$cuda_repo/$file_pubkey"  \
+                    | gpg --dearmor                                                                 \
+                    | sudo tee '/etc/apt/trusted.gpg.d/cuda.gpg'                                    \
+                    | grep -a .                                                                     \
+                    > /dev/null
                 done
                 sudo mkdir -p '/etc/apt/sources.list.d'
                 echo "deb $cuda_repo/ /" | sudo tee '/etc/apt/sources.list.d/cuda.list'
@@ -231,14 +235,22 @@
         esac
 
         # Intel oneAPI.
-        curl -sSL --retry 10000 $curl_connref --retry-delay 1 "https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB" | sudo APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key add -
+        curl -sSL --retry 10000 $curl_connref --retry-delay 1 "https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB"    \
+        | gpg --dearmor                                                                                                                         \
+        | sudo tee '/etc/apt/trusted.gpg.d/intel.gpg'                                                                                           \
+        | grep -a .                                                                                                                             \
+        > /dev/null
         sudo mkdir -p '/etc/apt/sources.list.d'
         sudo cp -f "$ROOT_DIR/repos/intel-oneapi.list" '/etc/apt/sources.list.d/'
         [ "_$GIT_MIRROR" != "_$GIT_MIRROR_CODINGCAFE" ] || "$ROOT_DIR/apply_cache.sh" intel-oneapi
         sudo apt-get -o 'DPkg::Lock::Timeout=3600' update -y
 
         # Docker-CE.
-        curl -sSL --retry 10000 $curl_connref --retry-delay 1 "https://download.docker.com/linux/$DISTRO_ID/gpg" | sudo APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key add -
+        curl -sSL --retry 10000 $curl_connref --retry-delay 1 "https://download.docker.com/linux/$DISTRO_ID/gpg"    \
+        | gpg --dearmor                                                                                             \
+        | sudo tee '/etc/apt/trusted.gpg.d/docker.gpg'                                                              \
+        | grep -a .                                                                                                 \
+        > /dev/null
         sudo mkdir -p '/etc/apt/sources.list.d'
         cat "$ROOT_DIR/repos/docker-ce.list"    \
         | sed 's/^\(.*\)/printf "%s\\n" "\1"/'  \
@@ -263,7 +275,11 @@
             || exit 0
             printf '\033[31m[ERROR] Failed to get nvidia-docker GPG key.\033[0m\n' >&2
             exit 1
-        ) | sudo APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key add -
+        )                                                       \
+        | gpg --dearmor                                         \
+        | sudo tee '/etc/apt/trusted.gpg.d/nvidia-docker.gpg'   \
+        | grep -a .                                             \
+        > /dev/null
         (
             set -e
             ! curl -sSL --retry 1000 $curl_connref --retry-delay 1 "https://nvidia.github.io/nvidia-docker/$DISTRO_ID$DISTRO_VERSION_ID/nvidia-docker.list" || exit 0
