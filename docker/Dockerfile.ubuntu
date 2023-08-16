@@ -8,6 +8,7 @@ ARG STAGE_PREFIX=''
 
 FROM ubuntu:22.04 AS stage-init
 
+ARG LABEL_BUILD_ID
 LABEL BUILD_ID=$LABEL_BUILD_ID
 
 # Cache invalidation.
@@ -54,12 +55,14 @@ COPY [".", "/etc/roaster/scripts"]
 
 FROM "$STAGE_PREFIX"stage-init AS stage-repo
 
+ARG LABEL_BUILD_ID
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
 RUN /etc/roaster/scripts/setup.sh repo
 
 FROM "$STAGE_PREFIX"stage-repo AS stage-font
 
+ARG LABEL_BUILD_ID
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
 RUN set -e; \
@@ -87,6 +90,7 @@ RUN set -e; \
 
 FROM "$STAGE_PREFIX"stage-font AS stage-pkg
 
+ARG LABEL_BUILD_ID
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
 RUN set -e; \
@@ -287,6 +291,7 @@ RUN --mount=type=tmpfs,target=/tmp \
 
 FROM "$STAGE_PREFIX"stage-pkg AS stage-auth
 
+ARG LABEL_BUILD_ID
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
 RUN --mount=type=tmpfs,target=/tmp \
@@ -295,6 +300,7 @@ RUN --mount=type=tmpfs,target=/tmp \
 
 FROM "$STAGE_PREFIX"stage-auth AS stage-ss
 
+ARG LABEL_BUILD_ID
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
 RUN --mount=type=tmpfs,target=/tmp \
@@ -304,12 +310,14 @@ RUN --mount=type=tmpfs,target=/tmp \
 
 FROM "$STAGE_PREFIX"stage-ss AS stage-intel
 
+ARG LABEL_BUILD_ID
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh intel
 
 FROM "$STAGE_PREFIX"stage-intel AS stage-infra
 
+ARG LABEL_BUILD_ID
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh nasm
@@ -330,12 +338,14 @@ RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-cca
 
 FROM "$STAGE_PREFIX"stage-infra AS stage-llvm
 
+ARG LABEL_BUILD_ID
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh llvm-gcc llvm-clang
 
 FROM "$STAGE_PREFIX"stage-llvm AS stage-util
 
+ARG LABEL_BUILD_ID
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh boost
@@ -352,6 +362,7 @@ RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-cca
 
 FROM "$STAGE_PREFIX"stage-util AS stage-misc
 
+ARG LABEL_BUILD_ID
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh catch2
@@ -377,6 +388,7 @@ RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-cca
 
 FROM "$STAGE_PREFIX"stage-misc AS stage-dl
 
+ARG LABEL_BUILD_ID
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh onnx
@@ -386,12 +398,14 @@ RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-cca
 
 FROM "$STAGE_PREFIX"stage-dl AS stage-ort
 
+ARG LABEL_BUILD_ID
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu22.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh ort
 
 FROM "$STAGE_PREFIX"stage-ort AS stage-edit
 
+ARG LABEL_BUILD_ID
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
 

@@ -8,6 +8,7 @@ ARG STAGE_PREFIX=''
 
 FROM centos:7 AS stage-init
 
+ARG LABEL_BUILD_ID
 LABEL BUILD_ID=$LABEL_BUILD_ID
 
 # Cache invalidation.
@@ -55,12 +56,14 @@ COPY [".", "/etc/roaster/scripts"]
 
 FROM "$STAGE_PREFIX"stage-init AS stage-repo
 
+ARG LABEL_BUILD_ID
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
 RUN /etc/roaster/scripts/setup.sh repo
 
 FROM "$STAGE_PREFIX"stage-repo AS stage-font
 
+ARG LABEL_BUILD_ID
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
 
@@ -68,18 +71,21 @@ RUN /etc/roaster/scripts/setup.sh font
 
 FROM "$STAGE_PREFIX"stage-font AS stage-pkg-stable
 
+ARG LABEL_BUILD_ID
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
 RUN /etc/roaster/scripts/setup.sh pkg-stable
 
 FROM "$STAGE_PREFIX"stage-pkg-stable AS stage-pkg-skip
 
+ARG LABEL_BUILD_ID
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
 RUN /etc/roaster/scripts/setup.sh pkg-skip
 
 FROM "$STAGE_PREFIX"stage-pkg-skip AS stage-pkg-all
 
+ARG LABEL_BUILD_ID
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
 RUN /etc/roaster/scripts/setup.sh pkg-all
@@ -88,6 +94,7 @@ RUN --mount=type=tmpfs,target=/tmp \
 
 FROM "$STAGE_PREFIX"stage-pkg-all AS stage-auth
 
+ARG LABEL_BUILD_ID
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
 RUN --mount=type=tmpfs,target=/tmp \
@@ -96,12 +103,14 @@ RUN --mount=type=tmpfs,target=/tmp \
 
 FROM "$STAGE_PREFIX"stage-auth AS stage-tex
 
+ARG LABEL_BUILD_ID
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
 RUN --mount=type=tmpfs,target=/tmp /etc/roaster/scripts/setup.sh tex
 
 FROM "$STAGE_PREFIX"stage-tex AS stage-ss
 
+ARG LABEL_BUILD_ID
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
 RUN --mount=type=tmpfs,target=/tmp \
@@ -111,12 +120,14 @@ RUN --mount=type=tmpfs,target=/tmp \
 
 FROM "$STAGE_PREFIX"stage-ss AS stage-intel
 
+ARG LABEL_BUILD_ID
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh intel
 
 FROM "$STAGE_PREFIX"stage-intel AS stage-infra
 
+ARG LABEL_BUILD_ID
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh nasm
@@ -137,12 +148,14 @@ RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,
 
 FROM "$STAGE_PREFIX"stage-infra AS stage-llvm
 
+ARG LABEL_BUILD_ID
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh llvm-gcc llvm-clang
 
 FROM "$STAGE_PREFIX"stage-llvm AS stage-util
 
+ARG LABEL_BUILD_ID
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh boost
@@ -159,6 +172,7 @@ RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,
 
 FROM "$STAGE_PREFIX"stage-util AS stage-misc
 
+ARG LABEL_BUILD_ID
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh catch2
@@ -184,6 +198,7 @@ RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,
 
 FROM "$STAGE_PREFIX"stage-misc AS stage-dl
 
+ARG LABEL_BUILD_ID
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh onnx
@@ -193,12 +208,14 @@ RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,
 
 FROM "$STAGE_PREFIX"stage-dl AS stage-ort
 
+ARG LABEL_BUILD_ID
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-centos7-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh ort
 
 FROM "$STAGE_PREFIX"stage-ort AS stage-edit
 
+ARG LABEL_BUILD_ID
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
 
