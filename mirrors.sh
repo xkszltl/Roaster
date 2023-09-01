@@ -282,12 +282,13 @@ grep                                                                            
 | grep -v '^0$'                                                                                 \
 | xargs -r printf '\033[31m[ERROR] Found %d potential network failures in log.\033[0m\n' >&2
 
-grep                                                                                            \
-    -e 'error: update_ref failed for ref'                                                       \
-    -i                                                                                          \
-    "$log"                                                                                      \
-| wc -l                                                                                         \
-| grep -v '^0$'                                                                                 \
+grep                                                                                                \
+    -e 'error: update_ref failed for ref'                                                           \
+    -e 'remote: GitLab: http post to gitlab api /post_receive endpoint: 500 Internal Server Error'  \
+    -i                                                                                              \
+    "$log"                                                                                          \
+| wc -l                                                                                             \
+| grep -v '^0$'                                                                                     \
 | xargs -r printf '\033[31m[ERROR] Found %d potential non-network failures in log.\033[0m\n' >&2
 
 paste -sd' ' "$log"                                                                                             \
