@@ -283,6 +283,7 @@ grep                                                                            
 | xargs -r printf '\033[31m[ERROR] Found %d potential network failures in log.\033[0m\n' >&2
 
 grep                                                                                                \
+    -e 'Could not scan for Git LFS tree: missing object:'                                           \
     -e 'error: update_ref failed for ref'                                                           \
     -e 'remote: GitLab: http post to gitlab api /post_receive endpoint: 500 Internal Server Error'  \
     -i                                                                                              \
