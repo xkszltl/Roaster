@@ -285,6 +285,7 @@ grep                                                                            
 grep                                                                                                \
     -e 'Could not scan for Git LFS tree: missing object:'                                           \
     -e 'error: update_ref failed for ref'                                                           \
+    -e 'fatal: Could not read from remote repository.'                                              \
     -e 'parse error: Invalid numeric literal at line'                                               \
     -e 'remote: GitLab: http post to gitlab api /post_receive endpoint: 500 Internal Server Error'  \
     -i                                                                                              \
