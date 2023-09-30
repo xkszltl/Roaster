@@ -237,7 +237,7 @@
         # Intel oneAPI.
         curl -sSL --retry 10000 $curl_connref --retry-delay 1 "https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB"    \
         | gpg --dearmor                                                                                                                         \
-        | sudo tee '/etc/apt/trusted.gpg.d/intel.gpg'                                                                                           \
+        | sudo tee '/etc/apt/trusted.gpg.d/oneapi-archive-keyring.gpg'                                                                          \
         | grep -a .                                                                                                                             \
         > /dev/null
         sudo mkdir -p '/etc/apt/sources.list.d'
