@@ -70,6 +70,7 @@ ElectronVector/{fake_function_framework,ravioli},\
 elnormous/{HTTPRequest,ouzel,OuzelShadingLanguage,SoftwareRenderer},\
 emil-e/rapidcheck,\
 emscripten-core/{emscripten{,-ci,-fastcomp{,-clang}},emsdk,posixtestsuite},\
+EnterpriseDB/{AlertifyJS,barman{,-tutorial},bdr-benchmark-kit,benchmark-framework,benchmarking-postgres,blogpostings,cloud-utilities,cnp-bench,cto-tproc-results,docker-pgbouncer,docs,edb-{ansible{,-tower},cnpg-gke-autopilot-deployer,installers,partner-docs,patroni,postgres-for-kubernetes-charts,ref-archs,terraform},edb_foreignkeyconstraintmanager,efm-api-node-state,{hdfs,mongo,mysql}_fdw,k8s-api-docgen,kubectl-cnp,pg-backup-api,pgldapsync,pgworkload,pg_catcheck,pg_failover_slots,pg_nosql_benchmark,postgres-deployment,pldebugger,sslutils,stackbuilder,system_stats,repmgr,terraform-provider-{biganimal,toolbox},tpa,zheap},\
 envoyproxy/{data-plane-api,envoy,{go,java}-control-plane,nighthawk,protoc-gen-validate},\
 erenon/{bazel_clang_tidy,binlog,cueue},\
 esnme/ujson4c,\
