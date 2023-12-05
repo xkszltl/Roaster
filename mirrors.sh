@@ -284,6 +284,7 @@ grep                                                                            
 
 grep                                                                                                \
     -e 'Could not scan for Git LFS tree: missing object:'                                           \
+    -e 'WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!'                                           \
     -e 'error: update_ref failed for ref'                                                           \
     -e 'fatal: Could not read from remote repository.'                                              \
     -e 'parse error: Invalid numeric literal at line'                                               \
