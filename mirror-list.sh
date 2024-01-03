@@ -87,6 +87,7 @@ fundamentalvision/{Auto-Seg-Loss,BEVFormer,Deformable-DETR,Parameterized-AP-Loss
 g-truc/{gli,glm},\
 gabime/spdlog,\
 gflags/gflags,\
+ggerganov/{gg{img,ml,sock,term,wave{,-spm},web,words},imgui{,-ws},imtui,incppect,llama.cpp,whisper.{cpp,spm}},\
 giampaolo/psutil,\
 git/{git{,-{reference,scm.com}},htmldocs},\
 github/{git-lfs,gitignore},\
@@ -120,6 +121,7 @@ jarro2783/cxxopts,\
 JDAI-CV/{dabnn{,-example},DCL,DNNLibrary},\
 jemalloc/jemalloc,\
 jina-ai/{agentchain,annlite,api,auto-gpt-web,benchmark,clip-as-service,dalle-flow,discoart,finetuner,glid-3-xl,gptdeploy,inference-client,jcloud,jina,jina-ai.github.io,langchain-serve,now,SwinIR},\
+jmorganca/ollama{,js},\
 jordansissel/fpm,\
 joseph-henry/lwip{,-contrib},\
 JuliaStrings/utf8proc,\
@@ -167,7 +169,7 @@ ntop/{bro-pf_ring,docker-ntop,libebpfflow,n2disk,n2n,nDPI,nProbe,ntopng{,-grafan
 numpy/{numpy{,-{newsletter,stubs,tutorials},doc},SVML},\
 NVIDIA/{AMGX,apex,cccl,cnmem,cuda-{gdb,profiler,samples},cudnn-frontend,cutlass,DALI{,_extra},Dataset_Synthesizer,DCGM,DeepLearningExamples,DIGITS,flownet2-pytorch,gdrcopy,hpc-container-maker,jitify,lib{cudacxx,glvnd,nvidia-container},Megatron-LM,NeMo,nccl{,-tests},nvidia-{container-runtime,docker,installer,modprobe,persistenced,settings,xconfig},NvPipe,NVTX,nvvl,open-gpu-doc,OpenSeq2Seq,pix2pixHD,tacotron2,TensorRT,tensorrt-inference-server,TRTorch,vid2vid,waveglow},\
 NVlabs/{cub,ffhq-dataset,pacnet,PWC-Net,SPADE,stylegan,xmp},\
-ocornut/imgui{,_club},\
+ocornut/{imgui{,_{club,test_engine}},meka},\
 oneapi-src/{one{API-{spec,tab},CCL,DAL,DNN,MKL,TBB},level-zero{,-tests}},\
 onnx/{keras-onnx,models,onnx{,-tensorrt,mltools},optimizer,sklearn-onnx,tutorials},\
 open-mpi/ompi,\
@@ -227,6 +229,7 @@ tmux-plugins/{tmux-{continuum,resurrect,sensible,test},tpm},\
 torvalds/linux,\
 tqdm/{py-make,tqdm},\
 tree-sitter/tree-sitter{,-{agda,bash,c,c-sharp,cpp,css,fluent,go,graph,haskell,html,java,javascript,jsdoc,json,julia,ocaml,php,python,ql,regex,ruby,rust,scala,swift,tsq,typescript,verilog}},\
+uNetworking/{Containerize,lib{EpollFuzzer,vc},pubsub-{example,benchmark},seed-corpus,SuperCereal,u{Sockets,WebSockets{,.js}}},\
 uploadcare/pillow-simd,\
 USCiLab/cereal,\
 v2fly/{docker,domain-list-community,fhs-install-v2ray,geoip,gray,v2ray-{core,examples,step-by-step},vmessping},\
