@@ -108,7 +108,7 @@ HazyResearch/{ama_prompting,anchor-stability,babble,bootleg,butterfly,correct-n-
 horovod/{artwork,horovod,tutorials},\
 houseroad/foxi,\
 HowardHinnant/date,\
-huggingface/{knockknock,Mongoku,neuralcoref,pytorch-{openai-transformer-lm,pretrained-BigGAN},swift-coreml-transformers,tflite-android-transformers,tokenizers,torchMoji,transformers},\
+huggingface/{accelerate,datasets{,-server},diffusers,knockknock,Mongoku,neuralcoref,optimum{,-{amd,benchmark,furiosa,graphcore,habana,intel,neuron,nvidia}},peft,pytorch-{openai-transformer-lm,pretrained-BigGAN},swift-coreml-transformers,tflite-android-transformers,tokenizers,torchMoji,transformers,trl},\
 HypothesisWorks/hypothesis,\
 ianlancetaylor/{aestest,cgosymbolizer,demangle,libbacktrace},\
 iina/{iina{,-plugin-definition,-website},plugin-ytdl},\
@@ -167,7 +167,7 @@ nlohmann/{crow,fifo_map,json},\
 nothings/{single_file_libs,stb},\
 ntop/{bro-pf_ring,docker-ntop,libebpfflow,n2disk,n2n,nDPI,nProbe,ntopng{,-grafana-datasource},packager,PF_RING,wireshark-ntop},\
 numpy/{numpy{,-{newsletter,stubs,tutorials},doc},SVML},\
-NVIDIA/{AMGX,apex,cccl,cnmem,cuda-{gdb,profiler,samples},cudnn-frontend,cutlass,DALI{,_extra},Dataset_Synthesizer,DCGM,DeepLearningExamples,DIGITS,flownet2-pytorch,gdrcopy,hpc-container-maker,jitify,lib{cudacxx,glvnd,nvidia-container},Megatron-LM,NeMo,nccl{,-tests},nvidia-{container-runtime,docker,installer,modprobe,persistenced,settings,xconfig},NvPipe,NVTX,nvvl,open-gpu-doc,OpenSeq2Seq,pix2pixHD,tacotron2,TensorRT,tensorrt-inference-server,TRTorch,vid2vid,waveglow},\
+NVIDIA/{AMGX,apex,cccl,cnmem,cuda-{gdb,profiler,quantum,samples},cudnn-frontend,cutlass,DALI{,_extra},Dataset_Synthesizer,DCGM,DeepLearningExamples,DIGITS,flownet2-pytorch,Fuser,gdrcopy,hpc-container-maker,jitify,lib{cudacxx,glvnd,nvidia-container},MatX,Megatron-LM,modulus,NeMo{,-{Aligner,Guardrails,Megatron-Launcher,speech-data-processor,text-processing}},nccl{,-tests},nvidia-{container-runtime,docker,installer,modprobe,persistenced,settings,xconfig},NVFlare,NvPipe,NVTX,nvvl,open-gpu-doc,OpenSeq2Seq,pix2pixHD,stdexec,tacotron2,TensorRT{,-LLM},tensorrt-inference-server,TRTorch,vid2vid,waveglow},\
 NVlabs/{cub,ffhq-dataset,pacnet,PWC-Net,SPADE,stylegan,xmp},\
 ocornut/{imgui{,_{club,test_engine}},meka},\
 oneapi-src/{one{API-{spec,tab},CCL,DAL,DNN,MKL,TBB},level-zero{,-tests}},\
