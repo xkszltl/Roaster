@@ -108,7 +108,7 @@ HazyResearch/{ama_prompting,anchor-stability,babble,bootleg,butterfly,correct-n-
 horovod/{artwork,horovod,tutorials},\
 houseroad/foxi,\
 HowardHinnant/date,\
-huggingface/{accelerate,datasets{,-server},diffusers,knockknock,Mongoku,neuralcoref,optimum{,-{amd,benchmark,furiosa,graphcore,habana,intel,neuron,nvidia}},peft,pytorch-{openai-transformer-lm,pretrained-BigGAN},swift-coreml-transformers,tflite-android-transformers,tokenizers,torchMoji,transformers,trl},\
+huggingface/{accelerate,datasets{,-server},diffusers,knockknock,Mongoku,neuralcoref,optimum{,-{amd,benchmark,furiosa,graphcore,habana,intel,neuron,nvidia}},peft,pytorch-{openai-transformer-lm,pretrained-BigGAN},safetensors,swift-coreml-transformers,tflite-android-transformers,tokenizers,torchMoji,transformers,trl},\
 HypothesisWorks/hypothesis,\
 ianlancetaylor/{aestest,cgosymbolizer,demangle,libbacktrace},\
 iina/{iina{,-plugin-definition,-website},plugin-ytdl},\
