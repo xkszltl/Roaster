@@ -15,8 +15,8 @@
 
     # PyTorch does not fully support CUDA 12.0 as of Feb 2023.
     # - https://github.com/pytorch/pytorch/issues/91122
-    export CUDA_VER_MAJOR="11"
-    export CUDA_VER_MINOR="8"
+    export CUDA_VER_MAJOR="12"
+    export CUDA_VER_MINOR="3"
     case "$DISTRO_ID" in
     'centos' | 'fedora' | 'rhel' | 'scientific')
         sudo dnf makecache
@@ -119,13 +119,13 @@
             'centos' | 'fedora' | 'rhel' | 'scientific')
                 $RPM_INSTALL                                                                                            \
                     libcudnn8{,-devel}"-*-*cuda$(sed 's/11\.[9]/11\.8/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/12\.[2-9]/12\.1/')"  \
-                    libnccl{,-devel,-static}"-*-*cuda$(sed 's/11\.[1-3]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.[9]/11\.8/' | sed 's/12\.[3-9]/12\.2/')" \
+                    libnccl{,-devel,-static}"-*-*cuda$(sed 's/11\.[1-3]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.[9]/11\.8/' | sed 's/12\.[4-9]/12\.3/')" \
                     {libnv{infer{,-plugin},{,onnx}parsers}{8,-devel},tensorrt{,-{devel,libs}}}"-8.*-*cuda$(sed 's/11\.[12]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.[5]/11\.4/' | sed 's/11\.[7]/11\.6/' | sed 's/11\.[9]/11\.8/' | sed 's/12\.[1-9]/12\.0/')"
                 ;;
             'debian' | 'linuxmint' | 'ubuntu')
                 sudo DEBIAN_FRONTEND=noninteractive apt-get -o 'DPkg::Lock::Timeout=3600' install --allow-downgrades -y \
                     libcudnn8{,-dev}"=*+cuda$(sed 's/11\.[9]/11\.8/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/12\.[2-9]/12\.1/')"     \
-                    libnccl{2,-dev}"=*+cuda$(sed 's/11\.[1-3]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.[9]/11\.8/' | sed 's/12\.[3-9]/12\.2/')"           \
+                    libnccl{2,-dev}"=*+cuda$(sed 's/11\.[1-3]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.[9]/11\.8/' | sed 's/12\.[4-9]/12\.3/')"           \
                     {lib{nvinfer{-{bin,headers{,-plugin}-dev,samples},{,-{dispatch,lean,{vc-,}plugin}}{8,-dev}},nv{,onnx}parsers{8,-dev}},tensorrt{,-{dev,libs}}}"=8.*+cuda$(sed 's/11\.[12]/11\.0/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/11\.[5]/11\.4/' | sed 's/11\.[7]/11\.6/' | sed 's/11\.[9]/11\.8/' | sed 's/12\.[1-9]/12\.0/')"
                 ;;
             esac
