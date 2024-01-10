@@ -13,6 +13,9 @@ echo '----------------------------------------------------------------'
 echo '              Measure link quality to PIP mirrors               '
 echo '----------------------------------------------------------------'
 
+# - USTC mirror is currently redirected to Tuna or BFSU.
+#   This affects probing quality.
+#   https://github.com/ustclug/mirrorrequest/issues/213
 TOPK=2 . "$ROOT_DIR/geo/best-httping.sh"            \
     https://pypi.org/simple                         \
     https://mirrors.163.com/pypi/simple             \
@@ -20,7 +23,7 @@ TOPK=2 . "$ROOT_DIR/geo/best-httping.sh"            \
     https://mirrors.bfsu.edu.cn/pypi/web/simple     \
     https://mirrors.cloud.tencent.com/pypi/simple   \
     https://mirrors.cqu.edu.cn/pypi/web/simple      \
-    https://mirrors.ustc.edu.cn/pypi/web/simple     \
+    https://disabled.mirrors.ustc.edu.cn/pypi/web/simple    \
     https://mirrors.zju.edu.cn/pypi/web/simple      \
     https://pypi.tuna.tsinghua.edu.cn/simple
 [ "$LINK_QUALITY" ]
