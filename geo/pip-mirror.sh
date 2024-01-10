@@ -23,7 +23,7 @@ TOPK=2 . "$ROOT_DIR/geo/best-httping.sh"            \
     https://mirrors.bfsu.edu.cn/pypi/web/simple     \
     https://mirrors.cloud.tencent.com/pypi/simple   \
     https://mirrors.cqu.edu.cn/pypi/web/simple      \
-    https://disabled.mirrors.ustc.edu.cn/pypi/web/simple    \
+    disabled-https://mirrors.ustc.edu.cn/pypi/web/simple    \
     https://mirrors.zju.edu.cn/pypi/web/simple      \
     https://pypi.tuna.tsinghua.edu.cn/simple
 [ "$LINK_QUALITY" ]
