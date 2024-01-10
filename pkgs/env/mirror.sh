@@ -57,7 +57,7 @@ export LINK_QUALITY="$(
     for i in $(env | sed -n 's/^GIT_MIRROR_[^=]*=//p'); do :
         price="$(cut -d',' -f1 <<< "$i,")"
         url="$(cut -d',' -f2 <<< "$i,")"
-        fqdn="$(sed 's/.*:\/\///' <<<"$url" | sed 's/\/.*//')"
+        fqdn="$(sed 's/.*:\/\///' <<<"$url" | sed 's/\/.*//' | sed 's/.*@//' | sed 's/:.*//')"
         sudo ping -W 1 -n $PING_ROUND "$fqdn"                                                       \
         | sed -n '/ms$/p'                                                                           \
         | sed 's/.*[^0-9]\([0-9]*\)%.*[^0-9\.]\([0-9\.]*\).*ms/\1 \2/'                              \
