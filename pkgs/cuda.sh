@@ -196,11 +196,17 @@
         # --------------------------------------------------------
 
         . "$ROOT_DIR/pkgs/utils/fpm/pre_build.sh"
+
+        # Do not duplicate sample code.
+        wait
         rm -rf "$INSTALL_ABS/src"
 
-        # CUDA 10.2 does not build due to missing nvscibuf.
-        # See discussion in https://devtalk.nvidia.com/default/topic/1067000/where-is-quot-nvscibuf-h-quot-/?offset=13
+        # Known issues:
+        # - CUDA 10.2 does not build due to missing nvscibuf.
+        #   See discussion in https://devtalk.nvidia.com/default/topic/1067000/where-is-quot-nvscibuf-h-quot-/?offset=13
+        # - Build may leave binaries in src dirs.
         MPI_HOME=/usr/local/openmpi VERBOSE=1 time make -j$(nproc) -k all || true
+        git clean -dfx Samples
 
         for cuda_util in deviceQuery{,Drv} topologyQuery {bandwidth,p2pBandwidthLatency}Test; do
             "bin/$(uname -m)/linux/release/$cuda_util" || true
