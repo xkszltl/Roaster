@@ -401,6 +401,9 @@ enabled=0
 
 ################################################################################
 # GitLab
+# Metadata pulled from:
+# - https://packages.gitlab.com/install/repositories/runner/gitlab-runner/config_file.repo?os=el&dist=7
+# - https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/config_file.repo?os=el&dist=7
 ################################################################################
 
 [cache-runner_gitlab-runner]
@@ -409,6 +412,7 @@ baseurl=https://repo.codingcafe.org/gitlab/gitlab-runner/el/$releasever/$basearc
 gpgcheck=0
 gpgkey=https://packages.gitlab.com/runner/gitlab-runner/gpgkey
        https://packages.gitlab.com/runner/gitlab-runner/gpgkey/runner-gitlab-runner-4C80FB51394521E9.pub.gpg
+       https://packages.gitlab.com/runner/gitlab-runner/gpgkey/runner-gitlab-runner-49F16C5CC3A0F81F.pub.gpg
 sslverify=1
 sslcacert=/etc/pki/tls/certs/ca-bundle.crt
 metadata_expire=300
@@ -421,6 +425,7 @@ baseurl=https://repo.codingcafe.org/gitlab/gitlab-runner/el/$releasever/SRPMS
 gpgcheck=0
 gpgkey=https://packages.gitlab.com/runner/gitlab-runner/gpgkey
        https://packages.gitlab.com/runner/gitlab-runner/gpgkey/runner-gitlab-runner-4C80FB51394521E9.pub.gpg
+       https://packages.gitlab.com/runner/gitlab-runner/gpgkey/runner-gitlab-runner-49F16C5CC3A0F81F.pub.gpg
 sslverify=1
 sslcacert=/etc/pki/tls/certs/ca-bundle.crt
 metadata_expire=300
