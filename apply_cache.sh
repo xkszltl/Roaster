@@ -18,7 +18,7 @@ case "$DISTRO_ID-$DISTRO_VERSION_ID" in
         exit $?
     fi
 
-    [ "$RPM_CACHE_REPO" ] || export RPM_CACHE_REPO="/etc/yum.repos.d/codingcafe-cache.repo"
+    [ "$RPM_CACHE_REPO" ] || export RPM_CACHE_REPO="/etc/yum.repos.d/codingcafe-mirror.repo"
 
     for i in $(ls "$ROOT_DIR/repos/"*.repo); do
         [ ! -f "/etc/yum.repos.d/$(basename "$i")" ] || continue
