@@ -229,6 +229,7 @@ tmux-plugins/{tmux-{continuum,resurrect,sensible,test},tpm},\
 torvalds/linux,\
 tqdm/{py-make,tqdm},\
 tree-sitter/tree-sitter{,-{agda,bash,c,c-sharp,cpp,css,fluent,go,graph,haskell,html,java,javascript,jsdoc,json,julia,ocaml,php,python,ql,regex,ruby,rust,scala,swift,tsq,typescript,verilog}},\
+trojan-gfw/{{homebrew,openwrt}-trojan,igniter{,-{go-libs,libs}},logo,trojan{,-{manager,panel,quickstart,url}}},\
 uNetworking/{Containerize,lib{EpollFuzzer,vc},pubsub-{example,benchmark},seed-corpus,SuperCereal,u{Sockets,WebSockets{,.js}}},\
 uploadcare/pillow-simd,\
 USCiLab/cereal,\
