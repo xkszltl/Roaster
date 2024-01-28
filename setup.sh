@@ -144,7 +144,7 @@ pushd "$SCRATCH"
     sudo rm -rvf "$STAGE"
     sudo mkdir -p "$(dirname "$STAGE")/.$(basename "$STAGE")"
     cd $_
-    [ $# -gt 0 ] && sudo touch $@ || sudo touch repo font pkg-stable pkg-skip pkg-all fpm auth vim tmux tex ss intel nasm lm-sensors lz4 zstd cmake hiredis ccache c-ares axel ipt python-3.{7,8,9,10,11} cuda gdrcopy ucx ompi llvm-{gcc,clang} boost jemalloc eigen openblas gtest benchmark gflags glog snappy protobuf nsync grpc catch2 jsoncpp rapidjson simdjson utf8proc pugixml pybind libpng x264 x265 mkl-dnn ispc halide xgboost sentencepiece opencv leveldb rocksdb lmdb nvcodec ffmpeg onnx pytorch torchvision apex ort
+    [ $# -gt 0 ] && sudo touch $@ || sudo touch repo font pkg-stable pkg-skip pkg-all fpm auth vim tmux tex ss trojan intel nasm lm-sensors lz4 zstd cmake hiredis ccache c-ares axel ipt python-3.{7,8,9,10,11} cuda gdrcopy ucx ompi llvm-{gcc,clang} boost jemalloc eigen openblas gtest benchmark gflags glog snappy protobuf nsync grpc catch2 jsoncpp rapidjson simdjson utf8proc pugixml pybind libpng x264 x265 mkl-dnn ispc halide xgboost sentencepiece opencv leveldb rocksdb lmdb nvcodec ffmpeg onnx pytorch torchvision apex ort
     sync || true
     cd "$SCRATCH"
     sudo mv -vf "$(dirname "$STAGE")/.$(basename "$STAGE")" $STAGE
@@ -171,6 +171,7 @@ for i in $(echo "
     slurm
     nagios
     shadowsocks
+    trojan
     texlive
     intel
     nasm

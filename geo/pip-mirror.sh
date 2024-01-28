@@ -13,6 +13,8 @@ echo '----------------------------------------------------------------'
 echo '              Measure link quality to PIP mirrors               '
 echo '----------------------------------------------------------------'
 
+# - Update CN mirror list from CERNET.
+#   https://mirrors.cernet.edu.cn/list/pypi
 # - USTC mirror is currently redirected to Tuna or BFSU.
 #   This affects probing quality.
 #   https://github.com/ustclug/mirrorrequest/issues/213
@@ -21,8 +23,10 @@ TOPK=2 . "$ROOT_DIR/geo/best-httping.sh"            \
     https://mirrors.163.com/pypi/simple             \
     https://mirrors.aliyun.com/pypi/simple          \
     https://mirrors.bfsu.edu.cn/pypi/web/simple     \
+    https://mirrors.cernet.edu.cn/pypi/web/simple   \
     https://mirrors.cloud.tencent.com/pypi/simple   \
     https://mirrors.cqu.edu.cn/pypi/web/simple      \
+    https://mirrors.jlu.edu.cn/pypi/web/simple      \
     https://mirror.nju.edu.cn/pypi/web/simple       \
     https://mirrors.pku.edu.cn/pypi/web/simple      \
     disabled-https://mirrors.ustc.edu.cn/pypi/web/simple    \
