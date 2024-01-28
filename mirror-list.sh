@@ -153,6 +153,7 @@ mesonbuild/meson{,-python},\
 micheles/{decorator,plac},\
 Microsoft/{artifacts-credprovider,azure-pipelines-yaml,BuildXL,calculator,cascadia-code,CNTK,cppwinrt,dotnet,FeaturizersLibrary,GSL,LightGBM,mimalloc,msbuild,{,Delayed-Compensation-Asynchronous-Stochastic-Gradient-Descent-for-}Multiverso,nni,onnxconverter-common,onnxruntime{,-extensions,-tvm},STL,Terminal,TypeScript,unilm,vcpkg,VFSForGit,vscode,vstest,vswhere,wil},\
 mikeando/fastjson,\
+mirrorz-org/{mirrorz{,-{302,config,d-extension,docs,help,i18n,json-site,monitor,parser,publish,schema,scripts,search}},org},\
 moby/{buildkit,moby},\
 mono/{libgdiplus,linker,mono{,-tools,develop,torrent}},\
 mreineck/{ducc,libsharp,pocketfft},\
