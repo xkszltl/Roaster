@@ -196,6 +196,7 @@ python/{cpython{,-{bin,source}-deps},devguide,importlib_{metadata,resources},myp
 python-attrs/attrs,\
 python-pillow/{Pillow,pillow-perf,Sane},\
 PythonCharmers/python-future,\
+pyTooling/{Actions,pyAttributes,pyTooling{,.{CLIAbstraction,GenericPath,github.io,TerminalUI}},sphinx-reports},\
 pytorch/{audio,botorch,captum,cppdocs,cpuinfo,elastic,examples,fairseq,FBGEMM,functorch,glow,ignite,kineto,pytorch,QNNPACK,serve,tensorpipe,text,translate,tutorials,vision,xla},\
 RadeonOpenCompute/{hcc,ROCm-Device-Libs,ROCR-Runtime},\
 rapidsai/{benchmark,cloud-ml-examples,clx,cu{cim,df,graph,hornet,ml,signal,spatial,xfilter},dask-{build-environment,cuda{,-benchmarks}},deployment,docs,frigate,gputreeshap,node,ptxcompiler,raft,rapids{.ai,-{cmake,examples,triton}},rmm,scikit-learn-nv,wholegraph,xgboost-conda},\
