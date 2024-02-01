@@ -133,6 +133,7 @@ RUN set -e; \
             $(set -e; . '/etc/os-release'; echo "$ID-$VERSION_ID" | grep -e'^ubuntu\-20\.04$' >/dev/null || echo dav1d libdav1d-dev) \
             debmirror \
             default-jdk ant maven \
+            default-libmysqlclient-dev libmysqlclient-dev \
             diffutils \
             docker-{ce,compose} \
             dos2unix \
