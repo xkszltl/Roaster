@@ -55,7 +55,7 @@ parallel -j0 --line-buffer --bar 'bash -c '"'"'
     [ "'"$#"'" -eq 0 ] || grep -i intel <<< "'"$@"'" || exit 0
     export INTEL_URL="http://registrationcenter-download.intel.com/akdlm/irc_nas/tec"
 
-    mkdir -p intel
+    mkdir -p intel/oneAPI/legacy
     cd "$_"
 
     $DRY || wget $DRY_WGET -cqt 10 --bind-address='$ROUTE' $INTEL_URL/{}
@@ -166,7 +166,7 @@ done
 export REPO_TASKS=$(jq <<< "$REPO_TASKS" '.repo_tasks[.repo_tasks | length] |= . +
 {
     "repo":         "'"oneAPI"'",
-    "path":         "'"intel"'",
+    "path":         "'"intel/oneAPI/rpm"'",
     "retries":      10,
     "sync_args":    "--delete --newest-only"
 }')

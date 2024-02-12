@@ -6,5 +6,5 @@ Wants=network-online.target
 [Service]
 Type=exec
 ExecStartPre=sh -c 'curl --retry 10 --retry-all-errors -sSL "https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB" | gpg --no-default-keyring --keyring debmirror.kbx --import'
-ExecStart=debmirror --arch=amd64 --dist=all --exclude='.*intel-oneapi-intelfpgadpcpp-.*-quartus.*' --getcontents --host=apt.repos.intel.com --i18n --keyring=debmirror.kbx --method=https --progress --root=oneapi --rsync-extra=none --section=main --verbose /Latte/Mirrors/intel/oneAPI
+ExecStart=debmirror --arch=amd64 --dist=all --exclude='.*intel-oneapi-intelfpgadpcpp-.*-quartus.*' --getcontents --host=apt.repos.intel.com --i18n --keyring=debmirror.kbx --method=https --progress --root=oneapi --rsync-extra=none --section=main --verbose /Latte/Mirrors/intel/oneAPI/deb
 User=root
