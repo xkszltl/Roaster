@@ -27,13 +27,17 @@
     (
         set -e
 
+        # Known issues:
+        # - Dependency dotenv 3.0.0 (released in Feb 2024) requires ruby 3.0.
         case "$DISTRO_ID-$DISTRO_VERSION_ID" in
         'centos-7' | 'rhel-7' | 'scientific-7.'*)
             set +e
             scl enable rh-ruby26 'gem build fpm.gemspec'
+            sudo scl enable rh-ruby26 'gem install dotenv -v "< 3"'
             # Document of childprocess failed to build with rh-ruby26.
             sudo scl enable rh-ruby26 'gem install --no-document ./fpm-*.gem'
             set -e
+            sudo gem install dotenv -v '< 3'
             # Dependency ffi-1.13 requires ruby 2.3 while stock version is 2.0.
             sudo gem install 'ffi:<1.13'
             # fpm 1.12.0 has git dependency requiring ruby>=2.3.
@@ -49,6 +53,11 @@
 EOF
                 sudo chmod +x '/usr/local/bin/fpm'
             done
+            ;;
+        'ubuntu-20.04')
+            gem build fpm.gemspec
+            sudo gem install dotenv -v '< 3'
+            sudo gem install ./fpm-*.gem
             ;;
         *)
             gem build fpm.gemspec
