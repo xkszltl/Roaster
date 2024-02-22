@@ -17,12 +17,17 @@ echo '----------------------------------------------------------------'
 echo '           Measure link quality to docker hub mirrors           '
 echo '----------------------------------------------------------------'
 
-. "$ROOT_DIR/geo/best-httping.sh"       \
-    https://docker.io                   \
-    https://docker.mirrors.ustc.edu.cn  \
-    https://hub-mirror.c.163.com        \
-    https://mirror.baidubce.com         \
-    https://registry-1.docker.io        \
+# - USTC mirror is only available on campus as of Feb 2024.
+# - 163 mirror is online but without manifest as of Feb 2024.
+# - Baidu mirror is online but without manifest as of Feb 2024.
+. "$ROOT_DIR/geo/best-httping.sh"               \
+    https://docker.io                           \
+    https://docker.mirrors.sjtug.sjtu.edu.cn    \
+    https://docker.nju.edu.cn                   \
+    disabled-https://docker.mirrors.ustc.edu.cn \
+    disabled-https://hub-mirror.c.163.com       \
+    disabled-https://mirror.baidubce.com        \
+    https://registry-1.docker.io                \
     https://registry.hub.docker.com
 [ "$LINK_QUALITY" ]
 
