@@ -102,6 +102,7 @@ GPUOpen-LibrariesAndSDKs/{AMF,BlenderUSDHydraAddon,Cauldron,D3D12MemoryAllocator
 grpc/{grpc{,.io,-{community,dart,docker-library,dotnet,experiments,go,haskell,ios,java{,-api-checker},kotlin,node,php,proto,swift,web}},proposal,test-infra},\
 gsliepen/tinc,\
 gulrak/filesystem,\
+haad/proxychains,\
 halide/Halide,\
 harfbuzz/harfbuzz,\
 HazyResearch/{ama_prompting,anchor-stability,babble,bootleg,butterfly,correct-n-contrast,data-centric-ai,deepdive,domino,EmptyHeaded,epoxy,fairseq-fork,flash-attention,fly,fm_data_tasks,fonduer,H3,hgcn,hippo-code,HoroPCA,hyperbolics,KGEmb,legalbench,liger,manifest,meerkat{,-website},metal,observational,pdftotree,safari,spacetime,state-spaces,structured-nets,tabi,tanda,thanos-code},\
