@@ -229,6 +229,7 @@ RUN set -e; \
             powertop \
             prelink \
             procps \
+            proxychains4 \
             pstack \
             pulseaudio{,-utils} libpulse-dev \
             pv \

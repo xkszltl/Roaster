@@ -222,6 +222,7 @@ RUN set -e; \
             pigz \
             powertop \
             procps \
+            proxychains4 \
             pulseaudio{,-utils} libpulse-dev \
             pv \
             pybind11-dev \
