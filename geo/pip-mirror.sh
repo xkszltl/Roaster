@@ -18,7 +18,10 @@ echo '----------------------------------------------------------------'
 # - USTC mirror is currently redirected to Tuna or BFSU.
 #   This affects probing quality.
 #   https://github.com/ustclug/mirrorrequest/issues/213
-TOPK=2 . "$ROOT_DIR/geo/best-httping.sh"            \
+TOPK="$(set -e +x >/dev/null
+        printf '%s\n' "$TOPK" '2' | grep . | head -n1
+    )"                                              \
+. "$ROOT_DIR/geo/best-httping.sh"                   \
     https://pypi.org/simple                         \
     https://mirrors.163.com/pypi/simple             \
     https://mirrors.aliyun.com/pypi/simple          \
