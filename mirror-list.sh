@@ -20,6 +20,7 @@ ArashPartow/{bitmap,bloom,exprtk{,-{custom-types,extras,fuzzer,perftest}},fastge
 aravindr93/{dmc2gym,mjrl,mujoco-py,trajopt},\
 ARM-software/{arm-trusted-firmware,astc-encoder,ComputeLibrary,HWCPipe,lisa},\
 arminc/{clair-{local-scan,scanner},k8s-platform-lcm,terraform-ecs},\
+artidoro/{detect-gentext,frank,qlora},\
 asmjit/{asm{db,jit,tk},cult},\
 AUTOMATIC1111/{Autocleaner,Autolinks,GradientHair,Rimlaser,stable-diffusion-webui{,-{aesthetic-gradients,extensions,feature-showcase,nsfw-censor,old-localizations,pixelization,promptgen,rembg,tokenizer,wildcards}}},\
 aws/aws-{cli,sdk-{cpp,go,java,js,net,php,ruby}},\
@@ -122,7 +123,6 @@ jarro2783/cxxopts,\
 JDAI-CV/{dabnn{,-example},DCL,DNNLibrary},\
 jemalloc/jemalloc,\
 jina-ai/{agentchain,annlite,api,auto-gpt-web,benchmark,clip-as-service,dalle-flow,discoart,finetuner,glid-3-xl,gptdeploy,inference-client,jcloud,jina,jina-ai.github.io,langchain-serve,now,SwinIR},\
-jmorganca/ollama{,js},\
 jordansissel/fpm,\
 joseph-henry/lwip{,-contrib},\
 JuliaStrings/utf8proc,\
@@ -152,7 +152,7 @@ Maratyszcza/{confu,cpuinfo,FP16,FXdiv,NNPACK,PeachPy,psimd,pthreadpool},\
 meekrosoft/fff,\
 mesonbuild/meson{,-python},\
 micheles/{decorator,plac},\
-Microsoft/{artifacts-credprovider,azure-pipelines-yaml,BuildXL,calculator,cascadia-code,CNTK,cppwinrt,dotnet,FeaturizersLibrary,GSL,LightGBM,mimalloc,msbuild,{,Delayed-Compensation-Asynchronous-Stochastic-Gradient-Descent-for-}Multiverso,nni,onnxconverter-common,onnxruntime{,-extensions,-tvm},STL,Terminal,TypeScript,unilm,vcpkg,VFSForGit,vscode,vstest,vswhere,wil},\
+Microsoft/{artifacts-credprovider,azure-pipelines-yaml,BuildXL,calculator,cascadia-code,CNTK,cppwinrt,dotnet,FeaturizersLibrary,GSL,LightGBM,LoRA,mimalloc,msbuild,{,Delayed-Compensation-Asynchronous-Stochastic-Gradient-Descent-for-}Multiverso,nni,onnxconverter-common,onnxruntime{,-extensions,-tvm},STL,Terminal,TypeScript,unilm,vcpkg,VFSForGit,vscode,vstest,vswhere,wil},\
 mikeando/fastjson,\
 mirrorz-org/{mirrorz{,-{302,config,d-extension,docs,help,i18n,json-site,monitor,parser,publish,schema,scripts,search}},org},\
 moby/{buildkit,moby},\
@@ -172,6 +172,7 @@ numpy/{numpy{,-{newsletter,stubs,tutorials},doc},SVML},\
 NVIDIA/{AMGX,apex,cccl,cnmem,cuda-{gdb,profiler,quantum,samples},cudnn-frontend,cutlass,DALI{,_extra},Dataset_Synthesizer,DCGM,DeepLearningExamples,DIGITS,flownet2-pytorch,Fuser,gdrcopy,hpc-container-maker,jitify,lib{cudacxx,glvnd,nvidia-container},MatX,Megatron-LM,modulus,NeMo{,-{Aligner,Guardrails,Megatron-Launcher,speech-data-processor,text-processing}},nccl{,-tests},nvidia-{container-runtime,docker,installer,modprobe,persistenced,settings,xconfig},NVFlare,NvPipe,NVTX,nvvl,open-gpu-doc,OpenSeq2Seq,pix2pixHD,stdexec,tacotron2,TensorRT{,-LLM},tensorrt-inference-server,TRTorch,vid2vid,waveglow},\
 NVlabs/{cub,ffhq-dataset,pacnet,PWC-Net,SPADE,stylegan,xmp},\
 ocornut/{imgui{,_{club,test_engine}},meka},\
+ollama/{ollama{,-{js,python}}},\
 oneapi-src/{one{API-{spec,tab},CCL,DAL,DNN,MKL,TBB},level-zero{,-tests}},\
 onnx/{keras-onnx,models,onnx{,-tensorrt,mltools},optimizer,sklearn-onnx,tutorials},\
 open-mpi/ompi,\
