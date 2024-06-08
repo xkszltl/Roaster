@@ -34,7 +34,15 @@
             ..
 
         time "$TOOLCHAIN/cmake" --build .
-        # Parallel test does not work as of v1.16.0.
+        # Known issues:
+        # - Parallel test does not work as of v1.16.0.
+        # - Rely on local server and does not work with remote proxy.
+        ALL_PROXY=''    \
+        HTTP_PROXY=''   \
+        HTTPS_PROXY=''  \
+        all_proxy=''    \
+        http_proxy=''   \
+        https_proxy=''  \
         time "$TOOLCHAIN/ctest" --output-on-failure -j1
         time "$TOOLCHAIN/cmake" --build . --target install
     )

@@ -13,15 +13,17 @@
 
     # ------------------------------------------------------------
 
+    gem_proxy="$(printf '%s\n' "$https_proxy" "$HTTPS_PROXY" "$http_proxy" "$HTTP_PROXY" | sed -n 's/^\([^[:space:]][^[:space:]]*\)/\-p \1/p' | head -n1)"
+
     # Dependency public_suffix has minimum ruby version requirements.
     if [ "_$(ruby --version | cut -d' ' -f2 | cut -d. -f-2 | sed 's/^/2\.0 /' | tr ' ' '\n' | sort -V | head -n1)" != "_2.0" ]; then
-        sudo gem install 'public_suffix:<1.5'
+        sudo gem install $gem_proxy 'public_suffix:<1.5'
     elif [ "_$(ruby --version | cut -d' ' -f2 | cut -d. -f-2 | sed 's/^/2\.1 /' | tr ' ' '\n' | sort -V | head -n1)" != "_2.1" ]; then
-        sudo gem install 'public_suffix:<3'
+        sudo gem install $gem_proxy 'public_suffix:<3'
     elif [ "_$(ruby --version | cut -d' ' -f2 | cut -d. -f-2 | sed 's/^/2\.3 /' | tr ' ' '\n' | sort -V | head -n1)" != "_2.3" ]; then
-        sudo gem install 'public_suffix:<4'
+        sudo gem install $gem_proxy 'public_suffix:<4'
     elif [ "_$(ruby --version | cut -d' ' -f2 | cut -d. -f-2 | sed 's/^/2\.6 /' | tr ' ' '\n' | sort -V | head -n1)" != "_2.6" ]; then
-        sudo gem install 'public_suffix:<5'
+        sudo gem install $gem_proxy 'public_suffix:<5'
     fi
 
     (
@@ -33,15 +35,15 @@
         'centos-7' | 'rhel-7' | 'scientific-7.'*)
             set +e
             scl enable rh-ruby26 'gem build fpm.gemspec'
-            sudo scl enable rh-ruby26 'gem install dotenv -v "< 3"'
+            sudo scl enable rh-ruby26 'gem install '"$gem_proxy"' dotenv -v "< 3"'
             # Document of childprocess failed to build with rh-ruby26.
-            sudo scl enable rh-ruby26 'gem install --no-document ./fpm-*.gem'
+            sudo scl enable rh-ruby26 'gem install '"$gem_proxy"' --no-document ./fpm-*.gem'
             set -e
-            sudo gem install dotenv -v '< 3'
+            sudo gem install $gem_proxy dotenv -v '< 3'
             # Dependency ffi-1.13 requires ruby 2.3 while stock version is 2.0.
-            sudo gem install 'ffi:<1.13'
+            sudo gem install $gem_proxy 'ffi:<1.13'
             # fpm 1.12.0 has git dependency requiring ruby>=2.3.
-            sudo gem install --no-document ./fpm-*.gem || true
+            sudo gem install $gem_proxy --no-document ./fpm-*.gem || true
             # Export SCL installation.
             for cmd in '/usr/local/bin/fpm'; do
                 cat << EOF | sed 's/^[[:space:]]*//' | sudo tee "$cmd"
@@ -56,12 +58,12 @@ EOF
             ;;
         'ubuntu-20.04')
             gem build fpm.gemspec
-            sudo gem install dotenv -v '< 3'
-            sudo gem install ./fpm-*.gem
+            sudo gem install $gem_proxy dotenv -v '< 3'
+            sudo gem install $gem_proxy ./fpm-*.gem
             ;;
         *)
             gem build fpm.gemspec
-            sudo gem install ./fpm-*.gem
+            sudo gem install $gem_proxy ./fpm-*.gem
             ;;
         esac
     )
