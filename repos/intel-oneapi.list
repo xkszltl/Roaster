@@ -1,4 +1,4 @@
 # Intel oneAPI
 
-deb [signed-by=/etc/apt/trusted.gpg.d/oneapi-archive-keyring.gpg] deb https://apt.repos.intel.com/oneapi all main
-deb-src [signed-by=/etc/apt/trusted.gpg.d/oneapi-archive-keyring.gpg] deb https://apt.repos.intel.com/oneapi all main
+deb [signed-by=/etc/apt/keyrings/oneapi-archive-keyring.gpg] deb https://apt.repos.intel.com/oneapi all main
+deb-src [signed-by=/etc/apt/keyrings/oneapi-archive-keyring.gpg] deb https://apt.repos.intel.com/oneapi all main

@@ -312,17 +312,6 @@ repo_gpgcheck=0
 sslcacert=/etc/pki/tls/certs/ca-bundle.crt
 sslverify=1
 
-[cache-nvidia-docker]
-name=[Cache] nvidia-docker
-baseurl=https://repo.codingcafe.org/nvidia/nvidia-docker/centos$releasever/$basearch
-enabled=0
-gpgcheck=1
-gpgkey=https://nvidia.github.io/nvidia-docker/gpgkey
-priority=1
-repo_gpgcheck=0
-sslcacert=/etc/pki/tls/certs/ca-bundle.crt
-sslverify=1
-
 ################################################################################
 # Docker
 ################################################################################

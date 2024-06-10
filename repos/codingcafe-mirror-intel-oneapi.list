@@ -1,3 +1,3 @@
 # CodingCafe mirrors.
 
-deb [signed-by=/etc/apt/trusted.gpg.d/oneapi-archive-keyring.gpg] https://repo.codingcafe.org/intel/oneAPI/deb all main
+deb [signed-by=/etc/apt/keyrings/oneapi-archive-keyring.gpg] https://repo.codingcafe.org/intel/oneAPI/deb all main

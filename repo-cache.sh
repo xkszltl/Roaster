@@ -236,7 +236,7 @@ for dist in rhel7; do
 done
 done
 
-for i in libnvidia-container{,-experimental} nvidia-{container-runtime{,-experimental},docker}; do
+for i in libnvidia-container{,-experimental} nvidia-container-runtime{,-experimental}; do
     mkdir -p "nvidia/$i/centos7/$(uname -m)"
     pushd "$_"
     for attempt in $($DRY || seq 100 -1 0); do

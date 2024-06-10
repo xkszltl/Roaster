@@ -14,7 +14,7 @@ case "$DISTRO_ID-$DISTRO_VERSION_ID" in
             {base,epel,centos-sclo-{sclo,rh},docker-ce-stable}{,-source,-debuginfo}     \
             dotnet                                                                      \
             oneAPI                                                                      \
-            "cuda-rhel$DISTRO_VERSION_ID-$(uname -m)" libnvidia-container nvidia-{container-runtime,docker,machine-learning}
+            "cuda-rhel$DISTRO_VERSION_ID-$(uname -m)" libnvidia-container nvidia-{container-runtime,machine-learning}
         exit $?
     fi
 

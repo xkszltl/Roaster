@@ -182,21 +182,25 @@
                     # Known issues:
                     #   - "apt-key adv --fetch-keys" does not exit with non-zero code on network error.
                     # sudo APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key adv --fetch-keys "$cuda_repo/$file_pubkey"
+                    [ -e '/etc/apt/keyrings' ] || ! sudo mkdir -m 755 '/etc/apt/keyrings'
                     curl -sSLv --retry 100 $curl_connref --retry-delay 5 "$cuda_repo/$file_pubkey"  \
-                    | gpg --dearmor                                                                 \
-                    | sudo tee '/etc/apt/trusted.gpg.d/cuda.gpg'                                    \
+                    | sudo tee '/etc/apt/trusted.gpg.d/cuda.asc'                                    \
                     | grep -a .                                                                     \
                     > /dev/null
                 done
                 sudo mkdir -p '/etc/apt/sources.list.d'
                 echo "deb $cuda_repo/ /" | sudo tee '/etc/apt/sources.list.d/cuda.list'
                 # Known issues:
-                #   - cuDNN/TensorRT/NCCL is not available for Debian as of early 2022.
+                #   - TensorRT/NCCL is not available for Debian as of mid 2024.
                 #     Try to use the Ubuntu build instead.
                 case "$DISTRO_ID-$DISTRO_VERSION_ID" in
                 'debian-11')
                     echo "deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/$(uname -m)/ /" | sudo tee -a '/etc/apt/sources.list.d/cuda.list'
                     printf 'Package: *\nPin: origin developer.download.nvidia.com/compute/cuda/repos/ubuntu2004\nPin-Priority: 1\n' | sudo tee '/etc/apt/preferences.d/99-cuda'
+                    ;;
+                'debian-12')
+                    echo "deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/$(uname -m)/ /" | sudo tee -a '/etc/apt/sources.list.d/cuda.list'
+                    printf 'Package: *\nPin: origin developer.download.nvidia.com/compute/cuda/repos/ubuntu2204\nPin-Priority: 1\n' | sudo tee '/etc/apt/preferences.d/99-cuda'
                     ;;
                 esac
                 sudo apt-get -o 'DPkg::Lock::Timeout=3600' update -y
@@ -235,9 +239,9 @@
         esac
 
         # Intel oneAPI.
+        [ -e '/etc/apt/keyrings' ] || ! sudo mkdir -m 755 '/etc/apt/keyrings'
         curl -sSL --retry 10000 $curl_connref --retry-delay 1 "https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB"    \
-        | gpg --dearmor                                                                                                                         \
-        | sudo tee '/etc/apt/trusted.gpg.d/oneapi-archive-keyring.gpg'                                                                          \
+        | sudo tee '/etc/apt/keyrings/oneapi-archive-keyring.asc'                                                                               \
         | grep -a .                                                                                                                             \
         > /dev/null
         sudo mkdir -p '/etc/apt/sources.list.d'
@@ -246,9 +250,9 @@
         sudo apt-get -o 'DPkg::Lock::Timeout=3600' update -y
 
         # Docker-CE.
+        [ -e '/etc/apt/keyrings' ] || ! sudo mkdir -m 755 '/etc/apt/keyrings'
         curl -sSL --retry 10000 $curl_connref --retry-delay 1 "https://download.docker.com/linux/$DISTRO_ID/gpg"    \
-        | gpg --dearmor                                                                                             \
-        | sudo tee '/etc/apt/trusted.gpg.d/docker.gpg'                                                              \
+        | sudo tee '/etc/apt/keyrings/docker.asc'                                                                   \
         | grep -a .                                                                                                 \
         > /dev/null
         sudo mkdir -p '/etc/apt/sources.list.d'
@@ -259,41 +263,42 @@
         [ "_$GIT_MIRROR" != "_$GIT_MIRROR_CODINGCAFE" ] || "$ROOT_DIR/apply_cache.sh" docker-ce
         sudo apt-get -o 'DPkg::Lock::Timeout=3600' update -y
 
-        # Nvidia docker.
+        # Nvidia container toolkit.
         # Known issue:
         # - Hide SNI with manual resolution if necessary, at the cost of unverified cert.
+        [ -e '/etc/apt/keyrings' ] || ! sudo mkdir -m 755 '/etc/apt/keyrings'
         (
             set -e
-            ! curl -sSL --retry 1000 $curl_connref --retry-delay 1 "https://nvidia.github.io/nvidia-docker/gpgkey" || exit 0
-            printf '\033[33m[WARNING] Fallback to hidden SNI when fetching nvidia-docker GPG key. Beware of security risk from unverified cert.\033[0m\n' >&2
+            ! curl -sSL --retry 1000 $curl_connref --retry-delay 1 "https://nvidia.github.io/libnvidia-container/gpgkey" || exit 0
+            printf '\033[33m[WARNING] Fallback to hidden SNI when fetching nvidia-container-toolkit GPG key. Beware of security risk from unverified cert.\033[0m\n' >&2
             ! curl -sSL --retry 1000 $curl_connref --retry-delay 1 -kH "Host: nvidia.github.io" "https://$(set -e
                     curl -svX HEAD "https://nvidia.github.io" 2>&1 >/dev/null                               \
                     | sed -n 's/.*Trying \([1-9][0-9]*\.[1-9][0-9]*\.[1-9][0-9]*\.[1-9][0-9]*\):443.*/\1/p' \
                     | head -n1                                                                              \
                     | grep .
-                )/nvidia-docker/gpgkey" \
+                )/libnvidia-container/gpgkey" \
             || exit 0
-            printf '\033[31m[ERROR] Failed to get nvidia-docker GPG key.\033[0m\n' >&2
+            printf '\033[31m[ERROR] Failed to get nvidia-container-toolkit GPG key.\033[0m\n' >&2
             exit 1
-        )                                                       \
-        | gpg --dearmor                                         \
-        | sudo tee '/etc/apt/trusted.gpg.d/nvidia-docker.gpg'   \
-        | grep -a .                                             \
+        )                                                                   \
+        | sudo tee '/etc/apt/keyrings/nvidia-container-toolkit-keyring.asc' \
+        | grep -a .                                                         \
         > /dev/null
         (
             set -e
-            ! curl -sSL --retry 1000 $curl_connref --retry-delay 1 "https://nvidia.github.io/nvidia-docker/$DISTRO_ID$DISTRO_VERSION_ID/nvidia-docker.list" || exit 0
-            printf '\033[33m[WARNING] Fallback to hidden SNI when fetching nvidia-docker repo config. Beware of security risk from unverified cert.\033[0m\n' >&2
+            ! curl -sSL --retry 1000 $curl_connref --retry-delay 1 "https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list" || exit 0
+            printf '\033[33m[WARNING] Fallback to hidden SNI when fetching nvidia-container-toolkit repo config. Beware of security risk from unverified cert.\033[0m\n' >&2
             ! curl -sSL --retry 1000 $curl_connref --retry-delay 1 -kH "Host: nvidia.github.io" "https://$(set -e
                     curl -svX HEAD "https://nvidia.github.io" 2>&1 >/dev/null                               \
                     | sed -n 's/.*Trying \([1-9][0-9]*\.[1-9][0-9]*\.[1-9][0-9]*\.[1-9][0-9]*\):443.*/\1/p' \
                     | head -n1                                                                              \
                     | grep .
-                )/nvidia-docker/$DISTRO_ID$DISTRO_VERSION_ID/nvidia-docker.list"    \
+                )/libnvidia-container/stable/deb/nvidia-container-toolkit.list"    \
             || exit 0
-            printf '\033[31m[ERROR] Failed to get nvidia-docker repo config.\033[0m\n' >&2
+            printf '\033[31m[ERROR] Failed to get nvidia-container-toolkit repo config.\033[0m\n' >&2
             exit 1
-        ) | sudo tee "/etc/apt/sources.list.d/nvidia-docker.list"
+        ) | sudo tee '/etc/apt/sources.list.d/nvidia-container-toolkit.list'
+        sudo sed -i 's/\(deb[[:space:]]\)\([[:space:]]*http\)/\1\[signed-by=\/etc\/apt\/keyrings\/nvidia\-container\-toolkit\-keyring\.asc\] \2/' '/etc/apt/sources.list.d/nvidia-container-toolkit.list'
 
         sudo apt-get -o 'DPkg::Lock::Timeout=3600' update -y
         sudo DEBIAN_FRONTEND=noninteractive apt-get -o 'DPkg::Lock::Timeout=3600' upgrade -y
