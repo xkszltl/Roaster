@@ -162,6 +162,7 @@ for subset in pkg-{stable,skip,all}; do
                 {gflags,glog,gmock,gtest,protobuf}{,-*}
                 {jsoncpp,rapidjson}{,-*}
                 re2{,-*}
+                xxhash{,-{devel,doc}}
                 {redis,hiredis}{,-*}
                 librabbitmq{,-{devel,examples}}
                 zeromq{,-*}
