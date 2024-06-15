@@ -154,6 +154,7 @@ for subset in pkg-{stable,skip,all}; do
                 [!] libevent{,-*}
                 utf8proc{,-*}
                 {asciidoc,gettext,xmlto,c-ares,pcre{,2}}{,-*}
+                rubygem-asciidoctor{,-doc}
                 librados2{,-*}
                 libxml2-{devel,static}
                 pugixml{,-*}

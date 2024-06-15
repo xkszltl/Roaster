@@ -111,6 +111,7 @@ RUN set -e; \
             apcupsd \
             apt-mirror \
             asciidoc \
+            asciidoctor{,-doc} \
             auditd \
             autoconf{,-archive} automake autopoint \
             axel \
