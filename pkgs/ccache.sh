@@ -7,7 +7,11 @@
 
     # ------------------------------------------------------------
 
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" ccache/ccache,v
+    # Known issues:
+    # - ccache 4.10 downloads fmt during build.
+    #   Pin to 4.9 for now.
+    #   https://github.com/ccache/ccache/issues/1470
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" ccache/ccache,v4.9.
     until git clone --depth 1 --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd ccache
 
@@ -37,6 +41,7 @@
                 -DCMAKE_C{,XX}_COMPILER_LAUNCHER="$(which ccache 2>/dev/null)"                  \
                 -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
                 -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"   \
+                -DDEPS=LOCAL                            \
                 -DENABLE_IPO=ON                         \
                 -DENABLE_TESTING=ON                     \
                 -DHIREDIS_FROM_INTERNET=OFF             \
