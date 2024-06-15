@@ -266,6 +266,7 @@ RUN set -e; \
             wondershaper \
             x264 libx264-dev \
             x265 libx265-{dev,doc} \
+            xxhash libxxhash-dev \
             xz-utils \
             zfs-{dkms,initramfs,test} zfsutils-linux \
             zstd libzstd-dev \
