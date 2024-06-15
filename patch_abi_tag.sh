@@ -14,12 +14,10 @@
 
 set -e
 
-[ "$IS_CONTAINER" ] || export IS_CONTAINER=$([ ! -e /proc/1/cgroup ] || [ "$(sed -n 's/^[^:]*:[^:]*:\(..\)/\1/p' /proc/1/cgroup | wc -l)" -le 0 ] || echo true)
-[ "$IS_CONTAINER" ] || export IS_CONTAINER=$([ ! -e /.dockerenv ] || echo true)
-[ "$IS_CONTAINER" ] || export IS_CONTAINER=$([ ! -e /run/.containerenv ] || echo true)
-[ "$IS_CONTAINER" ] || export IS_CONTAINER=false
+cd "$(dirname "$0")"
 
-if ! "$IS_CONTAINER"; then
+export IS_CONTAINER="$("$ROOT_DIR/inside_container.sh" && echo 'true' || echo 'false')"
+if [ ! "$IS_CONTAINER" ] || ! "$IS_CONTAINER"; then
     printf '\033[31m[ERROR] Patching OS ABI tag is very intrusive and should only be done in container.\033[0m\n' >&2
     exit 1
 fi

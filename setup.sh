@@ -14,6 +14,9 @@ trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 # Environment Configuration
 # ================================================================
 
+export ROOT_DIR="$(realpath -e "$(dirname "$0")")"
+export STAGE='/etc/roaster/stage'
+
 . <(sed 's/^\(..*\)/export DISTRO_\1/' '/etc/os-release')
 
 case "$DISTRO_ID" in
@@ -24,21 +27,13 @@ esac
 
 # ----------------------------------------------------------------
 
-[ "$IS_CONTAINER" ] || export IS_CONTAINER=$([ ! -e /proc/1/cgroup ] || [ "$(sed -n 's/^[^:]*:[^:]*:\(..\)/\1/p' /proc/1/cgroup | wc -l)" -le 0 ] || echo true)
-[ "$IS_CONTAINER" ] || export IS_CONTAINER=$([ ! -e /.dockerenv ] || echo true)
-[ "$IS_CONTAINER" ] || export IS_CONTAINER=$([ ! -e /run/.containerenv ] || echo true)
-[ "$IS_CONTAINER" ] || export IS_CONTAINER=false
+export IS_CONTAINER="$("$ROOT_DIR/inside_container.sh" && echo 'true' || echo 'false')"
+[ "$IS_CONTAINER" ]
 
 if ! "$IS_CONTAINER" && [ "$(whoami)" = 'root' ]; then
     printf '\033[31m[ERROR] Please use a non-root user with sudo permission.\033[0m\n' >&2
     exit 1
 fi
-
-# ----------------------------------------------------------------
-
-export ROOT_DIR="$(realpath -e "$(dirname "$0")")"
-
-export STAGE='/etc/roaster/stage'
 
 # ----------------------------------------------------------------
 
