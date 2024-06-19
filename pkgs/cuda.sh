@@ -204,7 +204,10 @@
         # - CUDA 11.8 and 12.0 samples was added later in 2022.
         #   https://github.com/NVIDIA/cuda-samples/releases/tag/v11.8
         #   https://github.com/NVIDIA/cuda-samples/releases/tag/v12.0
-        . "$ROOT_DIR/pkgs/utils/git/version.sh" NVIDIA/cuda-samples,"v$(sed 's/^11\.[7]$/11\.6/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR")"
+        # - CUDA 12.5 does not have dedicated sample as of mid 2024.
+        #   Fallback to 12.4 and will search for 12.4.1.
+        #   https://github.com/NVIDIA/cuda-samples/issues/275
+        . "$ROOT_DIR/pkgs/utils/git/version.sh" NVIDIA/cuda-samples,"v$(sed 's/^11\.[7]$/11\.6/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/^12\.[5]$/12\.4/')"
         until git clone --depth 1 -b "$GIT_TAG" "$GIT_REPO" "cuda-samples-$CUDA_VER_MAJOR-$CUDA_VER_MINOR"; do sleep 1; echo "Retrying"; done
         cd "cuda-samples-$CUDA_VER_MAJOR-$CUDA_VER_MINOR"
 
