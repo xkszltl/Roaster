@@ -2,6 +2,8 @@
 
 set -e
 
+cd "$(dirname "$0")"
+
 for cmd in find grep sed xargs; do
     ! which "$cmd" >/dev/null || continue
     printf '\033[31m[ERROR] Missing command "%s".\033[0m\n' "$cmd" >&2
@@ -15,7 +17,7 @@ if [ "_$(uname -s)" != '_Linux' ]; then
     exit 1
 fi
 
-if ! (grep '^[^:]*:[^:]*:/.' /proc/1/cgroup >/dev/null || [ -e /.dockerenv ] || [ -e /run/.containerenv ]); then
+if ! ./inside_container.sh; then
     printf '\033[31m[ERROR] Only run within container or it will damage the system.\033[0m\n' >&2
     exit 1
 fi
