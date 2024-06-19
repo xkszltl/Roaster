@@ -127,8 +127,21 @@
             'debian' | 'linuxmint' | 'ubuntu')
                 sudo DEBIAN_FRONTEND=noninteractive apt-get -o 'DPkg::Lock::Timeout=3600' install --allow-downgrades -y \
                     {"cudnn9-cuda-$CUDA_VER_MAJOR",libcudnn9-samples}                                                   \
-                    libnccl{2,-dev}"=*-*+cuda$CUDA_VER_MAJOR.*"                                                         \
-                    "tensorrt=10.*-*+cuda$CUDA_VER_MAJOR.*"
+                    $(
+                        set -e +x >/dev/null
+                        for i in libnccl{2,-dev} tensorrt; do
+                            apt-cache -o 'DPkg::Lock::Timeout=3600' show "$i"                                           \
+                            | grep -e'^'{Package,Version}':'                                                            \
+                            | sed -n 's/^[^:]*:[[:space:]]*//p'                                                         \
+                            | sed 's/[[:space:]]*$//'                                                                   \
+                            | paste -d= - -                                                                             \
+                            | grep -v '[[:space:]]'                                                                     \
+                            | grep '^[^=][^=]*=.*\-.*\+cuda'"$CUDA_VER_MAJOR"'\.[0-9][0-9]*$'                           \
+                            | sort -V                                                                                   \
+                            | tail -n1                                                                                  \
+                            | grep .
+                        done
+                    )
                 ;;
             esac
             ldconfig -p | grep libcudnn
