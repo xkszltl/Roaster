@@ -1,0 +1,15 @@
+[Unit]
+Description=Local sensors monitoring
+After=basic.target
+After=lm-sensors.service
+Requisite=basic.target
+Requisite=lm-sensors.service
+
+[Timer]
+OnActiveSec=0s
+OnUnitActiveSec=30s
+AccuracySec=1s
+Unit=sensors-mon.service
+
+[Install]
+WantedBy=multi-user.target

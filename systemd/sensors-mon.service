@@ -1,0 +1,12 @@
+[Unit]
+Description=Local sensors monitoring
+After=lm-sensors.service
+Requisite=lm-sensors.service
+
+[Service]
+Type=exec
+StandardError=tty
+ExecStartPre=sh -c 'set -e; which sensors >/dev/null'
+ExecStart=sh -c 'set -e; date +"%%Y-%%m-%%d %%H:%%M:%%S %%Z"; sensors;'
+TimeoutStartSec=10s
+User=nobody
