@@ -6,7 +6,7 @@ Requisite=basic.target
 Requisite=openipmi.service
 
 [Timer]
-OnActiveSec=30s
+OnUnitActiveSec=30s
 AccuracySec=1s
 Unit=ipmi-mon.service
 
