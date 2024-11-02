@@ -1,0 +1,14 @@
+[Unit]
+Description=IPMI local monitoring
+After=openipmi.service
+Requisite=openipmi.service
+
+[Service]
+Type=exec
+StandardError=tty
+ExecStartPre=[ -d '/dev' ]
+ExecStartPre=[ -e '/dev/ipmi0' ]
+ExecStartPre=sh -c 'set -e; which ipmitool >/dev/null'
+ExecStart=sh -c 'set -e; date +"%%Y-%%m-%%d %%H:%%M:%%S %%Z"; ipmitool sensor;'
+TimeoutStartSec=20s
+User=root

@@ -1,0 +1,14 @@
+[Unit]
+Description=IPMI local monitoring
+After=basic.target
+After=openipmi.service
+Requisite=basic.target
+Requisite=openipmi.service
+
+[Timer]
+OnActiveSec=30s
+AccuracySec=1s
+Unit=ipmi-mon.service
+
+[Install]
+WantedBy=multi-user.target
