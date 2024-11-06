@@ -9,8 +9,8 @@ StandardError=tty
 ExecStartPre=[ -d '/dev' ]
 ExecStartPre=[ -e '/dev/nvme0' ]
 ExecStartPre=[ -e '/dev/nvme0n1' ]
-ExecStartPre=which dd
-ExecStartPre=which grep
-ExecStartPre=which sed
-ExecStart=sh -c 'set -e; time dd if=/dev/nvme0n1 of=/dev/null bs=8MiB status=progress conv=nocreat,noerror,notrunc iflag=direct,nonblock 2>&1 | tee -a /dev/stderr | grep -i "error reading" | wc -l | sed "s/[[:space:]]//g" | tee -a /dev/stderr | grep "^0$"'
+ExecStartPre=/bin/sh -c 'set -e; which dd >/dev/null'
+ExecStartPre=/bin/sh -c 'set -e; which grep >/dev/null'
+ExecStartPre=/bin/sh -c 'set -e; which sed >/dev/null'
+ExecStart=/bin/sh -c 'set -e; time dd if=/dev/nvme0n1 of=/dev/null bs=8MiB status=progress conv=nocreat,noerror,notrunc iflag=direct,nonblock 2>&1 | tee -a /dev/stderr | grep -i "error reading" | wc -l | sed "s/[[:space:]]//g" | tee -a /dev/stderr | grep "^0$"'
 User=root

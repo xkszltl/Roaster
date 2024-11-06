@@ -5,10 +5,9 @@ Requisite=openipmi.service
 
 [Service]
 Type=exec
-StandardError=tty
-ExecStartPre=[ -d '/dev' ]
-ExecStartPre=[ -e '/dev/ipmi0' ]
-ExecStartPre=sh -c 'set -e; which ipmitool >/dev/null'
-ExecStart=sh -c 'set -e; date +"%%Y-%%m-%%d %%H:%%M:%%S %%Z"; ipmitool sensor;'
+ExecStartPre=/bin/sh -c 'set -e; [ -d "/dev" ]'
+ExecStartPre=/bin/sh -c 'set -e; [ -e "/dev/ipmi0" ]'
+ExecStartPre=/bin/sh -c 'set -e; which ipmitool >/dev/null'
+ExecStart=/bin/sh -c 'set -e; date +"%%Y-%%m-%%d %%H:%%M:%%S %%Z"; ipmitool sensor;'
 TimeoutStartSec=20s
 User=root

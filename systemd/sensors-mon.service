@@ -5,8 +5,9 @@ Requisite=lm-sensors.service
 
 [Service]
 Type=exec
-StandardError=tty
-ExecStartPre=sh -c 'set -e; which sensors >/dev/null'
-ExecStart=sh -c 'set -e; date +"%%Y-%%m-%%d %%H:%%M:%%S %%Z"; sensors;'
+ExecStartPre=/bin/sh -c 'set -e; which sensors >/dev/null'
+ExecStart=/bin/sh -c 'set -e; date +"%%Y-%%m-%%d %%H:%%M:%%S %%Z"; sensors;'
 TimeoutStartSec=10s
+# Known issue:
+# - Stock version on CentOS 7 may exit normally with partial output unless run by root.
 User=nobody

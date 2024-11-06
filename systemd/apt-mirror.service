@@ -5,7 +5,7 @@ Wants=network-online.target
 
 [Service]
 Type=exec
-ExecStartPre=sh -c 'curl --retry 10 --retry-all-errors -sSL "https://developer.download.nvidia.com/compute/cuda/repos/debian11/x86_64/3bf863cc.pub" | gpg --no-default-keyring --keyring debmirror.kbx --import'
-ExecStartPre=sh -c 'curl --retry 10 --retry-all-errors -sSL "https://developer.download.nvidia.com/compute/cuda/repos/debian11/x86_64/7fa2af80.pub" | gpg --no-default-keyring --keyring debmirror.kbx --import'
+ExecStartPre=/bin/sh -c 'curl --retry 10 --retry-all-errors -sSL "https://developer.download.nvidia.com/compute/cuda/repos/debian11/x86_64/3bf863cc.pub" | gpg --no-default-keyring --keyring debmirror.kbx --import'
+ExecStartPre=/bin/sh -c 'curl --retry 10 --retry-all-errors -sSL "https://developer.download.nvidia.com/compute/cuda/repos/debian11/x86_64/7fa2af80.pub" | gpg --no-default-keyring --keyring debmirror.kbx --import'
 ExecStart=apt-mirror
 User=root
