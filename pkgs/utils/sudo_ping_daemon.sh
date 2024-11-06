@@ -8,33 +8,37 @@
 export SUDO_PING_HEARTBEAT_SEC=5
 export SUDO_PING_SLA_SEC=1
 
-if [ $PPID -le 1 ]; then
-    echo "Refuse to start as a direct child of process $PPID."
+if [ ! "$PPID" ] || ! printf '%s\n' "$PPID" | grep -q '^[0-9][0-9]*$'; then
+    printf '\033[31[ERROR] Invalid parent pid "%s".\033[0m\n' "$PPID" >&2
+    exit 1
+fi
+if [ "$PPID" -le 1 ]; then
+    printf '\033[31[ERROR] Refuse to start as a direct child of process %s.\033[0m\n' "$PPID" >&2
     exit 1
 fi
 
 # ----------------------------------------------------------------
 
-export SUDO_PING_PID="$("$SHELL" -c 'echo $PPID' | xargs ps -o ppid= -p | sed 's/[[:space:]]//g')"
+export SUDO_PING_PID="$('/bin/sh' -c 'echo "$PPID"' | xargs -r ps -o ppid= -p | sed 's/[[:space:]]//g')"
 # Assert numerical
-    if [ ! "$SUDO_PING_PID" ] || [ "$(sed 's/[0-9]//g' <<< "$SUDO_PING_PID")" ]; then
-    echo "[ERROR] Non-numerical \$SUDO_PING_PID \"$SUDO_PING_PID\"."
+if [ ! "$SUDO_PING_PID" ] || ! printf '%s\n' "$SUDO_PING_PID" | grep -q '^[0-9][0-9]*$'; then
+    printf '\033[31m[ERROR] Non-numerical $SUDO_PING_PID "%s".\033[0m\n' "$SUDO_PING_PID" >&2
     exit 1
 fi
 
 # Assert consistent
 if [ "$BASHPID" ]; then
     if [ "$(sed 's/[0-9]//g' <<< "$BASHPID")" ]; then
-        echo "[ERROR] Non-numerical \$BASHPID \"$BASHPID\"."
+        printf '\033[31m[ERROR] Non-numerical $BASHPID "%s".\033[0m\n' "$BASHPID" >&2
         exit 1
     fi
     if [ "_$SUDO_PING_PID" != "_$BASHPID" ]; then
-        echo "[ERROR] Inconsistent \$SUDO_PING_PID vs. \$BASHPID \"$SUDO_PING_PID\" != \"$BASHPID\"."
+        printf '\033[31m[ERROR] Inconsistent $SUDO_PING_PID (%s) vs. $BASHPID (%s).\033[0m\n' "$SUDO_PING_PID" "$BASHPID" >&2
         exit 1
     fi
 fi
 
-echo "Daemon sudo_ping is monitoring process $SUDO_PING_PID for zombie."
+printf '\033[36m[INFO] Daemon sudo_ping is monitoring process %s for zombie.\033[0m\n' "$SUDO_PING_PID" >&2
 
 (
     set -e
@@ -48,5 +52,5 @@ echo "Daemon sudo_ping is monitoring process $SUDO_PING_PID for zombie."
         done
     done
 
-    echo '[INFO] sudo_ping deamon quit automatically (Reason: zombie)'
+    [ 'Silent termination' ] || printf '\033[36m[INFO] sudo_ping deamon quit automatically (Reason: zombie)\033[0m.\n' >&2
 ) &
