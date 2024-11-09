@@ -358,6 +358,11 @@ RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-debian11-ccache
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh gflags
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh glog
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh snappy
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh jsoncpp
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh rapidjson
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh simdjson
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh utf8proc
+RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh pugixml
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh protobuf
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh nsync
 
@@ -367,11 +372,6 @@ ARG LABEL_BUILD_ID
 LABEL BUILD_ID=$LABEL_BUILD_ID
 COPY [".", "/etc/roaster/scripts"]
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh catch2
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh jsoncpp
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh rapidjson
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh simdjson
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh utf8proc
-RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh pugixml
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh pybind
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh grpc
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-debian11-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh libpng
