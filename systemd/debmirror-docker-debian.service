@@ -6,5 +6,5 @@ Wants=network-online.target
 [Service]
 Type=exec
 ExecStartPre=/bin/sh -c 'curl --retry 10 --retry-all-errors -sSL "https://download.docker.com/linux/debian/gpg" | gpg --no-default-keyring --keyring debmirror.kbx --import'
-ExecStart=debmirror --arch=amd64 --dist=buster,bullseye --getcontents --host=download.docker.com --i18n --keyring=debmirror.kbx --method=https --progress --root=linux/debian --rsync-extra=none --section=edge,nightly,stable,test --verbose /Latte/Mirrors/docker/linux/debian
+ExecStart=debmirror --arch=amd64 --dist=bullseye,bookworm --getcontents --host=download.docker.com --i18n --keyring=debmirror.kbx --method=https --progress --root=linux/debian --rsync-extra=none --section=edge,nightly,stable,test --verbose /Latte/Mirrors/docker/linux/debian
 User=root
