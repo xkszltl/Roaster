@@ -73,6 +73,7 @@ for i in 'pypa/setuptools,v60.[3.6=v59.6.]' 'pypa/pip,[3.6=21.]' pypa/wheel,[3.6
             printf '\033[36m[INFO] Python version %s filtered by "%s".\033[0m\n' "$pyver" "$PY_VER" >&2
             continue
         fi
+        opt_bsp="$("$py" -m pip install --help | sed -n 's/.*\(\-\-break\-system\-packages\).*/\1/p')"
         # Not exactly correct since the actual package name is defined by "setup.py".
         until $CACHE_VALID; do
             CACHED_JSON="$("$py" -m pip list $("$py" -m pip list --help | sed -n 's/.*\(\-\-exclude\-editable\).*/\1/p' | head -n1) --format json | tr '[:upper:]' '[:lower:]')"
@@ -80,7 +81,7 @@ for i in 'pypa/setuptools,v60.[3.6=v59.6.]' 'pypa/pip,[3.6=21.]' pypa/wheel,[3.6
 
             # Always remove enum34.
             if jq -er '.[] | select(."name" == "enum34")' <<< "$CACHED_JSON" >/dev/null; then
-                /usr/bin/sudo "$py" -m pip uninstall -y 'enum34'
+                /usr/bin/sudo "$py" -m pip uninstall -y $opt_bsp 'enum34'
                 CACHE_VALID=false
                 continue
             fi
@@ -135,7 +136,14 @@ for i in 'pypa/setuptools,v60.[3.6=v59.6.]' 'pypa/pip,[3.6=21.]' pypa/wheel,[3.6
             set +x
             for opt in '' '-I' ';'; do
                 [ "_$opt" != '_;' ]
-                ! /usr/bin/sudo -E PATH="$PATH" PIP_INDEX_URL="$PIP_INDEX_URL" PKG_CONFIG_PATH="$PKG_CONFIG_PATH" "$py" -m pip install --no-clean -Uv $opt "$URL" || break
+                ! /usr/bin/sudo -E                      \
+                    PATH="$PATH"                        \
+                    PIP_INDEX_URL="$PIP_INDEX_URL"      \
+                    PKG_CONFIG_PATH="$PKG_CONFIG_PATH"  \
+                    "$py" -m pip install                \
+                    --no-clean -Uv $opt $opt_bsp        \
+                    "$URL"                              \
+                || break
             done
         )
 

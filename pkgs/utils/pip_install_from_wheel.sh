@@ -15,6 +15,17 @@ fi
 
 for i in setuptools pip wheel $@; do
     for py in $(which python3); do
-        sudo -E PIP_INDEX_URL="$PIP_INDEX_URL" "$py" -m pip install -U "$i" || sudo PIP_INDEX_URL="$PIP_INDEX_URL" "$py" -m pip install -IU "$i"
+        opt_bsp="$("$py" -m pip install --help | sed -n 's/.*\(\-\-break\-system\-packages\).*/\1/p')"
+        for opt in '' '-I' ';'; do
+            [ "_$opt" != '_;' ]
+            ! /usr/bin/sudo -E                      \
+                PATH="$PATH"                        \
+                PIP_INDEX_URL="$PIP_INDEX_URL"      \
+                PKG_CONFIG_PATH="$PKG_CONFIG_PATH"  \
+                "$py" -m pip install                \
+                --no-clean -Uv $opt $opt_bsp        \
+                "$i"                                \
+            || break
+        done
     done
 done
