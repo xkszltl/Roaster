@@ -11,6 +11,13 @@
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd opencv
 
+    # Patches:
+    # - OpenCV before 4.7.0 is not compatible with ffmpeg 5 due to a missing include.
+    #   https://github.com/opencv/opencv/pull/22357
+    #   https://github.com/opencv/opencv/commit/496eed950f6d0e7fd92619d47e3cec8f06e96ace
+    git fetch origin 4.7.0
+    git cherry-pick 496eed95
+
     # ------------------------------------------------------------
 
     git submodule add "../opencv_contrib.git" contrib
