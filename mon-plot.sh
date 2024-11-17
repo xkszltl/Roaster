@@ -70,11 +70,8 @@ sudo journalctl --no-pager --since "-$win" --until now -o json -u{sensors,ipmi}-
                 import numpy as np
 
                 max_sample = 2000
-                dat = {
-                    k: np.flip(np.flip(np.array(v, dtype=np.float64))[::(len(v) + max_sample - 1) // max_sample]).transpose()
-                    for (k, v) in stat.items()
-                }
-                matplotlib.rcParams["lines.linewidth"] = min(1e3 / max(i.shape[1] for i in dat.values()), 1)
+                dat = {k: np.array(v, dtype=np.float64).transpose() for (k, v) in stat.items()}
+                matplotlib.rcParams["lines.linewidth"] = min(1.0, 1e3 / min(max(i.shape[1] for i in dat.values()), max_sample))
                 (fig, ax) = matplotlib.pyplot.subplots(figsize=(16, 9))
                 ax.set_title("'"$win System Monitoring ($(hostname))"'")
                 ax.set_xlabel("time [d]")
@@ -84,17 +81,22 @@ sudo journalctl --no-pager --since "-$win" --until now -o json -u{sensors,ipmi}-
                 y_w = ax.secondary_yaxis(1.05, functions=(lambda x: x * 10, lambda x: x / 10))
                 y_w.set_ylabel("wattage (W)")
                 for (i, k) in (
-                    ("Power", .1),
-                    ("T_ssd", 1.),
-                    ("T_cpu", 1.),
-                    ("T_sys", 1.),
-                    ("T_vrm", 1.),
-                    ("T_mem", 1.),
-                    ("12V",   5.),
-                    ("5V",    5.),
+                    ("Power", 0.1),
+                    ("T_ssd", 1.0),
+                    ("T_cpu", 1.0),
+                    ("T_sys", 1.0),
+                    ("T_vrm", 1.0),
+                    ("T_mem", 1.0),
+                    ("12V",   5.0),
+                    ("5V",    5.0),
                 ):
-                    if i in dat:
-                        ax.plot(dat[i][0] / (86400 * 1e9), dat[i][1] * k, label=i)
+                    if i not in dat:
+                        continue
+                    mask = np.ediff1d(dat[i][0], to_begin=np.inf) > 1e9
+                    agg = np.stack((dat[i][0][mask], np.maximum.reduceat(dat[i][1], mask.nonzero()[0])))
+                    sample = np.flip(np.flip(agg, 1)[:, ::(agg.shape[1] + max_sample - 1) // max_sample], 1)
+                    ax.plot(sample[0] / (86400 * 1e9), sample[1] * k, label=i)
+                    del agg, mask, sample
                 ax.legend(loc="upper left", bbox_to_anchor=(1.1, 1.0))
                 fig.savefig("'"mon-$win-$(hostname).pdf"'", bbox_inches="tight")
             '                               \
