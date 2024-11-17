@@ -92,11 +92,14 @@ sudo journalctl --no-pager --since "-$win" --until now -o json -u{sensors,ipmi}-
                 ):
                     if i not in dat:
                         continue
-                    mask = np.ediff1d(dat[i][0], to_begin=np.inf) > 1e9
-                    agg = np.stack((dat[i][0][mask], np.maximum.reduceat(dat[i][1], mask.nonzero()[0])))
-                    sample = np.flip(np.flip(agg, 1)[:, ::(agg.shape[1] + max_sample - 1) // max_sample], 1)
-                    ax.plot(sample[0] / (86400 * 1e9), sample[1] * k, label=i)
-                    del agg, mask, sample
+                    idx = (np.ediff1d(dat[i][0], to_begin=np.inf) > 1e9).nonzero()[0]
+                    idx = np.flip(np.flip(idx)[::(len(idx) + max_sample - 1) // max_sample])
+                    ax.plot(
+                        np.concatenate((dat[i][0][idx[1:]], dat[i][0][-1:])) / (86400 * 1e9),
+                        np.maximum.reduceat(dat[i][1], idx) * k,
+                        label=i,
+                    )
+                    del idx
                 ax.legend(loc="upper left", bbox_to_anchor=(1.1, 1.0))
                 fig.savefig("'"mon-$win-$(hostname).pdf"'", bbox_inches="tight")
             '                               \
