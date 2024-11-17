@@ -6,7 +6,7 @@
 # Need to use distro metadata to route to a public image.
 # ============================================================
 
-set -e +x
+set -e +x >&2
 
 cd "$(dirname "$0")"
 
