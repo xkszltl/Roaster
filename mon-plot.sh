@@ -2,7 +2,7 @@
 
 set -e
 
-for cmd in grep hostname journalctl python3 sed; do
+for cmd in grep hostname journalctl jq python3 sed; do
     ! which "$cmd" >/dev/null || continue
     printf '\033[31m[ERROR] Missing command "$s".\033[0m\n' "$cmd" >&2
     exit 1
@@ -18,10 +18,18 @@ done
 
 sudo -v
 
-sudo journalctl --no-pager --since "-$win" --until now -o short-unix -u{sensors,ipmi}-mon           \
+# Known issue:
+# - systemd 219 (on CentOS 7) prints UTF-8 bytes as sequence of \u<64-bit hex>.
+#   Convert some simple cases to \u<32-bit hex> of unicode.
+sudo journalctl --no-pager --since "-$win" --until now -o json -u{sensors,ipmi}-mon                 \
+| sed 's/\\[Uu][Ff][Ff][Ff][Ff][Ff][Ff][Cc]2\\[Uu][Ff][Ff][Ff][Ff][Ff][Ff]\([0-9A-Fa-f][0-9A-Fa-f]\)/\\u00\1/g' \
+| sed 's/\\[Uu][Ff][Ff][Ff][Ff][Ff][Ff][Cc]3\\[Uu][Ff][Ff][Ff][Ff][Ff][Ff]8\([0-9A-Fa-f]\)/\\u00c\1/g'          \
+| sed 's/\\[Uu][Ff][Ff][Ff][Ff][Ff][Ff][Cc]3\\[Uu][Ff][Ff][Ff][Ff][Ff][Ff]9\([0-9A-Fa-f]\)/\\u00d\1/g'          \
+| sed 's/\\[Uu][Ff][Ff][Ff][Ff][Ff][Ff][Cc]3\\[Uu][Ff][Ff][Ff][Ff][Ff][Ff][Aa]\([0-9A-Fa-f]\)/\\u00e\1/g'       \
+| sed 's/\\[Uu][Ff][Ff][Ff][Ff][Ff][Ff][Cc]3\\[Uu][Ff][Ff][Ff][Ff][Ff][Ff][Bb]\([0-9A-Fa-f]\)/\\u00f\1/g'       \
+| jq -er 'select(.SYSLOG_IDENTIFIER == "sh")'                                                       \
+| jq -er '.__REALTIME_TIMESTAMP + "000 - '"$(date +'%s%N')"'; " + .MESSAGE'                         \
 | sed 's/[[:space:]][[:space:]]*/ /g'                                                               \
-| sed -n 's/^\([^ ][^ ]*\) [^ ][^ ]* sh\[[1-9][0-9]*\]: /\1 /p'                                     \
-| sed -n 's/^\([0-9][0-9]*\)\.\([0-9][0-9][0-9][0-9][0-9][0-9]\) /\1 - '"$(date +'%s')"'; /p'       \
 | grep -i                                                                                           \
     -e'; '{'power1','Sensor 2'}                                                                     \
     -e'; '{'MB','System'}' Temp'                                                                    \
@@ -82,7 +90,7 @@ sudo journalctl --no-pager --since "-$win" --until now -o short-unix -u{sensors,
                     ("12V",   5.),
                 ):
                     if i in dat:
-                        ax.plot(dat[i][0] / 86400, dat[i][1] * k, label=i)
+                        ax.plot(dat[i][0] / (86400 * 1e9), dat[i][1] * k, label=i)
                 ax.legend(loc="upper left", bbox_to_anchor=(1.1, 1.0))
                 fig.savefig("'"mon-$win-$(hostname).pdf"'", bbox_inches="tight")
             '                               \
