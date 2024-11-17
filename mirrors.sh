@@ -50,12 +50,12 @@ trap "trap - SIGTERM && rm -f $log && kill -- -$$" SIGINT SIGTERM EXIT
 # Concurrency restricted by GitHub.
 ./mirror-list.sh                                                    \
 | grep $([ "$#" -gt 0 ] && printf ' -e%s' '^$' $@ || printf '.')    \
-| grep .                            \
-| parallel --bar --group --shuf -d '\n' -j 10 'bash -c '"'"'
+| grep .                                                            \
+| parallel --bar --group --shuf -d '\n' -j 10 -q bash -c '
     set -e
 
-    args={}"  "
-    [ "$(xargs -n1 <<< {} | wc -l)" -ne 3 ] && exit 0
+    args="{}  "
+    [ "$(printf "%s\n" "$args" | xargs -n1 | wc -l)" -ne 3 ] && exit 0
     cd "'"$STAGE_DIR"'"
     src_site="$(cut -d" " -f1 <<< "$args")"
     src_dir="$(cut -d" " -f3 <<< "$args")"
@@ -265,7 +265,7 @@ trap "trap - SIGTERM && rm -f $log && kill -- -$$" SIGINT SIGTERM EXIT
             -w "%{http_code}"                                                   \
         | grep "^200$"
     fi
-'"'" 2>&1 | tee "$log"
+' 2>&1 | tee "$log"
 
 grep                                                                                            \
     -e 'Connection reset by'                                                                    \
