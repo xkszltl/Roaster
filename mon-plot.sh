@@ -9,7 +9,7 @@ for cmd in grep hostname journalctl python3 sed; do
 done
 
 for pkg in matplotlib numpy; do
-    ! python3 -m pip show "$pkg" || continue
+    ! python3 -m pip show "$pkg" >/dev/null || continue
     printf '\033[31m[ERROR] Missing python lib "%s".\033[0m\n' "$pkg" >&2
     exit 1
 done
