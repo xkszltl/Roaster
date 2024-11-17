@@ -31,10 +31,10 @@ sudo journalctl --no-pager --since "-$win" --until now -o json -u{sensors,ipmi}-
 | jq -er '.__REALTIME_TIMESTAMP + "000 - '"$(date +'%s%N')"'; " + .MESSAGE'                         \
 | sed 's/[[:space:]][[:space:]]*/ /g'                                                               \
 | grep -i                                                                                           \
-    -e'; '{'power1','Sensor 2'}                                                                     \
+    -e'; '{'power[0-9]*','Sensor 2'}                                                                \
     -e'; '{'MB','System'}' Temp'                                                                    \
-    -e'; '{{'CPU','VRMCpu'}{,'2'},'Vcpu'{,'2'}'VRM'}' Temp'                                         \
-    -e'; '{'DDR4_E',{,'P2-'}'DIMM'{'E1','E~H'}}' Temp'                                              \
+    -e'; '{{'CPU','VRMCpu'}'[0-9]*','Vcpu[0-9]*VRM'}' Temp'                                         \
+    -e'; '{'DDR[0-9]_[A-Z]',{,'P[0-9][0-9]*-'}'DIMM[A-Z]'{'[0-9]','~[A-Z]'}}' Temp'                 \
     -e'; ''12V '                                                                                    \
     -e'; ''5V '                                                                                     \
 | sed 's/ *[|:] */; /'                                                                              \
@@ -42,9 +42,11 @@ sudo journalctl --no-pager --since "-$win" --until now -o json -u{sensors,ipmi}-
 | tr -d '+'                                                                                         \
 | sed 's/°C.*//'                                                                                    \
 | sed 's/ W.*//'                                                                                    \
+| sed 's/ [Nn][Aa] /nan/'                                                                           \
 | sed 's/[Nn]\/[Aa].*/nan/'                                                                         \
 | sed 's/^ *//'                                                                                     \
 | sed 's/ *$//'                                                                                     \
+| grep -v '; nan$'                                                                                  \
 | sed -n 's/^\([^;]*\); \([^;]*\); \([^;]*\)$/stat\.setdefault("\2", \[\]).append(\[\1, \3\])/p'    \
 | tr 'A-Z' 'a-z'                                                                                    \
 | sed 's/inf/0/g'                                                                                   \
@@ -58,7 +60,7 @@ sudo journalctl --no-pager --since "-$win" --until now -o json -u{sensors,ipmi}-
 | sed 's/"mb temp"/"T_sys"/'                                                                        \
 | sed 's/"p[0-9][_\-]dimm[a-z][^ ]* temp"/"T_mem"/'                                                 \
 | sed 's/"dimm[a-z][^ ]* temp"/"T_mem"/'                                                            \
-| sed 's/"ddr[0-9][a-z]* temp"/"T_mem"/'                                                            \
+| sed 's/"ddr[0-9]_[a-z]* temp"/"T_mem"/'                                                           \
 | sed 's/"12v"/"12V"/'                                                                              \
 | sed 's/"5v"/"5V"/'                                                                                \
 | paste -sd';' -                                                                                    \
