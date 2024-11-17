@@ -72,7 +72,7 @@ sudo journalctl --no-pager --since "-$win" --until now -o json -u{sensors,ipmi}-
                 import matplotlib.pyplot
                 import numpy as np
 
-                max_sample = 2000
+                max_sample = 1000
                 dat = {k: np.array(v, dtype=np.float64).transpose() for (k, v) in stat.items()}
                 matplotlib.rcParams["lines.linewidth"] = min(1.0, 1e3 / min(max(i.shape[1] for i in dat.values()), max_sample))
                 (fig, ax) = matplotlib.pyplot.subplots(figsize=(16, 9))
