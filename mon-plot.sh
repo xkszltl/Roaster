@@ -16,9 +16,11 @@ done
 
 [ "$win" ] || win='1h'
 
-journalctl --no-pager --since "-$win" --until now -o short-unix -u{sensors,ipmi}-mon                \
+sudo -v
+
+sudo journalctl --no-pager --since "-$win" --until now -o short-unix -u{sensors,ipmi}-mon           \
 | sed 's/[[:space:]][[:space:]]*/ /g'                                                               \
-| grep '^[^ ][^ ]* [^ ][^ ]* sh\[\([1-9][0-9]*\)\]: '                                               \
+| sed -n 's/^\([^ ][^ ]*\) [^ ][^ ]* sh\[[1-9][0-9]*\]: /\1 /p'                                     \
 | sed -n 's/^\([0-9][0-9]*\)\.\([0-9][0-9][0-9][0-9][0-9][0-9]\) /\1 - '"$(date +'%s')"'; /p'       \
 | grep -i                                                                                           \
     -e'; '{'power1','Sensor 2'}                                                                     \
