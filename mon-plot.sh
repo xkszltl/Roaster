@@ -35,7 +35,8 @@ sudo journalctl --no-pager --since "-$win" --until now -o json -u{sensors,ipmi}-
     -e'; '{'MB','System'}' Temp'                                                                    \
     -e'; '{{'CPU','VRMCpu'}{,'2'},'Vcpu'{,'2'}'VRM'}' Temp'                                         \
     -e'; '{'DDR4_E',{,'P2-'}'DIMM'{'E1','E~H'}}' Temp'                                              \
-    -e'; ''12V'                                                                                     \
+    -e'; ''12V '                                                                                    \
+    -e'; ''5V '                                                                                     \
 | sed 's/ *[|:] */; /'                                                                              \
 | cut -d'|' -f1                                                                                     \
 | tr -d '+'                                                                                         \
@@ -57,7 +58,9 @@ sudo journalctl --no-pager --since "-$win" --until now -o json -u{sensors,ipmi}-
 | sed 's/"mb temp"/"T_sys"/'                                                                        \
 | sed 's/"p[0-9][_\-]dimm[a-z][^ ]* temp"/"T_mem"/'                                                 \
 | sed 's/"dimm[a-z][^ ]* temp"/"T_mem"/'                                                            \
+| sed 's/"ddr[0-9][a-z]* temp"/"T_mem"/'                                                            \
 | sed 's/"12v"/"12V"/'                                                                              \
+| sed 's/"5v"/"5V"/'                                                                                \
 | paste -sd';' -                                                                                    \
 | sed 's/^/stat = {};/'                                                                             \
 | sed 's/$/\n'"$(set -e +x >&2
@@ -88,6 +91,7 @@ sudo journalctl --no-pager --since "-$win" --until now -o json -u{sensors,ipmi}-
                     ("T_vrm", 1.),
                     ("T_mem", 1.),
                     ("12V",   5.),
+                    ("5V",    5.),
                 ):
                     if i in dat:
                         ax.plot(dat[i][0] / (86400 * 1e9), dat[i][1] * k, label=i)
