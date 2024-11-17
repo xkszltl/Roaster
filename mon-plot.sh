@@ -36,7 +36,7 @@ sudo journalctl --no-pager --since "-$win" --until now -o json -u{sensors,ipmi}-
     -e'; '{{'CPU','VRMCpu'}'[0-9]*','Vcpu[0-9]*VRM'}' Temp'                                         \
     -e'; '{'DDR[0-9]_[A-Z]',{,'P[0-9][0-9]*-'}'DIMM[A-Z]'{'[0-9]','~[A-Z]'}}' Temp'                 \
     -e'; ''12V '                                                                                    \
-    -e'; ''5V '                                                                                     \
+    -e'; ''5V'{,'CC'}' '                                                                            \
 | sed 's/ *[|:] */; /'                                                                              \
 | cut -d'|' -f1                                                                                     \
 | tr -d '+'                                                                                         \
@@ -63,6 +63,7 @@ sudo journalctl --no-pager --since "-$win" --until now -o json -u{sensors,ipmi}-
 | sed 's/"ddr[0-9]_[a-z]* temp"/"T_mem"/'                                                           \
 | sed 's/"12v"/"12V"/'                                                                              \
 | sed 's/"5v"/"5V"/'                                                                                \
+| sed 's/"5vcc"/"5V"/'                                                                              \
 | paste -sd';' -                                                                                    \
 | sed 's/^/stat = {};/'                                                                             \
 | sed 's/$/\n'"$(set -e +x >&2
