@@ -244,7 +244,7 @@ vit-vit/CTPL,\
 vivkin/gason,\
 wjakob/clang-cindex-python3,\
 xianyi/OpenBLAS,\
-xkszltl/{glog,jsoncpp,hiredis,leveldb,linux-syscall-support,onnx,onnx-tensorrt,onnxruntime,protobuf,pthreadpool,pybind11,pytorch,roaster,rocksdb,simdjson,utf8proc,vision,xucg},\
+xkszltl/{glog,jsoncpp,hiredis,leveldb,linux-syscall-support,onnx,onnx-tensorrt,onnxruntime,opencv,protobuf,pthreadpool,pybind11,pytorch,roaster,rocksdb,simdjson,utf8proc,vision,xucg},\
 yaml/pyyaml,\
 Yangqing/ios-cmake,\
 yixuan/{LBFGSpp,MiniDNN,recosystem,spectra},\
