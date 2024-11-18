@@ -5,18 +5,15 @@
 [ -e $STAGE/opencv ] && ( set -xe
     cd $SCRATCH
 
-    # Pin to 4.5 due to undefined OpenGL references on CentOS 7/Ubuntu 18.04.
-    # - https://github.com/opencv/opencv_contrib/issues/3299
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" opencv/opencv,4.5.
+    # ------------------------------------------------------------
+    # Known issues:
+    #   - OpenCV before 4.7.0 is not compatible with ffmpeg 5 due to a missing include.
+    #     https://github.com/opencv/opencv/pull/22357
+    #     https://github.com/opencv/opencv/commit/496eed950f6d0e7fd92619d47e3cec8f06e96ace
+    # ------------------------------------------------------------
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" opencv/opencv,
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd opencv
-
-    # Patches:
-    # - OpenCV before 4.7.0 is not compatible with ffmpeg 5 due to a missing include.
-    #   https://github.com/opencv/opencv/pull/22357
-    #   https://github.com/opencv/opencv/commit/496eed950f6d0e7fd92619d47e3cec8f06e96ace
-    git fetch origin 4.7.0
-    git cherry-pick 496eed95
 
     # ------------------------------------------------------------
 
@@ -63,16 +60,27 @@
 
         # --------------------------------------------------------
         # Known issues:
+        #   - CentOS 7 has OpenEXR 1.7 without version macros.
+        #     Build embedded version in OpenCV instead.
+        #   - OpenCV between 4.6 to 4.10 fail to build with the contrib RGBD lib.
+        #     May only happen with the default OpenGL_GL_PREFERENCE=GLVND.
+        #     Either disable RGBD or use LEGACY.
+        #     https://github.com/opencv/opencv_contrib/issues/2307
+        #     Following patch may also help but only when not set by user.
+        #     https://github.com/opencv/opencv/pull/22836
+        #     https://github.com/opencv/opencv/commit/d7a237aefc76f841dba64544d09ab6df53097206
         #   - Official FindPNG.cmake prefers /lib64/libpng.so on CentOS.
         #     Override with CMAKE_LIBRARY_PATH.
         #   - Separable CUDA causes symbol redefinition.
         # --------------------------------------------------------
 
         "$TOOLCHAIN/cmake"                                  \
+            -DBUILD_OPENEXR=ON                              \
             -DBUILD_PROTOBUF=OFF                            \
             -DBUILD_WITH_DEBUG_INFO=ON                      \
-            -DBUILD_opencv_world=OFF                        \
             -DBUILD_opencv_dnn=OFF                          \
+            -DBUILD_opencv_rgbd=ON                          \
+            -DBUILD_opencv_world=OFF                        \
             -DCMAKE_BUILD_TYPE=Release                      \
             -DCMAKE_AR="$(which "$AR")"                     \
             -DCMAKE_C_COMPILER="$CC"                        \
@@ -110,7 +118,7 @@
             -DMKL_WITH_OPENMP=ON                            \
             -DOPENCV_ENABLE_NONFREE=ON                      \
             -DOPENCV_EXTRA_MODULES_PATH='../contrib/modules'\
-            -DOpenGL_GL_PREFERENCE=GLVND                    \
+            "$(: || -DOpenGL_GL_PREFERENCE=GLVND)"          \
             -DPROTOBUF_UPDATE_FILES=ON                      \
             -DWITH_HALIDE=ON                                \
             -DWITH_LIBV4L=ON                                \
