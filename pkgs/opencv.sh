@@ -15,6 +15,14 @@
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd opencv
 
+    # Patches:
+    #   - Fix regresion due to the use of OpenEXR version macros since OpenCV 4.5.3.
+    #     Expected to be released in 4.11.
+    #     https://github.com/opencv/opencv/pull/26478
+    #     https://github.com/opencv/opencv/commit/d0c8b36de8c35a5c3c88cb994243a0164c946fcb
+    git fetch origin 4.x
+    git cherry-pick --allow-empty --ff d0c8b36d
+
     # ------------------------------------------------------------
 
     git submodule add "../opencv_contrib.git" contrib
@@ -75,7 +83,7 @@
         # --------------------------------------------------------
 
         "$TOOLCHAIN/cmake"                                  \
-            -DBUILD_OPENEXR=ON                              \
+            $(: || -DBUILD_OPENEXR=ON)                      \
             -DBUILD_PROTOBUF=OFF                            \
             -DBUILD_WITH_DEBUG_INFO=ON                      \
             -DBUILD_opencv_dnn=OFF                          \
@@ -105,8 +113,8 @@
             -DCPACK_SOURCE_TGZ=OFF                          \
             -DCPACK_SOURCE_TXZ=OFF                          \
             -DCPACK_SOURCE_ZIP=OFF                          \
-            "$($TOOLCHAIN_CPU_NATIVE || echo "-DCPU_BASELINE=AVX")"         \
-            "$($TOOLCHAIN_CPU_NATIVE || echo "-DCPU_DISPATCH='FP16;AVX2'")" \
+            $($TOOLCHAIN_CPU_NATIVE || printf '%s' "-DCPU_BASELINE=AVX")            \
+            $($TOOLCHAIN_CPU_NATIVE || printf '%s' "-DCPU_DISPATCH='FP16;AVX2'")    \
             -DCUDA_NVCC_FLAGS='--expt-relaxed-constexpr'    \
             -DCUDA_SEPARABLE_COMPILATION=OFF                \
             -DENABLE_CCACHE=ON                              \
@@ -118,7 +126,7 @@
             -DMKL_WITH_OPENMP=ON                            \
             -DOPENCV_ENABLE_NONFREE=ON                      \
             -DOPENCV_EXTRA_MODULES_PATH='../contrib/modules'\
-            "$(: || -DOpenGL_GL_PREFERENCE=GLVND)"          \
+            $(: || printf '%s' '-DOpenGL_GL_PREFERENCE=GLVND')                      \
             -DPROTOBUF_UPDATE_FILES=ON                      \
             -DWITH_HALIDE=ON                                \
             -DWITH_LIBV4L=ON                                \
