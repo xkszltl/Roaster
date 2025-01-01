@@ -180,7 +180,7 @@ while true; do
                     )"
                 [ "$Record" ]
                 if [ ! -e "$Rec" ]; then
-                    printf "%s" "$Records" | jq -er '.result.content' > "$Rec"
+                    printf "%s" "$Record" | jq -er '.result.content' > "$Rec"
                     printf '\033[36m[INFO] [Cloudflare] Set "%s" to "%s".\033[0m\n' "$Rec.$Domain" "$(cat "$Rec")" >&2
                 fi
                 LastIP="$(cat "$Rec" | grep '[^[:space:]]')"
@@ -366,7 +366,7 @@ while true; do
                 [ "$(printf "%s" "$Records" | jq -e 'length')" -le 0 ] || Record="$(printf '%s' "$Records" | jq -Se '.[0]')"
                 [ "$Record" ]
                 if [ ! -e "$Rec" ]; then
-                    printf "%s" "$Records" | jq -r '.data' > "$Rec"
+                    printf "%s" "$Record" | jq -r '.data' > "$Rec"
                     printf '\033[36m[INFO] [GoDaddy] Set "%s" to "%s".\033[0m\n' "$Rec.$Domain" "$(cat "$Rec")" >&2
                 fi
                 LastIP="$(cat "$Rec" | grep '[^[:space:]]')"
