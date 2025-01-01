@@ -122,6 +122,7 @@ while true; do
                             --retry 10                                                      \
                             --retry-delay 1                                                 \
                             --retry-max-time 120                                            \
+                            -4                                                              \
                             -H "Content-Type: application/json"                             \
                             -H "$Token"                                                     \
                             -sSLX GET                                                       \
@@ -135,6 +136,7 @@ while true; do
                             --retry 10                                                  \
                             --retry-delay 1                                             \
                             --retry-max-time 120                                        \
+                            -4                                                          \
                             -H "Content-Type: application/json"                         \
                             -H "$Token"                                                 \
                             -sSLX GET                                                   \
@@ -147,6 +149,7 @@ while true; do
                     RecID="$(set -e
                             curl "$API/zones/$ZoneID/dns_records"       \
                                 --connect-timeout 10                    \
+                                -4                                      \
                                 -H "Content-Type: application/json"     \
                                 -H "$Token"                             \
                                 -sSLX POST                              \
@@ -169,6 +172,7 @@ while true; do
                             --retry 10                                      \
                             --retry-delay 1                                 \
                             --retry-max-time 120                            \
+                            -4                                              \
                             -H "Content-Type: application/json"             \
                             -H "$Token"                                     \
                             -sSLX GET                                       \
@@ -191,6 +195,7 @@ while true; do
                                 --retry 10                                  \
                                 --retry-delay 1                             \
                                 --retry-max-time 120                        \
+                                -4                                          \
                                 -H "Content-Type: application/json"         \
                                 -H "$Token"                                 \
                                 -sSLX PUT                                   \
