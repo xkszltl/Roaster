@@ -13,13 +13,13 @@ cd "$ROOT_DIR"
 TokenCloudflareAccount="$CRED_USR_CLOUDFLARE_KEY"
 TokenCloudflare="$CRED_USR_CLOUDFLARE_SECRET"
 
-TokenDnspodCN="$CRED_USR_DNSPOD_CN_KEY,$CRED_USR_DNSPOD_CN_SECRET"
-TokenDnspodIntl="$CRED_USR_DNSPOD_INTL_KEY,$CRED_USR_DNSPOD_INTL_SECRET"
+[ ! "$CRED_USR_DNSPOD_CN_KEY" ] || [ ! "$CRED_USR_DNSPOD_CN_SECRET" ] || TokenDnspodCN="$CRED_USR_DNSPOD_CN_KEY,$CRED_USR_DNSPOD_CN_SECRET"
+[ ! "$CRED_USR_DNSPOD_INTL_KEY" ] || [ ! "$CRED_USR_DNSPOD_INTL_SECRET" ] || TokenDnspodIntl="$CRED_USR_DNSPOD_INTL_KEY,$CRED_USR_DNSPOD_INTL_SECRET"
 
 TokenDNSCOMKey="$CRED_USR_DNSCOM_KEY"
 TokenDNSCOMSecret="$CRED_USR_DNSCOM_SECRET"
 
-TokenGoDaddy="$CRED_USR_GODADDY_KEY:$CRED_USR_GODADDY_SECRET"
+[ ! "$CRED_USR_GODADDY_KEY" ] || [ ! "$CRED_USR_GODADDY_SECRET" ] || TokenGoDaddy="$CRED_USR_GODADDY_KEY:$CRED_USR_GODADDY_SECRET"
 
 # ----------------------------------------------------------------
 
@@ -119,6 +119,10 @@ while true; do
             cd "$_"
             ZoneID="$(set -e
                     curl "$API/zones?account.id=$TokenCloudflareAccount&name=$Domain"   \
+                        --connect-timeout 10                                            \
+                        --retry 10                                                      \
+                        --retry-delay 1                                                 \
+                        --retry-max-time 120                                            \
                         -H "Content-Type: application/json"                             \
                         -H "$Token"                                                     \
                         -sSLX GET                                                       \
@@ -128,6 +132,10 @@ while true; do
             [ "$ZoneID" ]
             RecID="$(set -e
                     curl "$API/zones/$ZoneID/dns_records?name=$Rec.$Domain&type=A"  \
+                        --connect-timeout 10                                        \
+                        --retry 10                                                  \
+                        --retry-delay 1                                             \
+                        --retry-max-time 120                                        \
                         -H "Content-Type: application/json"                         \
                         -H "$Token"                                                 \
                         -sSLX GET                                                   \
@@ -135,10 +143,11 @@ while true; do
                     | jq -r '.result[0].id'                                         \
                     | sed 's/^null$//'
                 )"
-            if [ ! "$RecID" ]; then
+            if [ ! "$RecID" ] && [ ! 'Init' ]; then
                 printf '\033[36m[INFO] [Cloudflare] Create "%s" ("%s").\033[0m\n' "$Rec.$Domain" "$IP" >&2
                 RecID="$(set -e
                         curl "$API/zones/$ZoneID/dns_records"       \
+                            --connect-timeout 10                    \
                             -H "Content-Type: application/json"     \
                             -H "$Token"                             \
                             -sSLX POST                              \
@@ -157,22 +166,32 @@ while true; do
             [ "$RecID" ]
             Record="$(set -e
                     curl "$API/zones/$ZoneID/dns_records/$RecID"        \
+                        --connect-timeout 10                            \
+                        --retry 10                                      \
+                        --retry-delay 1                                 \
+                        --retry-max-time 120                            \
                         -H "Content-Type: application/json"             \
                         -H "$Token"                                     \
                         -sSLX GET                                       \
                     | jq -Se 'select(.success)'
                 )"
+            [ "$Record" ]
             if [ ! -e "$Rec" ]; then
                 printf "%s" "$Records" | jq -er '.result.content' > "$Rec"
                 printf '\033[36m[INFO] [Cloudflare] Set "%s" to "%s".\033[0m\n' "$Rec.$Domain" "$(cat "$Rec")" >&2
             fi
-            LastIP="$(cat "$Rec")"
+            LastIP="$(cat "$Rec" | grep '[^[:space:]]')"
+            [ "$LastIP" ]
             if [ "$(sed 's/\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)/\1\*2\^24\+\2\*2\^16\+\3\*2\^8\+\4/' <<< "$IP" | bc)" -eq "$(sed 's/\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)/\1\*2\^24\+\2\*2\^16\+\3\*2\^8\+\4/' <<< "$LastIP" | bc)" ]; then
                 printf '\033[36m[INFO] [Cloudflare] Nothing changed for "%s" ("%s").\033[0m\n' "$Rec.$Domain" "$IP" >&2
             else
                 printf '\033[36m[INFO] [Cloudflare] Update "%s" ("%s" -> "%s").\033[0m\n' "$Rec.$Domain" "$LastIP" "$IP" >&2
                 Res="$(set -e
                         curl "$API/zones/$ZoneID/dns_records/$RecID"    \
+                            --connect-timeout 10                        \
+                            --retry 10                                  \
+                            --retry-delay 1                             \
+                            --retry-max-time 120                        \
                             -H "Content-Type: application/json"         \
                             -H "$Token"                                 \
                             -sSLX PUT                                   \
@@ -224,7 +243,8 @@ while true; do
                 printf "%s" "$Records" | jq -r 'select(.name=="'"$Rec"'") | .value' > "$Rec"
                 printf '\033[36m[INFO] [Dnspod-CN] Set "%s" to "%s".\033[0m\n' "$Rec.$Domain" "$(cat "$Rec")" >&2
             fi
-            LastIP="$(cat "$Rec")"
+            LastIP="$(cat "$Rec" | grep '[^[:space:]]')"
+            [ "$LastIP" ]
             if [ "$(sed 's/\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)/\1\*2\^24\+\2\*2\^16\+\3\*2\^8\+\4/' <<< "$IP" | bc)" -eq "$(sed 's/\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)/\1\*2\^24\+\2\*2\^16\+\3\*2\^8\+\4/' <<< "$LastIP" | bc)" ]; then
                 printf '\033[36m[INFO] [Dnspod-CN] Nothing changed for "%s" ("%s").\033[0m\n' "$Rec.$Domain" "$IP" >&2
             else
@@ -277,7 +297,8 @@ while true; do
                 printf "%s" "$Records" | jq -r 'select(.name=="'"$Rec"'") | .value' > "$Rec"
                 printf '\033[36m[INFO] [Dnspod-Intl] Set "%s" to "%s".\033[0m\n' "$Rec.$Domain" "$(cat "$Rec")" >&2
             fi
-            LastIP="$(cat "$Rec")"
+            LastIP="$(cat "$Rec" | grep '[^[:space:]]')"
+            [ "$LastIP" ]
             if [ "$(sed 's/\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)/\1\*2\^24\+\2\*2\^16\+\3\*2\^8\+\4/' <<< "$IP" | bc)" -eq "$(sed 's/\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)/\1\*2\^24\+\2\*2\^16\+\3\*2\^8\+\4/' <<< "$LastIP" | bc)" ]; then
                 printf '\033[36m[INFO] [Dnspod-Intl] Nothing changed for "%s" ("%s").\033[0m\n' "$Rec.$Domain" "$IP" >&2
             else
@@ -339,7 +360,8 @@ while true; do
                 printf "%s" "$Records" | jq -r '.data' > "$Rec"
                 printf '\033[36m[INFO] [GoDaddy] Set "%s" to "%s".\033[0m\n' "$Rec.$Domain" "$(cat "$Rec")" >&2
             fi
-            LastIP="$(cat "$Rec")"
+            LastIP="$(cat "$Rec" | grep '[^[:space:]]')"
+            [ "$LastIP" ]
             if [ "$(sed 's/\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)/\1\*2\^24\+\2\*2\^16\+\3\*2\^8\+\4/' <<< "$IP" | bc)" -eq "$(sed 's/\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)/\1\*2\^24\+\2\*2\^16\+\3\*2\^8\+\4/' <<< "$LastIP" | bc)" ]; then
                 printf '\033[36m[INFO] [GoDaddy] Nothing changed for "%s" ("%s").\033[0m\n' "$Rec.$Domain" "$IP" >&2
             else
