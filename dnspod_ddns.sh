@@ -77,10 +77,10 @@ while true; do
             ;;
         'ipify.'*)
             IP="$(set -e
-                    printf '%s' "$Rec"                      \
-                    | sed -n 's/^.*\.//p'                   \
-                    | xargs -rI{} curl --interface {} -sSL  \
-                        'https://api.ipify.org?format=json' \
+                    printf '%s' "$Rec"                          \
+                    | sed -n 's/^.*\.//p'                       \
+                    | xargs -rI{} curl --interface {} -sSL      \
+                        'https://api4.ipify.org?format=json'    \
                     | jq -er '.ip'
                 )"
             ;;
@@ -89,7 +89,7 @@ while true; do
                     printf '%s' "$Rec"                      \
                     | sed -n 's/^.*\.//p'                   \
                     | xargs -rI{} curl --interface {} -sSL  \
-                        'https://jsonip.com'                \
+                        'https://ipv4.jsonip.com'           \
                     | jq -er '.ip'
                 )"
             ;;
