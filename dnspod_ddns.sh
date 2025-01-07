@@ -46,7 +46,7 @@ snmptranslate -m IF-MIB 'IF-MIB::ifName' >/dev/null
 
 while true; do
     printf '\033[36m[INFO] ========================================\033[0m\n' >&2
-    for Rec in def {snmp,httpbin,ipify,jsonip}.c{t,u}cc; do
+    for Rec in def {snmp,cf,httpbin,ipify,jsonip}.c{t,u}cc; do
         IP='0.0.0.0'
         # IP=`curl -s ns1.dnspod.net:6666 $Interface`
 
@@ -64,6 +64,16 @@ while true; do
                                     | sed 's/\([\\\/\.\-]\)/\\\1/'
                                 )"'$/\1/p'
                         )"'$/\1/p'
+                )"
+            ;;
+        'cf.'*)
+            IP="$(set -e
+                    printf '%s' "$Rec"                          \
+                    | sed -n 's/^.*\.//p'                       \
+                    | xargs -rI{} curl --interface {} -sSL      \
+                        'https://cloudflare.com/cdn-cgi/trace'  \
+                    | grep '^[[:space:]]*ip[[:space:]]*='       \
+                    | cut -d= -f2-
                 )"
             ;;
         'httpbin.'*)
