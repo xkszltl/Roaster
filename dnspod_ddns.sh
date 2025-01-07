@@ -223,7 +223,7 @@ while true; do
                     rm -rf "$Rec"
                 fi
             )
-            [ "$?" -eq 0 ] || printf '\033[33m[WARNING] Failed to update Cloudflare.\033[0m\n' >&2
+            [ "$?" -eq 0 ] || printf '\033[33m[WARNING] Failed to update "%s" on Cloudflare.\033[0m\n' "$Rec" >&2
             set -e
         fi
 
@@ -278,7 +278,7 @@ while true; do
                     rm -rf "$Rec"
                 fi
             )
-            [ "$?" -eq 0 ] || printf '\033[33m[WARNING] Failed to update Dnspod-CN.\033[0m\n' >&2
+            [ "$?" -eq 0 ] || printf '\033[33m[WARNING] Failed to update "%s" on Dnspod-CN.\033[0m\n' "$Rec" >&2
             set -e
         fi
 
@@ -332,7 +332,7 @@ while true; do
                     rm -rf "$Rec"
                 fi
             )
-            [ "$?" -eq 0 ] || printf '\033[33m[WARNING] Failed to update Dnspod-Intl.\033[0m\n' >&2
+            [ "$?" -eq 0 ] || printf '\033[33m[WARNING] Failed to update "%s" on Dnspod-Intl.\033[0m\n' "$Rec" >&2
             set -e
         fi
 
@@ -354,7 +354,7 @@ while true; do
                 #     -d "hash=$(printf '%s' "$Token$TokenDNSCOMSecret" | md5)"     \
                 # | jq '.'
             )
-            [ "$?" -eq 0 ] || printf '\033[33m[WARNING] Failed to update DNS.com.\033[0m\n' >&2
+            [ "$?" -eq 0 ] || printf '\033[33m[WARNING] Failed to update "%s" on DNS.com.\033[0m\n' "$Rec" >&2
             set -e
         fi
 
@@ -400,7 +400,7 @@ while true; do
                     rm -rf "$Rec"
                 fi
             )
-            [ "$?" -eq 0 ] || printf '\033[33m[WARNING] Failed to update GoDaddy.\033[0m\n' >&2
+            [ "$?" -eq 0 ] || printf '\033[33m[WARNING] Failed to update "%s" on GoDaddy.\033[0m\n' "$Rec" >&2
             set -e
         fi
     done
