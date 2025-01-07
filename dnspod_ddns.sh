@@ -71,6 +71,9 @@ while true; do
                     printf '%s' "$Rec"                          \
                     | sed -n 's/^.*\.//p'                       \
                     | xargs -rI{} curl --interface {} -sSL      \
+                        --retry 10                              \
+                        --retry-delay 1                         \
+                        --retry-max-time 120                    \
                         'https://cloudflare.com/cdn-cgi/trace'  \
                     | grep '^[[:space:]]*ip[[:space:]]*='       \
                     | cut -d= -f2-
