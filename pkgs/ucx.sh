@@ -30,6 +30,12 @@
         export CC="$TOOLCHAIN/$(basename "$CC")" CXX="$TOOLCHAIN/$(basename "$CXX")"
         export CFLAGS="  $CFLAGS   -O3 -fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"
         export CXXFLAGS="$CXXFLAGS -O3 -fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"
+        # Known issue:
+        # - Tests in v1.18.0 failed to build due to unused returned value.
+        #   https://github.com/openucx/ucx/issues/10449
+        #   Disable the warning for mitigation.
+        export CFLAGS="  $CFLAGS   -Wno-unused-result"
+        export CXXFLAGS="$CXXFLAGS -Wno-unused-result"
 
         cuda_nvcc="$(which nvcc || echo /usr/local/cuda/bin/nvcc)"
         [ ! -x "$cuda_nvcc" ] || cuda_root="$("$cuda_nvcc" --version > /dev/null && realpath -e "$(dirname "$cuda_nvcc")/..")"
