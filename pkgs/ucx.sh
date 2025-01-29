@@ -5,7 +5,10 @@
 [ -e $STAGE/ucx ] && ( set -xe
     cd $SCRATCH
 
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" openucx/ucx,v
+    # Known issue:
+    # - OpenUCX 1.18.0 failed to build on Ubuntu 22.04 with Werror.
+    #   https://github.com/openucx/ucx/issues/10449
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" openucx/ucx,v1.17.
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd ucx
 
