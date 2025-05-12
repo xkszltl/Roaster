@@ -7,4 +7,8 @@ Wants=network-online.target
 Type=exec
 ExecStartPre=/bin/sh -c 'curl --retry 10 --retry-all-errors -sSL "https://download.docker.com/linux/ubuntu/gpg" | gpg --no-default-keyring --keyring debmirror.kbx --import'
 ExecStart=debmirror --arch=amd64 --dist=jammy,noble --getcontents --host=download.docker.com --i18n --keyring=debmirror.kbx --method=https --progress --root=linux/ubuntu --rsync-extra=none --section=edge,nightly,stable,test --verbose /Latte/Mirrors/docker/linux/ubuntu
+Restart=on-failure
+RestartPreventExitStatus=SIGHUP SIGINT SIGQUIT SIGILL SIGTRAP SIGABRT SIGBUS SIGFPE SIGKILL SIGSEGV SIGTERM SIGSTKFLT SIGXFSZ SIGPWR SIGSYS
+StartLimitBurst=3
+StartLimitIntervalSec=30s
 User=root
