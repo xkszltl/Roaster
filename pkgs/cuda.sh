@@ -225,25 +225,28 @@
         wait
         rm -rf "$INSTALL_ABS/src"
 
-        # Known issues:
-        # - CUDA 10.2 does not build due to missing nvscibuf.
-        #   See discussion in https://devtalk.nvidia.com/default/topic/1067000/where-is-quot-nvscibuf-h-quot-/?offset=13
-        # - Build may leave binaries in src dirs.
-        mkdir -p build
-        pushd $_
-        "$TOOLCHAIN/cmake"                                  \
-            -DCMAKE_BUILD_TYPE=Release                      \
-            -DCMAKE_C_COMPILER="$CC"                        \
-            -DCMAKE_CXX_COMPILER="$CXX"                     \
-            -DCMAKE_{C,CXX,CUDA}_COMPILER_LAUNCHER=ccache   \
-            -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
-            -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"           \
-            -DMPI_HOME=/usr/local/openmpi                   \
-            -G"Ninja"                                       \
-            ..
-        time "$TOOLCHAIN/cmake" --build .
-        time "$TOOLCHAIN/cmake" --build . --target install
-        popd
+        (
+            set -e
+
+            . "$ROOT_DIR/pkgs/utils/fpm/toolchain.sh"
+            . "$ROOT_DIR/pkgs/utils/fpm/distro_cc.sh"
+
+            mkdir -p build
+            cd "$_"
+
+            "$TOOLCHAIN/cmake"                                  \
+                -DCMAKE_BUILD_TYPE=Release                      \
+                -DCMAKE_C_COMPILER="$CC"                        \
+                -DCMAKE_CXX_COMPILER="$CXX"                     \
+                -DCMAKE_{C,CXX,CUDA}_COMPILER_LAUNCHER=ccache   \
+                -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
+                -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"           \
+                -DMPI_HOME=/usr/local/openmpi                   \
+                -G"Ninja"                                       \
+                ..
+            time "$TOOLCHAIN/cmake" --build .
+            time "$TOOLCHAIN/cmake" --build . --target install
+        )
 
         # For backward compatibility with makefile build prior to 12.8.
         # Known issue:
