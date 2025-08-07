@@ -62,7 +62,7 @@ foreach ($pkg in $packages)
         if ($null -eq $prefix)
         {
             Write-Error "CUDA is not installed."
-        } 
+        }
     }
     elseif ($pkg -eq "cudnn" -or $pkg -eq "cudnn_adv" -or $pkg -eq "cudnn_cnn" -or $pkg -eq "cudnn_ops")
     {

@@ -10,7 +10,7 @@ for cmd in find grep sed xargs; do
     exit 1
 done
 
-# Be extremely cautious with this dangerous script. 
+# Be extremely cautious with this dangerous script.
 
 if [ "_$(uname -s)" != '_Linux' ]; then
     printf '\033[31m[ERROR] Unexpected OS "%s".\033[0m\n' "$(uname -s)" >&2
