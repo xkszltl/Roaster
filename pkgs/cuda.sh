@@ -229,11 +229,33 @@
         # - CUDA 10.2 does not build due to missing nvscibuf.
         #   See discussion in https://devtalk.nvidia.com/default/topic/1067000/where-is-quot-nvscibuf-h-quot-/?offset=13
         # - Build may leave binaries in src dirs.
-        MPI_HOME=/usr/local/openmpi VERBOSE=1 time make -j$(nproc) -k all || true
-        git clean -dfx Samples
+        mkdir -p build
+        pushd $_
+        "$TOOLCHAIN/cmake"                                  \
+            -DCMAKE_BUILD_TYPE=Release                      \
+            -DCMAKE_C_COMPILER="$CC"                        \
+            -DCMAKE_CXX_COMPILER="$CXX"                     \
+            -DCMAKE_{C,CXX,CUDA}_COMPILER_LAUNCHER=ccache   \
+            -DCMAKE_C{,XX}_FLAGS="-fdebug-prefix-map='$SCRATCH'='$INSTALL_PREFIX/src' -g"   \
+            -DCMAKE_INSTALL_PREFIX="$INSTALL_ABS"           \
+            -DMPI_HOME=/usr/local/openmpi                   \
+            -G"Ninja"                                       \
+            ..
+        time "$TOOLCHAIN/cmake" --build .
+        time "$TOOLCHAIN/cmake" --build . --target install
+        popd
 
-        for cuda_util in deviceQuery{,Drv} topologyQuery {bandwidth,p2pBandwidthLatency}Test; do
-            "bin/$(uname -m)/linux/release/$cuda_util" || true
+        # For backward compatibility with makefile build prior to 12.8.
+        # Known issue:
+        # - bandwidthTest has been removed in 12.9.
+        #   https://github.com/NVIDIA/cuda-samples/commit/7d1730f348abdec2804ef5582530db93e597662f
+        mkdir -p "bin/$(uname -m)/linux/release"
+        pushd "$_"
+        find ../../../../build/Samples -type f -executable | xargs -P0 -rI{} ln -sf {}
+        popd
+        for cuda_util in 1_Utilities/{deviceQuery{,Drv},topologyQuery,bandwidthTest} 5_Domain_Specific/p2pBandwidthLatencyTest; do
+            "build/Samples/$cuda_util/$(basename "$cuda_util")" || true
+            "bin/$(uname -m)/linux/release/$(basename "$cuda_util")" || true
         done
 
         mkdir -p "$INSTALL_ABS/cuda-$CUDA_VER_MAJOR.$CUDA_VER_MINOR/samples"
