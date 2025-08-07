@@ -16,7 +16,7 @@
     # PyTorch does not fully support CUDA 12.0 as of Feb 2023.
     # - https://github.com/pytorch/pytorch/issues/91122
     export CUDA_VER_MAJOR="12"
-    export CUDA_VER_MINOR="5"
+    export CUDA_VER_MINOR="9"
     case "$DISTRO_ID" in
     'centos' | 'fedora' | 'rhel' | 'scientific')
         sudo dnf makecache
@@ -113,6 +113,9 @@
     # - Do not allow further version-coupled fallback below CUDA 11.4/NCCL 2.10 due to a bug around 2.9.
     # - "tensorrt" pkgs are only available since CUDA 11.6.
     # - TensorRT 8.6.1.6 on Ubuntu route to CUDA 12.0 by default instead of 11.8, this may be a bug in Nvidia packaging.
+    # - TensorRT CUDA 12.9 dependency resolution is broken after the release of CUDA 13.
+    #   Explicitly resolve nvinfer/nvonnxparsers to the same version as tensorrt meta package to work around.
+    #   https://github.com/NVIDIA/TensorRT/issues/4545
     for attempt in $(seq "$PKG_MAX_ATTEMPT" -1 0); do
         [ "$attempt" -gt 0 ]
         (
@@ -139,6 +142,9 @@
                             | grep '^[^=][^=]*=.*\-.*\+cuda'"$CUDA_VER_MAJOR"'\.[0-9][0-9]*$'                           \
                             | sort -V                                                                                   \
                             | tail -n1                                                                                  \
+                            | sed 's/^\(tensorrt\)\(=.*\)/\1\2\nlibnvinfer\*\2/'                                        \
+                            | sed 's/^\(tensorrt\)\(=.*\)/\1\2\nlibnvonnxparsers\*\2/'                                  \
+                            | sed 's/^\(tensorrt\)\(=.*\)/\1\2\npython3\-libnvinfer\*\2/'                               \
                             | grep .
                         done
                     )
@@ -204,10 +210,10 @@
         # - CUDA 11.8 and 12.0 samples was added later in 2022.
         #   https://github.com/NVIDIA/cuda-samples/releases/tag/v11.8
         #   https://github.com/NVIDIA/cuda-samples/releases/tag/v12.0
-        # - CUDA 12.5 does not have dedicated sample as of mid 2024.
-        #   Fallback to 12.4 and will search for 12.4.1.
+        # - CUDA 12.6/12.7 does not have dedicated sample as of Aug 2025.
+        #   Fallback to 12.5.
         #   https://github.com/NVIDIA/cuda-samples/issues/275
-        . "$ROOT_DIR/pkgs/utils/git/version.sh" NVIDIA/cuda-samples,"v$(sed 's/^11\.[7]$/11\.6/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/^12\.[5]$/12\.4/')"
+        . "$ROOT_DIR/pkgs/utils/git/version.sh" NVIDIA/cuda-samples,"v$(sed 's/^11\.[7]$/11\.6/' <<< "$CUDA_VER_MAJOR.$CUDA_VER_MINOR" | sed 's/^12\.[67]$/12\.5/')"
         until git clone --depth 1 -b "$GIT_TAG" "$GIT_REPO" "cuda-samples-$CUDA_VER_MAJOR-$CUDA_VER_MINOR"; do sleep 1; echo "Retrying"; done
         cd "cuda-samples-$CUDA_VER_MAJOR-$CUDA_VER_MINOR"
 
