@@ -24,6 +24,9 @@ case "$DISTRO_ID-$DISTRO_VERSION_ID" in
 'ubuntu-23.'* | 'ubuntu-24.'*)
     export CC="gcc-13" CXX="g++-13" FC="gfortran-13" AR='gcc-ar-13' RANLIB='gcc-ranlib-13'
     ;;
+'debian-13' | 'ubuntu-25.'* | 'ubuntu-26.'*)
+    export CC="gcc-14" CXX="g++-14" FC="gfortran-14" AR='gcc-ar-14' RANLIB='gcc-ranlib-14'
+    ;;
 *)
     export CC="gcc" CXX="g++" GC="gfortran" AR='gcc-ar' RANLIB='gcc-ranlib'
     ;;
