@@ -334,7 +334,10 @@ COPY [".", "/etc/roaster/scripts"]
 #RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu24.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh ipt
 #RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu24.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh python-3.8
 #RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu24.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh python-3.9
+#RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu24.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh python-3.10
 #RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu24.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh python-3.11
+#RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu24.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh python-3.13
+#RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu24.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh python-3.14
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu24.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh cuda
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu24.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh ucx
 RUN --mount=type=tmpfs,target=/tmp --mount=type=cache,id=roaster-ubuntu24.04-ccache,target=/root/.ccache,mode=0755 /etc/roaster/scripts/setup.sh ompi
