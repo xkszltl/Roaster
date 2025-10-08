@@ -35,20 +35,26 @@
         'debian-10' | 'ubuntu-18.'* | 'ubuntu-19.'*)
             export CC="clang-7" CXX="clang++-7"
             ;;
-        'debian-11')
-            export CC="clang-11" CXX="clang++-11"
-            ;;
         'ubuntu-20.'*)
             export CC="clang-10" CXX="clang++-10"
             ;;
-        'ubuntu-21.04')
+        'debian-11' | 'ubuntu-21.04')
             export CC="clang-11" CXX="clang++-11"
             ;;
         'ubuntu-21.10')
             export CC="clang-13" CXX="clang++-13"
             ;;
-        'ubuntu-22.04')
+        'debian-12' | 'ubuntu-22.04')
             export CC="clang-14" CXX="clang++-14"
+            ;;
+        'ubuntu-24.04')
+            export CC="clang-18" CXX="clang++-18"
+            ;;
+        'debian-13')
+            export CC="clang-19" CXX="clang++-19"
+            ;;
+        'ubuntu-25.'*)
+            export CC="clang-20" CXX="clang++-20"
             ;;
         *)
             export CC="clang" CXX="clang++"
