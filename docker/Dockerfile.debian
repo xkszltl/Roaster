@@ -144,7 +144,9 @@ RUN set -e; \
             flex \
             ftpsync \
             fuse libfuse{,3}-dev \
-            g{++,cc,fortran}{,-{9,10}}{,-multilib} \
+            $(set -e; . '/etc/os-release'; ! echo "$ID-$VERSION_ID" | grep -e'^debian\-11$' >/dev/null || echo g{++,cc,fortran}{,-{9,10}}{,-multilib}) \
+            $(set -e; . '/etc/os-release'; ! echo "$ID-$VERSION_ID" | grep -e'^debian\-12$' >/dev/null || echo g{++,cc,fortran}{,-{11,12}}{,-multilib}) \
+            $(set -e; . '/etc/os-release'; ! echo "$ID-$VERSION_ID" | grep -e'^debian\-13$' >/dev/null || echo g{++,cc,fortran}{,-{12,13,14}}{,-multilib}) \
             gawk \
             gdb \
             gettext \
@@ -199,7 +201,9 @@ RUN set -e; \
             libxml2{,-{dev,doc,utils}} \
             libxvidcore-dev \
             libzmq3-dev \
-            {llvm,clang{,-{format,tidy,tools}},lld}{,-{9,11,13}} llvm-{9,11,13}-tools lldb{,-11} lib{c++{,abi},omp}{,-11}-dev \
+            $(set -e; . '/etc/os-release'; ! echo "$ID-$VERSION_ID" | grep -e'^debian\-11$' >/dev/null || echo {llvm,clang{,-{format,tidy,tools}},lld}{,-{9,11,13,16}} llvm-{9,11,13,16}-tools lldb{,-11} lib{c++{,abi},omp}{,-11}-dev) \
+            $(set -e; . '/etc/os-release'; ! echo "$ID-$VERSION_ID" | grep -e'^debian\-12$' >/dev/null || echo {llvm,clang{,-{format,tidy,tools}},lld}{,-{13,14,15,16,19}} llvm-{13,14,15,16,19}-tools lldb{,-14} lib{c++{,abi},omp}{,-14}-dev) \
+            $(set -e; . '/etc/os-release'; ! echo "$ID-$VERSION_ID" | grep -e'^debian\-13$' >/dev/null || echo {llvm,clang{,-{format,tidy,tools}},lld}{,-{17,18,19}} llvm-{17,18,19}-tools lldb{,-19} lib{c++{,abi},omp}{,-19}-dev) \
             locales \
             locate \
             lshw \
