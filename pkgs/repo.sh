@@ -191,16 +191,13 @@
                 sudo mkdir -p '/etc/apt/sources.list.d'
                 echo "deb $cuda_repo/ /" | sudo tee '/etc/apt/sources.list.d/cuda.list'
                 # Known issues:
-                #   - TensorRT/NCCL is not available for Debian as of mid 2024.
+                #   - TensorRT/NCCL is not available for Debian 11 as of Oct 2025.
+                #     They are only added to Debian 12 in Aug 2025.
                 #     Try to use the Ubuntu build instead.
                 case "$DISTRO_ID-$DISTRO_VERSION_ID" in
                 'debian-11')
                     echo "deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/$(uname -m)/ /" | sudo tee -a '/etc/apt/sources.list.d/cuda.list'
                     printf 'Package: *\nPin: origin developer.download.nvidia.com/compute/cuda/repos/ubuntu2004\nPin-Priority: 1\n' | sudo tee '/etc/apt/preferences.d/99-cuda'
-                    ;;
-                'debian-12')
-                    echo "deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/$(uname -m)/ /" | sudo tee -a '/etc/apt/sources.list.d/cuda.list'
-                    printf 'Package: *\nPin: origin developer.download.nvidia.com/compute/cuda/repos/ubuntu2204\nPin-Priority: 1\n' | sudo tee '/etc/apt/preferences.d/99-cuda'
                     ;;
                 esac
                 sudo apt-get -o 'DPkg::Lock::Timeout=3600' update -y
