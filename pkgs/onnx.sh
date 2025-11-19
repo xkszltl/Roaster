@@ -154,7 +154,7 @@
     cd
     rm -rf $SCRATCH/onnx
 
-    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" microsoft/onnxconverter-common,v onnx/{keras,sklearn}-onnx,v onnx/onnxmltools,
+    "$ROOT_DIR/pkgs/utils/pip_install_from_git.sh" microsoft/onnx{converter-common,script},v onnx/{keras,sklearn}-onnx,v onnx/onnxmltools,
 )
 sudo rm -vf $STAGE/onnx
 sync "$STAGE" || true
