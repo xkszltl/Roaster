@@ -152,7 +152,7 @@ Maratyszcza/{confu,cpuinfo,FP16,FXdiv,NNPACK,PeachPy,psimd,pthreadpool},\
 meekrosoft/fff,\
 mesonbuild/meson{,-python},\
 micheles/{decorator,plac},\
-Microsoft/{artifacts-credprovider,azure-pipelines-yaml,BuildXL,calculator,cascadia-code,CNTK,cppwinrt,dotnet,FeaturizersLibrary,GSL,LightGBM,LoRA,mimalloc,msbuild,{,Delayed-Compensation-Asynchronous-Stochastic-Gradient-Descent-for-}Multiverso,nni,onnxconverter-common,onnxruntime{,-extensions,-tvm},STL,Terminal,TypeScript,unilm,vcpkg,VFSForGit,vscode,vstest,vswhere,wil},\
+Microsoft/{artifacts-credprovider,azure-pipelines-yaml,BuildXL,calculator,cascadia-code,CNTK,cppwinrt,dotnet,FeaturizersLibrary,GSL,LightGBM,LoRA,mimalloc,msbuild,{,Delayed-Compensation-Asynchronous-Stochastic-Gradient-Descent-for-}Multiverso,nni,onnxconverter-common,onnxruntime{,-{extensions,genai,github-actions,{inference,training}-examples,tvm}},STL,Terminal,TypeScript,unilm,vcpkg,VFSForGit,vscode,vstest,vswhere,wil},\
 mikeando/fastjson,\
 mirrorz-org/{mirrorz{,-{302,config,d-extension,docs,help,i18n,json-site,monitor,parser,publish,schema,scripts,search}},org},\
 moby/{buildkit,moby},\
