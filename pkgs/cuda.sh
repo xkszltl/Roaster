@@ -115,7 +115,12 @@
     # - TensorRT 8.6.1.6 on Ubuntu route to CUDA 12.0 by default instead of 11.8, this may be a bug in Nvidia packaging.
     # - TensorRT CUDA 12.9 dependency resolution is broken after the release of CUDA 13.
     #   Explicitly resolve nvinfer/nvonnxparsers to the same version as tensorrt meta package to work around.
+    #   This mitigation only works in Aug/Sep 2025 and failed afterward due to "-cross-amd64" regression.
     #   https://github.com/NVIDIA/TensorRT/issues/4545
+    # - TensorRT packages resolves to "-cross-amd64" variant when installing by "*" since Oct 2025.
+    #   These cross-platform builds do not exist in the repo.
+    #   They are listed by libnvinfer-samples as alternatives for their non-suffix version.
+    #   https://github.com/NVIDIA/TensorRT/issues/4593
     for attempt in $(seq "$PKG_MAX_ATTEMPT" -1 0); do
         [ "$attempt" -gt 0 ]
         (
@@ -142,9 +147,6 @@
                             | grep '^[^=][^=]*=.*\-.*\+cuda'"$CUDA_VER_MAJOR"'\.[0-9][0-9]*$'                           \
                             | sort -V                                                                                   \
                             | tail -n1                                                                                  \
-                            | sed 's/^\(tensorrt\)\(=.*\)/\1\2\nlibnvinfer\*\2/'                                        \
-                            | sed 's/^\(tensorrt\)\(=.*\)/\1\2\nlibnvonnxparsers\*\2/'                                  \
-                            | sed 's/^\(tensorrt\)\(=.*\)/\1\2\npython3\-libnvinfer\*\2/'                               \
                             | grep .
                         done
                     )
