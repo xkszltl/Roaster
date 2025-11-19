@@ -6,9 +6,9 @@
     cd $SCRATCH
 
     # Known issue:
-    # - OpenUCX 1.18.0 failed to build on Ubuntu 22.04 with Werror.
-    #   https://github.com/openucx/ucx/issues/10449
-    . "$ROOT_DIR/pkgs/utils/git/version.sh" openucx/ucx,v1.17.
+    # - OpenUCX 1.18 failed to build with -Werror=unused-result of posix_memalign() until 1.19.
+    #   https://github.com/openucx/ucx/pull/10453
+    . "$ROOT_DIR/pkgs/utils/git/version.sh" openucx/ucx,v
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd ucx
 
