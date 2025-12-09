@@ -8,7 +8,7 @@ for cmd in curl git git-lfs grep jq parallel sed xargs; do
     exit 1
 done
 
-trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
+trap "trap - TERM && kill -- -$$" EXIT INT TERM
 
 cd "$(dirname "$0")"
 
@@ -45,7 +45,7 @@ mkdir -p "$STAGE_DIR"
 
 log="$(mktemp -t git-mirror-XXXXXXXX.log)"
 ! grep '[[:space:]]' <<< "$log" >/dev/null
-trap "trap - SIGTERM && rm -f $log && kill -- -$$" SIGINT SIGTERM EXIT
+trap "trap - TERM && rm -f $log && kill -- -$$" EXIT INT TERM
 
 # Concurrency restricted by GitHub.
 ./mirror-list.sh                                                    \
@@ -303,8 +303,8 @@ paste -sd' ' "$log"                                                             
 | xargs -r printf '\033[31m[ERROR] Potential branch renaming at: %s\033[0m\n' >&2
 
 rm -f "$log"
-trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
+trap "trap - TERM && kill -- -$$" EXIT INT TERM
 
 date || true
 
-trap - SIGTERM SIGINT EXIT
+trap - EXIT INT TERM

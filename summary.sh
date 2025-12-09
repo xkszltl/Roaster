@@ -3,7 +3,7 @@
 set +x
 set -e
 
-trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
+trap "trap - TERM && kill -- -$$" EXIT INT TERM
 
 cd "$(dirname "$0")"
 
@@ -217,4 +217,4 @@ else
     printf '```\n\n'
 fi
 
-trap - SIGTERM SIGINT EXIT
+trap - EXIT INT TERM

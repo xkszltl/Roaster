@@ -26,7 +26,7 @@ fi
 [ "$min_size" ] || min_size=4096
 
 chksum_dir="$(mktemp -dt 'inode-dedup-XXXXXXXX')"
-trap "trap - SIGTERM; $(sed 's/^\(..*\)$/rm \-rf "\1"/' <<< "$chksum_dir"); kill -- -'$$'" SIGINT SIGTERM EXIT
+trap "trap - TERM; $(sed 's/^\(..*\)$/rm \-rf "\1"/' <<< "$chksum_dir"); kill -- -'$$'" EXIT INT TERM
 
 # Hash metadata+data, permissively, and report inexact matches as suggestions.
 # Record as symlink if never seen, or hard link to target of the symlink.
@@ -85,6 +85,6 @@ cat "$@"                                                                        
 | bash
 
 rm -rf "$chksum_dir"
-trap - SIGTERM SIGINT EXIT
+trap - EXIT INT TERM
 
 printf '\033[32m[INFO] File dedup completed.\033[0m\n' >&2

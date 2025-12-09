@@ -8,7 +8,7 @@ if [ "$PPID" -le 1 ]; then
     exit $!
 fi
 
-trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
+trap "trap - TERM && kill -- -$$" EXIT INT TERM
 
 # ================================================================
 # Environment Configuration
@@ -296,4 +296,4 @@ echo '================================================================'
 
 # ----------------------------------------------------------------
 
-trap - SIGTERM SIGINT EXIT
+trap - EXIT INT TERM

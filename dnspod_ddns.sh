@@ -31,7 +31,7 @@ TokenDNSCOMSecret="$CRED_USR_DNSCOM_SECRET"
 # ================================================================
 
 LastDir="$(mktemp -d)"
-trap "trap - SIGTERM; rm -rf '$LastDir'; kill -- -'$$'" SIGINT SIGTERM EXIT
+trap "trap - TERM; rm -rf '$LastDir'; kill -- -'$$'" EXIT INT TERM
 cd "$LastDir"
 
 for cmd in curl grep jq snmpwalk sed xargs; do
@@ -412,4 +412,4 @@ done
 
 cd
 rm -rf "$LastDir"
-trap - SIGTERM SIGINT EXIT
+trap - EXIT INT TERM

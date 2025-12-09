@@ -28,7 +28,7 @@ if [ ! -d "$src/" ]; then
 fi
 
 ctx="$(mktemp -d "/tmp/$(basename "$0")-ctx-XXXXXXXX")"
-trap "trap - SIGTERM; $(sed 's/^\(..*\)$/rm \-rf "\1"/' <<< "$ctx"); kill -- -'$$'" SIGINT SIGTERM EXIT
+trap "trap - TERM; $(sed 's/^\(..*\)$/rm \-rf "\1"/' <<< "$ctx"); kill -- -'$$'" EXIT INT TERM
 
 # Generate file list to rsync:
 # - Filter out docker files.
@@ -112,7 +112,7 @@ cat "$ctx/"{delta,closure}"_files.txt"                                          
     "$dst/"
 
 rm -rf "$ctx"
-trap - SIGINT SIGTERM EXIT
+trap - EXIT INT TERM
 
 if [ "$layer" -ge "$n_layers" ]; then
     printf '\033[32m[INFO] Caping on layer %d.\033[0m\n' "$layer" >&2

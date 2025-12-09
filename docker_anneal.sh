@@ -34,7 +34,7 @@ if [ ! "$dst" ]; then
 fi
 
 ctx="$(mktemp -dt "$(basename "$0")-build-ctx-XXXXXXXX")"
-trap "trap - SIGTERM; $(sed 's/^\(..*\)$/rm \-rf "\1"/' <<< "$ctx"); kill -- -'$$'" SIGINT SIGTERM EXIT
+trap "trap - TERM; $(sed 's/^\(..*\)$/rm \-rf "\1"/' <<< "$ctx"); kill -- -'$$'" EXIT INT TERM
 
 touch "$ctx/dummy.sh"
 chmod +x "$ctx/dummy.sh"
@@ -157,4 +157,4 @@ rsync -RPa "$(sed 's/\(\/\.\/[^\/][^\/]*\/\).*/\1/' <<< "$post")" "$ctx/post/"
 DOCKER_BUILDKIT=1 $sudo_docker build --progress plain -t "$dst" "$ctx"
 
 rm -rf "$ctx"
-trap - SIGINT SIGTERM EXIT
+trap - EXIT INT TERM
