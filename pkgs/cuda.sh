@@ -15,8 +15,8 @@
 
     # PyTorch does not fully support CUDA 12.0 until Nov 2023 and in 2.1.0.
     # - https://github.com/pytorch/pytorch/issues/91122
-    export CUDA_VER_MAJOR="13"
-    export CUDA_VER_MINOR="0"
+    [ "$CUDA_VER_MAJOR" ] || export CUDA_VER_MAJOR="13"
+    [ "$CUDA_VER_MINOR" ] || export CUDA_VER_MINOR="0"
     case "$DISTRO_ID" in
     'centos' | 'fedora' | 'rhel' | 'scientific')
         sudo dnf makecache
