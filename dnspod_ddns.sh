@@ -53,14 +53,14 @@ while true; do
         case "$Rec" in
         'snmp.'*)
             IP="$(set -e
-                    snmpwalk -v3 -u monitor -x AES -m IP-MIB "$Gateway" 'RFC1213-MIB::ipAdEntIfIndex'   \
+                    snmpwalk -v3 -u monitor -x AES -m IP-MIB -t 30 "$Gateway" 'RFC1213-MIB::ipAdEntIfIndex' \
                     | sed -n 's/.*\.\([0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\).*[[:space:]]'"$(set -e
-                            snmpwalk -v3 -u monitor -x AES -m IF-MIB "$Gateway" 'IF-MIB::ifName'        \
+                            snmpwalk -v3 -u monitor -x AES -m IF-MIB -t 30 "$Gateway" 'IF-MIB::ifName'      \
                             | sed -n 's/.*\.\([0-9]*\).*[[:space:]]'"$(set -e
-                                    printf '%s' "$Rec"                                                  \
-                                    | sed 's/.*\.ctcc$/#Dialer10/'                                      \
-                                    | sed 's/.*\.cucc$/#Dialer20/'                                      \
-                                    | sed -n 's/^#//p'                                                  \
+                                    printf '%s' "$Rec"                                                      \
+                                    | sed 's/.*\.ctcc$/#Dialer10/'                                          \
+                                    | sed 's/.*\.cucc$/#Dialer20/'                                          \
+                                    | sed -n 's/^#//p'                                                      \
                                     | sed 's/\([\\\/\.\-]\)/\\\1/'
                                 )"'$/\1/p'
                         )"'$/\1/p'
