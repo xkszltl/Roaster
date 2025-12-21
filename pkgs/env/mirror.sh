@@ -67,7 +67,7 @@ export LINK_QUALITY="$(
         | sed 's/^$/10\^20/'                                                                        \
         | bc
         printf '%s %s\n' "$url" "$(! which dig >/dev/null 2>&1 || dig '+noall' '+short' -t A "$fqdn" | grep '[^\.]$' | paste -sd' ' -)"
-    done | paste - - | sort -n | column -t
+    done | paste - - | sort -n | grep -v '[\.:]0*[[:space:]]*$' | column -t
 )"
 
 sed 's/^/| /' <<< "$LINK_QUALITY"
