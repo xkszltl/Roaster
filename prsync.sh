@@ -8,6 +8,7 @@ for cmd in parallel rsync xargs; do
     exit 1
 done
 
+date
 seq 100                                                                                 \
 | parallel --lb -j20 -q sh -c 'set -ex
     tid={}
@@ -22,8 +23,11 @@ seq 100                                                                         
     done
 ' -- "$@"
 
+date
 rsync "$@"
 
 printf '\033[36m[INFO] Verify remote content.\033[0m\n' >&2
+date
 rsync -c "$@"
+date
 printf '\033[32m[INFO] Rsync completed.\033[0m\n' >&2
