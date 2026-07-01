@@ -8,18 +8,22 @@
     # Known issue:
     # - OpenUCX 1.18 failed to build with -Werror=unused-result of posix_memalign() until 1.19.
     #   https://github.com/openucx/ucx/pull/10453
+    # - OpenUCX 1.21.0 removed UCG.
+    #   Keep the pull temporarily until confirming 1.21 works everywhere.
+    #   https://github.com/openucx/ucx/pull/11096
     . "$ROOT_DIR/pkgs/utils/git/version.sh" openucx/ucx,v
     until git clone --single-branch -b "$GIT_TAG" "$GIT_REPO"; do echo 'Retrying'; done
     cd ucx
 
     . "$ROOT_DIR/pkgs/utils/git/submodule.sh"
 
-    pushd src/ucg
-    git checkout master
-    git submodule update --init
-    popd
-    git --no-pager diff
-    git commit -am "Automatic git submodule updates."
+    if [ -d 'src/ucg' ]; then
+        pushd src/ucg
+        git checkout master
+        popd
+        git --no-pager diff
+        git commit -am "Automatic git submodule updates."
+    fi
 
     # ------------------------------------------------------------
 
