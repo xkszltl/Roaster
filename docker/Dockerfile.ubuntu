@@ -193,7 +193,7 @@ RUN set -e; \
             libpam-ldap \
             libpapi-dev papi-tools \
             libprotobuf-dev protobuf-compiler \
-            libpugixml-dev pugixml-doc\
+            libpugixml-dev pugixml-doc \
             librabbitmq-dev \
             libteam-{dev,utils} \
             libtool \
